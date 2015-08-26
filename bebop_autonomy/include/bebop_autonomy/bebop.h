@@ -1,6 +1,8 @@
 #ifndef BEBOP_H
 #define BEBOP_H
 
+#define BEBOP_ERR_STR_SZ  100
+
 #include <boost/shared_ptr.hpp>
 #include <boost/atomic.hpp>
 
@@ -69,9 +71,11 @@ public:
 
   inline ARSAL_Sem_t* GetStateSemPtr() {return &state_sem_;}
   inline const ARCONTROLLER_Device_t* GetControllerCstPtr() const {return device_controller_ptr_;}
+
+  // Make this atomic
   inline bool IsConnected() const {return connected_;}
 
-  Bebop();
+  Bebop(ARSAL_Print_Callback_t custom_print_callback = 0);
   ~Bebop();
 
   inline util::AtomicVar<bool>& FrameAvailableFlag() {return frame_avail_flag_;}

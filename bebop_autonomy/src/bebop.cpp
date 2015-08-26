@@ -75,6 +75,7 @@ void Bebop::FrameReceivedCallback(ARCONTROLLER_Frame_t *frame, void *bebop_void_
   }
   Bebop* bebop_ptr_ = static_cast<Bebop*>(bebop_void_ptr_);
 
+  ARSAL_PRINT(ARSAL_PRINT_ERROR, LOG_TAG, "$$$$$$$$$$$$$$$$$$$ FRAME CB");
   if (bebop_ptr_->FrameAvailableFlag().Get())
   {
     ARSAL_PRINT(ARSAL_PRINT_WARNING, LOG_TAG, "Previous frame might have been missed.");
@@ -90,12 +91,13 @@ void Bebop::FrameReceivedCallback(ARCONTROLLER_Frame_t *frame, void *bebop_void_
   }
   else
   {
+    ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, ">>>> new frame available");
     bebop_ptr_->FrameAvailableFlag().Set(true);
   }
 }
 
 
-Bebop::Bebop():
+Bebop::Bebop(ARSAL_Print_Callback_t custom_print_callback):
   connected_(false),
   device_ptr_(NULL),
   device_controller_ptr_(NULL),
@@ -105,6 +107,10 @@ Bebop::Bebop():
   frame_avail_flag_(false)
 //  out_file("/tmp/ts.txt")
 {
+  // Redirect all calls to AR_PRINT_* to this function if provided
+  if (custom_print_callback)
+    ARSAL_Print_SetCallback(custom_print_callback);
+
   ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "Bebop Cnstr()");
 }
 

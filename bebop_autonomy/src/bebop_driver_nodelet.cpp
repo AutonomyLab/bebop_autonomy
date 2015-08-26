@@ -6,6 +6,7 @@
 #include <boost/bind.hpp>
 #include <cmath>
 #include <algorithm>
+#include <cstdio>
 
 #include <bebop_autonomy/bebop_driver_nodelet.h>
 
@@ -14,7 +15,24 @@ PLUGINLIB_EXPORT_CLASS(bebop_autonomy::BebopDriverNodelet, nodelet::Nodelet)
 namespace bebop_autonomy
 {
 
+namespace util
+{
+
+int BebopPrintToROSLogCB(eARSAL_PRINT_LEVEL level, const char *tag, const char *format, va_list va)
+{
+  const int32_t sz = vsnprintf(bebop_err_str, BEBOP_ERR_STR_SZ, format, va);
+  bebop_err_str[std::min(BEBOP_ERR_STR_SZ, sz) - 1] = '\0';
+  // We can't use variable names with ROS_*_NAMED macros
+  static const std::string logger_name = std::string(ROSCONSOLE_NAME_PREFIX) + "." + ros::this_node::getName() + ".bebopsdk";
+  // Use tag inline
+  ROS_LOG(util::arsal_level_to_ros[level], logger_name, "[%s] %s", tag, bebop_err_str);
+  return 1;
+}
+
+}  // namespace util
+
 BebopDriverNodelet::BebopDriverNodelet()
+  : bebop_(util::BebopPrintToROSLogCB)
 //    : running_(false)
 {
   NODELET_INFO("Nodelet Cstr");
@@ -56,7 +74,6 @@ void BebopDriverNodelet::onInit()
   image_transport_ptr_.reset(new image_transport::ImageTransport(nh));
   image_transport_pub_ = image_transport_ptr_->advertiseCamera("bebop/image_raw", 10);
 
-
   camera_info_msg_ptr_.reset(new sensor_msgs::CameraInfo());
   image_msg_ptr_.reset(new sensor_msgs::Image());
   image_msg_ptr_->encoding = "rgb8";
@@ -65,7 +82,9 @@ void BebopDriverNodelet::onInit()
 
   dummy_pub_ = nh.advertise<geometry_msgs::Twist>("debug", 1);
 
-  timer_ = nh.createTimer(ros::Duration(1.0 / 50.0), boost::bind(&BebopDriverNodelet::TimerCallback, this , _1));
+  // Video @ 30fHz
+  // Command sent @ 40Hz
+  timer_ = nh.createTimer(ros::Duration(1.0 / 100.0), boost::bind(&BebopDriverNodelet::TimerCallback, this , _1));
   NODELET_INFO_STREAM("[THREAD] NodeletInit: " << boost::this_thread::get_id());
 }
 
@@ -92,9 +111,9 @@ void BebopDriverNodelet::PublishVideo()
     if (!image_msg_ptr_->data.size())
       image_msg_ptr_->data.resize(num_bytes);
 
-    std::copy(bebop_.Decoder().GetFrameRGBCstPtr(),
-              bebop_.Decoder().GetFrameRGBCstPtr() + num_bytes,
-              image_msg_ptr_->data.begin());
+    NODELET_INFO("COPY STARTED");
+    bebop_.Decoder().CopyDecodedFrame(image_msg_ptr_->data);
+    NODELET_INFO("COPY FINISHED");
 
     image_msg_ptr_->header.stamp = ros::Time::now();
     image_msg_ptr_->width = bebop_.Decoder().GetFrameWidth();
@@ -115,8 +134,13 @@ void BebopDriverNodelet::TimerCallback(const ros::TimerEvent &event)
   {
     if (bebop_.FrameAvailableFlag().Get())
     {
+      NODELET_INFO("**** new frame available");
       PublishVideo();
       bebop_.FrameAvailableFlag().Set(false);
+    }
+    else
+    {
+      NODELET_INFO("No frame is available to publish");
     }
 
     if (do_takeoff)

@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <boost/lexical_cast.hpp>
 #include <boost/thread/lock_guard.hpp>
+#include <algorithm>
 
 namespace bebop_autonomy
 {
@@ -67,22 +68,24 @@ bool VideoDecoder::InitCodec(const uint32_t width, const uint32_t height)
           avcodec_open2(codec_ctx_ptr_, codec_ptr_, NULL) < 0,
           "Can not open the decoder!");
 
-    frame_ptr_ = avcodec_alloc_frame();
-    frame_rgb_ptr_ = avcodec_alloc_frame();
 
-    ThrowOnCondition(!frame_ptr_ || !frame_rgb_ptr_, "Can not allocate memory for frames!");
 
     const uint32_t num_bytes = avpicture_get_size(PIX_FMT_RGB24, codec_ctx_ptr_->width, codec_ctx_ptr_->height);
-    frame_rgb_raw_ptr_ = (uint8_t*) av_malloc(num_bytes * sizeof(uint8_t));
+    {
+       frame_ptr_ = avcodec_alloc_frame();
+       frame_rgb_ptr_ = avcodec_alloc_frame();
 
-    ThrowOnCondition(frame_rgb_raw_ptr_ == NULL,
-                     std::string("Can not allocate memory for the buffer: ") +
-                     boost::lexical_cast<std::string>(num_bytes));
+       ThrowOnCondition(!frame_ptr_ || !frame_rgb_ptr_, "Can not allocate memory for frames!");
 
-    ThrowOnCondition(0 == avpicture_fill(
-                       (AVPicture*) frame_rgb_ptr_, frame_rgb_raw_ptr_, PIX_FMT_RGB24,
-                       codec_ctx_ptr_->width, codec_ctx_ptr_->height),
-                     "Failed to initialize the picture data structure.");
+       frame_rgb_raw_ptr_ = (uint8_t*) av_malloc(num_bytes * sizeof(uint8_t));
+       ThrowOnCondition(frame_rgb_raw_ptr_ == NULL,
+                        std::string("Can not allocate memory for the buffer: ") +
+                        boost::lexical_cast<std::string>(num_bytes));
+       ThrowOnCondition(0 == avpicture_fill(
+                          (AVPicture*) frame_rgb_ptr_, frame_rgb_raw_ptr_, PIX_FMT_RGB24,
+                          codec_ctx_ptr_->width, codec_ctx_ptr_->height),
+                        "Failed to initialize the picture data structure.");
+    }
 
     av_init_packet(&packet_);
   }
@@ -111,19 +114,23 @@ void VideoDecoder::Cleanup()
     av_free(frame_ptr_);
   }
 
-  if (frame_rgb_ptr_)
   {
-    av_free(frame_rgb_ptr_);
+    boost::lock_guard<boost::mutex> lock(frame_rgb_mutex_);
+    if (frame_rgb_ptr_)
+    {
+      av_free(frame_rgb_ptr_);
+    }
+
+    if (frame_rgb_raw_ptr_)
+    {
+      av_free(frame_rgb_raw_ptr_);
+    }
   }
+
 
   if (img_convert_ctx_ptr_)
   {
     sws_freeContext(img_convert_ctx_ptr_);
-  }
-
-  if (frame_rgb_raw_ptr_)
-  {
-    av_free(frame_rgb_raw_ptr_);
   }
 
   codec_initialized_ = false;
@@ -145,8 +152,13 @@ void VideoDecoder::ConvertFrameToRGB()
                                           codec_ctx_ptr_->width, codec_ctx_ptr_->height, PIX_FMT_RGB24,
                                           SWS_FAST_BILINEAR, NULL, NULL, NULL);
   }
-  sws_scale(img_convert_ctx_ptr_, frame_ptr_->data, frame_ptr_->linesize, 0,
-            codec_ctx_ptr_->height, frame_rgb_ptr_->data, frame_rgb_ptr_->linesize);
+
+  {
+    boost::lock_guard<boost::mutex> lock(frame_rgb_mutex_);
+    sws_scale(img_convert_ctx_ptr_, frame_ptr_->data, frame_ptr_->linesize, 0,
+              codec_ctx_ptr_->height, frame_rgb_ptr_->data, frame_rgb_ptr_->linesize);
+  }
+
 }
 
 bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *bebop_frame_ptr_)
@@ -191,7 +203,8 @@ bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *bebop_frame_ptr_)
     {
       if (frame_finished)
       {
-        //ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "Res: %d, Frame Finished: %d, isIFrame: %d", len, frame_finished, bebop_frame_ptr_->isIFrame);
+//        ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "Res: %d, Frame Finished: %d, isIFrame: %d", len, frame_finished, bebop_frame_ptr_->isIFrame);
+
         ConvertFrameToRGB();
       }
 
@@ -206,10 +219,19 @@ bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *bebop_frame_ptr_)
   return true;
 }
 
-const uint8_t* VideoDecoder::GetFrameRGBCstPtr() const
+void VideoDecoder::CopyDecodedFrame(std::vector<uint8_t>& buffer) const
 {
   boost::lock_guard<boost::mutex> lock(frame_rgb_mutex_);
-  return frame_rgb_raw_ptr_;
+  std::copy(frame_rgb_raw_ptr_,
+            frame_rgb_raw_ptr_ + (GetFrameWidth() * GetFrameHeight() * 3),
+            buffer.begin());
 }
+//const uint8_t* VideoDecoder::GetFrameRGBCstPtr() const
+//{
+//  ARSAL_PRINT(ARSAL_PRINT_ERROR, LOG_TAG, "LOCK");
+//  boost::lock_guard<boost::mutex> lock(frame_rgb_mutex_);
+//  ARSAL_PRINT(ARSAL_PRINT_ERROR, LOG_TAG, "UNLOCK");
+//  return frame_rgb_raw_ptr_;
+//}
 
 }  // namespace bebop_autonomy

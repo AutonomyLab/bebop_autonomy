@@ -21,6 +21,8 @@ namespace util
 {
   static const double eps = 1.0e-6;
 
+  static char bebop_err_str[BEBOP_ERR_STR_SZ];
+
   void ResetTwist(geometry_msgs::Twist& t)
   {
     t.linear.x = 0.0;
@@ -40,6 +42,15 @@ namespace util
         (fabs(lhs.angular.y - rhs.angular.y) < eps) &&
         (fabs(lhs.angular.z - rhs.angular.z) < eps);
   }
+
+  const static ros::console::levels::Level arsal_level_to_ros[ARSAL_PRINT_MAX] = {ros::console::levels::Fatal,
+                                                                                  ros::console::levels::Error,
+                                                                                  ros::console::levels::Warn,
+                                                                                  ros::console::levels::Info,
+                                                                                  ros::console::levels::Debug,
+                                                                                  ros::console::levels::Debug};
+
+  int BebopPrintToROSLogCB (eARSAL_PRINT_LEVEL level, const char *tag, const char *format, va_list va);
 }  // namespace util
 
 class BebopDriverNodelet : public nodelet::Nodelet

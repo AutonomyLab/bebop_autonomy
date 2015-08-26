@@ -14,6 +14,7 @@ extern "C"
 
 #include <boost/thread/mutex.hpp>
 #include <string>
+#include <vector>
 
 namespace bebop_autonomy
 {
@@ -52,7 +53,8 @@ public:
   inline uint32_t GetFrameHeight() const {return codec_initialized_ ? codec_ctx_ptr_->height : 0;}
 
   // Thread-safe access to decoded frame as raw RGB24 data
-  const uint8_t* GetFrameRGBCstPtr() const;
+  void CopyDecodedFrame(std::vector<uint8_t>& buffer) const;
+//  const uint8_t* GetFrameRGBCstPtr() const;
 };
 
 }  // namespace bebop_autonomy
