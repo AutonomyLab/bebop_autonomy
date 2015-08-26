@@ -7,10 +7,15 @@
 #include <cmath>
 #include <iostream>
 
+// debug
+//#include <iomanip>
+//#include <ros/time.h>
+
 namespace bebop_autonomy
 {
 
 const char* Bebop::LOG_TAG = "BEB";
+
 
 void Bebop::StateChangedCallback(eARCONTROLLER_DEVICE_STATE new_state, eARCONTROLLER_ERROR error, void *bebop_void_ptr)
 {
@@ -61,6 +66,7 @@ void Bebop::CommandReceivedCallback(eARCONTROLLER_DICTIONARY_KEY cmd_key, ARCONT
   }
 }
 
+// This Callback runs in ARCONTROLLER_Stream_ReaderThreadRun context and blocks it until it returns
 void Bebop::FrameReceivedCallback(ARCONTROLLER_Frame_t *frame, void *bebop_void_ptr_)
 {
   if (!frame)
@@ -68,14 +74,23 @@ void Bebop::FrameReceivedCallback(ARCONTROLLER_Frame_t *frame, void *bebop_void_
     ARSAL_PRINT(ARSAL_PRINT_ERROR, LOG_TAG, "Received frame is NULL");
   }
   Bebop* bebop_ptr_ = static_cast<Bebop*>(bebop_void_ptr_);
-//  ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "In Frame Received Callback: %u %u", frame->width, frame->used);
-//  std::cout <<  "[THREAD] FrameRecv: " << boost::this_thread::get_id() << std::endl;
+
+  if (bebop_ptr_->FrameAvailableFlag().Get())
+  {
+    ARSAL_PRINT(ARSAL_PRINT_WARNING, LOG_TAG, "Previous frame might have been missed.");
+  }
   // TODO: FixMe
   frame->width = 640;
   frame->height = 368;
+
+//  bebop_ptr_->out_file << std::setprecision(12) << ros::Time::now().toSec() << std::endl;
   if (!bebop_ptr_->video_decoder_.Decode(frame))
   {
     ARSAL_PRINT(ARSAL_PRINT_ERROR, LOG_TAG, "Video decode failed");
+  }
+  else
+  {
+    bebop_ptr_->FrameAvailableFlag().Set(true);
   }
 }
 
@@ -86,13 +101,16 @@ Bebop::Bebop():
   device_controller_ptr_(NULL),
   error_(ARCONTROLLER_OK),
   device_state_(ARCONTROLLER_DEVICE_STATE_MAX),
-  video_decoder_()
+  video_decoder_(),
+  frame_avail_flag_(false)
+//  out_file("/tmp/ts.txt")
 {
   ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "Bebop Cnstr()");
 }
 
 Bebop::~Bebop()
 {
+//  out_file.close();
   // This is the last resort, the program must run Cleanup() fo
   // proper disconnection and free
   if (device_ptr_) ARDISCOVERY_Device_Delete(&device_ptr_);

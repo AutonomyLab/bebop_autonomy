@@ -1,6 +1,7 @@
 #include "bebop_autonomy/bebop_video_decoder.h"
 #include <stdexcept>
 #include <boost/lexical_cast.hpp>
+#include <boost/thread/lock_guard.hpp>
 
 namespace bebop_autonomy
 {
@@ -16,6 +17,7 @@ void VideoDecoder::ThrowOnCondition(const bool cond, const std::string &message)
 
 VideoDecoder::VideoDecoder()
   : codec_initialized_(false),
+    first_iframe_recv_(false),
     format_ctx_ptr_(NULL),
     codec_ctx_ptr_(NULL),
     codec_ptr_(NULL),
@@ -23,7 +25,7 @@ VideoDecoder::VideoDecoder()
     frame_rgb_ptr_(NULL),
     img_convert_ctx_ptr_(NULL),
     input_format_ptr_(NULL),
-    av_buffer_(NULL)
+    frame_rgb_raw_ptr_(NULL)
 {
   ;
 }
@@ -44,11 +46,20 @@ bool VideoDecoder::InitCodec(const uint32_t width, const uint32_t height)
     // Very first init
     avcodec_register_all();
     av_register_all();
+    av_log_set_level(AV_LOG_QUIET);
 
     codec_ptr_ = avcodec_find_decoder(CODEC_ID_H264);
     ThrowOnCondition(codec_ptr_ == NULL, "Codec H264 not found!");
 
+
     codec_ctx_ptr_ = avcodec_alloc_context3(codec_ptr_);
+    codec_ctx_ptr_->pix_fmt = AV_PIX_FMT_YUV420P;
+    codec_ctx_ptr_->skip_frame = AVDISCARD_DEFAULT;
+    codec_ctx_ptr_->error_concealment = FF_EC_GUESS_MVS | FF_EC_DEBLOCK;
+    codec_ctx_ptr_->skip_loop_filter = AVDISCARD_DEFAULT;
+    codec_ctx_ptr_->workaround_bugs = AVMEDIA_TYPE_VIDEO;
+    codec_ctx_ptr_->codec_id = AV_CODEC_ID_H264;
+    codec_ctx_ptr_->skip_idct = AVDISCARD_DEFAULT;
     codec_ctx_ptr_->width = width;
     codec_ctx_ptr_->height = height;
 
@@ -62,16 +73,18 @@ bool VideoDecoder::InitCodec(const uint32_t width, const uint32_t height)
     ThrowOnCondition(!frame_ptr_ || !frame_rgb_ptr_, "Can not allocate memory for frames!");
 
     const uint32_t num_bytes = avpicture_get_size(PIX_FMT_RGB24, codec_ctx_ptr_->width, codec_ctx_ptr_->height);
-    av_buffer_ = (uint8_t*) av_malloc(num_bytes * sizeof(uint8_t));
+    frame_rgb_raw_ptr_ = (uint8_t*) av_malloc(num_bytes * sizeof(uint8_t));
 
-    ThrowOnCondition(av_buffer_ == NULL,
+    ThrowOnCondition(frame_rgb_raw_ptr_ == NULL,
                      std::string("Can not allocate memory for the buffer: ") +
                      boost::lexical_cast<std::string>(num_bytes));
 
     ThrowOnCondition(0 == avpicture_fill(
-                       (AVPicture*) frame_rgb_ptr_, av_buffer_, PIX_FMT_RGB24,
+                       (AVPicture*) frame_rgb_ptr_, frame_rgb_raw_ptr_, PIX_FMT_RGB24,
                        codec_ctx_ptr_->width, codec_ctx_ptr_->height),
                      "Failed to initialize the picture data structure.");
+
+    av_init_packet(&packet_);
   }
   catch (const std::runtime_error& e)
   {
@@ -81,6 +94,7 @@ bool VideoDecoder::InitCodec(const uint32_t width, const uint32_t height)
   }
 
   codec_initialized_ = true;
+  first_iframe_recv_ = false;
   ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "H264 Codec is initialized!");
   return true;
 }
@@ -107,7 +121,13 @@ void VideoDecoder::Cleanup()
     sws_freeContext(img_convert_ctx_ptr_);
   }
 
+  if (frame_rgb_raw_ptr_)
+  {
+    av_free(frame_rgb_raw_ptr_);
+  }
+
   codec_initialized_ = false;
+  first_iframe_recv_ = false;
   ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "Cleaned up!");
 }
 
@@ -129,34 +149,67 @@ void VideoDecoder::ConvertFrameToRGB()
             codec_ctx_ptr_->height, frame_rgb_ptr_->data, frame_rgb_ptr_->linesize);
 }
 
-bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *ar_frame_ptr_)
+bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *bebop_frame_ptr_)
 {
   if (!codec_initialized_)
   {
-    if (!InitCodec(ar_frame_ptr_->width, ar_frame_ptr_->height))
+    if (!InitCodec(bebop_frame_ptr_->width, bebop_frame_ptr_->height))
     {
       return false;
     }
   }
 
-
-  // TODO: Optimize this
-  AVPacket packet;
-  av_init_packet(&packet);
-  av_new_packet(&packet, ar_frame_ptr_->used);
-  //packet.data = ar_frame_ptr_->data;
-  memcpy(packet.data, ar_frame_ptr_->data, ar_frame_ptr_->used);
-
-  int frame_finished = 0;
-  int result = avcodec_decode_video2(codec_ctx_ptr_, frame_ptr_, &frame_finished, &packet);
-
-  if (result >=0 && frame_finished > 0)
+  // Wait for first IFrame
+  if (!first_iframe_recv_)
   {
-    ConvertFrameToRGB();
+    if (bebop_frame_ptr_->isIFrame)
+    {
+      first_iframe_recv_ = true;
+    }
+    else
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "Waiting for the first IFrame.");
+      return false;
+    }
   }
 
-  av_free_packet(&packet);
+  if (!bebop_frame_ptr_->data || !bebop_frame_ptr_->used)
+  {
+    ARSAL_PRINT(ARSAL_PRINT_ERROR, LOG_TAG, "Invalid frame data. Skipping.");
+    return false;
+  }
+
+  packet_.data = bebop_frame_ptr_->data;
+  packet_.size = bebop_frame_ptr_->used;
+
+  int32_t frame_finished = 0;
+  while (packet_.size > 0)
+  {
+    const int32_t len = avcodec_decode_video2(codec_ctx_ptr_, frame_ptr_, &frame_finished, &packet_);
+
+    if (len > 0)
+    {
+      if (frame_finished)
+      {
+        //ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "Res: %d, Frame Finished: %d, isIFrame: %d", len, frame_finished, bebop_frame_ptr_->isIFrame);
+        ConvertFrameToRGB();
+      }
+
+      if (packet_.data)
+      {
+        packet_.size -= len;
+        packet_.data += len;
+      }
+    }
+  }
+  //ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "End of Decode");
   return true;
+}
+
+const uint8_t* VideoDecoder::GetFrameRGBCstPtr() const
+{
+  boost::lock_guard<boost::mutex> lock(frame_rgb_mutex_);
+  return frame_rgb_raw_ptr_;
 }
 
 }  // namespace bebop_autonomy

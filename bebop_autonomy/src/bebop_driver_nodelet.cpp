@@ -92,8 +92,8 @@ void BebopDriverNodelet::PublishVideo()
     if (!image_msg_ptr_->data.size())
       image_msg_ptr_->data.resize(num_bytes);
 
-    std::copy(bebop_.Decoder().GetFrameRGB(),
-              bebop_.Decoder().GetFrameRGB() + num_bytes,
+    std::copy(bebop_.Decoder().GetFrameRGBCstPtr(),
+              bebop_.Decoder().GetFrameRGBCstPtr() + num_bytes,
               image_msg_ptr_->data.begin());
 
     image_msg_ptr_->header.stamp = ros::Time::now();
@@ -113,7 +113,12 @@ void BebopDriverNodelet::TimerCallback(const ros::TimerEvent &event)
 
   try
   {
-    PublishVideo();
+    if (bebop_.FrameAvailableFlag().Get())
+    {
+      PublishVideo();
+      bebop_.FrameAvailableFlag().Set(false);
+    }
+
     if (do_takeoff)
     {
       bebop_.Takeoff();

@@ -2,6 +2,7 @@
 #define BEBOP_H
 
 #include <boost/shared_ptr.hpp>
+#include <boost/atomic.hpp>
 
 extern "C"
 {
@@ -12,9 +13,34 @@ extern "C"
 
 #include "bebop_autonomy/bebop_video_decoder.h"
 
+
+// Debug
+#include <iostream>
+#include <fstream>
+
 namespace bebop_autonomy
 {
 
+namespace util
+{
+
+template<typename T>
+class AtomicVar
+{
+private:
+  boost::atomic<T> v_;
+
+public:
+  AtomicVar();
+  explicit AtomicVar(const T& v): v_(v) {}
+  inline T Get() const {return v_;}
+  void Set(const T& v)
+  {
+    v_ = v;
+  }
+};
+
+}
 class Bebop
 {
 private:
@@ -27,6 +53,9 @@ private:
   ARSAL_Sem_t state_sem_;
   VideoDecoder video_decoder_;
 
+  // sync
+  util::AtomicVar<bool> frame_avail_flag_;
+
   static void StateChangedCallback(eARCONTROLLER_DEVICE_STATE new_state, eARCONTROLLER_ERROR error, void *bebop_void_ptr);
   static void CommandReceivedCallback(eARCONTROLLER_DICTIONARY_KEY cmd_key, ARCONTROLLER_DICTIONARY_ELEMENT_t* element_dict_ptr, void* bebop_void_ptr);
   static void FrameReceivedCallback(ARCONTROLLER_Frame_t *frame, void *bebop_void_ptr_);
@@ -37,12 +66,15 @@ private:
   void ThrowOnCtrlError(const eARCONTROLLER_ERROR& error, const std::string& message = std::string());
 
 public:
+
   inline ARSAL_Sem_t* GetStateSemPtr() {return &state_sem_;}
   inline const ARCONTROLLER_Device_t* GetControllerCstPtr() const {return device_controller_ptr_;}
   inline bool IsConnected() const {return connected_;}
 
   Bebop();
   ~Bebop();
+
+  inline util::AtomicVar<bool>& FrameAvailableFlag() {return frame_avail_flag_;}
 
   void Connect();
   bool Disconnect();
@@ -54,6 +86,9 @@ public:
   // -1..1
   void Move(const double& roll, const double& pitch, const double& yaw_speed, const double& gaz_speed);
   void MoveCamera(const double& tilt, const double& pan);
+
+  // Debug
+//  std::ofstream out_file;
 };
 
 }  // namespace bebop_autonomy
