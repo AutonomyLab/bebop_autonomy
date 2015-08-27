@@ -7,7 +7,7 @@
 namespace bebop_autonomy
 {
 
-const char* VideoDecoder::LOG_TAG = "DEC";
+const char* VideoDecoder::LOG_TAG = "Decoder";
 
 // TODO: Move to util
 void VideoDecoder::ThrowOnCondition(const bool cond, const std::string &message)
@@ -114,19 +114,15 @@ void VideoDecoder::Cleanup()
     av_free(frame_ptr_);
   }
 
+  if (frame_rgb_ptr_)
   {
-    boost::lock_guard<boost::mutex> lock(frame_rgb_mutex_);
-    if (frame_rgb_ptr_)
-    {
-      av_free(frame_rgb_ptr_);
-    }
-
-    if (frame_rgb_raw_ptr_)
-    {
-      av_free(frame_rgb_raw_ptr_);
-    }
+    av_free(frame_rgb_ptr_);
   }
 
+  if (frame_rgb_raw_ptr_)
+  {
+    av_free(frame_rgb_raw_ptr_);
+  }
 
   if (img_convert_ctx_ptr_)
   {
@@ -153,12 +149,8 @@ void VideoDecoder::ConvertFrameToRGB()
                                           SWS_FAST_BILINEAR, NULL, NULL, NULL);
   }
 
-  {
-    boost::lock_guard<boost::mutex> lock(frame_rgb_mutex_);
-    sws_scale(img_convert_ctx_ptr_, frame_ptr_->data, frame_ptr_->linesize, 0,
-              codec_ctx_ptr_->height, frame_rgb_ptr_->data, frame_rgb_ptr_->linesize);
-  }
-
+  sws_scale(img_convert_ctx_ptr_, frame_ptr_->data, frame_ptr_->linesize, 0,
+            codec_ctx_ptr_->height, frame_rgb_ptr_->data, frame_rgb_ptr_->linesize);
 }
 
 bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *bebop_frame_ptr_)
@@ -219,13 +211,13 @@ bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *bebop_frame_ptr_)
   return true;
 }
 
-void VideoDecoder::CopyDecodedFrame(std::vector<uint8_t>& buffer) const
-{
-  boost::lock_guard<boost::mutex> lock(frame_rgb_mutex_);
-  std::copy(frame_rgb_raw_ptr_,
-            frame_rgb_raw_ptr_ + (GetFrameWidth() * GetFrameHeight() * 3),
-            buffer.begin());
-}
+//void VideoDecoder::CopyDecodedFrame(std::vector<uint8_t>& buffer) const
+//{
+//  boost::lock_guard<boost::mutex> lock(frame_rgb_mutex_);
+//  std::copy(frame_rgb_raw_ptr_,
+//            frame_rgb_raw_ptr_ + (GetFrameWidth() * GetFrameHeight() * 3),
+//            buffer.begin());
+//}
 //const uint8_t* VideoDecoder::GetFrameRGBCstPtr() const
 //{
 //  ARSAL_PRINT(ARSAL_PRINT_ERROR, LOG_TAG, "LOCK");

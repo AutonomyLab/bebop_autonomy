@@ -2,7 +2,6 @@
 #include <pluginlib/class_list_macros.h>
 #include <nodelet/nodelet.h>
 
-#include <boost/thread.hpp>
 #include <boost/bind.hpp>
 #include <cmath>
 #include <algorithm>
@@ -50,14 +49,16 @@ void BebopDriverNodelet::onInit()
   do_emergency = false;
   do_land = false;
 
-  NODELET_INFO("Hello NL");
+  NODELET_INFO("Trying to connect to Bebop ...");
   try
   {
     bebop_.Connect();
   }
   catch (const std::runtime_error& e)
   {
-    NODELET_ERROR_STREAM("Init failed: " << e.what());
+    NODELET_FATAL_STREAM("Init failed: " << e.what());
+    // TODO: Retry mechanism
+    throw e;
   }
 
   cmd_vel_sub_ = nh.subscribe("bebop/cmd_vel", 1, &BebopDriverNodelet::CmdVelCallback, this);
@@ -75,142 +76,137 @@ void BebopDriverNodelet::onInit()
   image_transport_pub_ = image_transport_ptr_->advertiseCamera("bebop/image_raw", 10);
 
   camera_info_msg_ptr_.reset(new sensor_msgs::CameraInfo());
-  image_msg_ptr_.reset(new sensor_msgs::Image());
-  image_msg_ptr_->encoding = "rgb8";
-  image_msg_ptr_->is_bigendian = false;
-  image_msg_ptr_->header.frame_id = frame_id_;
 
-  dummy_pub_ = nh.advertise<geometry_msgs::Twist>("debug", 1);
-
-  // Video @ 30fHz
-  // Command sent @ 40Hz
-  timer_ = nh.createTimer(ros::Duration(1.0 / 100.0), boost::bind(&BebopDriverNodelet::TimerCallback, this , _1));
-  NODELET_INFO_STREAM("[THREAD] NodeletInit: " << boost::this_thread::get_id());
+  mainloop_thread_ptr_.reset(new boost::thread(
+                               boost::bind(&bebop_autonomy::BebopDriverNodelet::BebopDriverNodelet::CameraPublisherThread, this)));
+  NODELET_INFO_STREAM("Nodelet lwp_id: " << util::GetLWPId());
 }
 
 BebopDriverNodelet::~BebopDriverNodelet()
 {
-  NODELET_INFO_STREAM("Bebop Nodelet Dstr: : " << bebop_.IsConnected());
+  NODELET_INFO_STREAM("Bebop Nodelet Dstr: " << bebop_.IsConnected());
+  if (mainloop_thread_ptr_)
+  {
+    mainloop_thread_ptr_->interrupt();
+    mainloop_thread_ptr_->join();
+  }
   if (bebop_.IsConnected() && !bebop_.Disconnect())
   {
     NODELET_ERROR_STREAM("Bebop disconnection failed.");
   }
 }
 
-void BebopDriverNodelet::PublishVideo()
+void BebopDriverNodelet::CmdVelCallback(const geometry_msgs::TwistConstPtr& twist)
 {
-  // TODO: Use video recv time
-  camera_info_msg_ptr_->header.stamp = ros::Time::now();
-  camera_info_msg_ptr_->width = bebop_.Decoder().GetFrameWidth();
-  camera_info_msg_ptr_->height = bebop_.Decoder().GetFrameHeight();
-
-  if (image_transport_pub_.getNumSubscribers() > 0)
-  {
-    const uint32_t num_bytes = bebop_.Decoder().GetFrameWidth() * bebop_.Decoder().GetFrameHeight() * 3;
-
-    if (!image_msg_ptr_->data.size())
-      image_msg_ptr_->data.resize(num_bytes);
-
-    NODELET_INFO("COPY STARTED");
-    bebop_.Decoder().CopyDecodedFrame(image_msg_ptr_->data);
-    NODELET_INFO("COPY FINISHED");
-
-    image_msg_ptr_->header.stamp = ros::Time::now();
-    image_msg_ptr_->width = bebop_.Decoder().GetFrameWidth();
-    image_msg_ptr_->height = bebop_.Decoder().GetFrameHeight();
-    image_msg_ptr_->step = image_msg_ptr_->width * 3;
-
-    image_transport_pub_.publish(image_msg_ptr_, camera_info_msg_ptr_);
-  }
-}
-
-void BebopDriverNodelet::TimerCallback(const ros::TimerEvent &event)
-{
-  if (!bebop_.IsConnected()) return;
-//  NODELET_INFO_STREAM("In timer callback, last_duration " << event.profile.last_duration.toSec());
-//  NODELET_INFO_STREAM("[THREAD] Timer: " << boost::this_thread::get_id());
-
+//  NODELET_INFO_STREAM("[THREAD] CmdVel: " << boost::this_thread::get_id());
+//  NODELET_INFO("In cmd_vel callback");
   try
   {
-    if (bebop_.FrameAvailableFlag().Get())
-    {
-      NODELET_INFO("**** new frame available");
-      PublishVideo();
-      bebop_.FrameAvailableFlag().Set(false);
-    }
-    else
-    {
-      NODELET_INFO("No frame is available to publish");
-    }
-
-    if (do_takeoff)
-    {
-      bebop_.Takeoff();
-      do_takeoff = false;
-      return;
-    }
-
-    if (do_land)
-    {
-      bebop_.Land();
-      do_land = false;
-      return;
-    }
+    bebop_twist = *twist;
 
     const bool is_bebop_twist_changed = !util::CompareTwists(bebop_twist, prev_bebop_twist);
-    const bool is_camera_twist_changed = !util::CompareTwists(camera_twist, prev_camera_twist);
-    const bool hover = false;
-//        (fabs(bebop_twist.linear.x) < 0.001) &&
-//        (fabs(bebop_twist.linear.y) < 0.001) &&
-//        (fabs(bebop_twist.linear.z) < 0.001) &&
-//        (fabs(bebop_twist.angular.z) < 0.001);
 
     if (is_bebop_twist_changed)
     {
       bebop_.Move(bebop_twist.linear.y, bebop_twist.linear.x, bebop_twist.linear.z, bebop_twist.angular.z);
       prev_bebop_twist = bebop_twist;
     }
+  }
+  catch (const std::runtime_error& e)
+  {
+    ROS_ERROR_STREAM(e.what());
+  }
+}
 
+void BebopDriverNodelet::TakeoffCallback(const std_msgs::EmptyConstPtr& empty)
+{
+  try
+  {
+   bebop_.Takeoff();
+  }
+  catch (const std::runtime_error& e)
+  {
+    ROS_ERROR_STREAM(e.what());
+  }
+}
+
+void BebopDriverNodelet::LandCallback(const std_msgs::EmptyConstPtr& empty)
+{
+  try
+  {
+    bebop_.Land();
+  }
+  catch (const std::runtime_error& e)
+  {
+    ROS_ERROR_STREAM(e.what());
+  }
+}
+
+void BebopDriverNodelet::CameraMoveCallback(const geometry_msgs::TwistConstPtr& twist)
+{
+  try
+  {
+    camera_twist = *twist;
+    const bool is_camera_twist_changed = !util::CompareTwists(camera_twist, prev_camera_twist);
     if (is_camera_twist_changed)
     {
       bebop_.MoveCamera(camera_twist.linear.y, camera_twist.angular.z);
       prev_camera_twist = camera_twist;
     }
-
-    dummy_pub_.publish(bebop_twist);
   }
   catch (const std::runtime_error& e)
   {
-    NODELET_ERROR("%s", e.what());
+    ROS_ERROR_STREAM(e.what());
   }
-
-}
-
-void BebopDriverNodelet::CmdVelCallback(const geometry_msgs::TwistConstPtr& twist)
-{
-  NODELET_INFO_STREAM("[THREAD] CmdVel: " << boost::this_thread::get_id());
-  NODELET_INFO("In cmd_vel callback");
-  bebop_twist = *twist;
-}
-
-void BebopDriverNodelet::TakeoffCallback(const std_msgs::EmptyConstPtr& empty)
-{
-  do_takeoff = true;
-}
-
-void BebopDriverNodelet::LandCallback(const std_msgs::EmptyConstPtr& empty)
-{
-  do_land = true;
-}
-
-void BebopDriverNodelet::CameraMoveCallback(const geometry_msgs::TwistConstPtr& twist)
-{
-  camera_twist = *twist;
 }
 
 void BebopDriverNodelet::EmergencyCallback(const std_msgs::EmptyConstPtr& empty)
 {
   do_emergency = true;
+}
+
+
+// Runs its own context
+void BebopDriverNodelet::CameraPublisherThread()
+{
+  uint32_t frame_w = 0;
+  uint32_t frame_h = 0;
+  ROS_INFO_STREAM("Camera publisher thread lwp_id: " << util::GetLWPId());
+
+  while (!boost::this_thread::interruption_requested())
+  {
+    try
+    {
+      sensor_msgs::ImagePtr image_msg_ptr_(new sensor_msgs::Image());
+
+      NODELET_DEBUG_STREAM("Grabbing a frame from Bebop");
+      bebop_.GetFrontCameraFrame(image_msg_ptr_->data, frame_w, frame_h);
+
+      NODELET_DEBUG_STREAM("Frame grabbed: " << frame_w << " , " << frame_h);
+      camera_info_msg_ptr_->header.stamp = ros::Time::now();
+      camera_info_msg_ptr_->width = frame_w;
+      camera_info_msg_ptr_->height = frame_h;
+
+      if (image_transport_pub_.getNumSubscribers() > 0)
+      {
+        image_msg_ptr_->encoding = "rgb8";
+        image_msg_ptr_->is_bigendian = false;
+        image_msg_ptr_->header.frame_id = frame_id_;
+        image_msg_ptr_->header.stamp = ros::Time::now();
+        image_msg_ptr_->width = frame_w;
+        image_msg_ptr_->height = frame_h;
+        image_msg_ptr_->step = image_msg_ptr_->width * 3;
+
+        image_transport_pub_.publish(image_msg_ptr_, camera_info_msg_ptr_);
+      }
+    }
+    catch (const std::runtime_error& e)
+    {
+      NODELET_ERROR_STREAM("[CameraPublisher] " << e.what());
+    }
+  }
+
+  NODELET_INFO("Camera publisher thread died.");
 }
 
 }  // namespace bebop_autonomy

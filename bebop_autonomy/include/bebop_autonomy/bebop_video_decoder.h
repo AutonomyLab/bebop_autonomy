@@ -12,7 +12,6 @@ extern "C"
   #include <libswscale/swscale.h>
 }
 
-#include <boost/thread/mutex.hpp>
 #include <string>
 #include <vector>
 
@@ -36,8 +35,6 @@ private:
   AVInputFormat* input_format_ptr_;
   uint8_t *frame_rgb_raw_ptr_;
 
-  mutable boost::mutex frame_rgb_mutex_;
-
   static void ThrowOnCondition(const bool cond, const std::string& message);
   bool InitCodec(const uint32_t width, const uint32_t height);
   void Cleanup();
@@ -52,9 +49,7 @@ public:
   inline uint32_t GetFrameWidth() const {return codec_initialized_ ? codec_ctx_ptr_->width : 0;}
   inline uint32_t GetFrameHeight() const {return codec_initialized_ ? codec_ctx_ptr_->height : 0;}
 
-  // Thread-safe access to decoded frame as raw RGB24 data
-  void CopyDecodedFrame(std::vector<uint8_t>& buffer) const;
-//  const uint8_t* GetFrameRGBCstPtr() const;
+  inline const uint8_t* GetFrameRGBRawCstPtr() const {return frame_rgb_raw_ptr_;}
 };
 
 }  // namespace bebop_autonomy

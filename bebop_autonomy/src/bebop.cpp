@@ -14,7 +14,7 @@
 namespace bebop_autonomy
 {
 
-const char* Bebop::LOG_TAG = "BEB";
+const char* Bebop::LOG_TAG = "BebopSDK";
 
 
 void Bebop::StateChangedCallback(eARCONTROLLER_DEVICE_STATE new_state, eARCONTROLLER_ERROR error, void *bebop_void_ptr)
@@ -69,42 +69,53 @@ void Bebop::CommandReceivedCallback(eARCONTROLLER_DICTIONARY_KEY cmd_key, ARCONT
 // This Callback runs in ARCONTROLLER_Stream_ReaderThreadRun context and blocks it until it returns
 void Bebop::FrameReceivedCallback(ARCONTROLLER_Frame_t *frame, void *bebop_void_ptr_)
 {
+  static long int lwp_id = util::GetLWPId();
+  static bool lwp_id_printed = false;
+  if (!lwp_id_printed)
+  {
+    ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "Frame Recv & Decode LWP id: %ld", lwp_id);
+    lwp_id_printed = true;
+  }
+
   if (!frame)
   {
-    ARSAL_PRINT(ARSAL_PRINT_ERROR, LOG_TAG, "Received frame is NULL");
+    ARSAL_PRINT(ARSAL_PRINT_WARNING, LOG_TAG, "Received frame is NULL");
+    return;
   }
-  Bebop* bebop_ptr_ = static_cast<Bebop*>(bebop_void_ptr_);
 
-  ARSAL_PRINT(ARSAL_PRINT_ERROR, LOG_TAG, "$$$$$$$$$$$$$$$$$$$ FRAME CB");
-  if (bebop_ptr_->FrameAvailableFlag().Get())
-  {
-    ARSAL_PRINT(ARSAL_PRINT_WARNING, LOG_TAG, "Previous frame might have been missed.");
-  }
+  Bebop* bebop_ptr = static_cast<Bebop*>(bebop_void_ptr_);
   // TODO: FixMe
   frame->width = 640;
   frame->height = 368;
 
-//  bebop_ptr_->out_file << std::setprecision(12) << ros::Time::now().toSec() << std::endl;
-  if (!bebop_ptr_->video_decoder_.Decode(frame))
   {
-    ARSAL_PRINT(ARSAL_PRINT_ERROR, LOG_TAG, "Video decode failed");
-  }
-  else
-  {
-    ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, ">>>> new frame available");
-    bebop_ptr_->FrameAvailableFlag().Set(true);
+    boost::unique_lock<boost::mutex> lock(bebop_ptr->frame_avail_mutex_);
+    if (bebop_ptr->is_frame_avail_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, LOG_TAG, "Previous frame might have been missed.");
+    }
+
+    if (!bebop_ptr->video_decoder_.Decode(frame))
+    {
+      ARSAL_PRINT(ARSAL_PRINT_ERROR, LOG_TAG, "Video decode failed");
+    }
+    else
+    {
+      bebop_ptr->is_frame_avail_ = true;
+      bebop_ptr->frame_avail_cond_.notify_one();
+    }
   }
 }
 
 
 Bebop::Bebop(ARSAL_Print_Callback_t custom_print_callback):
-  connected_(false),
+  is_connected_(false),
   device_ptr_(NULL),
   device_controller_ptr_(NULL),
   error_(ARCONTROLLER_OK),
   device_state_(ARCONTROLLER_DEVICE_STATE_MAX),
   video_decoder_(),
-  frame_avail_flag_(false)
+  is_frame_avail_(false)
 //  out_file("/tmp/ts.txt")
 {
   // Redirect all calls to AR_PRINT_* to this function if provided
@@ -127,7 +138,7 @@ void Bebop::Connect()
 {
   try
   {
-    if (connected_) throw std::runtime_error("Already inited");
+    if (is_connected_) throw std::runtime_error("Already inited");
 
     // TODO: Error checking;
     ARSAL_Sem_Init(&state_sem_, 0, 0);
@@ -182,19 +193,19 @@ void Bebop::Connect()
                        device_controller_ptr_->aRDrone3, 1), "Starting video stream failed.");
 
   }
-  catch (const std::exception& e)
+  catch (const std::runtime_error& e)
   {
     Cleanup();
     throw e;
   }
 
-  std::cout <<  "[THREAD] Init: " << boost::this_thread::get_id() << std::endl;
-  connected_ = true;
-  ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "Inited() and Dis");
+  is_connected_ = true;
+  ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "BebopSDK inited, lwp_id: %ld", util::GetLWPId());
 }
 
 void Bebop::Cleanup()
 {
+  ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "Bebop Cleanup()");
   if (device_controller_ptr_)
   {
     device_state_ = ARCONTROLLER_Device_GetState(device_controller_ptr_, &error_);
@@ -214,7 +225,7 @@ void Bebop::Cleanup()
 
 bool Bebop::Disconnect()
 {
-  if (!connected_) return false;
+  if (!is_connected_) return false;
   Cleanup();
   ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "-- END --");
   return true;
@@ -236,31 +247,40 @@ void Bebop::Land()
         "Land failed");
 }
 
-void Bebop::Move(const double &roll, const double &pitch, const double &yaw_speed, const double &gaz_speed)
+void Bebop::Move(const double &roll, const double &pitch, const double &gaz_speed, const double &yaw_speed)
 {
   // TODO: Bound check
   ThrowOnInternalError("Move failure");
-//  ThrowOnCtrlError(
-//        device_controller_ptr_->aRDrone3->sendPilotingPCMD(
-//          device_controller_ptr_->aRDrone3,
-//          1,
-//          roll * 100.0,
-//          pitch * 100.0,
-//          yaw_speed * 100.0,
-//          gaz_speed * 100.0,
-//          0));
-  ThrowOnCtrlError(
-        device_controller_ptr_->aRDrone3->setPilotingPCMD(
-          device_controller_ptr_->aRDrone3,
-          1,
-          roll * 100.0,
-          pitch * 100.0,
-          yaw_speed * 100.0,
-          gaz_speed * 100.0,
-          0));
+
+  // If roll or pitch value are non-zero, enabel roll/pitch flag
+  const bool do_rp = !((fabs(roll) < 0.001) && (fabs(pitch) < 0.001));
+
+  // If all values are zero, hover
+  const bool do_hover = !do_rp && (fabs(yaw_speed) < 0.001) && (fabs(gaz_speed) < 0.001);
+
+  if (do_hover)
+  {
+    ARSAL_PRINT(ARSAL_PRINT_ERROR, LOG_TAG, "STOP");
+    ThrowOnCtrlError(
+          device_controller_ptr_->aRDrone3->setPilotingPCMD(
+            device_controller_ptr_->aRDrone3,
+            0, 0, 0, 0, 0, 0));
+  }
+  else
+  {
+    ThrowOnCtrlError(
+          device_controller_ptr_->aRDrone3->setPilotingPCMD(
+            device_controller_ptr_->aRDrone3,
+            do_rp,
+            roll * 100.0,
+            pitch * 100.0,
+            yaw_speed * 100.0,
+            gaz_speed * 100.0,
+            0));
+  }
 }
 
-// in degrees?
+// in degrees
 void Bebop::MoveCamera(const double &tilt, const double &pan)
 {
   ThrowOnInternalError("Camera Move Failure");
@@ -270,9 +290,33 @@ void Bebop::MoveCamera(const double &tilt, const double &pan)
                      static_cast<int8_t>(pan)));
 }
 
+bool Bebop::GetFrontCameraFrame(std::vector<uint8_t> &buffer, uint32_t& width, uint32_t& height) const
+{
+  boost::unique_lock<boost::mutex> lock(frame_avail_mutex_);
+
+  ARSAL_PRINT(ARSAL_PRINT_DEBUG, LOG_TAG, "Waiting for frame to become available ...");
+  while (!is_frame_avail_)
+  {
+    frame_avail_cond_.wait(lock);
+  }
+
+  const uint32_t num_bytes = video_decoder_.GetFrameWidth() * video_decoder_.GetFrameHeight() * 3;
+
+  buffer.resize(num_bytes);
+  // New frame is ready
+  std::copy(video_decoder_.GetFrameRGBRawCstPtr(),
+            video_decoder_.GetFrameRGBRawCstPtr() + num_bytes,
+            buffer.begin());
+
+  width = video_decoder_.GetFrameWidth();
+  height = video_decoder_.GetFrameHeight();
+  is_frame_avail_ = false;
+  return true;
+}
+
 void Bebop::ThrowOnInternalError(const std::string &message)
 {
-  if (!connected_ || !device_controller_ptr_)
+  if (!is_connected_ || !device_controller_ptr_)
   {
     throw std::runtime_error(message);
   }

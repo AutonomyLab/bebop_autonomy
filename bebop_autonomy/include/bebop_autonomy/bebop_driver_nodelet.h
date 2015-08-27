@@ -10,6 +10,8 @@
 #include <camera_info_manager/camera_info_manager.h>
 #include <image_transport/image_transport.h>
 
+
+#include <boost/thread.hpp>
 #include <boost/shared_ptr.hpp>
 
 #include "bebop_autonomy/bebop.h"
@@ -57,6 +59,7 @@ class BebopDriverNodelet : public nodelet::Nodelet
 {
 private:
   bebop_autonomy::Bebop bebop_;
+  boost::shared_ptr<boost::thread> mainloop_thread_ptr_;
 
   geometry_msgs::Twist bebop_twist;
   geometry_msgs::Twist prev_bebop_twist;
@@ -67,7 +70,6 @@ private:
   bool do_land;
   bool do_emergency;
 
-  ros::Timer timer_;
   ros::Subscriber cmd_vel_sub_;
   ros::Subscriber camera_move_sub_;
   ros::Subscriber takeoff_sub_;
@@ -79,15 +81,13 @@ private:
   image_transport::CameraPublisher image_transport_pub_;
 
   sensor_msgs::CameraInfoPtr camera_info_msg_ptr_;
-  sensor_msgs::ImagePtr image_msg_ptr_;
-
-  ros::Publisher dummy_pub_;
 
   // Params
   std::string frame_id_;
 
-  void PublishVideo();
-  void TimerCallback(const ros::TimerEvent& event);
+  // This runs in its own context
+  void CameraPublisherThread();
+
 //private:
 //  volatile bool running_;
 
