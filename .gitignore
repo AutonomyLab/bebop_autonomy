@@ -29,3 +29,5 @@
 
 # Misc
 CMakeLists.txt.user
+bebop_autonomy/scripts/meta/*.msg
+bebop_autonomy/scripts/meta/*.h

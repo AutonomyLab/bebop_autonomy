@@ -1,0 +1,17 @@
+# {{msg_filename}}
+# auto-generated from {{url}}
+# Date: {{date}}
+# Generator: {{generator}} @ {{generator_git_hash}}
+# Do not modify this file by hand. Check scripts/meta folder for generator files.
+#
+# SDK Comment: {{msg_file_comment}}
+
+Header header
+
+{{#msg_field}}
+# {{msg_field_comment}}
+{{#msg_field_enum}}
+uint8 {{constant_name}}={{constant_value}}
+{{/msg_field_enum}}
+{{msg_field_type}} {{msg_field_name}}
+{{/msg_field}}

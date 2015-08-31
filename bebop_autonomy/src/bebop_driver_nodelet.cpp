@@ -52,7 +52,7 @@ void BebopDriverNodelet::onInit()
   NODELET_INFO("Trying to connect to Bebop ...");
   try
   {
-    bebop_.Connect();
+    bebop_.Connect(nh);
   }
   catch (const std::runtime_error& e)
   {
