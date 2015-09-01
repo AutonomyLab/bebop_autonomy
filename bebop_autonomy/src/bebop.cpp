@@ -1,24 +1,16 @@
 #include <stdexcept>
-#include <boost/bind.hpp>
-
-#include <bebop_autonomy/bebop.h>
-#include <boost/thread.hpp>
-#include <boost/make_shared.hpp>
-
 #include <cmath>
-#include <iostream>
-
-// debug
-//#include <iomanip>
-//#include <ros/time.h>
-
 #include <string>
-#include <std_msgs/Float32.h>
+
+#include <boost/bind.hpp>
+#include <boost/thread/locks.hpp>
 
 extern "C"
 {
   #include "libARCommands/ARCommands.h"
 }
+
+#include <bebop_autonomy/bebop.h>
 
 namespace bebop_autonomy
 {
@@ -34,8 +26,7 @@ void Bebop::StateChangedCallback(eARCONTROLLER_DEVICE_STATE new_state, eARCONTRO
 {
   // TODO: Log error
   Bebop* bebop_ptr_ = static_cast<Bebop*>(bebop_void_ptr);
-//  ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "In State Changed Callback: %d", new_state);
-//  std::cout <<  "[THREAD] StateChanged: " << boost::this_thread::get_id() << std::endl;
+
   switch (new_state)
   {
   case ARCONTROLLER_DEVICE_STATE_STOPPED:
@@ -49,57 +40,31 @@ void Bebop::StateChangedCallback(eARCONTROLLER_DEVICE_STATE new_state, eARCONTRO
 
 void Bebop::CommandReceivedCallback(eARCONTROLLER_DICTIONARY_KEY cmd_key, ARCONTROLLER_DICTIONARY_ELEMENT_t *element_dict_ptr, void *bebop_void_ptr)
 {
+  static long int lwp_id = util::GetLWPId();
+  static bool lwp_id_printed = false;
+  if (!lwp_id_printed)
+  {
+    ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "Command Received Callback LWP id is: %ld", lwp_id);
+    lwp_id_printed = true;
+  }
   Bebop* bebop_ptr_ = static_cast<Bebop*>(bebop_void_ptr);
-  const ARCONTROLLER_Device_t* dev_ctr_ptr = bebop_ptr_->GetControllerCstPtr();
-//  ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "In Command Received Callback: %d", cmd_key);
-//  std::cout <<  "[THREAD] CommandRecv: " << boost::this_thread::get_id() << std::endl;
 
-  ARCONTROLLER_DICTIONARY_ARG_t *arg_ptr = NULL;
   ARCONTROLLER_DICTIONARY_ELEMENT_t *single_element_ptr = NULL;
-
-
-
-//  ARSAL_PRINT(ARSAL_PRINT_WARNING, LOG_TAG, "cmd_key: %d element_dict->key: %s", cmd_key, element_dict_ptr->key);
 
   if (element_dict_ptr)
   {
-//    eARCONTROLLER_ERROR* err_ptr;
-//    ARCONTROLLER_DICTIONARY_ELEMENT_t* de_ptr = ARCONTROLLER_Device_GetCommandElements(bebop_ptr_->device_controller_ptr_, cmd_key, err_ptr);
-//    if (de_ptr && de_ptr->arguments) ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "%s", de_ptr->arguments->argument);
-
     // We are only interested in single key dictionaries
     HASH_FIND_STR (element_dict_ptr, ARCONTROLLER_DICTIONARY_SINGLE_KEY, single_element_ptr);
 
     if (single_element_ptr)
     {
-      std::map<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<CommandBase> >::iterator it = bebop_ptr_->command_map_.find(cmd_key);
-      if (it != bebop_ptr_->command_map_.end())
+      std::map<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >::iterator it = bebop_ptr_->callback_map_.find(cmd_key);
+      if (it != bebop_ptr_->callback_map_.end())
       {
-        it->second->Update(element_dict_ptr->arguments);
+        // TODO: Check if we can find the time from the packets
+        it->second->Update(element_dict_ptr->arguments, ros::Time::now());
       }
-
-//      if (cmd_key == ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_ORIENTATION)
-//      {
-//        ARSAL_PRINT(ARSAL_PRINT_ERROR, LOG_TAG, "MMMM");
-//        bebop_ptr_->css.Update();
-//      }
-//      if (single_element_ptr->arguments)
-//        std::cout << "Key: " << single_element_ptr->arguments->argument << " Value: " << single_element_ptr->arguments->value.Float
-//                  << " Size: " << single_element_ptr->hh.tbl->num_items << std::endl;
-////        ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "Single element key: %s value: %s", single_element_ptr->arguments->argument);
     }
-    else
-    {
-      ARSAL_PRINT(ARSAL_PRINT_ERROR, LOG_TAG, "NOT SINGLE KEY");
-    }
-//    if (element_dict_ptr && element_dict_ptr->arguments)
-//      ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "Command: %d Key: %s Number of items: %u Argument Key: %s",
-//                  cmd_key, element_dict_ptr->key, element_dict_ptr->arguments->hh.tbl->num_items, element_dict_ptr->arguments->argument);
-  }
-
-  if (dev_ctr_ptr)
-  {
-    //;
   }
 }
 
@@ -231,17 +196,10 @@ void Bebop::Connect(ros::NodeHandle& nh)
 
 
 
-    command_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<CommandBase> >(
-                          ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_ORIENTATION,
-                          boost::shared_ptr<CommandBase>(new CameraState(nh, "mani"))));
-
-    attitude_changed_ptr_.reset(new AttitudeChanged(nh, "sina"));
-    command_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<CommandBase> >(
-                          ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_ATTITUDECHANGED,
-                          attitude_changed_ptr_));
-
-
-//    ARCOMMANDS_Decoder_SetCommonCommonStateBatteryStateChangedCallback(Bebop::BatteryStateChangedCallback, (void*) this);
+#define BEBOP_UPDTAE_CALLBACK_MAP
+#include "bebop_autonomy/autogenerated/bebop_common_callback_includes.h"
+#include "bebop_autonomy/autogenerated/bebop_ardrone3_callback_includes.h"
+#undef BEBOP_UPDTAE_CALLBACK_MAP
 
   }
   catch (const std::runtime_error& e)
@@ -346,7 +304,7 @@ bool Bebop::GetFrontCameraFrame(std::vector<uint8_t> &buffer, uint32_t& width, u
   boost::unique_lock<boost::mutex> lock(frame_avail_mutex_);
 
   ARSAL_PRINT(ARSAL_PRINT_DEBUG, LOG_TAG, "Waiting for frame to become available ...");
-  ARSAL_PRINT(ARSAL_PRINT_WARNING, LOG_TAG, "By the way, roll is: %f", attitude_changed_ptr_->GetDataCstPtr()->data);
+//  ARSAL_PRINT(ARSAL_PRINT_WARNING, LOG_TAG, "By the way, roll is: %f", attitude_changed_ptr_->GetDataCstPtr()->data);
   while (!is_frame_avail_)
   {
     frame_avail_cond_.wait(lock);

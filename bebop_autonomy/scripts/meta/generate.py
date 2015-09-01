@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-
 import datetime
 from copy import deepcopy
 import logging
@@ -53,7 +52,7 @@ BEBOP_TYPE_MAP = {
 rend = pystache.Renderer()
 
 def get_xml_url(filename):
-    return rend.render_path("url.mustache", 
+    return rend.render_path("templates/url.mustache", 
         {"repo_owner": LIBARCOMMANDS_GIT_OWNER, "hash": LIBARCOMMANDS_GIT_HASH, "filename": filename})
 
 def load_from_url(url):
@@ -63,7 +62,7 @@ def load_from_url(url):
     return data
 
 def is_state_tag(name):
-    return (not name.find("State") == -1)# and (name.find("Settings") == -1) 
+    return (not name.find("State") == -1) and (name.find("Settings") == -1) 
 
 def strip_text(text):
     return re.sub("\s\s+", " ", text.strip().replace('\n', '').replace('\r', ''))
@@ -71,12 +70,9 @@ def strip_text(text):
 def cap_word(text):
     return text.lower().title()
 
-def main():
-    # Setup stuff
-    logging.basicConfig(level="INFO")
-
-    xml_url = get_xml_url("common_commands")
-    project = "common"
+def generate_states(xml_filename):
+    xml_url = get_xml_url(xml_filename)
+    project = xml_filename.split("_")[0]
 
     logging.info("Fetching source XML file for project %s " % (project, ))
     logging.info("URL: %s" % (xml_url, ))
@@ -92,6 +88,7 @@ def main():
 
     d_cpp = dict({
             "url": xml_url,
+            "project": project,
             "date": now,
             "generator": generator,
             "generator_git_hash": generator_git_hash,
@@ -122,16 +119,17 @@ def main():
             })
 
             # C++ class
-            cpp_class_dict_key = rend.render_path("dictionary_key.mustache",
+            cpp_class_dict_key = rend.render_path("templates/dictionary_key.mustache",
                 {"project": project.upper(), "class": cl.attrib["name"].upper(), "cmd": cmd.attrib["name"].upper()})
             # cmd.attrib["name"] and cl.attrib["name"] are already in CamelCase
             cpp_class_name = msg_name
-
+            cpp_class_instance_name = project.lower() + "_" + cl.attrib["name"].lower() + "_" + cmd.attrib["name"].lower() + "_ptr";
+            topic_name = "states/" + project + "/" + cl.attrib["name"] + "/" + cmd.attrib["name"]
 
             arg_list = []
             for arg in cmd.iter("arg"):
                 # .msg
-                f_name = cmd.attrib["name"] + "_" + arg.attrib["name"]
+                f_name = arg.attrib["name"]
                 f_type = ROS_TYPE_MAP[arg.attrib.get("type", "bool")]
                 f_comment = strip_text(arg.text)
                 f_enum_list = list()
@@ -153,7 +151,8 @@ def main():
 
                 # C++ class
                 arg_list.append({
-                    "cpp_class_arg_name": cpp_class_dict_key + "_" + arg.attrib["name"].upper(),
+                    "cpp_class_arg_key": cpp_class_dict_key + "_" + arg.attrib["name"].upper(),
+                    "cpp_class_arg_name": f_name,
                     "cpp_class_arg_sdk_type": BEBOP_TYPE_MAP[arg.attrib.get("type", "bool")]
                     })
 
@@ -162,6 +161,9 @@ def main():
             # C++ class
             d_cpp["cpp_class"].append({
                 "cpp_class_name": cpp_class_name,
+                "cpp_class_instance_name": cpp_class_instance_name,
+                "topic_name": topic_name,
+                "latched": "true",
                 "cpp_class_msg_type": msg_name,
                 "key": cpp_class_dict_key,
                 "cpp_class_arg": deepcopy(arg_list)
@@ -170,14 +172,30 @@ def main():
     logging.info("... Done iterating, writing results to file")      
     # .msg write
     for k, d in d_msg.items():
-        msg_filename = k + ".msg"
+        msg_filename = "%s.msg" % k
         logging.info("Writing %s" % (msg_filename, ))
         with open(msg_filename, "w") as msg_file:
-            msg_file.write(rend.render_path("msg.mustache", d))
-    
-    logging.info("Writing bebop_callbacks.h")
-    with open("bebop_callbacks.h", "w") as header_file:
-        header_file.write(rend.render_path("bebop_callbacks.h.mustache", d_cpp))
+            msg_file.write(rend.render_path("templates/msg.mustache", d))
+
+    header_file_name = "bebop_%s_callbacks.h" % (project.lower(), )
+    logging.info("Writing %s" % (header_file_name, ))
+    with open(header_file_name, "w") as header_file:
+        header_file.write(rend.render_path("templates/bebop_callbacks.h.mustache", d_cpp))
+
+    include_file_name = "bebop_%s_callback_includes.h" % (project.lower(), )
+    logging.info("Writing %s" % (include_file_name, ))
+    with open(include_file_name, "w") as include_file:
+        include_file.write(rend.render_path("templates/bebop_callback_includes.h.mustache", d_cpp))
+
+    with open("bebop_commands.h", "w") as header_file:
+        header_file.write(rend.render_path("templates/bebop_commands.h.mustache", d_cpp))
+
+def main():
+    # Setup stuff
+    logging.basicConfig(level="INFO")
+
+    generate_states("common_commands.xml")
+    generate_states("ARDrone3_commands.xml")
 
 if __name__ == "__main__":
     main()

@@ -5,6 +5,7 @@ project(bebop_autonomy)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+  bebop_autonomy_msgs
   nodelet
   camera_info_manager
   image_transport
