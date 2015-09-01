@@ -28,6 +28,7 @@ namespace cb
 
 {{#cpp_class}}
 
+// {{cpp_class_comment}}
 class {{cpp_class_name}} : public CommandBase
 {
 private:
@@ -38,7 +39,12 @@ public:
   {{cpp_class_name}}(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase({{key}})
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::{{cpp_class_msg_type}}>(topic, {{queue_size}}, {{latched}});
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("{{cpp_class_param_name}}", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::{{cpp_class_msg_type}}>(topic, {{queue_size}}, {{latched}});
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::{{cpp_class_msg_type}}::ConstPtr GetDataCstPtr() const
@@ -51,14 +57,14 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("{{cpp_class_name}}::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "{{cpp_class_name}}::Update() arguments is NULL");
       return;
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     msg_ptr.reset(new ::bebop_autonomy_msgs::{{cpp_class_msg_type}}());
     msg_ptr->header.stamp = t;
-    msg_ptr->header.frame_id = {{{frame_id}}};
+    msg_ptr->header.frame_id = "{{frame_id}}";
 
 {{#cpp_class_arg}}
 
@@ -70,7 +76,7 @@ public:
     }
 {{/cpp_class_arg}}
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // {{cpp_class_name}}

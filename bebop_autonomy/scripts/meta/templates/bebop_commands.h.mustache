@@ -25,11 +25,12 @@ protected:
   eARCONTROLLER_DICTIONARY_KEY cmd_key_;
   ARCONTROLLER_DICTIONARY_ARG_t* arg;
   mutable ::boost::mutex mutex_;
+  bool pub_enabled_;
   ::ros::Publisher ros_pub_;
 
 public:
-  explicit CommandBase(eARCONTROLLER_DICTIONARY_KEY cmd_key)
-    : cmd_key_(cmd_key), arg(NULL)
+  CommandBase(eARCONTROLLER_DICTIONARY_KEY cmd_key, const bool pub_enabled = false)
+    : cmd_key_(cmd_key), arg(NULL), pub_enabled_(pub_enabled)
   {}
 
   virtual ~CommandBase()

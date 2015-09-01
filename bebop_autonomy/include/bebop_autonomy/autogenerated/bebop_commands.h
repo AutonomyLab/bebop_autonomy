@@ -3,8 +3,8 @@
 /*
  * bebop_common_commands.h
  * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/7e2f55fafcd45ba2380ca2574a08b7359c005f47/Xml/ARDrone3_commands.xml
- * Date: 2015-08-31 17:44:29.928022
- * Generator: generate.py @ 1291966
+ * Date: 2015-08-31 18:59:03.777083
+ * Generator: generate.py @ f74e92a
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
@@ -25,11 +25,12 @@ protected:
   eARCONTROLLER_DICTIONARY_KEY cmd_key_;
   ARCONTROLLER_DICTIONARY_ARG_t* arg;
   mutable ::boost::mutex mutex_;
+  bool pub_enabled_;
   ::ros::Publisher ros_pub_;
 
 public:
-  explicit CommandBase(eARCONTROLLER_DICTIONARY_KEY cmd_key)
-    : cmd_key_(cmd_key), arg(NULL)
+  CommandBase(eARCONTROLLER_DICTIONARY_KEY cmd_key, const bool pub_enabled = false)
+    : cmd_key_(cmd_key), arg(NULL), pub_enabled_(pub_enabled)
   {}
 
   virtual ~CommandBase()

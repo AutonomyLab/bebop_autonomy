@@ -93,7 +93,7 @@ def generate_states(xml_filename):
             "generator": generator,
             "generator_git_hash": generator_git_hash,
             "queue_size": 10,  # 5Hz
-            "frame_id": '"base_link"',
+            "frame_id": "base_link",
             "cpp_class": list()
         })
     d_msg = dict()
@@ -124,6 +124,7 @@ def generate_states(xml_filename):
             # cmd.attrib["name"] and cl.attrib["name"] are already in CamelCase
             cpp_class_name = msg_name
             cpp_class_instance_name = project.lower() + "_" + cl.attrib["name"].lower() + "_" + cmd.attrib["name"].lower() + "_ptr";
+            cpp_class_param_name = "enable_" + cl.attrib["name"].lower() + "_" + cmd.attrib["name"].lower()
             topic_name = "states/" + project + "/" + cl.attrib["name"] + "/" + cmd.attrib["name"]
 
             arg_list = []
@@ -161,7 +162,9 @@ def generate_states(xml_filename):
             # C++ class
             d_cpp["cpp_class"].append({
                 "cpp_class_name": cpp_class_name,
+                "cpp_class_comment": strip_text(cmd.text),
                 "cpp_class_instance_name": cpp_class_instance_name,
+                "cpp_class_param_name": cpp_class_param_name,
                 "topic_name": topic_name,
                 "latched": "true",
                 "cpp_class_msg_type": msg_name,

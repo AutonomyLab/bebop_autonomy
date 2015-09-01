@@ -85,7 +85,7 @@ public:
   Bebop(ARSAL_Print_Callback_t custom_print_callback = 0);
   ~Bebop();
 
-  void Connect(ros::NodeHandle& nh);
+  void Connect(ros::NodeHandle& nh, ros::NodeHandle& priv_nh);
   bool Disconnect();
 
   void Takeoff();

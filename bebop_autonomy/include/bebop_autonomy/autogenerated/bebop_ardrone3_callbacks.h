@@ -4,8 +4,8 @@
 /*
  * bebop_ARDrone3_callbacks.h
  * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/7e2f55fafcd45ba2380ca2574a08b7359c005f47/Xml/ARDrone3_commands.xml
- * Date: 2015-08-31 17:44:29.928022
- * Generator: generate.py @ 1291966
+ * Date: 2015-08-31 18:59:03.777083
+ * Generator: generate.py @ f74e92a
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
@@ -49,6 +49,7 @@ namespace cb
 {
 
 
+// @deprecated State of picture recording
 class Ardrone3MediaRecordStatePictureStateChanged : public CommandBase
 {
 private:
@@ -59,7 +60,12 @@ public:
   Ardrone3MediaRecordStatePictureStateChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_PICTURESTATECHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3MediaRecordStatePictureStateChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_mediarecordstate_picturestatechanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3MediaRecordStatePictureStateChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::Ardrone3MediaRecordStatePictureStateChanged::ConstPtr GetDataCstPtr() const
@@ -72,7 +78,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("Ardrone3MediaRecordStatePictureStateChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3MediaRecordStatePictureStateChanged::Update() arguments is NULL");
       return;
     }
 
@@ -96,12 +102,13 @@ public:
       msg_ptr->mass_storage_id = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // Ardrone3MediaRecordStatePictureStateChanged
 
 
+// @deprecated State of video recording
 class Ardrone3MediaRecordStateVideoStateChanged : public CommandBase
 {
 private:
@@ -112,7 +119,12 @@ public:
   Ardrone3MediaRecordStateVideoStateChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_VIDEOSTATECHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3MediaRecordStateVideoStateChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_mediarecordstate_videostatechanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3MediaRecordStateVideoStateChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::Ardrone3MediaRecordStateVideoStateChanged::ConstPtr GetDataCstPtr() const
@@ -125,7 +137,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("Ardrone3MediaRecordStateVideoStateChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3MediaRecordStateVideoStateChanged::Update() arguments is NULL");
       return;
     }
 
@@ -149,12 +161,13 @@ public:
       msg_ptr->mass_storage_id = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // Ardrone3MediaRecordStateVideoStateChanged
 
 
+// State of device picture recording changed
 class Ardrone3MediaRecordStatePictureStateChangedV2 : public CommandBase
 {
 private:
@@ -165,7 +178,12 @@ public:
   Ardrone3MediaRecordStatePictureStateChangedV2(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_PICTURESTATECHANGEDV2)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3MediaRecordStatePictureStateChangedV2>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_mediarecordstate_picturestatechangedv2", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3MediaRecordStatePictureStateChangedV2>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::Ardrone3MediaRecordStatePictureStateChangedV2::ConstPtr GetDataCstPtr() const
@@ -178,7 +196,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("Ardrone3MediaRecordStatePictureStateChangedV2::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3MediaRecordStatePictureStateChangedV2::Update() arguments is NULL");
       return;
     }
 
@@ -202,12 +220,13 @@ public:
       msg_ptr->error = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // Ardrone3MediaRecordStatePictureStateChangedV2
 
 
+// State of device video recording changed
 class Ardrone3MediaRecordStateVideoStateChangedV2 : public CommandBase
 {
 private:
@@ -218,7 +237,12 @@ public:
   Ardrone3MediaRecordStateVideoStateChangedV2(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_VIDEOSTATECHANGEDV2)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3MediaRecordStateVideoStateChangedV2>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_mediarecordstate_videostatechangedv2", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3MediaRecordStateVideoStateChangedV2>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::Ardrone3MediaRecordStateVideoStateChangedV2::ConstPtr GetDataCstPtr() const
@@ -231,7 +255,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("Ardrone3MediaRecordStateVideoStateChangedV2::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3MediaRecordStateVideoStateChangedV2::Update() arguments is NULL");
       return;
     }
 
@@ -255,12 +279,13 @@ public:
       msg_ptr->error = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // Ardrone3MediaRecordStateVideoStateChangedV2
 
 
+// Drone acknowledges that flat trim was correctly processed
 class Ardrone3PilotingStateFlatTrimChanged : public CommandBase
 {
 private:
@@ -271,7 +296,12 @@ public:
   Ardrone3PilotingStateFlatTrimChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_FLATTRIMCHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3PilotingStateFlatTrimChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_pilotingstate_flattrimchanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3PilotingStateFlatTrimChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::Ardrone3PilotingStateFlatTrimChanged::ConstPtr GetDataCstPtr() const
@@ -284,7 +314,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("Ardrone3PilotingStateFlatTrimChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3PilotingStateFlatTrimChanged::Update() arguments is NULL");
       return;
     }
 
@@ -294,12 +324,13 @@ public:
     msg_ptr->header.frame_id = "base_link";
 
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // Ardrone3PilotingStateFlatTrimChanged
 
 
+// Drone flying state changed
 class Ardrone3PilotingStateFlyingStateChanged : public CommandBase
 {
 private:
@@ -310,7 +341,12 @@ public:
   Ardrone3PilotingStateFlyingStateChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_FLYINGSTATECHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3PilotingStateFlyingStateChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_pilotingstate_flyingstatechanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3PilotingStateFlyingStateChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::Ardrone3PilotingStateFlyingStateChanged::ConstPtr GetDataCstPtr() const
@@ -323,7 +359,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("Ardrone3PilotingStateFlyingStateChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3PilotingStateFlyingStateChanged::Update() arguments is NULL");
       return;
     }
 
@@ -340,12 +376,13 @@ public:
       msg_ptr->state = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // Ardrone3PilotingStateFlyingStateChanged
 
 
+// Drone alert state changed
 class Ardrone3PilotingStateAlertStateChanged : public CommandBase
 {
 private:
@@ -356,7 +393,12 @@ public:
   Ardrone3PilotingStateAlertStateChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_ALERTSTATECHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3PilotingStateAlertStateChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_pilotingstate_alertstatechanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3PilotingStateAlertStateChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::Ardrone3PilotingStateAlertStateChanged::ConstPtr GetDataCstPtr() const
@@ -369,7 +411,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("Ardrone3PilotingStateAlertStateChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3PilotingStateAlertStateChanged::Update() arguments is NULL");
       return;
     }
 
@@ -386,12 +428,13 @@ public:
       msg_ptr->state = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // Ardrone3PilotingStateAlertStateChanged
 
 
+// Navigating home state
 class Ardrone3PilotingStateNavigateHomeStateChanged : public CommandBase
 {
 private:
@@ -402,7 +445,12 @@ public:
   Ardrone3PilotingStateNavigateHomeStateChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_NAVIGATEHOMESTATECHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3PilotingStateNavigateHomeStateChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_pilotingstate_navigatehomestatechanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3PilotingStateNavigateHomeStateChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::Ardrone3PilotingStateNavigateHomeStateChanged::ConstPtr GetDataCstPtr() const
@@ -415,7 +463,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("Ardrone3PilotingStateNavigateHomeStateChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3PilotingStateNavigateHomeStateChanged::Update() arguments is NULL");
       return;
     }
 
@@ -439,12 +487,13 @@ public:
       msg_ptr->reason = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // Ardrone3PilotingStateNavigateHomeStateChanged
 
 
+// Drone position changed
 class Ardrone3PilotingStatePositionChanged : public CommandBase
 {
 private:
@@ -455,7 +504,12 @@ public:
   Ardrone3PilotingStatePositionChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_POSITIONCHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3PilotingStatePositionChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_pilotingstate_positionchanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3PilotingStatePositionChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::Ardrone3PilotingStatePositionChanged::ConstPtr GetDataCstPtr() const
@@ -468,7 +522,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("Ardrone3PilotingStatePositionChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3PilotingStatePositionChanged::Update() arguments is NULL");
       return;
     }
 
@@ -499,12 +553,13 @@ public:
       msg_ptr->altitude = arg->value.Double;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // Ardrone3PilotingStatePositionChanged
 
 
+// Drone speed changed
 class Ardrone3PilotingStateSpeedChanged : public CommandBase
 {
 private:
@@ -515,7 +570,12 @@ public:
   Ardrone3PilotingStateSpeedChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_SPEEDCHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3PilotingStateSpeedChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_pilotingstate_speedchanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3PilotingStateSpeedChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::Ardrone3PilotingStateSpeedChanged::ConstPtr GetDataCstPtr() const
@@ -528,7 +588,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("Ardrone3PilotingStateSpeedChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3PilotingStateSpeedChanged::Update() arguments is NULL");
       return;
     }
 
@@ -559,12 +619,13 @@ public:
       msg_ptr->speedZ = arg->value.Float;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // Ardrone3PilotingStateSpeedChanged
 
 
+// Drone attitude changed
 class Ardrone3PilotingStateAttitudeChanged : public CommandBase
 {
 private:
@@ -575,7 +636,12 @@ public:
   Ardrone3PilotingStateAttitudeChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_ATTITUDECHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3PilotingStateAttitudeChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_pilotingstate_attitudechanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3PilotingStateAttitudeChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::Ardrone3PilotingStateAttitudeChanged::ConstPtr GetDataCstPtr() const
@@ -588,7 +654,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("Ardrone3PilotingStateAttitudeChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3PilotingStateAttitudeChanged::Update() arguments is NULL");
       return;
     }
 
@@ -619,12 +685,13 @@ public:
       msg_ptr->yaw = arg->value.Float;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // Ardrone3PilotingStateAttitudeChanged
 
 
+// Status of the drone3 automatic take off mode
 class Ardrone3PilotingStateAutoTakeOffModeChanged : public CommandBase
 {
 private:
@@ -635,7 +702,12 @@ public:
   Ardrone3PilotingStateAutoTakeOffModeChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_AUTOTAKEOFFMODECHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3PilotingStateAutoTakeOffModeChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_pilotingstate_autotakeoffmodechanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3PilotingStateAutoTakeOffModeChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::Ardrone3PilotingStateAutoTakeOffModeChanged::ConstPtr GetDataCstPtr() const
@@ -648,7 +720,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("Ardrone3PilotingStateAutoTakeOffModeChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3PilotingStateAutoTakeOffModeChanged::Update() arguments is NULL");
       return;
     }
 
@@ -665,12 +737,13 @@ public:
       msg_ptr->state = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // Ardrone3PilotingStateAutoTakeOffModeChanged
 
 
+// Drone altitude changed
 class Ardrone3PilotingStateAltitudeChanged : public CommandBase
 {
 private:
@@ -681,7 +754,12 @@ public:
   Ardrone3PilotingStateAltitudeChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_ALTITUDECHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3PilotingStateAltitudeChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_pilotingstate_altitudechanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3PilotingStateAltitudeChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::Ardrone3PilotingStateAltitudeChanged::ConstPtr GetDataCstPtr() const
@@ -694,7 +772,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("Ardrone3PilotingStateAltitudeChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3PilotingStateAltitudeChanged::Update() arguments is NULL");
       return;
     }
 
@@ -711,12 +789,13 @@ public:
       msg_ptr->altitude = arg->value.Double;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // Ardrone3PilotingStateAltitudeChanged
 
 
+// One scanning result found
 class Ardrone3NetworkStateWifiScanListChanged : public CommandBase
 {
 private:
@@ -727,7 +806,12 @@ public:
   Ardrone3NetworkStateWifiScanListChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSTATE_WIFISCANLISTCHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3NetworkStateWifiScanListChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_networkstate_wifiscanlistchanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3NetworkStateWifiScanListChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::Ardrone3NetworkStateWifiScanListChanged::ConstPtr GetDataCstPtr() const
@@ -740,7 +824,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("Ardrone3NetworkStateWifiScanListChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3NetworkStateWifiScanListChanged::Update() arguments is NULL");
       return;
     }
 
@@ -778,12 +862,13 @@ public:
       msg_ptr->channel = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // Ardrone3NetworkStateWifiScanListChanged
 
 
+// State sent when all scanning result sent
 class Ardrone3NetworkStateAllWifiScanChanged : public CommandBase
 {
 private:
@@ -794,7 +879,12 @@ public:
   Ardrone3NetworkStateAllWifiScanChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSTATE_ALLWIFISCANCHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3NetworkStateAllWifiScanChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_networkstate_allwifiscanchanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3NetworkStateAllWifiScanChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::Ardrone3NetworkStateAllWifiScanChanged::ConstPtr GetDataCstPtr() const
@@ -807,7 +897,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("Ardrone3NetworkStateAllWifiScanChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3NetworkStateAllWifiScanChanged::Update() arguments is NULL");
       return;
     }
 
@@ -817,12 +907,13 @@ public:
     msg_ptr->header.frame_id = "base_link";
 
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // Ardrone3NetworkStateAllWifiScanChanged
 
 
+// Notify of an Authorized Channel.
 class Ardrone3NetworkStateWifiAuthChannelListChanged : public CommandBase
 {
 private:
@@ -833,7 +924,12 @@ public:
   Ardrone3NetworkStateWifiAuthChannelListChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSTATE_WIFIAUTHCHANNELLISTCHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3NetworkStateWifiAuthChannelListChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_networkstate_wifiauthchannellistchanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3NetworkStateWifiAuthChannelListChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::Ardrone3NetworkStateWifiAuthChannelListChanged::ConstPtr GetDataCstPtr() const
@@ -846,7 +942,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("Ardrone3NetworkStateWifiAuthChannelListChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3NetworkStateWifiAuthChannelListChanged::Update() arguments is NULL");
       return;
     }
 
@@ -877,12 +973,13 @@ public:
       msg_ptr->in_or_out = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // Ardrone3NetworkStateWifiAuthChannelListChanged
 
 
+// Notify the end of the list of Authorized wifi Channel.
 class Ardrone3NetworkStateAllWifiAuthChannelChanged : public CommandBase
 {
 private:
@@ -893,7 +990,12 @@ public:
   Ardrone3NetworkStateAllWifiAuthChannelChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSTATE_ALLWIFIAUTHCHANNELCHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3NetworkStateAllWifiAuthChannelChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_networkstate_allwifiauthchannelchanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3NetworkStateAllWifiAuthChannelChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::Ardrone3NetworkStateAllWifiAuthChannelChanged::ConstPtr GetDataCstPtr() const
@@ -906,7 +1008,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("Ardrone3NetworkStateAllWifiAuthChannelChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3NetworkStateAllWifiAuthChannelChanged::Update() arguments is NULL");
       return;
     }
 
@@ -916,12 +1018,13 @@ public:
     msg_ptr->header.frame_id = "base_link";
 
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // Ardrone3NetworkStateAllWifiAuthChannelChanged
 
 
+// Return video streaming status.
 class Ardrone3MediaStreamingStateVideoEnableChanged : public CommandBase
 {
 private:
@@ -932,7 +1035,12 @@ public:
   Ardrone3MediaStreamingStateVideoEnableChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3MediaStreamingStateVideoEnableChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_mediastreamingstate_videoenablechanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3MediaStreamingStateVideoEnableChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::Ardrone3MediaStreamingStateVideoEnableChanged::ConstPtr GetDataCstPtr() const
@@ -945,7 +1053,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("Ardrone3MediaStreamingStateVideoEnableChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3MediaStreamingStateVideoEnableChanged::Update() arguments is NULL");
       return;
     }
 
@@ -962,12 +1070,13 @@ public:
       msg_ptr->enabled = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // Ardrone3MediaStreamingStateVideoEnableChanged
 
 
+// Camera orientation
 class Ardrone3CameraStateOrientation : public CommandBase
 {
 private:
@@ -978,7 +1087,12 @@ public:
   Ardrone3CameraStateOrientation(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_ORIENTATION)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3CameraStateOrientation>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_camerastate_orientation", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3CameraStateOrientation>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::Ardrone3CameraStateOrientation::ConstPtr GetDataCstPtr() const
@@ -991,7 +1105,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("Ardrone3CameraStateOrientation::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3CameraStateOrientation::Update() arguments is NULL");
       return;
     }
 
@@ -1015,12 +1129,13 @@ public:
       msg_ptr->pan = arg->value.I8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // Ardrone3CameraStateOrientation
 
 
+// Electric frequency of the country determined by the position of the controller
 class Ardrone3AntiflickeringStateelectricFrequencyChanged : public CommandBase
 {
 private:
@@ -1031,7 +1146,12 @@ public:
   Ardrone3AntiflickeringStateelectricFrequencyChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_ANTIFLICKERINGSTATE_ELECTRICFREQUENCYCHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3AntiflickeringStateelectricFrequencyChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_antiflickeringstate_electricfrequencychanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3AntiflickeringStateelectricFrequencyChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::Ardrone3AntiflickeringStateelectricFrequencyChanged::ConstPtr GetDataCstPtr() const
@@ -1044,7 +1164,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("Ardrone3AntiflickeringStateelectricFrequencyChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3AntiflickeringStateelectricFrequencyChanged::Update() arguments is NULL");
       return;
     }
 
@@ -1061,12 +1181,13 @@ public:
       msg_ptr->frequency = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // Ardrone3AntiflickeringStateelectricFrequencyChanged
 
 
+// Anti flickering mode
 class Ardrone3AntiflickeringStatemodeChanged : public CommandBase
 {
 private:
@@ -1077,7 +1198,12 @@ public:
   Ardrone3AntiflickeringStatemodeChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_ANTIFLICKERINGSTATE_MODECHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3AntiflickeringStatemodeChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_antiflickeringstate_modechanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3AntiflickeringStatemodeChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::Ardrone3AntiflickeringStatemodeChanged::ConstPtr GetDataCstPtr() const
@@ -1090,7 +1216,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("Ardrone3AntiflickeringStatemodeChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3AntiflickeringStatemodeChanged::Update() arguments is NULL");
       return;
     }
 
@@ -1107,12 +1233,13 @@ public:
       msg_ptr->mode = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // Ardrone3AntiflickeringStatemodeChanged
 
 
+// The number of satellite used to compute the gps position
 class Ardrone3GPSStateNumberOfSatelliteChanged : public CommandBase
 {
 private:
@@ -1123,7 +1250,12 @@ public:
   Ardrone3GPSStateNumberOfSatelliteChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSTATE_NUMBEROFSATELLITECHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3GPSStateNumberOfSatelliteChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_gpsstate_numberofsatellitechanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3GPSStateNumberOfSatelliteChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::Ardrone3GPSStateNumberOfSatelliteChanged::ConstPtr GetDataCstPtr() const
@@ -1136,7 +1268,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("Ardrone3GPSStateNumberOfSatelliteChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3GPSStateNumberOfSatelliteChanged::Update() arguments is NULL");
       return;
     }
 
@@ -1153,12 +1285,13 @@ public:
       msg_ptr->numberOfSatellite = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // Ardrone3GPSStateNumberOfSatelliteChanged
 
 
+// Availability of the return home types in a map : for each type other args will be sent by the drone
 class Ardrone3GPSStateHomeTypeAvailabilityChanged : public CommandBase
 {
 private:
@@ -1169,7 +1302,12 @@ public:
   Ardrone3GPSStateHomeTypeAvailabilityChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSTATE_HOMETYPEAVAILABILITYCHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3GPSStateHomeTypeAvailabilityChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_gpsstate_hometypeavailabilitychanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3GPSStateHomeTypeAvailabilityChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::Ardrone3GPSStateHomeTypeAvailabilityChanged::ConstPtr GetDataCstPtr() const
@@ -1182,7 +1320,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("Ardrone3GPSStateHomeTypeAvailabilityChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3GPSStateHomeTypeAvailabilityChanged::Update() arguments is NULL");
       return;
     }
 
@@ -1206,12 +1344,13 @@ public:
       msg_ptr->available = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // Ardrone3GPSStateHomeTypeAvailabilityChanged
 
 
+// The return home type chosen
 class Ardrone3GPSStateHomeTypeChosenChanged : public CommandBase
 {
 private:
@@ -1222,7 +1361,12 @@ public:
   Ardrone3GPSStateHomeTypeChosenChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSTATE_HOMETYPECHOSENCHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3GPSStateHomeTypeChosenChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_gpsstate_hometypechosenchanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3GPSStateHomeTypeChosenChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::Ardrone3GPSStateHomeTypeChosenChanged::ConstPtr GetDataCstPtr() const
@@ -1235,7 +1379,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("Ardrone3GPSStateHomeTypeChosenChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3GPSStateHomeTypeChosenChanged::Update() arguments is NULL");
       return;
     }
 
@@ -1252,12 +1396,13 @@ public:
       msg_ptr->type = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // Ardrone3GPSStateHomeTypeChosenChanged
 
 
+// Features enabled
 class Ardrone3PROStateFeatures : public CommandBase
 {
 private:
@@ -1268,7 +1413,12 @@ public:
   Ardrone3PROStateFeatures(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PROSTATE_FEATURES)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3PROStateFeatures>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_prostate_features", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3PROStateFeatures>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::Ardrone3PROStateFeatures::ConstPtr GetDataCstPtr() const
@@ -1281,7 +1431,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("Ardrone3PROStateFeatures::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3PROStateFeatures::Update() arguments is NULL");
       return;
     }
 
@@ -1298,7 +1448,7 @@ public:
       msg_ptr->features = arg->value.U64;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // Ardrone3PROStateFeatures

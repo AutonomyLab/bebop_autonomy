@@ -4,8 +4,8 @@
 /*
  * bebop_common_callbacks.h
  * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/7e2f55fafcd45ba2380ca2574a08b7359c005f47/Xml/common_commands.xml
- * Date: 2015-08-31 17:44:29.412157
- * Generator: generate.py @ 1291966
+ * Date: 2015-08-31 18:59:03.288589
+ * Generator: generate.py @ f74e92a
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
@@ -59,6 +59,7 @@ namespace cb
 {
 
 
+// State sent when all product states has been sent.
 class CommonCommonStateAllStatesChanged : public CommandBase
 {
 private:
@@ -69,7 +70,12 @@ public:
   CommonCommonStateAllStatesChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_ALLSTATESCHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonCommonStateAllStatesChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_commonstate_allstateschanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonCommonStateAllStatesChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonCommonStateAllStatesChanged::ConstPtr GetDataCstPtr() const
@@ -82,7 +88,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonCommonStateAllStatesChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonCommonStateAllStatesChanged::Update() arguments is NULL");
       return;
     }
 
@@ -92,12 +98,13 @@ public:
     msg_ptr->header.frame_id = "base_link";
 
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonCommonStateAllStatesChanged
 
 
+// Battery state
 class CommonCommonStateBatteryStateChanged : public CommandBase
 {
 private:
@@ -108,7 +115,12 @@ public:
   CommonCommonStateBatteryStateChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_BATTERYSTATECHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonCommonStateBatteryStateChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_commonstate_batterystatechanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonCommonStateBatteryStateChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonCommonStateBatteryStateChanged::ConstPtr GetDataCstPtr() const
@@ -121,7 +133,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonCommonStateBatteryStateChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonCommonStateBatteryStateChanged::Update() arguments is NULL");
       return;
     }
 
@@ -138,12 +150,13 @@ public:
       msg_ptr->percent = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonCommonStateBatteryStateChanged
 
 
+// Mass storage state list
 class CommonCommonStateMassStorageStateListChanged : public CommandBase
 {
 private:
@@ -154,7 +167,12 @@ public:
   CommonCommonStateMassStorageStateListChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGESTATELISTCHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonCommonStateMassStorageStateListChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_commonstate_massstoragestatelistchanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonCommonStateMassStorageStateListChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonCommonStateMassStorageStateListChanged::ConstPtr GetDataCstPtr() const
@@ -167,7 +185,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonCommonStateMassStorageStateListChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonCommonStateMassStorageStateListChanged::Update() arguments is NULL");
       return;
     }
 
@@ -191,12 +209,13 @@ public:
       msg_ptr->name = arg->value.String;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonCommonStateMassStorageStateListChanged
 
 
+// Mass storage info state list
 class CommonCommonStateMassStorageInfoStateListChanged : public CommandBase
 {
 private:
@@ -207,7 +226,12 @@ public:
   CommonCommonStateMassStorageInfoStateListChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOSTATELISTCHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonCommonStateMassStorageInfoStateListChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_commonstate_massstorageinfostatelistchanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonCommonStateMassStorageInfoStateListChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonCommonStateMassStorageInfoStateListChanged::ConstPtr GetDataCstPtr() const
@@ -220,7 +244,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonCommonStateMassStorageInfoStateListChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonCommonStateMassStorageInfoStateListChanged::Update() arguments is NULL");
       return;
     }
 
@@ -272,12 +296,13 @@ public:
       msg_ptr->internal = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonCommonStateMassStorageInfoStateListChanged
 
 
+// Current date state
 class CommonCommonStateCurrentDateChanged : public CommandBase
 {
 private:
@@ -288,7 +313,12 @@ public:
   CommonCommonStateCurrentDateChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_CURRENTDATECHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonCommonStateCurrentDateChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_commonstate_currentdatechanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonCommonStateCurrentDateChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonCommonStateCurrentDateChanged::ConstPtr GetDataCstPtr() const
@@ -301,7 +331,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonCommonStateCurrentDateChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonCommonStateCurrentDateChanged::Update() arguments is NULL");
       return;
     }
 
@@ -318,12 +348,13 @@ public:
       msg_ptr->date = arg->value.String;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonCommonStateCurrentDateChanged
 
 
+// Current time state
 class CommonCommonStateCurrentTimeChanged : public CommandBase
 {
 private:
@@ -334,7 +365,12 @@ public:
   CommonCommonStateCurrentTimeChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_CURRENTTIMECHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonCommonStateCurrentTimeChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_commonstate_currenttimechanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonCommonStateCurrentTimeChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonCommonStateCurrentTimeChanged::ConstPtr GetDataCstPtr() const
@@ -347,7 +383,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonCommonStateCurrentTimeChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonCommonStateCurrentTimeChanged::Update() arguments is NULL");
       return;
     }
 
@@ -364,12 +400,13 @@ public:
       msg_ptr->time = arg->value.String;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonCommonStateCurrentTimeChanged
 
 
+// Mass storage info remaining list
 class CommonCommonStateMassStorageInfoRemainingListChanged : public CommandBase
 {
 private:
@@ -380,7 +417,12 @@ public:
   CommonCommonStateMassStorageInfoRemainingListChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOREMAININGLISTCHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonCommonStateMassStorageInfoRemainingListChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_commonstate_massstorageinforemaininglistchanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonCommonStateMassStorageInfoRemainingListChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonCommonStateMassStorageInfoRemainingListChanged::ConstPtr GetDataCstPtr() const
@@ -393,7 +435,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonCommonStateMassStorageInfoRemainingListChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonCommonStateMassStorageInfoRemainingListChanged::Update() arguments is NULL");
       return;
     }
 
@@ -424,12 +466,13 @@ public:
       msg_ptr->photo_remaining = arg->value.U32;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonCommonStateMassStorageInfoRemainingListChanged
 
 
+// Wifi Signal between controller and product state
 class CommonCommonStateWifiSignalChanged : public CommandBase
 {
 private:
@@ -440,7 +483,12 @@ public:
   CommonCommonStateWifiSignalChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_WIFISIGNALCHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonCommonStateWifiSignalChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_commonstate_wifisignalchanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonCommonStateWifiSignalChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonCommonStateWifiSignalChanged::ConstPtr GetDataCstPtr() const
@@ -453,7 +501,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonCommonStateWifiSignalChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonCommonStateWifiSignalChanged::Update() arguments is NULL");
       return;
     }
 
@@ -470,12 +518,13 @@ public:
       msg_ptr->rssi = arg->value.I16;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonCommonStateWifiSignalChanged
 
 
+// Sensors states list
 class CommonCommonStateSensorsStatesListChanged : public CommandBase
 {
 private:
@@ -486,7 +535,12 @@ public:
   CommonCommonStateSensorsStatesListChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_SENSORSSTATESLISTCHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonCommonStateSensorsStatesListChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_commonstate_sensorsstateslistchanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonCommonStateSensorsStatesListChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonCommonStateSensorsStatesListChanged::ConstPtr GetDataCstPtr() const
@@ -499,7 +553,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonCommonStateSensorsStatesListChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonCommonStateSensorsStatesListChanged::Update() arguments is NULL");
       return;
     }
 
@@ -523,12 +577,13 @@ public:
       msg_ptr->sensorState = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonCommonStateSensorsStatesListChanged
 
 
+// Inform of the product model. This is used to customize the UI depending on the connected product.
 class CommonCommonStateProductModel : public CommandBase
 {
 private:
@@ -539,7 +594,12 @@ public:
   CommonCommonStateProductModel(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_PRODUCTMODEL)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonCommonStateProductModel>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_commonstate_productmodel", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonCommonStateProductModel>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonCommonStateProductModel::ConstPtr GetDataCstPtr() const
@@ -552,7 +612,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonCommonStateProductModel::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonCommonStateProductModel::Update() arguments is NULL");
       return;
     }
 
@@ -569,12 +629,13 @@ public:
       msg_ptr->model = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonCommonStateProductModel
 
 
+// List of the countries known by the device
 class CommonCommonStateCountryListKnown : public CommandBase
 {
 private:
@@ -585,7 +646,12 @@ public:
   CommonCommonStateCountryListKnown(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonCommonStateCountryListKnown>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_commonstate_countrylistknown", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonCommonStateCountryListKnown>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonCommonStateCountryListKnown::ConstPtr GetDataCstPtr() const
@@ -598,7 +664,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonCommonStateCountryListKnown::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonCommonStateCountryListKnown::Update() arguments is NULL");
       return;
     }
 
@@ -615,12 +681,13 @@ public:
       msg_ptr->countryCodes = arg->value.String;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonCommonStateCountryListKnown
 
 
+// Overheat temperature reached
 class CommonOverHeatStateOverHeatChanged : public CommandBase
 {
 private:
@@ -631,7 +698,12 @@ public:
   CommonOverHeatStateOverHeatChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_OVERHEATSTATE_OVERHEATCHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonOverHeatStateOverHeatChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_overheatstate_overheatchanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonOverHeatStateOverHeatChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonOverHeatStateOverHeatChanged::ConstPtr GetDataCstPtr() const
@@ -644,7 +716,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonOverHeatStateOverHeatChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonOverHeatStateOverHeatChanged::Update() arguments is NULL");
       return;
     }
 
@@ -654,12 +726,13 @@ public:
     msg_ptr->header.frame_id = "base_link";
 
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonOverHeatStateOverHeatChanged
 
 
+// Overheat regulation state changed
 class CommonOverHeatStateOverHeatRegulationChanged : public CommandBase
 {
 private:
@@ -670,7 +743,12 @@ public:
   CommonOverHeatStateOverHeatRegulationChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_OVERHEATSTATE_OVERHEATREGULATIONCHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonOverHeatStateOverHeatRegulationChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_overheatstate_overheatregulationchanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonOverHeatStateOverHeatRegulationChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonOverHeatStateOverHeatRegulationChanged::ConstPtr GetDataCstPtr() const
@@ -683,7 +761,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonOverHeatStateOverHeatRegulationChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonOverHeatStateOverHeatRegulationChanged::Update() arguments is NULL");
       return;
     }
 
@@ -700,12 +778,13 @@ public:
       msg_ptr->regulationType = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonOverHeatStateOverHeatRegulationChanged
 
 
+// Tell the device when the controller application enters/leaves the piloting HUD.
 class CommonControllerStateisPilotingChanged : public CommandBase
 {
 private:
@@ -716,7 +795,12 @@ public:
   CommonControllerStateisPilotingChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_CONTROLLERSTATE_ISPILOTINGCHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonControllerStateisPilotingChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_controllerstate_ispilotingchanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonControllerStateisPilotingChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonControllerStateisPilotingChanged::ConstPtr GetDataCstPtr() const
@@ -729,7 +813,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonControllerStateisPilotingChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonControllerStateisPilotingChanged::Update() arguments is NULL");
       return;
     }
 
@@ -746,12 +830,13 @@ public:
       msg_ptr->piloting = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonControllerStateisPilotingChanged
 
 
+// Playing state of a mavlink flight plan
 class CommonMavlinkStateMavlinkFilePlayingStateChanged : public CommandBase
 {
 private:
@@ -762,7 +847,12 @@ public:
   CommonMavlinkStateMavlinkFilePlayingStateChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKFILEPLAYINGSTATECHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonMavlinkStateMavlinkFilePlayingStateChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_mavlinkstate_mavlinkfileplayingstatechanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonMavlinkStateMavlinkFilePlayingStateChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonMavlinkStateMavlinkFilePlayingStateChanged::ConstPtr GetDataCstPtr() const
@@ -775,7 +865,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonMavlinkStateMavlinkFilePlayingStateChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonMavlinkStateMavlinkFilePlayingStateChanged::Update() arguments is NULL");
       return;
     }
 
@@ -806,12 +896,13 @@ public:
       msg_ptr->type = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonMavlinkStateMavlinkFilePlayingStateChanged
 
 
+// FlightPlan play state error
 class CommonMavlinkStateMavlinkPlayErrorStateChanged : public CommandBase
 {
 private:
@@ -822,7 +913,12 @@ public:
   CommonMavlinkStateMavlinkPlayErrorStateChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKPLAYERRORSTATECHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonMavlinkStateMavlinkPlayErrorStateChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_mavlinkstate_mavlinkplayerrorstatechanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonMavlinkStateMavlinkPlayErrorStateChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonMavlinkStateMavlinkPlayErrorStateChanged::ConstPtr GetDataCstPtr() const
@@ -835,7 +931,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonMavlinkStateMavlinkPlayErrorStateChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonMavlinkStateMavlinkPlayErrorStateChanged::Update() arguments is NULL");
       return;
     }
 
@@ -852,12 +948,13 @@ public:
       msg_ptr->error = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonMavlinkStateMavlinkPlayErrorStateChanged
 
 
+// Sent when the state of the magneto calibration has changed
 class CommonCalibrationStateMagnetoCalibrationStateChanged : public CommandBase
 {
 private:
@@ -868,7 +965,12 @@ public:
   CommonCalibrationStateMagnetoCalibrationStateChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATECHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonCalibrationStateMagnetoCalibrationStateChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_calibrationstate_magnetocalibrationstatechanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonCalibrationStateMagnetoCalibrationStateChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonCalibrationStateMagnetoCalibrationStateChanged::ConstPtr GetDataCstPtr() const
@@ -881,7 +983,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonCalibrationStateMagnetoCalibrationStateChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonCalibrationStateMagnetoCalibrationStateChanged::Update() arguments is NULL");
       return;
     }
 
@@ -919,12 +1021,13 @@ public:
       msg_ptr->calibrationFailed = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonCalibrationStateMagnetoCalibrationStateChanged
 
 
+// Status of the calibration requirement
 class CommonCalibrationStateMagnetoCalibrationRequiredState : public CommandBase
 {
 private:
@@ -935,7 +1038,12 @@ public:
   CommonCalibrationStateMagnetoCalibrationRequiredState(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONREQUIREDSTATE)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonCalibrationStateMagnetoCalibrationRequiredState>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_calibrationstate_magnetocalibrationrequiredstate", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonCalibrationStateMagnetoCalibrationRequiredState>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonCalibrationStateMagnetoCalibrationRequiredState::ConstPtr GetDataCstPtr() const
@@ -948,7 +1056,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonCalibrationStateMagnetoCalibrationRequiredState::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonCalibrationStateMagnetoCalibrationRequiredState::Update() arguments is NULL");
       return;
     }
 
@@ -965,12 +1073,13 @@ public:
       msg_ptr->required = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonCalibrationStateMagnetoCalibrationRequiredState
 
 
+// Event sent by a product to inform about the axis to calibrate
 class CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged : public CommandBase
 {
 private:
@@ -981,7 +1090,12 @@ public:
   CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONAXISTOCALIBRATECHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_calibrationstate_magnetocalibrationaxistocalibratechanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged::ConstPtr GetDataCstPtr() const
@@ -994,7 +1108,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged::Update() arguments is NULL");
       return;
     }
 
@@ -1011,12 +1125,13 @@ public:
       msg_ptr->axis = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged
 
 
+// Status of the calibration process
 class CommonCalibrationStateMagnetoCalibrationStartedChanged : public CommandBase
 {
 private:
@@ -1027,7 +1142,12 @@ public:
   CommonCalibrationStateMagnetoCalibrationStartedChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTARTEDCHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonCalibrationStateMagnetoCalibrationStartedChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_calibrationstate_magnetocalibrationstartedchanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonCalibrationStateMagnetoCalibrationStartedChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonCalibrationStateMagnetoCalibrationStartedChanged::ConstPtr GetDataCstPtr() const
@@ -1040,7 +1160,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonCalibrationStateMagnetoCalibrationStartedChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonCalibrationStateMagnetoCalibrationStartedChanged::Update() arguments is NULL");
       return;
     }
 
@@ -1057,12 +1177,13 @@ public:
       msg_ptr->started = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonCalibrationStateMagnetoCalibrationStartedChanged
 
 
+// State of availability to run a flight plan file
 class CommonFlightPlanStateAvailabilityStateChanged : public CommandBase
 {
 private:
@@ -1073,7 +1194,12 @@ public:
   CommonFlightPlanStateAvailabilityStateChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_FLIGHTPLANSTATE_AVAILABILITYSTATECHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonFlightPlanStateAvailabilityStateChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_flightplanstate_availabilitystatechanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonFlightPlanStateAvailabilityStateChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonFlightPlanStateAvailabilityStateChanged::ConstPtr GetDataCstPtr() const
@@ -1086,7 +1212,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonFlightPlanStateAvailabilityStateChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonFlightPlanStateAvailabilityStateChanged::Update() arguments is NULL");
       return;
     }
 
@@ -1103,12 +1229,13 @@ public:
       msg_ptr->AvailabilityState = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonFlightPlanStateAvailabilityStateChanged
 
 
+// List of state of drone flightPlan components
 class CommonFlightPlanStateComponentStateListChanged : public CommandBase
 {
 private:
@@ -1119,7 +1246,12 @@ public:
   CommonFlightPlanStateComponentStateListChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_FLIGHTPLANSTATE_COMPONENTSTATELISTCHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonFlightPlanStateComponentStateListChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_flightplanstate_componentstatelistchanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonFlightPlanStateComponentStateListChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonFlightPlanStateComponentStateListChanged::ConstPtr GetDataCstPtr() const
@@ -1132,7 +1264,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonFlightPlanStateComponentStateListChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonFlightPlanStateComponentStateListChanged::Update() arguments is NULL");
       return;
     }
 
@@ -1156,12 +1288,13 @@ public:
       msg_ptr->State = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonFlightPlanStateComponentStateListChanged
 
 
+// Controller libARCommands version
 class CommonARLibsVersionsStateControllerLibARCommandsVersion : public CommandBase
 {
 private:
@@ -1172,7 +1305,12 @@ public:
   CommonARLibsVersionsStateControllerLibARCommandsVersion(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_ARLIBSVERSIONSSTATE_CONTROLLERLIBARCOMMANDSVERSION)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonARLibsVersionsStateControllerLibARCommandsVersion>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_arlibsversionsstate_controllerlibarcommandsversion", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonARLibsVersionsStateControllerLibARCommandsVersion>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonARLibsVersionsStateControllerLibARCommandsVersion::ConstPtr GetDataCstPtr() const
@@ -1185,7 +1323,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonARLibsVersionsStateControllerLibARCommandsVersion::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonARLibsVersionsStateControllerLibARCommandsVersion::Update() arguments is NULL");
       return;
     }
 
@@ -1202,12 +1340,13 @@ public:
       msg_ptr->version = arg->value.String;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonARLibsVersionsStateControllerLibARCommandsVersion
 
 
+// SkyController libARCommands version
 class CommonARLibsVersionsStateSkyControllerLibARCommandsVersion : public CommandBase
 {
 private:
@@ -1218,7 +1357,12 @@ public:
   CommonARLibsVersionsStateSkyControllerLibARCommandsVersion(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_ARLIBSVERSIONSSTATE_SKYCONTROLLERLIBARCOMMANDSVERSION)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonARLibsVersionsStateSkyControllerLibARCommandsVersion>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_arlibsversionsstate_skycontrollerlibarcommandsversion", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonARLibsVersionsStateSkyControllerLibARCommandsVersion>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonARLibsVersionsStateSkyControllerLibARCommandsVersion::ConstPtr GetDataCstPtr() const
@@ -1231,7 +1375,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonARLibsVersionsStateSkyControllerLibARCommandsVersion::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonARLibsVersionsStateSkyControllerLibARCommandsVersion::Update() arguments is NULL");
       return;
     }
 
@@ -1248,12 +1392,13 @@ public:
       msg_ptr->version = arg->value.String;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonARLibsVersionsStateSkyControllerLibARCommandsVersion
 
 
+// Device libARCommands version
 class CommonARLibsVersionsStateDeviceLibARCommandsVersion : public CommandBase
 {
 private:
@@ -1264,7 +1409,12 @@ public:
   CommonARLibsVersionsStateDeviceLibARCommandsVersion(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_ARLIBSVERSIONSSTATE_DEVICELIBARCOMMANDSVERSION)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonARLibsVersionsStateDeviceLibARCommandsVersion>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_arlibsversionsstate_devicelibarcommandsversion", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonARLibsVersionsStateDeviceLibARCommandsVersion>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonARLibsVersionsStateDeviceLibARCommandsVersion::ConstPtr GetDataCstPtr() const
@@ -1277,7 +1427,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonARLibsVersionsStateDeviceLibARCommandsVersion::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonARLibsVersionsStateDeviceLibARCommandsVersion::Update() arguments is NULL");
       return;
     }
 
@@ -1294,12 +1444,13 @@ public:
       msg_ptr->version = arg->value.String;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonARLibsVersionsStateDeviceLibARCommandsVersion
 
 
+// Notify the controller whether the audio streaming is running.
 class CommonAudioStateAudioStreamingRunning : public CommandBase
 {
 private:
@@ -1310,7 +1461,12 @@ public:
   CommonAudioStateAudioStreamingRunning(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_AUDIOSTATE_AUDIOSTREAMINGRUNNING)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonAudioStateAudioStreamingRunning>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_audiostate_audiostreamingrunning", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonAudioStateAudioStreamingRunning>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonAudioStateAudioStreamingRunning::ConstPtr GetDataCstPtr() const
@@ -1323,7 +1479,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonAudioStateAudioStreamingRunning::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonAudioStateAudioStreamingRunning::Update() arguments is NULL");
       return;
     }
 
@@ -1340,12 +1496,13 @@ public:
       msg_ptr->running = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonAudioStateAudioStreamingRunning
 
 
+// Notify the instensity values for headlight LEDs.
 class CommonHeadlightsStateintensityChanged : public CommandBase
 {
 private:
@@ -1356,7 +1513,12 @@ public:
   CommonHeadlightsStateintensityChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_HEADLIGHTSSTATE_INTENSITYCHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonHeadlightsStateintensityChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_headlightsstate_intensitychanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonHeadlightsStateintensityChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonHeadlightsStateintensityChanged::ConstPtr GetDataCstPtr() const
@@ -1369,7 +1531,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonHeadlightsStateintensityChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonHeadlightsStateintensityChanged::Update() arguments is NULL");
       return;
     }
 
@@ -1393,12 +1555,13 @@ public:
       msg_ptr->right = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonHeadlightsStateintensityChanged
 
 
+// List of animations state.
 class CommonAnimationsStateList : public CommandBase
 {
 private:
@@ -1409,7 +1572,12 @@ public:
   CommonAnimationsStateList(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_ANIMATIONSSTATE_LIST)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonAnimationsStateList>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_animationsstate_list", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonAnimationsStateList>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonAnimationsStateList::ConstPtr GetDataCstPtr() const
@@ -1422,7 +1590,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonAnimationsStateList::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonAnimationsStateList::Update() arguments is NULL");
       return;
     }
 
@@ -1453,12 +1621,13 @@ public:
       msg_ptr->error = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonAnimationsStateList
 
 
+// List of supported accessories
 class CommonAccessoryStateSupportedAccessoriesListChanged : public CommandBase
 {
 private:
@@ -1469,7 +1638,12 @@ public:
   CommonAccessoryStateSupportedAccessoriesListChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_SUPPORTEDACCESSORIESLISTCHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonAccessoryStateSupportedAccessoriesListChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_accessorystate_supportedaccessorieslistchanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonAccessoryStateSupportedAccessoriesListChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonAccessoryStateSupportedAccessoriesListChanged::ConstPtr GetDataCstPtr() const
@@ -1482,7 +1656,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonAccessoryStateSupportedAccessoriesListChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonAccessoryStateSupportedAccessoriesListChanged::Update() arguments is NULL");
       return;
     }
 
@@ -1499,12 +1673,13 @@ public:
       msg_ptr->accessory = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonAccessoryStateSupportedAccessoriesListChanged
 
 
+// Accessory config response.
 class CommonAccessoryStateAccessoryConfigChanged : public CommandBase
 {
 private:
@@ -1515,7 +1690,12 @@ public:
   CommonAccessoryStateAccessoryConfigChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_ACCESSORYCONFIGCHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonAccessoryStateAccessoryConfigChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_accessorystate_accessoryconfigchanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonAccessoryStateAccessoryConfigChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonAccessoryStateAccessoryConfigChanged::ConstPtr GetDataCstPtr() const
@@ -1528,7 +1708,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonAccessoryStateAccessoryConfigChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonAccessoryStateAccessoryConfigChanged::Update() arguments is NULL");
       return;
     }
 
@@ -1552,12 +1732,13 @@ public:
       msg_ptr->error = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonAccessoryStateAccessoryConfigChanged
 
 
+// Possibility to modify the accessory configuration.
 class CommonAccessoryStateAccessoryConfigModificationEnabled : public CommandBase
 {
 private:
@@ -1568,7 +1749,12 @@ public:
   CommonAccessoryStateAccessoryConfigModificationEnabled(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_ACCESSORYCONFIGMODIFICATIONENABLED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonAccessoryStateAccessoryConfigModificationEnabled>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_accessorystate_accessoryconfigmodificationenabled", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonAccessoryStateAccessoryConfigModificationEnabled>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonAccessoryStateAccessoryConfigModificationEnabled::ConstPtr GetDataCstPtr() const
@@ -1581,7 +1767,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonAccessoryStateAccessoryConfigModificationEnabled::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonAccessoryStateAccessoryConfigModificationEnabled::Update() arguments is NULL");
       return;
     }
 
@@ -1598,12 +1784,13 @@ public:
       msg_ptr->enabled = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonAccessoryStateAccessoryConfigModificationEnabled
 
 
+// @deprecated The maximum charge rate reported by the firmware.
 class CommonChargerStateMaxChargeRateChanged : public CommandBase
 {
 private:
@@ -1614,7 +1801,12 @@ public:
   CommonChargerStateMaxChargeRateChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_MAXCHARGERATECHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonChargerStateMaxChargeRateChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_chargerstate_maxchargeratechanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonChargerStateMaxChargeRateChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonChargerStateMaxChargeRateChanged::ConstPtr GetDataCstPtr() const
@@ -1627,7 +1819,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonChargerStateMaxChargeRateChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonChargerStateMaxChargeRateChanged::Update() arguments is NULL");
       return;
     }
 
@@ -1644,12 +1836,13 @@ public:
       msg_ptr->rate = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonChargerStateMaxChargeRateChanged
 
 
+// @deprecated The charge status of the battery changed.
 class CommonChargerStateCurrentChargeStateChanged : public CommandBase
 {
 private:
@@ -1660,7 +1853,12 @@ public:
   CommonChargerStateCurrentChargeStateChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CURRENTCHARGESTATECHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonChargerStateCurrentChargeStateChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_chargerstate_currentchargestatechanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonChargerStateCurrentChargeStateChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonChargerStateCurrentChargeStateChanged::ConstPtr GetDataCstPtr() const
@@ -1673,7 +1871,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonChargerStateCurrentChargeStateChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonChargerStateCurrentChargeStateChanged::Update() arguments is NULL");
       return;
     }
 
@@ -1697,12 +1895,13 @@ public:
       msg_ptr->phase = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonChargerStateCurrentChargeStateChanged
 
 
+// @deprecated The charge rate of the last charge sent by the firmware.
 class CommonChargerStateLastChargeRateChanged : public CommandBase
 {
 private:
@@ -1713,7 +1912,12 @@ public:
   CommonChargerStateLastChargeRateChanged(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_LASTCHARGERATECHANGED)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonChargerStateLastChargeRateChanged>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_chargerstate_lastchargeratechanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonChargerStateLastChargeRateChanged>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonChargerStateLastChargeRateChanged::ConstPtr GetDataCstPtr() const
@@ -1726,7 +1930,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonChargerStateLastChargeRateChanged::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonChargerStateLastChargeRateChanged::Update() arguments is NULL");
       return;
     }
 
@@ -1743,12 +1947,13 @@ public:
       msg_ptr->rate = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonChargerStateLastChargeRateChanged
 
 
+// Information of the charge.
 class CommonChargerStateChargingInfo : public CommandBase
 {
 private:
@@ -1759,7 +1964,12 @@ public:
   CommonChargerStateChargingInfo(::ros::NodeHandle& nh, const ::std::string& topic)
     : CommandBase(ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO)
   {
-    ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonChargerStateChargingInfo>(topic, 10, true);
+    ros::NodeHandle priv_nh("~");
+    if (priv_nh.getParam("enable_chargerstate_charginginfo", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_autonomy_msgs::CommonChargerStateChargingInfo>(topic, 10, true);
+    } // pub_enabled_ is false
   }
 
   ::bebop_autonomy_msgs::CommonChargerStateChargingInfo::ConstPtr GetDataCstPtr() const
@@ -1772,7 +1982,7 @@ public:
   {
     if (arguments == NULL)
     {
-      ROS_WARN("CommonChargerStateChargingInfo::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonChargerStateChargingInfo::Update() arguments is NULL");
       return;
     }
 
@@ -1810,7 +2020,7 @@ public:
       msg_ptr->fullChargingTime = arg->value.U8;
     }
 
-    ros_pub_.publish(msg_ptr);
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // CommonChargerStateChargingInfo
