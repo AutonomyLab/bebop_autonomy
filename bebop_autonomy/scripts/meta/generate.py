@@ -121,7 +121,7 @@ def guess_min_max(arg_comment):
         return [0.0, 10.0]
     elif (arg_comment.lower().find("in meters") != -1) or (arg_comment.lower().find("in m") != -1):
         logging.info("  ... meters")
-        return [0, 100]
+        return [0, 160]
     elif (arg_comment.lower().find("in degree/s") != -1):
         logging.info("  ... rotations speed degrees/s")
         return [0, 900.0]
