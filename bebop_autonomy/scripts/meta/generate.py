@@ -311,7 +311,11 @@ def generate_settings(xml_filename):
         
         # Iterate all cmds
         # generate one C++ class for each command
-        cfg_class_d = {"cfg_class_comment": strip_text(cl.text), "cfg_cmd": list()}
+        cfg_class_d = {
+            "cfg_class_name": cl.attrib["name"].lower(),
+            "cfg_class_comment": strip_text(cl.text), 
+            "cfg_cmd": list()
+        }
         for cmd in cl.iter("cmd"):
             # 2. Check if `cmd["name"]Changed` exists 
             if not xml_root.findall(".//cmd[@name='%s']" % (cmd.attrib["name"] + "Changed", )):
@@ -319,7 +323,10 @@ def generate_settings(xml_filename):
                 continue
 
             # .cfg
-            cfg_cmd_d = {"cfg_cmd_comment": strip_text(cmd.text), "cfg_arg": list()}
+            cfg_cmd_d = {
+                "cfg_cmd_comment": strip_text(cmd.text),
+                "cfg_arg": list()
+            }
 
             # C++
             # We are iterating classes with names ending in "Setting". For each of these classes
@@ -432,6 +439,18 @@ def main():
     generate_states("ARDrone3_commands.xml")
     #generate_settings("common_commands.xml")
     generate_settings("ARDrone3_commands.xml")
+
+    generator = os.path.basename(__file__)
+    generator_git_hash = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).strip()
+    with open("last_build_info", "w") as last_build_file:
+        last_build_file.write(rend.render_path(
+            "templates/last_build_info.mustache", 
+            {
+                "source_hash": LIBARCOMMANDS_GIT_HASH,
+                "date": datetime.datetime.now(),
+                "generator": generator,
+                "generator_git_hash": generator_git_hash
+            }))
 
 if __name__ == "__main__":
     main()

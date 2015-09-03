@@ -191,7 +191,7 @@ void BebopDriverNodelet::EmergencyCallback(const std_msgs::EmptyConstPtr& empty)
 
 void BebopDriverNodelet::ParamCallback(BebopArdrone3Config &config, uint32_t level)
 {
-  NODELET_INFO("Dynamic reconfigure callback with level: %d, max_tilt: %.2f", level, config.PilotingSettingsMaxTiltCurrent);
+  NODELET_DEBUG("Dynamic reconfigure callback with level: %d", level);
   bebop_.UpdateSettings(config);
 }
 
