@@ -1,7 +1,7 @@
 # Ardrone3PilotingStateNavigateHomeStateChanged
 # auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/7e2f55fafcd45ba2380ca2574a08b7359c005f47/Xml/ARDrone3_commands.xml
-# Date: 2015-08-31 18:59:03.777083
-# Generator: generate.py @ f74e92a
+# Date: 2015-09-02
+# Generator: generate.py @ 6ca12b4
 # Do not modify this file by hand. Check scripts/meta folder for generator files.
 #
 # SDK Comment: Navigating home state
@@ -9,17 +9,17 @@
 Header header
 
 # State of navigate home
-uint8 state_available=0
-uint8 state_inProgress=1
-uint8 state_unavailable=2
-uint8 state_pending=3
+uint8 state_available=0  # Navigate home is available
+uint8 state_inProgress=1  # Navigate home is in progress
+uint8 state_unavailable=2  # Navigate home is not available
+uint8 state_pending=3  # Navigate home has been received, but its process is pending
 uint8 state
 # Reason of the state
-uint8 reason_userRequest=0
-uint8 reason_connectionLost=1
-uint8 reason_lowBattery=2
-uint8 reason_finished=3
-uint8 reason_stopped=4
-uint8 reason_disabled=5
-uint8 reason_enabled=6
+uint8 reason_userRequest=0  # User requested a navigate home (available-&gt;inProgress)
+uint8 reason_connectionLost=1  # Connection between controller and product lost (available-&gt;inProgress)
+uint8 reason_lowBattery=2  # Low battery occurred (available-&gt;inProgress)
+uint8 reason_finished=3  # Navigate home is finished (inProgress-&gt;available)
+uint8 reason_stopped=4  # Navigate home has been stopped (inProgress-&gt;available)
+uint8 reason_disabled=5  # Navigate home disabled by product (inProgress-&gt;unavailable or available-&gt;unavailable)
+uint8 reason_enabled=6  # Navigate home enabled by product (unavailable-&gt;available)
 uint8 reason

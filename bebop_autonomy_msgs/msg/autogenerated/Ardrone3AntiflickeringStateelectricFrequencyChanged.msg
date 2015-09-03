@@ -1,7 +1,7 @@
 # Ardrone3AntiflickeringStateelectricFrequencyChanged
 # auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/7e2f55fafcd45ba2380ca2574a08b7359c005f47/Xml/ARDrone3_commands.xml
-# Date: 2015-08-31 18:59:03.777083
-# Generator: generate.py @ f74e92a
+# Date: 2015-09-02
+# Generator: generate.py @ 6ca12b4
 # Do not modify this file by hand. Check scripts/meta folder for generator files.
 #
 # SDK Comment: Electric frequency of the country determined by the position of the controller
@@ -9,6 +9,6 @@
 Header header
 
 # Type of the electric frequency
-uint8 frequency_fiftyHertz=0
-uint8 frequency_sixtyHertz=1
+uint8 frequency_fiftyHertz=0  # Electric frequency of the country is 50hz
+uint8 frequency_sixtyHertz=1  # Electric frequency of the country is 60hz
 uint8 frequency

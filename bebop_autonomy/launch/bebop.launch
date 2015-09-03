@@ -23,6 +23,6 @@
         <param name="enable_gpsstate_numberofsatellitechanged" value="true" />
         <param name="enable_numberofsatellitechanged" value="true" />
 
-        <param name="reset_settings" value="true" />
+        <param name="current2" value="20.0" />
     </node>
 </launch>

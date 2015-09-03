@@ -9,12 +9,13 @@
 #include <std_msgs/Empty.h>
 #include <camera_info_manager/camera_info_manager.h>
 #include <image_transport/image_transport.h>
-
+#include <dynamic_reconfigure/server.h>
 
 #include <boost/thread.hpp>
 #include <boost/shared_ptr.hpp>
 
 #include "bebop_autonomy/bebop.h"
+#include "bebop_autonomy/BebopArdrone3Config.h"
 
 namespace bebop_autonomy
 {
@@ -82,6 +83,9 @@ private:
 
   sensor_msgs::CameraInfoPtr camera_info_msg_ptr_;
 
+  // Dynamic Reconfigure
+  boost::shared_ptr<dynamic_reconfigure::Server<bebop_autonomy::BebopArdrone3Config> > dynr_serv_ptr_;
+
   // Params
   std::string frame_id_;
 
@@ -96,6 +100,8 @@ private:
   void TakeoffCallback(const std_msgs::EmptyConstPtr& empty);
   void LandCallback(const std_msgs::EmptyConstPtr& empty);
   void EmergencyCallback(const std_msgs::EmptyConstPtr& empty);
+
+  void ParamCallback(bebop_autonomy::BebopArdrone3Config &config, uint32_t level);
 
 public:
   BebopDriverNodelet();

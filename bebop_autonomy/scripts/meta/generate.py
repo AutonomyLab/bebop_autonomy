@@ -30,7 +30,7 @@ ROS_TYPE_MAP = {
     "double": "float64",
     "string": "string",
     "enum": "enum"
-    }
+}
 
 # From XML types to BebopSDK union defined in ARCONTROLLER_Dictionary.h
 BEBOP_TYPE_MAP = {
@@ -49,6 +49,41 @@ BEBOP_TYPE_MAP = {
     "enum": "U8"
 }
 
+# From XML types to Dynamic Reconfigure Types
+DYN_TYPE_MAP = {
+    "bool": "bool_t",
+    "u8": "int_t",
+    "i8": "int_t",
+    "u16": "int_t",
+    "i16": "int_t",
+    "u32": "int_t",
+    "i32": "int_t",
+    "u64": "int_t",
+    "i64": "int_t",
+    "float": "double_t",
+    "double": "double_t",
+    "string": "str_t",
+    "enum": "enum"
+}
+
+C_TYPE_MAP = {
+    "bool": "bool",
+    "u8": "int32_t",
+    "i8": "int32_t",
+    "u16": "int32_t",
+    "i16": "int32_t",
+    "u32": "int32_t",
+    "i32": "int32_t",
+    "u64": "int32_t",
+    "i64": "int32_t",
+    "float": "double",  # for rosparam
+    "double": "double",
+    "string": "std::string",
+    "enum": "int32_t"
+}
+
+
+min_max_regex = re.compile('\[([0-9\.\-]+)\:([0-9\.\-]+)\]')
 rend = pystache.Renderer()
 
 def get_xml_url(filename):
@@ -64,11 +99,58 @@ def load_from_url(url):
 def is_state_tag(name):
     return (not name.find("State") == -1) and (name.find("Settings") == -1) 
 
+def is_settings_tag(name):
+    return (not name.find("Settings") == -1) and (name.find("State") == -1) 
+
 def strip_text(text):
     return re.sub("\s\s+", " ", text.strip().replace('\n', '').replace('\r', ''))
 
 def cap_word(text):
     return text.lower().title()
+
+def guess_min_max(arg_comment):
+    m = min_max_regex.search(arg_comment)
+    if m:
+        logging.info("  ... [min:max]")
+        return [float(m.group(1)), float(m.group(2))]
+    elif (arg_comment.lower().find("m/s2") != -1):
+        logging.info("  ... acc (m/s2)")
+        return [0.0, 5.0]
+    elif (arg_comment.lower().find("m/s") != -1):
+        logging.info("  ... speed (m/s)")
+        return [0.0, 10.0]
+    elif (arg_comment.lower().find("in meters") != -1) or (arg_comment.lower().find("in m") != -1):
+        logging.info("  ... meters")
+        return [0, 100]
+    elif (arg_comment.lower().find("in degree/s") != -1):
+        logging.info("  ... rotations speed degrees/s")
+        return [0, 900.0]
+    elif (arg_comment.lower().find("in degree") != -1):
+        logging.info("  ... degrees")
+        return [-180.0, 180.0]
+    elif (arg_comment.lower().find("1") != -1) and (arg_comment.lower().find("0") != -1):
+        logging.info("  ... bool")
+        return [0, 1]
+    elif (arg_comment.lower().find("latitude") != -1):
+        logging.info("  ... latitude")
+        return [-90.0, 90.0]
+    elif (arg_comment.lower().find("longitude") != -1):
+        logging.info("  ... longitude")
+        return [-180.0, 180.0]
+    elif (arg_comment.lower().find("[rad/s]") != -1):
+        logging.info("  ... angular speed (rad/s)")
+        return [0.0, 5.0]
+    elif (arg_comment.lower().find("channel") != -1):
+        logging.info("  ... unknown int")
+        return [0, 50]
+    elif (arg_comment.lower().find("second") != -1):
+        logging.info("  ... time (s)")
+        return [0, 120]
+
+    return []
+
+def today():
+    return datetime.datetime.now().strftime("%Y-%m-%d")
 
 def generate_states(xml_filename):
     xml_url = get_xml_url(xml_filename)
@@ -82,14 +164,13 @@ def generate_states(xml_filename):
     # iterate all <class> tags
     logging.info("Iterating all State <class> tags ...")
 
-    now = datetime.datetime.now()
     generator = os.path.basename(__file__)
     generator_git_hash = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).strip()
 
     d_cpp = dict({
             "url": xml_url,
             "project": project,
-            "date": now,
+            "date": today(),
             "generator": generator,
             "generator_git_hash": generator_git_hash,
             "queue_size": 10,  # 5Hz
@@ -111,7 +192,7 @@ def generate_states(xml_filename):
             d = dict({
                 "url": xml_url,
                 "msg_filename": msg_name,
-                "date": now,
+                "date": today(),
                 "generator": generator,
                 "generator_git_hash": generator_git_hash,
                 "msg_file_comment": strip_text(cmd.text),
@@ -140,7 +221,9 @@ def generate_states(xml_filename):
                     for enum in arg.iter("enum"):
                         f_enum_list.append({
                             "constant_name": f_name + "_" + enum.attrib["name"],
-                            "constant_value": counter})
+                            "constant_value": counter,
+                            "constant_comment": strip_text(enum.text)
+                            })
                         counter += 1
                 
                 d["msg_field"].append({
@@ -180,18 +263,166 @@ def generate_states(xml_filename):
         with open(msg_filename, "w") as msg_file:
             msg_file.write(rend.render_path("templates/msg.mustache", d))
 
-    header_file_name = "bebop_%s_callbacks.h" % (project.lower(), )
+    header_file_name = "%s_state_callbacks.h" % (project.lower(), )
     logging.info("Writing %s" % (header_file_name, ))
     with open(header_file_name, "w") as header_file:
-        header_file.write(rend.render_path("templates/bebop_callbacks.h.mustache", d_cpp))
+        header_file.write(rend.render_path("templates/state_callbacks.h.mustache", d_cpp))
 
-    include_file_name = "bebop_%s_callback_includes.h" % (project.lower(), )
+    include_file_name = "%s_state_callback_includes.h" % (project.lower(), )
     logging.info("Writing %s" % (include_file_name, ))
     with open(include_file_name, "w") as include_file:
-        include_file.write(rend.render_path("templates/bebop_callback_includes.h.mustache", d_cpp))
+        include_file.write(rend.render_path("templates/state_callback_includes.h.mustache", d_cpp))
 
-    with open("bebop_commands.h", "w") as header_file:
-        header_file.write(rend.render_path("templates/bebop_commands.h.mustache", d_cpp))
+    with open("callbacks_common.h", "w") as header_file:
+        header_file.write(rend.render_path("templates/callbacks_common.h.mustache", d_cpp))
+
+def generate_settings(xml_filename):
+    xml_url = get_xml_url(xml_filename)
+    project = xml_filename.split("_")[0]
+
+    logging.info("Fetching source XML file for project %s " % (project, ))
+    logging.info("URL: %s" % (xml_url, ))
+    xml = load_from_url(xml_url)
+    xml_root = et.fromstring(xml)
+
+    generator = os.path.basename(__file__)
+    generator_git_hash = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).strip()
+
+    d_cfg = dict({
+            "cfg_filename": "bebop_%s.cfg" % (project.lower(), ),
+            "url": xml_url,
+            "project": project.title(),
+            "date": today(),
+            "generator": generator,
+            "generator_git_hash": generator_git_hash,
+            "cfg_class": list(),
+            "cpp_class": list()
+        })
+
+    for cl in xml_root.iter("class"):
+        if not is_settings_tag(cl.attrib["name"]):
+            continue 
+
+        # At the moment the XML file is not 100% consistent between Settings and SettingsChanged and inner Commands
+        # 1. Check if `class["name"]State` exists 
+        if not xml_root.findall(".//class[@name='%s']" % (cl.attrib["name"] + "State", )):
+            logging.warning("No State Class for %s " % (cl.attrib["name"], ))
+            continue
+        
+        # Iterate all cmds
+        # generate one C++ class for each command
+        cfg_class_d = {"cfg_class_comment": strip_text(cl.text), "cfg_cmd": list()}
+        for cmd in cl.iter("cmd"):
+            # 2. Check if `cmd["name"]Changed` exists 
+            if not xml_root.findall(".//cmd[@name='%s']" % (cmd.attrib["name"] + "Changed", )):
+                logging.warning("No Changed CMD for %s " % (cmd.attrib["name"], ))
+                continue
+
+            # .cfg
+            cfg_cmd_d = {"cfg_cmd_comment": strip_text(cmd.text), "cfg_arg": list()}
+
+            # C++
+            # We are iterating classes with names ending in "Setting". For each of these classes
+            # there exists a corresponding class with the same name + "State" (e.g PilotingSetting and PilottingSettingState)
+            # The inner commands of the corresponding class are also follow a similar conevtion, they end in "CHANGED"
+            # We create the cfg files based on Settings and ROS param updates based on SettingsChanged
+            cpp_class_dict_key = rend.render_path("templates/dictionary_key.mustache",
+                {"project": project.upper(), "class": cl.attrib["name"].upper() + "STATE", "cmd": cmd.attrib["name"].upper() + "CHANGED"} )
+            # cmd.attrib["name"] and cl.attrib["name"] are already in CamelCase
+            cpp_class_name = cl.attrib["name"] + cmd.attrib["name"]
+            cpp_class_instance_name = project.lower() + "_" + cl.attrib["name"].lower() + "_" + cmd.attrib["name"].lower() + "_ptr";
+            cpp_class_params = list()
+            
+            counter = 0
+            # generate one dyamic reconfigure variable per arg
+            for arg in cmd.iter("arg"):
+                # .cfg
+                arg_name = cl.attrib["name"] + cmd.attrib["name"] + cap_word(arg.attrib["name"])
+                arg_type = DYN_TYPE_MAP[arg.attrib.get("type", "bool")]
+                arg_comment = strip_text(arg.text)
+
+                arg_enum_list = list()
+                minmax_list = list()
+                arg_min = 0.0
+                arg_max = 0.0
+                counter = 0
+                if (arg_type == "enum"):
+                    arg_type = "uint8"
+                    for enum in arg.iter("enum"):
+                        arg_enum_list.append({
+                            "constant_name": arg_name + "_" + enum.attrib["name"],
+                            "constant_value": counter,
+                            "constant_comment": strip_text(enum.text)
+                            })
+                        counter += 1
+                else:
+                    # No min/max values defined in XML, guessing the type and propose a value:
+                    logging.info("Guessing type of \"%s\"" % (arg_name))
+                    logging.info("  from: %s" % (arg_comment))
+                    minmax_list = guess_min_max(arg_comment)
+                    if (len(minmax_list) == 2):
+                        [arg_min, arg_max] = minmax_list
+                        logging.info("  min: %s max: %s" % (arg_min, arg_max))
+                    else:
+                        logging.warning("  Can not guess [min:max] values for this arg, skipping it")
+                
+                # either we found minmax or the arg is of type enum
+                if len(minmax_list) or counter > 0:
+                    cfg_cmd_d["cfg_arg"].append({
+                        "cfg_arg_type": arg_type,
+                        "cfg_arg_name": arg_name,
+                        "cfg_arg_comment": arg_comment,
+                        "cfg_arg_min": arg_min,
+                        "cfg_arg_max": arg_max,
+                        # Render once trick: http://stackoverflow.com/a/10118092
+                        "cfg_arg_enum": {'items' : deepcopy(arg_enum_list)} if len(arg_enum_list) else [],
+                        "enum_max": counter - 1
+                        })
+
+                    # generate c enum type
+                    if (counter > 0):
+                        enum_cast = "static_cast<eARCOMMANDS_%s_%s_%s_%s>" % (project.upper(), cl.attrib["name"].upper(), cmd.attrib["name"].upper(), arg.attrib["name"].upper())
+                    else:
+                        enum_cast = ""
+
+                    cpp_class_params.append({
+                        "cpp_class_arg_key": cpp_class_dict_key + "_" + arg.attrib["name"].upper(),
+                        "cpp_class_param_name": arg_name,
+                        "cpp_class_param_enum_cast": enum_cast,
+                        "cpp_class_param_type": C_TYPE_MAP[arg.attrib.get("type", "bool")],
+                        "cpp_class_param_sdk_type": BEBOP_TYPE_MAP[arg.attrib.get("type", "bool")]
+                        })
+
+            # Skip cmds with no arguments
+            if len(cfg_cmd_d["cfg_arg"]):
+                cfg_class_d["cfg_cmd"].append(deepcopy(cfg_cmd_d))
+                d_cfg["cpp_class"].append({
+                    "cpp_class_dict_key": cpp_class_dict_key,
+                    "cpp_class_name": cpp_class_name,
+                    "cpp_class_instance_name": cpp_class_instance_name,
+                    "cpp_class_params": deepcopy(cpp_class_params)
+                    })
+
+        d_cfg["cfg_class"].append(deepcopy(cfg_class_d))
+        
+    
+    logging.info("... Done iterating, writing results to file")      
+    
+    # .cfg write
+    cfg_file_name = d_cfg["cfg_filename"]
+    logging.info("Writing %s" % (cfg_file_name, ))
+    with open(cfg_file_name, "w") as cfg_file:
+        cfg_file.write(rend.render_path("templates/cfg.mustache", d_cfg))
+
+    header_file_name = "%s_setting_callbacks.h" % (project.lower(), )
+    logging.info("Writing %s" % (header_file_name, ))
+    with open(header_file_name, "w") as header_file:
+        header_file.write(rend.render_path("templates/setting_callbacks.h.mustache", d_cfg))
+
+    include_file_name = "%s_setting_callback_includes.h" % (project.lower(), )
+    logging.info("Writing %s" % (include_file_name, ))
+    with open(include_file_name, "w") as include_file:
+        include_file.write(rend.render_path("templates/setting_callback_includes.h.mustache", d_cfg))
 
 def main():
     # Setup stuff
@@ -199,6 +430,8 @@ def main():
 
     generate_states("common_commands.xml")
     generate_states("ARDrone3_commands.xml")
+    #generate_settings("common_commands.xml")
+    generate_settings("ARDrone3_commands.xml")
 
 if __name__ == "__main__":
     main()

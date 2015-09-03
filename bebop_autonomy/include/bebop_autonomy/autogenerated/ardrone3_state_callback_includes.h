@@ -1,12 +1,12 @@
 /*
- * bebop_callback_includes.h
+ * ARDrone3_state_callback_includes.h
  * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/7e2f55fafcd45ba2380ca2574a08b7359c005f47/Xml/ARDrone3_commands.xml
- * Date: 2015-08-31 18:59:03.777083
- * Generator: generate.py @ f74e92a
+ * Date: 2015-09-02
+ * Generator: generate.py @ 6ca12b4
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
-#ifdef BEBOP_DEFINE_SHARED_PTRS
+#ifdef DEFINE_SHARED_PTRS
 // Define all callback wrappers
 boost::shared_ptr<cb::Ardrone3MediaRecordStatePictureStateChanged> ardrone3_mediarecordstate_picturestatechanged_ptr;
 boost::shared_ptr<cb::Ardrone3MediaRecordStateVideoStateChanged> ardrone3_mediarecordstate_videostatechanged_ptr;
@@ -33,10 +33,10 @@ boost::shared_ptr<cb::Ardrone3GPSStateNumberOfSatelliteChanged> ardrone3_gpsstat
 boost::shared_ptr<cb::Ardrone3GPSStateHomeTypeAvailabilityChanged> ardrone3_gpsstate_hometypeavailabilitychanged_ptr;
 boost::shared_ptr<cb::Ardrone3GPSStateHomeTypeChosenChanged> ardrone3_gpsstate_hometypechosenchanged_ptr;
 boost::shared_ptr<cb::Ardrone3PROStateFeatures> ardrone3_prostate_features_ptr;
-#endif  // BEBOP_DEFINE_SHARED_PTRS
+#endif  // DEFINE_SHARED_PTRS
 
-#ifdef BEBOP_UPDTAE_CALLBACK_MAP
-// Instantiate callback wrappers
+#ifdef UPDTAE_CALLBACK_MAP
+// Instantiate state callback wrappers
 ardrone3_mediarecordstate_picturestatechanged_ptr.reset(new cb::Ardrone3MediaRecordStatePictureStateChanged(nh, "states/ARDrone3/MediaRecordState/PictureStateChanged"));
 ardrone3_mediarecordstate_videostatechanged_ptr.reset(new cb::Ardrone3MediaRecordStateVideoStateChanged(nh, "states/ARDrone3/MediaRecordState/VideoStateChanged"));
 ardrone3_mediarecordstate_picturestatechangedv2_ptr.reset(new cb::Ardrone3MediaRecordStatePictureStateChangedV2(nh, "states/ARDrone3/MediaRecordState/PictureStateChangedV2"));
@@ -64,103 +64,103 @@ ardrone3_gpsstate_hometypechosenchanged_ptr.reset(new cb::Ardrone3GPSStateHomeTy
 ardrone3_prostate_features_ptr.reset(new cb::Ardrone3PROStateFeatures(nh, "states/ARDrone3/PROState/Features"));
 
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       ardrone3_mediarecordstate_picturestatechanged_ptr->GetCommandKey(),
                       ardrone3_mediarecordstate_picturestatechanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       ardrone3_mediarecordstate_videostatechanged_ptr->GetCommandKey(),
                       ardrone3_mediarecordstate_videostatechanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       ardrone3_mediarecordstate_picturestatechangedv2_ptr->GetCommandKey(),
                       ardrone3_mediarecordstate_picturestatechangedv2_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       ardrone3_mediarecordstate_videostatechangedv2_ptr->GetCommandKey(),
                       ardrone3_mediarecordstate_videostatechangedv2_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       ardrone3_pilotingstate_flattrimchanged_ptr->GetCommandKey(),
                       ardrone3_pilotingstate_flattrimchanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       ardrone3_pilotingstate_flyingstatechanged_ptr->GetCommandKey(),
                       ardrone3_pilotingstate_flyingstatechanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       ardrone3_pilotingstate_alertstatechanged_ptr->GetCommandKey(),
                       ardrone3_pilotingstate_alertstatechanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       ardrone3_pilotingstate_navigatehomestatechanged_ptr->GetCommandKey(),
                       ardrone3_pilotingstate_navigatehomestatechanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       ardrone3_pilotingstate_positionchanged_ptr->GetCommandKey(),
                       ardrone3_pilotingstate_positionchanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       ardrone3_pilotingstate_speedchanged_ptr->GetCommandKey(),
                       ardrone3_pilotingstate_speedchanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       ardrone3_pilotingstate_attitudechanged_ptr->GetCommandKey(),
                       ardrone3_pilotingstate_attitudechanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       ardrone3_pilotingstate_autotakeoffmodechanged_ptr->GetCommandKey(),
                       ardrone3_pilotingstate_autotakeoffmodechanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       ardrone3_pilotingstate_altitudechanged_ptr->GetCommandKey(),
                       ardrone3_pilotingstate_altitudechanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       ardrone3_networkstate_wifiscanlistchanged_ptr->GetCommandKey(),
                       ardrone3_networkstate_wifiscanlistchanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       ardrone3_networkstate_allwifiscanchanged_ptr->GetCommandKey(),
                       ardrone3_networkstate_allwifiscanchanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       ardrone3_networkstate_wifiauthchannellistchanged_ptr->GetCommandKey(),
                       ardrone3_networkstate_wifiauthchannellistchanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       ardrone3_networkstate_allwifiauthchannelchanged_ptr->GetCommandKey(),
                       ardrone3_networkstate_allwifiauthchannelchanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       ardrone3_mediastreamingstate_videoenablechanged_ptr->GetCommandKey(),
                       ardrone3_mediastreamingstate_videoenablechanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       ardrone3_camerastate_orientation_ptr->GetCommandKey(),
                       ardrone3_camerastate_orientation_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       ardrone3_antiflickeringstate_electricfrequencychanged_ptr->GetCommandKey(),
                       ardrone3_antiflickeringstate_electricfrequencychanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       ardrone3_antiflickeringstate_modechanged_ptr->GetCommandKey(),
                       ardrone3_antiflickeringstate_modechanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       ardrone3_gpsstate_numberofsatellitechanged_ptr->GetCommandKey(),
                       ardrone3_gpsstate_numberofsatellitechanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       ardrone3_gpsstate_hometypeavailabilitychanged_ptr->GetCommandKey(),
                       ardrone3_gpsstate_hometypeavailabilitychanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       ardrone3_gpsstate_hometypechosenchanged_ptr->GetCommandKey(),
                       ardrone3_gpsstate_hometypechosenchanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       ardrone3_prostate_features_ptr->GetCommandKey(),
                       ardrone3_prostate_features_ptr));
-#endif  // BEBOP_UPDTAE_CALLBACK_MAP
+#endif  // UPDTAE_CALLBACK_MAP

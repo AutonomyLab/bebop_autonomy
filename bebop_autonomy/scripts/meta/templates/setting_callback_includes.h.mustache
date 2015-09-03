@@ -1,0 +1,28 @@
+/*
+ * {{project}}_setting_callback_includes.h
+ * auto-generated from {{url}}
+ * Date: {{date}}
+ * Generator: {{generator}} @ {{generator_git_hash}}
+ * Do not modify this file by hand. Check scripts/meta folder for generator files.
+ */
+
+#ifdef DEFINE_SHARED_PTRS
+// Define all callback wrappers
+{{#cpp_class}}
+boost::shared_ptr<cb::{{cpp_class_name}}> {{cpp_class_instance_name}};
+{{/cpp_class}}
+#endif  // DEFINE_SHARED_PTRS
+
+#ifdef UPDTAE_CALLBACK_MAP
+// Instantiate state callback wrappers
+{{#cpp_class}}
+{{cpp_class_instance_name}}.reset(new cb::{{cpp_class_name}}());
+{{/cpp_class}}
+
+{{#cpp_class}}
+// Add all wrappers to the callback map
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
+                      {{cpp_class_instance_name}}->GetCommandKey(),
+                      {{cpp_class_instance_name}}));
+{{/cpp_class}}
+#endif  // UPDTAE_CALLBACK_MAP

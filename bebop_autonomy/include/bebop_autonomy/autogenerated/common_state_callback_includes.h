@@ -1,12 +1,12 @@
 /*
- * bebop_callback_includes.h
+ * common_state_callback_includes.h
  * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/7e2f55fafcd45ba2380ca2574a08b7359c005f47/Xml/common_commands.xml
- * Date: 2015-08-31 18:59:03.288589
- * Generator: generate.py @ f74e92a
+ * Date: 2015-09-02
+ * Generator: generate.py @ 6ca12b4
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
-#ifdef BEBOP_DEFINE_SHARED_PTRS
+#ifdef DEFINE_SHARED_PTRS
 // Define all callback wrappers
 boost::shared_ptr<cb::CommonCommonStateAllStatesChanged> common_commonstate_allstateschanged_ptr;
 boost::shared_ptr<cb::CommonCommonStateBatteryStateChanged> common_commonstate_batterystatechanged_ptr;
@@ -43,10 +43,10 @@ boost::shared_ptr<cb::CommonChargerStateMaxChargeRateChanged> common_chargerstat
 boost::shared_ptr<cb::CommonChargerStateCurrentChargeStateChanged> common_chargerstate_currentchargestatechanged_ptr;
 boost::shared_ptr<cb::CommonChargerStateLastChargeRateChanged> common_chargerstate_lastchargeratechanged_ptr;
 boost::shared_ptr<cb::CommonChargerStateChargingInfo> common_chargerstate_charginginfo_ptr;
-#endif  // BEBOP_DEFINE_SHARED_PTRS
+#endif  // DEFINE_SHARED_PTRS
 
-#ifdef BEBOP_UPDTAE_CALLBACK_MAP
-// Instantiate callback wrappers
+#ifdef UPDTAE_CALLBACK_MAP
+// Instantiate state callback wrappers
 common_commonstate_allstateschanged_ptr.reset(new cb::CommonCommonStateAllStatesChanged(nh, "states/common/CommonState/AllStatesChanged"));
 common_commonstate_batterystatechanged_ptr.reset(new cb::CommonCommonStateBatteryStateChanged(nh, "states/common/CommonState/BatteryStateChanged"));
 common_commonstate_massstoragestatelistchanged_ptr.reset(new cb::CommonCommonStateMassStorageStateListChanged(nh, "states/common/CommonState/MassStorageStateListChanged"));
@@ -84,143 +84,143 @@ common_chargerstate_lastchargeratechanged_ptr.reset(new cb::CommonChargerStateLa
 common_chargerstate_charginginfo_ptr.reset(new cb::CommonChargerStateChargingInfo(nh, "states/common/ChargerState/ChargingInfo"));
 
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_commonstate_allstateschanged_ptr->GetCommandKey(),
                       common_commonstate_allstateschanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_commonstate_batterystatechanged_ptr->GetCommandKey(),
                       common_commonstate_batterystatechanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_commonstate_massstoragestatelistchanged_ptr->GetCommandKey(),
                       common_commonstate_massstoragestatelistchanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_commonstate_massstorageinfostatelistchanged_ptr->GetCommandKey(),
                       common_commonstate_massstorageinfostatelistchanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_commonstate_currentdatechanged_ptr->GetCommandKey(),
                       common_commonstate_currentdatechanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_commonstate_currenttimechanged_ptr->GetCommandKey(),
                       common_commonstate_currenttimechanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_commonstate_massstorageinforemaininglistchanged_ptr->GetCommandKey(),
                       common_commonstate_massstorageinforemaininglistchanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_commonstate_wifisignalchanged_ptr->GetCommandKey(),
                       common_commonstate_wifisignalchanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_commonstate_sensorsstateslistchanged_ptr->GetCommandKey(),
                       common_commonstate_sensorsstateslistchanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_commonstate_productmodel_ptr->GetCommandKey(),
                       common_commonstate_productmodel_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_commonstate_countrylistknown_ptr->GetCommandKey(),
                       common_commonstate_countrylistknown_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_overheatstate_overheatchanged_ptr->GetCommandKey(),
                       common_overheatstate_overheatchanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_overheatstate_overheatregulationchanged_ptr->GetCommandKey(),
                       common_overheatstate_overheatregulationchanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_controllerstate_ispilotingchanged_ptr->GetCommandKey(),
                       common_controllerstate_ispilotingchanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_mavlinkstate_mavlinkfileplayingstatechanged_ptr->GetCommandKey(),
                       common_mavlinkstate_mavlinkfileplayingstatechanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_mavlinkstate_mavlinkplayerrorstatechanged_ptr->GetCommandKey(),
                       common_mavlinkstate_mavlinkplayerrorstatechanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_calibrationstate_magnetocalibrationstatechanged_ptr->GetCommandKey(),
                       common_calibrationstate_magnetocalibrationstatechanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_calibrationstate_magnetocalibrationrequiredstate_ptr->GetCommandKey(),
                       common_calibrationstate_magnetocalibrationrequiredstate_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_calibrationstate_magnetocalibrationaxistocalibratechanged_ptr->GetCommandKey(),
                       common_calibrationstate_magnetocalibrationaxistocalibratechanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_calibrationstate_magnetocalibrationstartedchanged_ptr->GetCommandKey(),
                       common_calibrationstate_magnetocalibrationstartedchanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_flightplanstate_availabilitystatechanged_ptr->GetCommandKey(),
                       common_flightplanstate_availabilitystatechanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_flightplanstate_componentstatelistchanged_ptr->GetCommandKey(),
                       common_flightplanstate_componentstatelistchanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_arlibsversionsstate_controllerlibarcommandsversion_ptr->GetCommandKey(),
                       common_arlibsversionsstate_controllerlibarcommandsversion_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_arlibsversionsstate_skycontrollerlibarcommandsversion_ptr->GetCommandKey(),
                       common_arlibsversionsstate_skycontrollerlibarcommandsversion_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_arlibsversionsstate_devicelibarcommandsversion_ptr->GetCommandKey(),
                       common_arlibsversionsstate_devicelibarcommandsversion_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_audiostate_audiostreamingrunning_ptr->GetCommandKey(),
                       common_audiostate_audiostreamingrunning_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_headlightsstate_intensitychanged_ptr->GetCommandKey(),
                       common_headlightsstate_intensitychanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_animationsstate_list_ptr->GetCommandKey(),
                       common_animationsstate_list_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_accessorystate_supportedaccessorieslistchanged_ptr->GetCommandKey(),
                       common_accessorystate_supportedaccessorieslistchanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_accessorystate_accessoryconfigchanged_ptr->GetCommandKey(),
                       common_accessorystate_accessoryconfigchanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_accessorystate_accessoryconfigmodificationenabled_ptr->GetCommandKey(),
                       common_accessorystate_accessoryconfigmodificationenabled_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_chargerstate_maxchargeratechanged_ptr->GetCommandKey(),
                       common_chargerstate_maxchargeratechanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_chargerstate_currentchargestatechanged_ptr->GetCommandKey(),
                       common_chargerstate_currentchargestatechanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_chargerstate_lastchargeratechanged_ptr->GetCommandKey(),
                       common_chargerstate_lastchargeratechanged_ptr));
 // Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::CommandBase> >(
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_chargerstate_charginginfo_ptr->GetCommandKey(),
                       common_chargerstate_charginginfo_ptr));
-#endif  // BEBOP_UPDTAE_CALLBACK_MAP
+#endif  // UPDTAE_CALLBACK_MAP

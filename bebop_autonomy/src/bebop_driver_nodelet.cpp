@@ -49,10 +49,24 @@ void BebopDriverNodelet::onInit()
   do_emergency = false;
   do_land = false;
 
+  // non-dynamically reconfigurable params
+  const bool param_reset_settings = private_nh.param("reset_settings", false);
+
   NODELET_INFO("Trying to connect to Bebop ...");
   try
   {
     bebop_.Connect(nh, private_nh);
+
+    if (param_reset_settings)
+    {
+      NODELET_WARN("Resetting all settings ...");
+      bebop_.ResetAllSettings();
+    }
+
+    NODELET_INFO("Fetching all settings from the Drone ...");
+    bebop_.RequestAllSettings();
+
+    ros::Rate(0.5).sleep();
   }
   catch (const std::runtime_error& e)
   {
@@ -79,6 +93,13 @@ void BebopDriverNodelet::onInit()
 
   mainloop_thread_ptr_.reset(new boost::thread(
                                boost::bind(&bebop_autonomy::BebopDriverNodelet::BebopDriverNodelet::CameraPublisherThread, this)));
+
+  dynr_serv_ptr_.reset(new dynamic_reconfigure::Server<bebop_autonomy::BebopArdrone3Config>(private_nh));
+  dynamic_reconfigure::Server<bebop_autonomy::BebopArdrone3Config>::CallbackType cb =
+      boost::bind(&bebop_autonomy::BebopDriverNodelet::ParamCallback, this, _1, _2);
+
+  dynr_serv_ptr_->setCallback(cb);
+
   NODELET_INFO_STREAM("Nodelet lwp_id: " << util::GetLWPId());
 }
 
@@ -165,6 +186,11 @@ void BebopDriverNodelet::EmergencyCallback(const std_msgs::EmptyConstPtr& empty)
   do_emergency = true;
 }
 
+void BebopDriverNodelet::ParamCallback(BebopArdrone3Config &config, uint32_t level)
+{
+  NODELET_INFO("Dynamic reconfigure callback with level: %d, max_tilt: %.2f", level, config.PilotingSettingsMaxTiltCurrent);
+  bebop_.UpdateSettings(config);
+}
 
 // Runs its own context
 void BebopDriverNodelet::CameraPublisherThread()
