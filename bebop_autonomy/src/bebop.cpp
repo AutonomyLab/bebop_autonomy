@@ -257,7 +257,7 @@ void Bebop::ResetAllSettings()
         device_controller_ptr_->common->sendSettingsReset(device_controller_ptr_->common),
         "Reset Settings Failed");
 
-  ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "All settings of the drone has been reset to default values.");
+  ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "All settings of the drone have been reset to default values.");
 }
 
 void Bebop::UpdateSettings(const BebopArdrone3Config &config)

@@ -59,14 +59,17 @@ void BebopDriverNodelet::onInit()
 
     if (param_reset_settings)
     {
+      // This also trigger RequestAllSettings() internally
       NODELET_WARN("Resetting all settings ...");
       bebop_.ResetAllSettings();
     }
+    else
+    {
+      NODELET_INFO("Fetching all settings from the Drone ...");
+      bebop_.RequestAllSettings();
+    }
 
-    NODELET_INFO("Fetching all settings from the Drone ...");
-    bebop_.RequestAllSettings();
-
-    ros::Rate(0.5).sleep();
+    ros::Rate(0.2).sleep();
   }
   catch (const std::runtime_error& e)
   {

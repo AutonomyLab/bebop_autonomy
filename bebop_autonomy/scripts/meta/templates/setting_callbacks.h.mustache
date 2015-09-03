@@ -87,9 +87,13 @@ public:
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Checking if {{cpp_class_param_name}} exists in params ...");
       if (!priv_nh_.hasParam("{{cpp_class_param_name}}"))
       {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
+        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  No");
         priv_nh_.setParam("{{cpp_class_param_name}}", arg->value.{{cpp_class_param_sdk_type}});
         {{cpp_class_param_name}}_ = static_cast<{{cpp_class_param_type}}>(arg->value.{{cpp_class_param_sdk_type}});
+      }
+      else
+      {
+        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
       }
     }
 {{/cpp_class_params}}

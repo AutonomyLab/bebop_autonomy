@@ -5,7 +5,7 @@
  * Ardrone3_setting_callbacks.h
  * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/7e2f55fafcd45ba2380ca2574a08b7359c005f47/Xml/ARDrone3_commands.xml
  * Date: 2015-09-02
- * Generator: generate.py @ 6ca12b4
+ * Generator: generate.py @ ebb47cc
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
@@ -79,9 +79,13 @@ public:
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Checking if PilotingSettingsMaxAltitudeCurrent exists in params ...");
       if (!priv_nh_.hasParam("PilotingSettingsMaxAltitudeCurrent"))
       {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
+        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  No");
         priv_nh_.setParam("PilotingSettingsMaxAltitudeCurrent", arg->value.Float);
         PilotingSettingsMaxAltitudeCurrent_ = static_cast<double>(arg->value.Float);
+      }
+      else
+      {
+        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
       }
     }
 
@@ -146,9 +150,13 @@ public:
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Checking if PilotingSettingsMaxTiltCurrent exists in params ...");
       if (!priv_nh_.hasParam("PilotingSettingsMaxTiltCurrent"))
       {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
+        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  No");
         priv_nh_.setParam("PilotingSettingsMaxTiltCurrent", arg->value.Float);
         PilotingSettingsMaxTiltCurrent_ = static_cast<double>(arg->value.Float);
+      }
+      else
+      {
+        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
       }
     }
 
@@ -213,9 +221,13 @@ public:
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Checking if PilotingSettingsAbsolutControlOn exists in params ...");
       if (!priv_nh_.hasParam("PilotingSettingsAbsolutControlOn"))
       {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
+        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  No");
         priv_nh_.setParam("PilotingSettingsAbsolutControlOn", arg->value.U8);
         PilotingSettingsAbsolutControlOn_ = static_cast<int32_t>(arg->value.U8);
+      }
+      else
+      {
+        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
       }
     }
 
@@ -274,16 +286,20 @@ public:
 
 
     arg = NULL;
-    // Manual edit, report the bug upstream
+    // manual edit, report the bug upstream
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MAXDISTANCECHANGED_CURRENT, arg);
     if (arg)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Checking if PilotingSettingsMaxDistanceValue exists in params ...");
       if (!priv_nh_.hasParam("PilotingSettingsMaxDistanceValue"))
       {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
+        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  No");
         priv_nh_.setParam("PilotingSettingsMaxDistanceValue", arg->value.Float);
         PilotingSettingsMaxDistanceValue_ = static_cast<double>(arg->value.Float);
+      }
+      else
+      {
+        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
       }
     }
 
@@ -348,9 +364,13 @@ public:
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Checking if PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover exists in params ...");
       if (!priv_nh_.hasParam("PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover"))
       {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
+        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  No");
         priv_nh_.setParam("PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover", arg->value.U8);
         PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover_ = static_cast<int32_t>(arg->value.U8);
+      }
+      else
+      {
+        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
       }
     }
 
@@ -415,9 +435,13 @@ public:
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Checking if SpeedSettingsMaxVerticalSpeedCurrent exists in params ...");
       if (!priv_nh_.hasParam("SpeedSettingsMaxVerticalSpeedCurrent"))
       {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
+        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  No");
         priv_nh_.setParam("SpeedSettingsMaxVerticalSpeedCurrent", arg->value.Float);
         SpeedSettingsMaxVerticalSpeedCurrent_ = static_cast<double>(arg->value.Float);
+      }
+      else
+      {
+        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
       }
     }
 
@@ -482,9 +506,13 @@ public:
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Checking if SpeedSettingsMaxRotationSpeedCurrent exists in params ...");
       if (!priv_nh_.hasParam("SpeedSettingsMaxRotationSpeedCurrent"))
       {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
+        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  No");
         priv_nh_.setParam("SpeedSettingsMaxRotationSpeedCurrent", arg->value.Float);
         SpeedSettingsMaxRotationSpeedCurrent_ = static_cast<double>(arg->value.Float);
+      }
+      else
+      {
+        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
       }
     }
 
@@ -549,9 +577,13 @@ public:
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Checking if SpeedSettingsHullProtectionPresent exists in params ...");
       if (!priv_nh_.hasParam("SpeedSettingsHullProtectionPresent"))
       {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
+        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  No");
         priv_nh_.setParam("SpeedSettingsHullProtectionPresent", arg->value.U8);
         SpeedSettingsHullProtectionPresent_ = static_cast<int32_t>(arg->value.U8);
+      }
+      else
+      {
+        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
       }
     }
 
@@ -616,9 +648,13 @@ public:
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Checking if SpeedSettingsOutdoorOutdoor exists in params ...");
       if (!priv_nh_.hasParam("SpeedSettingsOutdoorOutdoor"))
       {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
+        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  No");
         priv_nh_.setParam("SpeedSettingsOutdoorOutdoor", arg->value.U8);
         SpeedSettingsOutdoorOutdoor_ = static_cast<int32_t>(arg->value.U8);
+      }
+      else
+      {
+        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
       }
     }
 
@@ -699,9 +735,13 @@ public:
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Checking if NetworkSettingsWifiSelectionType exists in params ...");
       if (!priv_nh_.hasParam("NetworkSettingsWifiSelectionType"))
       {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
+        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  No");
         priv_nh_.setParam("NetworkSettingsWifiSelectionType", arg->value.U8);
         NetworkSettingsWifiSelectionType_ = static_cast<int32_t>(arg->value.U8);
+      }
+      else
+      {
+        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
       }
     }
 
@@ -712,9 +752,13 @@ public:
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Checking if NetworkSettingsWifiSelectionBand exists in params ...");
       if (!priv_nh_.hasParam("NetworkSettingsWifiSelectionBand"))
       {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
+        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  No");
         priv_nh_.setParam("NetworkSettingsWifiSelectionBand", arg->value.U8);
         NetworkSettingsWifiSelectionBand_ = static_cast<int32_t>(arg->value.U8);
+      }
+      else
+      {
+        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
       }
     }
 
@@ -725,9 +769,13 @@ public:
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Checking if NetworkSettingsWifiSelectionChannel exists in params ...");
       if (!priv_nh_.hasParam("NetworkSettingsWifiSelectionChannel"))
       {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
+        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  No");
         priv_nh_.setParam("NetworkSettingsWifiSelectionChannel", arg->value.U8);
         NetworkSettingsWifiSelectionChannel_ = static_cast<int32_t>(arg->value.U8);
+      }
+      else
+      {
+        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
       }
     }
 
@@ -792,9 +840,13 @@ public:
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Checking if GPSSettingsHomeTypeType exists in params ...");
       if (!priv_nh_.hasParam("GPSSettingsHomeTypeType"))
       {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
+        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  No");
         priv_nh_.setParam("GPSSettingsHomeTypeType", arg->value.U8);
         GPSSettingsHomeTypeType_ = static_cast<int32_t>(arg->value.U8);
+      }
+      else
+      {
+        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
       }
     }
 
@@ -859,9 +911,13 @@ public:
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Checking if GPSSettingsReturnHomeDelayDelay exists in params ...");
       if (!priv_nh_.hasParam("GPSSettingsReturnHomeDelayDelay"))
       {
-        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
+        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  No");
         priv_nh_.setParam("GPSSettingsReturnHomeDelayDelay", arg->value.U16);
         GPSSettingsReturnHomeDelayDelay_ = static_cast<int32_t>(arg->value.U16);
+      }
+      else
+      {
+        ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
       }
     }
 
