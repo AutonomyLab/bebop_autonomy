@@ -120,6 +120,10 @@ public:
   void Takeoff();
   void Land();
   void Emergency();
+  void FlatTrim();
+  // false: Stop, true: Start
+  void NavigateHome(const bool& start_stop);
+  void AnimationFlip(const uint8_t& anim_id);
 
   // -1..1
   void Move(const double& roll, const double& pitch, const double& gaz_speed, const double& yaw_speed);

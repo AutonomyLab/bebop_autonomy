@@ -84,6 +84,9 @@ void BebopDriverNodelet::onInit()
   takeoff_sub_ = nh.subscribe("takeoff", 1, &BebopDriverNodelet::TakeoffCallback, this);
   land_sub_ = nh.subscribe("land", 1, &BebopDriverNodelet::LandCallback, this);
   reset_sub_ = nh.subscribe("reset", 1, &BebopDriverNodelet::EmergencyCallback, this);
+  flattrim_sub_ = nh.subscribe("flattrim", 1, &BebopDriverNodelet::FlatTrimCallback, this);
+  navigatehome_sub_ = nh.subscribe("navigate_home", 1, &BebopDriverNodelet::NavigateHomeCallback, this);
+  animation_sub_ = nh.subscribe("flip", 1, &BebopDriverNodelet::FlipAnimationCallback, this);
 
   cinfo_manager_ptr_.reset(new camera_info_manager::CameraInfoManager(nh, "camera", param_camera_info_url));
   image_transport_ptr_.reset(new image_transport::ImageTransport(nh));
@@ -129,13 +132,13 @@ BebopDriverNodelet::~BebopDriverNodelet()
   if (bebop_ptr_->IsConnected()) bebop_ptr_->Disconnect();
 }
 
-void BebopDriverNodelet::CmdVelCallback(const geometry_msgs::TwistConstPtr& twist)
+void BebopDriverNodelet::CmdVelCallback(const geometry_msgs::TwistConstPtr& twist_ptr)
 {
 //  NODELET_INFO_STREAM("[THREAD] CmdVel: " << boost::this_thread::get_id());
 //  NODELET_INFO("In cmd_vel callback");
   try
   {
-    bebop_twist = *twist;
+    bebop_twist = *twist_ptr;
 
     const bool is_bebop_twist_changed = !util::CompareTwists(bebop_twist, prev_bebop_twist);
 
@@ -151,7 +154,7 @@ void BebopDriverNodelet::CmdVelCallback(const geometry_msgs::TwistConstPtr& twis
   }
 }
 
-void BebopDriverNodelet::TakeoffCallback(const std_msgs::EmptyConstPtr& empty)
+void BebopDriverNodelet::TakeoffCallback(const std_msgs::EmptyConstPtr& empty_ptr)
 {
   try
   {
@@ -164,7 +167,7 @@ void BebopDriverNodelet::TakeoffCallback(const std_msgs::EmptyConstPtr& empty)
   }
 }
 
-void BebopDriverNodelet::LandCallback(const std_msgs::EmptyConstPtr& empty)
+void BebopDriverNodelet::LandCallback(const std_msgs::EmptyConstPtr& empty_ptr)
 {
   try
   {
@@ -177,11 +180,11 @@ void BebopDriverNodelet::LandCallback(const std_msgs::EmptyConstPtr& empty)
   }
 }
 
-void BebopDriverNodelet::CameraMoveCallback(const geometry_msgs::TwistConstPtr& twist)
+void BebopDriverNodelet::CameraMoveCallback(const geometry_msgs::TwistConstPtr& twist_ptr)
 {
   try
   {
-    camera_twist = *twist;
+    camera_twist = *twist_ptr;
     const bool is_camera_twist_changed = !util::CompareTwists(camera_twist, prev_camera_twist);
     if (is_camera_twist_changed)
     {
@@ -195,12 +198,53 @@ void BebopDriverNodelet::CameraMoveCallback(const geometry_msgs::TwistConstPtr& 
   }
 }
 
-void BebopDriverNodelet::EmergencyCallback(const std_msgs::EmptyConstPtr& empty)
+void BebopDriverNodelet::EmergencyCallback(const std_msgs::EmptyConstPtr& empty_ptr)
 {
   try
   {
     util::ResetTwist(bebop_twist);
     bebop_ptr_->Emergency();
+  }
+  catch (const std::runtime_error& e)
+  {
+    ROS_ERROR_STREAM(e.what());
+  }
+}
+
+void BebopDriverNodelet::FlatTrimCallback(const std_msgs::EmptyConstPtr &empty_ptr)
+{
+  try
+  {
+    // TODO: Check if landed
+    ROS_INFO("Flat Trim");
+    bebop_ptr_->FlatTrim();
+  }
+  catch (const std::runtime_error& e)
+  {
+    ROS_ERROR_STREAM(e.what());
+  }
+}
+
+void BebopDriverNodelet::NavigateHomeCallback(const std_msgs::BoolConstPtr &start_stop_ptr)
+{
+  try
+  {
+    ROS_INFO("%sing navigate home behavior ...", start_stop_ptr->data ? "Start" : "Stopp");
+    bebop_ptr_->NavigateHome(start_stop_ptr->data);
+  }
+  catch (const std::runtime_error& e)
+  {
+    ROS_ERROR_STREAM(e.what());
+  }
+}
+
+void BebopDriverNodelet::FlipAnimationCallback(const std_msgs::UInt8ConstPtr &animid_ptr)
+{
+  try
+  {
+    // TODO: Check if flying
+    ROS_INFO("Performing flip animation %d ...", animid_ptr->data);
+    bebop_ptr_->AnimationFlip(animid_ptr->data);
   }
   catch (const std::runtime_error& e)
   {

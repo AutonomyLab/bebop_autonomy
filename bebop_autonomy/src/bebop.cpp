@@ -364,6 +364,34 @@ void Bebop::Emergency()
         "Emergency failed");
 }
 
+void Bebop::FlatTrim()
+{
+  ThrowOnInternalError("FlatTrim failed");
+  ThrowOnCtrlError(
+        device_controller_ptr_->aRDrone3->sendPilotingFlatTrim(device_controller_ptr_->aRDrone3),
+        "FlatTrim failed");
+}
+
+void Bebop::NavigateHome(const bool &start_stop)
+{
+  ThrowOnInternalError("Navigate home failed");
+  ThrowOnCtrlError(
+        device_controller_ptr_->aRDrone3->sendPilotingNavigateHome(device_controller_ptr_->aRDrone3, start_stop ? 1 : 0),
+        "Navigate home failed");
+}
+
+void Bebop::AnimationFlip(const uint8_t &anim_id)
+{
+  ThrowOnInternalError("Animation failed");
+  if (anim_id >= ARCOMMANDS_ARDRONE3_ANIMATIONS_FLIP_DIRECTION_MAX)
+  {
+    throw std::runtime_error("Inavlid animation id");
+  }
+  ThrowOnCtrlError(
+        device_controller_ptr_->aRDrone3->sendAnimationsFlip(
+          device_controller_ptr_->aRDrone3, static_cast<eARCOMMANDS_ARDRONE3_ANIMATIONS_FLIP_DIRECTION>(anim_id)),
+        "Navigate home failed");
+}
 
 void Bebop::Move(const double &roll, const double &pitch, const double &gaz_speed, const double &yaw_speed)
 {

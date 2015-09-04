@@ -7,6 +7,8 @@
 #include <nodelet/nodelet.h>
 #include <geometry_msgs/Twist.h>
 #include <std_msgs/Empty.h>
+#include <std_msgs/UInt8.h>
+#include <std_msgs/Bool.h>
 #include <camera_info_manager/camera_info_manager.h>
 #include <image_transport/image_transport.h>
 #include <dynamic_reconfigure/server.h>
@@ -75,6 +77,9 @@ private:
   ros::Subscriber takeoff_sub_;
   ros::Subscriber land_sub_;
   ros::Subscriber reset_sub_;
+  ros::Subscriber flattrim_sub_;
+  ros::Subscriber navigatehome_sub_;
+  ros::Subscriber animation_sub_;
 
   boost::shared_ptr<camera_info_manager::CameraInfoManager> cinfo_manager_ptr_;
   boost::shared_ptr<image_transport::ImageTransport> image_transport_ptr_;
@@ -94,11 +99,14 @@ private:
 //private:
 //  volatile bool running_;
 
-  void CmdVelCallback(const geometry_msgs::TwistConstPtr& twist);
-  void CameraMoveCallback(const geometry_msgs::TwistConstPtr& twist);
-  void TakeoffCallback(const std_msgs::EmptyConstPtr& empty);
-  void LandCallback(const std_msgs::EmptyConstPtr& empty);
-  void EmergencyCallback(const std_msgs::EmptyConstPtr& empty);
+  void CmdVelCallback(const geometry_msgs::TwistConstPtr& twist_ptr);
+  void CameraMoveCallback(const geometry_msgs::TwistConstPtr& twist_ptr);
+  void TakeoffCallback(const std_msgs::EmptyConstPtr& empty_ptr);
+  void LandCallback(const std_msgs::EmptyConstPtr& empty_ptr);
+  void EmergencyCallback(const std_msgs::EmptyConstPtr& empty_ptr);
+  void FlatTrimCallback(const std_msgs::EmptyConstPtr& empty_ptr);
+  void NavigateHomeCallback(const std_msgs::BoolConstPtr& start_stop_ptr);
+  void FlipAnimationCallback(const std_msgs::UInt8ConstPtr& animid_ptr);
 
   void ParamCallback(bebop_autonomy::BebopArdrone3Config &config, uint32_t level);
 
