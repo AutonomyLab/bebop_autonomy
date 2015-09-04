@@ -5,6 +5,15 @@
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
+#ifdef FORWARD_DECLARATIONS
+namespace cb
+{
+{{#cpp_class}}
+  class {{cpp_class_name}};
+{{/cpp_class}}
+}  // namespace cb
+#endif  // FORWARD_DECLARATIONS
+
 #ifdef DEFINE_SHARED_PTRS
 // Define all callback wrappers
 {{#cpp_class}}

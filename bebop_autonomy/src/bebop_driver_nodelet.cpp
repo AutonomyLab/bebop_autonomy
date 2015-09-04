@@ -9,6 +9,7 @@
 #include <cstdio>
 
 #include <bebop_autonomy/bebop_driver_nodelet.h>
+#include <bebop_autonomy/BebopArdrone3Config.h>
 
 PLUGINLIB_EXPORT_CLASS(bebop_autonomy::BebopDriverNodelet, nodelet::Nodelet)
 
@@ -32,7 +33,7 @@ int BebopPrintToROSLogCB(eARSAL_PRINT_LEVEL level, const char *tag, const char *
 }  // namespace util
 
 BebopDriverNodelet::BebopDriverNodelet()
-  : bebop_(util::BebopPrintToROSLogCB)
+  : bebop_ptr_(new bebop_autonomy::Bebop(util::BebopPrintToROSLogCB))
 //    : running_(false)
 {
   NODELET_INFO("Nodelet Cstr");
@@ -57,18 +58,18 @@ void BebopDriverNodelet::onInit()
   NODELET_INFO("Connecting to Bebop ...");
   try
   {
-    bebop_.Connect(nh, private_nh);
+    bebop_ptr_->Connect(nh, private_nh);
 
     if (param_reset_settings)
     {
       NODELET_WARN("Resetting all settings ...");
-      bebop_.ResetAllSettings();
+      bebop_ptr_->ResetAllSettings();
       // Wait for 5 seconds
       ros::Rate(ros::Duration(3.0)).sleep();
     }
 
     NODELET_INFO("Fetching all settings from the Drone ...");
-    bebop_.RequestAllSettings();
+    bebop_ptr_->RequestAllSettings();
     ros::Rate(ros::Duration(3.0)).sleep();
   }
   catch (const std::runtime_error& e)
@@ -99,7 +100,7 @@ void BebopDriverNodelet::onInit()
   try
   {
     NODELET_INFO("Enabling video stream ...");
-    bebop_.StartStreaming();
+    bebop_ptr_->StartStreaming();
   }
   catch (const::std::runtime_error& e)
   {
@@ -107,7 +108,7 @@ void BebopDriverNodelet::onInit()
     // TODO: Retry mechanism
   }
 
-  if (bebop_.IsStreamingStarted())
+  if (bebop_ptr_->IsStreamingStarted())
   {
     mainloop_thread_ptr_ = boost::make_shared<boost::thread>(
           boost::bind(&bebop_autonomy::BebopDriverNodelet::BebopDriverNodelet::CameraPublisherThread, this));
@@ -118,14 +119,14 @@ void BebopDriverNodelet::onInit()
 
 BebopDriverNodelet::~BebopDriverNodelet()
 {
-  NODELET_INFO_STREAM("Bebop Nodelet Dstr: " << bebop_.IsConnected());
+  NODELET_INFO_STREAM("Bebop Nodelet Dstr: " << bebop_ptr_->IsConnected());
   if (mainloop_thread_ptr_)
   {
     mainloop_thread_ptr_->interrupt();
     mainloop_thread_ptr_->join();
   }
-  if (bebop_.IsStreamingStarted()) bebop_.StopStreaming();
-  if (bebop_.IsConnected()) bebop_.Disconnect();
+  if (bebop_ptr_->IsStreamingStarted()) bebop_ptr_->StopStreaming();
+  if (bebop_ptr_->IsConnected()) bebop_ptr_->Disconnect();
 }
 
 void BebopDriverNodelet::CmdVelCallback(const geometry_msgs::TwistConstPtr& twist)
@@ -140,7 +141,7 @@ void BebopDriverNodelet::CmdVelCallback(const geometry_msgs::TwistConstPtr& twis
 
     if (is_bebop_twist_changed)
     {
-      bebop_.Move(bebop_twist.linear.y, bebop_twist.linear.x, bebop_twist.linear.z, bebop_twist.angular.z);
+      bebop_ptr_->Move(bebop_twist.linear.y, bebop_twist.linear.x, bebop_twist.linear.z, bebop_twist.angular.z);
       prev_bebop_twist = bebop_twist;
     }
   }
@@ -155,7 +156,7 @@ void BebopDriverNodelet::TakeoffCallback(const std_msgs::EmptyConstPtr& empty)
   try
   {
    util::ResetTwist(bebop_twist);
-   bebop_.Takeoff();
+   bebop_ptr_->Takeoff();
   }
   catch (const std::runtime_error& e)
   {
@@ -168,7 +169,7 @@ void BebopDriverNodelet::LandCallback(const std_msgs::EmptyConstPtr& empty)
   try
   {
     util::ResetTwist(bebop_twist);
-    bebop_.Land();
+    bebop_ptr_->Land();
   }
   catch (const std::runtime_error& e)
   {
@@ -184,7 +185,7 @@ void BebopDriverNodelet::CameraMoveCallback(const geometry_msgs::TwistConstPtr& 
     const bool is_camera_twist_changed = !util::CompareTwists(camera_twist, prev_camera_twist);
     if (is_camera_twist_changed)
     {
-      bebop_.MoveCamera(camera_twist.linear.y, camera_twist.angular.z);
+      bebop_ptr_->MoveCamera(camera_twist.linear.y, camera_twist.angular.z);
       prev_camera_twist = camera_twist;
     }
   }
@@ -199,7 +200,7 @@ void BebopDriverNodelet::EmergencyCallback(const std_msgs::EmptyConstPtr& empty)
   try
   {
     util::ResetTwist(bebop_twist);
-    bebop_.Emergency();
+    bebop_ptr_->Emergency();
   }
   catch (const std::runtime_error& e)
   {
@@ -210,7 +211,7 @@ void BebopDriverNodelet::EmergencyCallback(const std_msgs::EmptyConstPtr& empty)
 void BebopDriverNodelet::ParamCallback(BebopArdrone3Config &config, uint32_t level)
 {
   NODELET_INFO("Dynamic reconfigure callback with level: %d", level);
-  bebop_.UpdateSettings(config);
+  bebop_ptr_->UpdateSettings(config);
 }
 
 // Runs its own context
@@ -227,7 +228,7 @@ void BebopDriverNodelet::CameraPublisherThread()
       sensor_msgs::ImagePtr image_msg_ptr_(new sensor_msgs::Image());
 
       NODELET_DEBUG_STREAM("Grabbing a frame from Bebop");
-      bebop_.GetFrontCameraFrame(image_msg_ptr_->data, frame_w, frame_h);
+      bebop_ptr_->GetFrontCameraFrame(image_msg_ptr_->data, frame_w, frame_h);
 
       NODELET_DEBUG_STREAM("Frame grabbed: " << frame_w << " , " << frame_h);
       camera_info_msg_ptr_->header.stamp = ros::Time::now();

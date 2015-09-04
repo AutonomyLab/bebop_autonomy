@@ -12,10 +12,11 @@
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/lock_guard.hpp>
 
-#include "bebop_autonomy/BebopArdrone3Config.h"
-
 namespace bebop_autonomy
 {
+
+// Forward decl
+class BebopArdrone3Config;
 
 namespace cb
 {

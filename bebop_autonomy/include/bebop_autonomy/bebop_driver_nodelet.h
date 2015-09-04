@@ -15,7 +15,6 @@
 #include <boost/shared_ptr.hpp>
 
 #include "bebop_autonomy/bebop.h"
-#include "bebop_autonomy/BebopArdrone3Config.h"
 
 namespace bebop_autonomy
 {
@@ -56,10 +55,14 @@ namespace util
   int BebopPrintToROSLogCB (eARSAL_PRINT_LEVEL level, const char *tag, const char *format, va_list va);
 }  // namespace util
 
+// Forward decl
+class BebopArdrone3Config;
+class Bebop;
+
 class BebopDriverNodelet : public nodelet::Nodelet
 {
 private:
-  bebop_autonomy::Bebop bebop_;
+  boost::shared_ptr<bebop_autonomy::Bebop> bebop_ptr_;
   boost::shared_ptr<boost::thread> mainloop_thread_ptr_;
 
   geometry_msgs::Twist bebop_twist;

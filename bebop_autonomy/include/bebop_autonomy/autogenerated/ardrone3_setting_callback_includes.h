@@ -5,6 +5,24 @@
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
+#ifdef FORWARD_DECLARATIONS
+namespace cb
+{
+  class PilotingSettingsMaxAltitude;
+  class PilotingSettingsMaxTilt;
+  class PilotingSettingsAbsolutControl;
+  class PilotingSettingsMaxDistance;
+  class PilotingSettingsNoFlyOverMaxDistance;
+  class SpeedSettingsMaxVerticalSpeed;
+  class SpeedSettingsMaxRotationSpeed;
+  class SpeedSettingsHullProtection;
+  class SpeedSettingsOutdoor;
+  class NetworkSettingsWifiSelection;
+  class GPSSettingsHomeType;
+  class GPSSettingsReturnHomeDelay;
+}  // namespace cb
+#endif  // FORWARD_DECLARATIONS
+
 #ifdef DEFINE_SHARED_PTRS
 // Define all callback wrappers
 boost::shared_ptr<cb::PilotingSettingsMaxAltitude> ardrone3_pilotingsettings_maxaltitude_ptr;

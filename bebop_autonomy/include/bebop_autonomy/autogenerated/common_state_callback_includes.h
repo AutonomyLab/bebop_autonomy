@@ -5,6 +5,47 @@
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
+#ifdef FORWARD_DECLARATIONS
+namespace cb
+{
+  class CommonCommonStateAllStatesChanged;
+  class CommonCommonStateBatteryStateChanged;
+  class CommonCommonStateMassStorageStateListChanged;
+  class CommonCommonStateMassStorageInfoStateListChanged;
+  class CommonCommonStateCurrentDateChanged;
+  class CommonCommonStateCurrentTimeChanged;
+  class CommonCommonStateMassStorageInfoRemainingListChanged;
+  class CommonCommonStateWifiSignalChanged;
+  class CommonCommonStateSensorsStatesListChanged;
+  class CommonCommonStateProductModel;
+  class CommonCommonStateCountryListKnown;
+  class CommonOverHeatStateOverHeatChanged;
+  class CommonOverHeatStateOverHeatRegulationChanged;
+  class CommonControllerStateisPilotingChanged;
+  class CommonMavlinkStateMavlinkFilePlayingStateChanged;
+  class CommonMavlinkStateMavlinkPlayErrorStateChanged;
+  class CommonCalibrationStateMagnetoCalibrationStateChanged;
+  class CommonCalibrationStateMagnetoCalibrationRequiredState;
+  class CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged;
+  class CommonCalibrationStateMagnetoCalibrationStartedChanged;
+  class CommonFlightPlanStateAvailabilityStateChanged;
+  class CommonFlightPlanStateComponentStateListChanged;
+  class CommonARLibsVersionsStateControllerLibARCommandsVersion;
+  class CommonARLibsVersionsStateSkyControllerLibARCommandsVersion;
+  class CommonARLibsVersionsStateDeviceLibARCommandsVersion;
+  class CommonAudioStateAudioStreamingRunning;
+  class CommonHeadlightsStateintensityChanged;
+  class CommonAnimationsStateList;
+  class CommonAccessoryStateSupportedAccessoriesListChanged;
+  class CommonAccessoryStateAccessoryConfigChanged;
+  class CommonAccessoryStateAccessoryConfigModificationEnabled;
+  class CommonChargerStateMaxChargeRateChanged;
+  class CommonChargerStateCurrentChargeStateChanged;
+  class CommonChargerStateLastChargeRateChanged;
+  class CommonChargerStateChargingInfo;
+}  // namespace cb
+#endif  // FORWARD_DECLARATIONS
+
 #ifdef DEFINE_SHARED_PTRS
 // Define all callback wrappers
 boost::shared_ptr<cb::CommonCommonStateAllStatesChanged> common_commonstate_allstateschanged_ptr;

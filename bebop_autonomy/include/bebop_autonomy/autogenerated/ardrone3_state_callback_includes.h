@@ -5,6 +5,37 @@
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
+#ifdef FORWARD_DECLARATIONS
+namespace cb
+{
+  class Ardrone3MediaRecordStatePictureStateChanged;
+  class Ardrone3MediaRecordStateVideoStateChanged;
+  class Ardrone3MediaRecordStatePictureStateChangedV2;
+  class Ardrone3MediaRecordStateVideoStateChangedV2;
+  class Ardrone3PilotingStateFlatTrimChanged;
+  class Ardrone3PilotingStateFlyingStateChanged;
+  class Ardrone3PilotingStateAlertStateChanged;
+  class Ardrone3PilotingStateNavigateHomeStateChanged;
+  class Ardrone3PilotingStatePositionChanged;
+  class Ardrone3PilotingStateSpeedChanged;
+  class Ardrone3PilotingStateAttitudeChanged;
+  class Ardrone3PilotingStateAutoTakeOffModeChanged;
+  class Ardrone3PilotingStateAltitudeChanged;
+  class Ardrone3NetworkStateWifiScanListChanged;
+  class Ardrone3NetworkStateAllWifiScanChanged;
+  class Ardrone3NetworkStateWifiAuthChannelListChanged;
+  class Ardrone3NetworkStateAllWifiAuthChannelChanged;
+  class Ardrone3MediaStreamingStateVideoEnableChanged;
+  class Ardrone3CameraStateOrientation;
+  class Ardrone3AntiflickeringStateelectricFrequencyChanged;
+  class Ardrone3AntiflickeringStatemodeChanged;
+  class Ardrone3GPSStateNumberOfSatelliteChanged;
+  class Ardrone3GPSStateHomeTypeAvailabilityChanged;
+  class Ardrone3GPSStateHomeTypeChosenChanged;
+  class Ardrone3PROStateFeatures;
+}  // namespace cb
+#endif  // FORWARD_DECLARATIONS
+
 #ifdef DEFINE_SHARED_PTRS
 // Define all callback wrappers
 boost::shared_ptr<cb::Ardrone3MediaRecordStatePictureStateChanged> ardrone3_mediarecordstate_picturestatechanged_ptr;

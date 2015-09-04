@@ -3,7 +3,6 @@
 
 extern "C"
 {
-  #include "libARSAL/ARSAL_Print.h"
   #include "libARController/ARCONTROLLER_Error.h"
   #include "libARController/ARCONTROLLER_Frame.h"
   #include <libavcodec/avcodec.h>

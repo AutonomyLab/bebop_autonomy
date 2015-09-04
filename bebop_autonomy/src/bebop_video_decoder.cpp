@@ -4,6 +4,11 @@
 #include <boost/thread/lock_guard.hpp>
 #include <algorithm>
 
+extern "C"
+{
+  #include "libARSAL/ARSAL_Print.h"
+}
+
 namespace bebop_autonomy
 {
 
@@ -86,7 +91,6 @@ bool VideoDecoder::InitCodec(const uint32_t width, const uint32_t height)
                           codec_ctx_ptr_->width, codec_ctx_ptr_->height),
                         "Failed to initialize the picture data structure.");
     }
-
     av_init_packet(&packet_);
   }
   catch (const std::runtime_error& e)
