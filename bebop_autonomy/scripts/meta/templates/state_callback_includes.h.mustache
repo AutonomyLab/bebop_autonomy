@@ -15,7 +15,7 @@ boost::shared_ptr<cb::{{cpp_class_name}}> {{cpp_class_instance_name}};
 #ifdef UPDTAE_CALLBACK_MAP
 // Instantiate state callback wrappers
 {{#cpp_class}}
-{{cpp_class_instance_name}}.reset(new cb::{{cpp_class_name}}(nh, "{{topic_name}}"));
+{{cpp_class_instance_name}}.reset(new cb::{{cpp_class_name}}(nh, priv_nh, "{{topic_name}}"));
 {{/cpp_class}}
 
 {{#cpp_class}}

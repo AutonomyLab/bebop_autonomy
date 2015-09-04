@@ -26,11 +26,12 @@
             <param name="enable_gpsstate_numberofsatellitechanged" value="true" />
             <param name="enable_numberofsatellitechanged" value="true" />
 
-            <param name="reset_settings" value="true" />
+            <param name="reset_settings" value="false" />
+            <!--param name="PilotingSettingsMaxAltitudeCurrent" value="60" /-->
         </node>
         <node pkg="nodelet" type="nodelet" name="bebop_image_view_nodelet"
           args="load image_view/image bebop_nodelet_manager">
-          <remap from="image" to="bebop/image_raw" />
+          <remap from="image" to="image_raw" />
         </node>
     </group>
 </launch>

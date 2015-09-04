@@ -4,7 +4,7 @@
 /*
  * common_state_callbacks.h
  * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/7e2f55fafcd45ba2380ca2574a08b7359c005f47/Xml/common_commands.xml
- * Date: 2015-09-02
+ * Date: 2015-09-03
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
@@ -66,10 +66,9 @@ private:
 
 public:
 
-  CommonCommonStateAllStatesChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonCommonStateAllStatesChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_ALLSTATESCHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_commonstate_allstateschanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -111,10 +110,9 @@ private:
 
 public:
 
-  CommonCommonStateBatteryStateChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonCommonStateBatteryStateChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_BATTERYSTATECHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_commonstate_batterystatechanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -163,10 +161,9 @@ private:
 
 public:
 
-  CommonCommonStateMassStorageStateListChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonCommonStateMassStorageStateListChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGESTATELISTCHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_commonstate_massstoragestatelistchanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -222,10 +219,9 @@ private:
 
 public:
 
-  CommonCommonStateMassStorageInfoStateListChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonCommonStateMassStorageInfoStateListChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOSTATELISTCHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_commonstate_massstorageinfostatelistchanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -309,10 +305,9 @@ private:
 
 public:
 
-  CommonCommonStateCurrentDateChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonCommonStateCurrentDateChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_CURRENTDATECHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_commonstate_currentdatechanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -361,10 +356,9 @@ private:
 
 public:
 
-  CommonCommonStateCurrentTimeChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonCommonStateCurrentTimeChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_CURRENTTIMECHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_commonstate_currenttimechanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -413,10 +407,9 @@ private:
 
 public:
 
-  CommonCommonStateMassStorageInfoRemainingListChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonCommonStateMassStorageInfoRemainingListChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGEINFOREMAININGLISTCHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_commonstate_massstorageinforemaininglistchanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -479,10 +472,9 @@ private:
 
 public:
 
-  CommonCommonStateWifiSignalChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonCommonStateWifiSignalChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_WIFISIGNALCHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_commonstate_wifisignalchanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -531,10 +523,9 @@ private:
 
 public:
 
-  CommonCommonStateSensorsStatesListChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonCommonStateSensorsStatesListChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_SENSORSSTATESLISTCHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_commonstate_sensorsstateslistchanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -566,7 +557,7 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_SENSORSSTATESLISTCHANGED_SENSORNAME, arg);
     if (arg)
     {
-      msg_ptr->sensorName = arg->value.U8;
+      msg_ptr->sensorName = arg->value.I32;
     }
 
     arg = NULL;
@@ -590,10 +581,9 @@ private:
 
 public:
 
-  CommonCommonStateProductModel(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonCommonStateProductModel(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_PRODUCTMODEL)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_commonstate_productmodel", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -625,7 +615,7 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_PRODUCTMODEL_MODEL, arg);
     if (arg)
     {
-      msg_ptr->model = arg->value.U8;
+      msg_ptr->model = arg->value.I32;
     }
 
     if (pub_enabled_) ros_pub_.publish(msg_ptr);
@@ -642,10 +632,9 @@ private:
 
 public:
 
-  CommonCommonStateCountryListKnown(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonCommonStateCountryListKnown(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_commonstate_countrylistknown", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -694,10 +683,9 @@ private:
 
 public:
 
-  CommonOverHeatStateOverHeatChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonOverHeatStateOverHeatChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_OVERHEATSTATE_OVERHEATCHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_overheatstate_overheatchanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -739,10 +727,9 @@ private:
 
 public:
 
-  CommonOverHeatStateOverHeatRegulationChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonOverHeatStateOverHeatRegulationChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_OVERHEATSTATE_OVERHEATREGULATIONCHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_overheatstate_overheatregulationchanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -791,10 +778,9 @@ private:
 
 public:
 
-  CommonControllerStateisPilotingChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonControllerStateisPilotingChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_CONTROLLERSTATE_ISPILOTINGCHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_controllerstate_ispilotingchanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -843,10 +829,9 @@ private:
 
 public:
 
-  CommonMavlinkStateMavlinkFilePlayingStateChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonMavlinkStateMavlinkFilePlayingStateChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKFILEPLAYINGSTATECHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_mavlinkstate_mavlinkfileplayingstatechanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -878,7 +863,7 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKFILEPLAYINGSTATECHANGED_STATE, arg);
     if (arg)
     {
-      msg_ptr->state = arg->value.U8;
+      msg_ptr->state = arg->value.I32;
     }
 
     arg = NULL;
@@ -892,7 +877,7 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKFILEPLAYINGSTATECHANGED_TYPE, arg);
     if (arg)
     {
-      msg_ptr->type = arg->value.U8;
+      msg_ptr->type = arg->value.I32;
     }
 
     if (pub_enabled_) ros_pub_.publish(msg_ptr);
@@ -909,10 +894,9 @@ private:
 
 public:
 
-  CommonMavlinkStateMavlinkPlayErrorStateChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonMavlinkStateMavlinkPlayErrorStateChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKPLAYERRORSTATECHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_mavlinkstate_mavlinkplayerrorstatechanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -944,7 +928,7 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MAVLINKPLAYERRORSTATECHANGED_ERROR, arg);
     if (arg)
     {
-      msg_ptr->error = arg->value.U8;
+      msg_ptr->error = arg->value.I32;
     }
 
     if (pub_enabled_) ros_pub_.publish(msg_ptr);
@@ -961,10 +945,9 @@ private:
 
 public:
 
-  CommonCalibrationStateMagnetoCalibrationStateChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonCalibrationStateMagnetoCalibrationStateChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTATECHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_calibrationstate_magnetocalibrationstatechanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -1034,10 +1017,9 @@ private:
 
 public:
 
-  CommonCalibrationStateMagnetoCalibrationRequiredState(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonCalibrationStateMagnetoCalibrationRequiredState(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONREQUIREDSTATE)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_calibrationstate_magnetocalibrationrequiredstate", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -1086,10 +1068,9 @@ private:
 
 public:
 
-  CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONAXISTOCALIBRATECHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_calibrationstate_magnetocalibrationaxistocalibratechanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -1121,7 +1102,7 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONAXISTOCALIBRATECHANGED_AXIS, arg);
     if (arg)
     {
-      msg_ptr->axis = arg->value.U8;
+      msg_ptr->axis = arg->value.I32;
     }
 
     if (pub_enabled_) ros_pub_.publish(msg_ptr);
@@ -1138,10 +1119,9 @@ private:
 
 public:
 
-  CommonCalibrationStateMagnetoCalibrationStartedChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonCalibrationStateMagnetoCalibrationStartedChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_MAGNETOCALIBRATIONSTARTEDCHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_calibrationstate_magnetocalibrationstartedchanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -1190,10 +1170,9 @@ private:
 
 public:
 
-  CommonFlightPlanStateAvailabilityStateChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonFlightPlanStateAvailabilityStateChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_FLIGHTPLANSTATE_AVAILABILITYSTATECHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_flightplanstate_availabilitystatechanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -1242,10 +1221,9 @@ private:
 
 public:
 
-  CommonFlightPlanStateComponentStateListChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonFlightPlanStateComponentStateListChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_FLIGHTPLANSTATE_COMPONENTSTATELISTCHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_flightplanstate_componentstatelistchanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -1277,7 +1255,7 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_FLIGHTPLANSTATE_COMPONENTSTATELISTCHANGED_COMPONENT, arg);
     if (arg)
     {
-      msg_ptr->component = arg->value.U8;
+      msg_ptr->component = arg->value.I32;
     }
 
     arg = NULL;
@@ -1301,10 +1279,9 @@ private:
 
 public:
 
-  CommonARLibsVersionsStateControllerLibARCommandsVersion(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonARLibsVersionsStateControllerLibARCommandsVersion(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_ARLIBSVERSIONSSTATE_CONTROLLERLIBARCOMMANDSVERSION)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_arlibsversionsstate_controllerlibarcommandsversion", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -1353,10 +1330,9 @@ private:
 
 public:
 
-  CommonARLibsVersionsStateSkyControllerLibARCommandsVersion(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonARLibsVersionsStateSkyControllerLibARCommandsVersion(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_ARLIBSVERSIONSSTATE_SKYCONTROLLERLIBARCOMMANDSVERSION)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_arlibsversionsstate_skycontrollerlibarcommandsversion", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -1405,10 +1381,9 @@ private:
 
 public:
 
-  CommonARLibsVersionsStateDeviceLibARCommandsVersion(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonARLibsVersionsStateDeviceLibARCommandsVersion(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_ARLIBSVERSIONSSTATE_DEVICELIBARCOMMANDSVERSION)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_arlibsversionsstate_devicelibarcommandsversion", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -1457,10 +1432,9 @@ private:
 
 public:
 
-  CommonAudioStateAudioStreamingRunning(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonAudioStateAudioStreamingRunning(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_AUDIOSTATE_AUDIOSTREAMINGRUNNING)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_audiostate_audiostreamingrunning", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -1509,10 +1483,9 @@ private:
 
 public:
 
-  CommonHeadlightsStateintensityChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonHeadlightsStateintensityChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_HEADLIGHTSSTATE_INTENSITYCHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_headlightsstate_intensitychanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -1568,10 +1541,9 @@ private:
 
 public:
 
-  CommonAnimationsStateList(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonAnimationsStateList(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_ANIMATIONSSTATE_LIST)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_animationsstate_list", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -1603,21 +1575,21 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_ANIMATIONSSTATE_LIST_ANIM, arg);
     if (arg)
     {
-      msg_ptr->anim = arg->value.U8;
+      msg_ptr->anim = arg->value.I32;
     }
 
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_ANIMATIONSSTATE_LIST_STATE, arg);
     if (arg)
     {
-      msg_ptr->state = arg->value.U8;
+      msg_ptr->state = arg->value.I32;
     }
 
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_ANIMATIONSSTATE_LIST_ERROR, arg);
     if (arg)
     {
-      msg_ptr->error = arg->value.U8;
+      msg_ptr->error = arg->value.I32;
     }
 
     if (pub_enabled_) ros_pub_.publish(msg_ptr);
@@ -1634,10 +1606,9 @@ private:
 
 public:
 
-  CommonAccessoryStateSupportedAccessoriesListChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonAccessoryStateSupportedAccessoriesListChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_SUPPORTEDACCESSORIESLISTCHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_accessorystate_supportedaccessorieslistchanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -1669,7 +1640,7 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_SUPPORTEDACCESSORIESLISTCHANGED_ACCESSORY, arg);
     if (arg)
     {
-      msg_ptr->accessory = arg->value.U8;
+      msg_ptr->accessory = arg->value.I32;
     }
 
     if (pub_enabled_) ros_pub_.publish(msg_ptr);
@@ -1686,10 +1657,9 @@ private:
 
 public:
 
-  CommonAccessoryStateAccessoryConfigChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonAccessoryStateAccessoryConfigChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_ACCESSORYCONFIGCHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_accessorystate_accessoryconfigchanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -1721,14 +1691,14 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_ACCESSORYCONFIGCHANGED_NEWACCESSORY, arg);
     if (arg)
     {
-      msg_ptr->newAccessory = arg->value.U8;
+      msg_ptr->newAccessory = arg->value.I32;
     }
 
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_ACCESSORYCONFIGCHANGED_ERROR, arg);
     if (arg)
     {
-      msg_ptr->error = arg->value.U8;
+      msg_ptr->error = arg->value.I32;
     }
 
     if (pub_enabled_) ros_pub_.publish(msg_ptr);
@@ -1745,10 +1715,9 @@ private:
 
 public:
 
-  CommonAccessoryStateAccessoryConfigModificationEnabled(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonAccessoryStateAccessoryConfigModificationEnabled(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_ACCESSORYSTATE_ACCESSORYCONFIGMODIFICATIONENABLED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_accessorystate_accessoryconfigmodificationenabled", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -1797,10 +1766,9 @@ private:
 
 public:
 
-  CommonChargerStateMaxChargeRateChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonChargerStateMaxChargeRateChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_MAXCHARGERATECHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_chargerstate_maxchargeratechanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -1832,7 +1800,7 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_MAXCHARGERATECHANGED_RATE, arg);
     if (arg)
     {
-      msg_ptr->rate = arg->value.U8;
+      msg_ptr->rate = arg->value.I32;
     }
 
     if (pub_enabled_) ros_pub_.publish(msg_ptr);
@@ -1849,10 +1817,9 @@ private:
 
 public:
 
-  CommonChargerStateCurrentChargeStateChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonChargerStateCurrentChargeStateChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CURRENTCHARGESTATECHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_chargerstate_currentchargestatechanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -1884,14 +1851,14 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CURRENTCHARGESTATECHANGED_STATUS, arg);
     if (arg)
     {
-      msg_ptr->status = arg->value.U8;
+      msg_ptr->status = arg->value.I32;
     }
 
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CURRENTCHARGESTATECHANGED_PHASE, arg);
     if (arg)
     {
-      msg_ptr->phase = arg->value.U8;
+      msg_ptr->phase = arg->value.I32;
     }
 
     if (pub_enabled_) ros_pub_.publish(msg_ptr);
@@ -1908,10 +1875,9 @@ private:
 
 public:
 
-  CommonChargerStateLastChargeRateChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonChargerStateLastChargeRateChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_LASTCHARGERATECHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_chargerstate_lastchargeratechanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -1943,7 +1909,7 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_LASTCHARGERATECHANGED_RATE, arg);
     if (arg)
     {
-      msg_ptr->rate = arg->value.U8;
+      msg_ptr->rate = arg->value.I32;
     }
 
     if (pub_enabled_) ros_pub_.publish(msg_ptr);
@@ -1960,10 +1926,9 @@ private:
 
 public:
 
-  CommonChargerStateChargingInfo(::ros::NodeHandle& nh, const ::std::string& topic)
+  CommonChargerStateChargingInfo(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_chargerstate_charginginfo", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -1995,14 +1960,14 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO_PHASE, arg);
     if (arg)
     {
-      msg_ptr->phase = arg->value.U8;
+      msg_ptr->phase = arg->value.I32;
     }
 
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_CHARGERSTATE_CHARGINGINFO_RATE, arg);
     if (arg)
     {
-      msg_ptr->rate = arg->value.U8;
+      msg_ptr->rate = arg->value.I32;
     }
 
     arg = NULL;

@@ -63,8 +63,8 @@ protected:
   ros::NodeHandle priv_nh_;
 
 public:
-  AbstractSetting(eARCONTROLLER_DICTIONARY_KEY cmd_key)
-    : AbstractCommand(cmd_key), priv_nh_("~")
+  AbstractSetting(eARCONTROLLER_DICTIONARY_KEY cmd_key, ros::NodeHandle& priv_nh)
+    : AbstractCommand(cmd_key), priv_nh_(priv_nh)
   {}
 
   virtual ~AbstractSetting()

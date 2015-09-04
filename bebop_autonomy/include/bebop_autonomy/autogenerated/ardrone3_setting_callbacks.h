@@ -4,7 +4,7 @@
 /*
  * Ardrone3_setting_callbacks.h
  * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/7e2f55fafcd45ba2380ca2574a08b7359c005f47/Xml/ARDrone3_commands.xml
- * Date: 2015-09-02
+ * Date: 2015-09-03
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
@@ -21,34 +21,41 @@ namespace bebop_autonomy
 namespace cb
 {
 
-
 // 
 class PilotingSettingsMaxAltitude : public AbstractSetting
 {
 private:
-double PilotingSettingsMaxAltitudeCurrent_;
+  double PilotingSettingsMaxAltitudeCurrent_bebop_value_;
+  bool PilotingSettingsMaxAltitudeCurrent_bebop_sent_;
 
 public:
-
-  PilotingSettingsMaxAltitude()
-    : AbstractSetting(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MAXALTITUDECHANGED)
+  PilotingSettingsMaxAltitude(ros::NodeHandle& priv_nh)
+    : AbstractSetting(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MAXALTITUDECHANGED, priv_nh)
+      , PilotingSettingsMaxAltitudeCurrent_bebop_sent_(false)
   {}
 
   // Runs in Nodelet's main thread's context (Dynamic Reconfigure Update Callback)
   void UpdateBebopFromROS(const BebopArdrone3Config &config, const ARCONTROLLER_Device_t* bebop_ctrl_ptr_)
   {
-    bool changed = false;
     ::boost::lock_guard<boost::mutex> lock(mutex_);
+    bool changed = false;
+    bool all_inited = true;
 
     // This will likely fail for float or double values
-    if (config.PilotingSettingsMaxAltitudeCurrent != PilotingSettingsMaxAltitudeCurrent_)
+    if ((config.PilotingSettingsMaxAltitudeCurrent != PilotingSettingsMaxAltitudeCurrent_bebop_value_))
     {
-      PilotingSettingsMaxAltitudeCurrent_ = config.PilotingSettingsMaxAltitudeCurrent;
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "PilotingSettingsMaxAltitudeCurrent changed!");
+      //PilotingSettingsMaxAltitudeCurrent_bebop_value_ = config.PilotingSettingsMaxAltitudeCurrent;
       changed = true;
     }
+    all_inited &= PilotingSettingsMaxAltitudeCurrent_bebop_sent_;
 
+    if (changed && !all_inited)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_ERROR, "CB", "Value of PilotingSettingsMaxAltitude was not initialized either by Bebop or Params.");
+    }
 
-    if (changed)
+    if (changed && all_inited)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Sending PilotingSettingsMaxAltitude changes to bebop");
 
@@ -56,7 +63,6 @@ public:
         , (config.PilotingSettingsMaxAltitudeCurrent)
       );
     }
-
   }
 
   // Runs in SDK's CommandReceivedCallback's context
@@ -70,56 +76,64 @@ public:
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
 
-
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MAXALTITUDECHANGED_CURRENT, arg);
     if (arg)
     {
+      PilotingSettingsMaxAltitudeCurrent_bebop_sent_ = true;
+      ROS_INFO_STREAM("Value for PilotingSettingsMaxAltitudeCurrent recved: " << static_cast<double>(arg->value.Float));
+      PilotingSettingsMaxAltitudeCurrent_bebop_value_ = static_cast<double>(arg->value.Float);
+
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Checking if PilotingSettingsMaxAltitudeCurrent exists in params ...");
       if (!priv_nh_.hasParam("PilotingSettingsMaxAltitudeCurrent"))
       {
         ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  No");
-        priv_nh_.setParam("PilotingSettingsMaxAltitudeCurrent", arg->value.Float);
-        PilotingSettingsMaxAltitudeCurrent_ = static_cast<double>(arg->value.Float);
+        priv_nh_.setParam("PilotingSettingsMaxAltitudeCurrent", static_cast<double>(arg->value.Float));
       }
       else
       {
         ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
+        //ROS_INFO_STREAM("New value for ros interanal variable: " << PilotingSettingsMaxAltitudeCurrent_rosparam_value_);
       }
     }
-
   }
-
 };  // PilotingSettingsMaxAltitude
-
 
 // 
 class PilotingSettingsMaxTilt : public AbstractSetting
 {
 private:
-double PilotingSettingsMaxTiltCurrent_;
+  double PilotingSettingsMaxTiltCurrent_bebop_value_;
+  bool PilotingSettingsMaxTiltCurrent_bebop_sent_;
 
 public:
-
-  PilotingSettingsMaxTilt()
-    : AbstractSetting(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MAXTILTCHANGED)
+  PilotingSettingsMaxTilt(ros::NodeHandle& priv_nh)
+    : AbstractSetting(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MAXTILTCHANGED, priv_nh)
+      , PilotingSettingsMaxTiltCurrent_bebop_sent_(false)
   {}
 
   // Runs in Nodelet's main thread's context (Dynamic Reconfigure Update Callback)
   void UpdateBebopFromROS(const BebopArdrone3Config &config, const ARCONTROLLER_Device_t* bebop_ctrl_ptr_)
   {
-    bool changed = false;
     ::boost::lock_guard<boost::mutex> lock(mutex_);
+    bool changed = false;
+    bool all_inited = true;
 
     // This will likely fail for float or double values
-    if (config.PilotingSettingsMaxTiltCurrent != PilotingSettingsMaxTiltCurrent_)
+    if ((config.PilotingSettingsMaxTiltCurrent != PilotingSettingsMaxTiltCurrent_bebop_value_))
     {
-      PilotingSettingsMaxTiltCurrent_ = config.PilotingSettingsMaxTiltCurrent;
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "PilotingSettingsMaxTiltCurrent changed!");
+      //PilotingSettingsMaxTiltCurrent_bebop_value_ = config.PilotingSettingsMaxTiltCurrent;
       changed = true;
     }
+    all_inited &= PilotingSettingsMaxTiltCurrent_bebop_sent_;
 
+    if (changed && !all_inited)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_ERROR, "CB", "Value of PilotingSettingsMaxTilt was not initialized either by Bebop or Params.");
+    }
 
-    if (changed)
+    if (changed && all_inited)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Sending PilotingSettingsMaxTilt changes to bebop");
 
@@ -127,7 +141,6 @@ public:
         , (config.PilotingSettingsMaxTiltCurrent)
       );
     }
-
   }
 
   // Runs in SDK's CommandReceivedCallback's context
@@ -141,56 +154,64 @@ public:
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
 
-
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MAXTILTCHANGED_CURRENT, arg);
     if (arg)
     {
+      PilotingSettingsMaxTiltCurrent_bebop_sent_ = true;
+      ROS_INFO_STREAM("Value for PilotingSettingsMaxTiltCurrent recved: " << static_cast<double>(arg->value.Float));
+      PilotingSettingsMaxTiltCurrent_bebop_value_ = static_cast<double>(arg->value.Float);
+
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Checking if PilotingSettingsMaxTiltCurrent exists in params ...");
       if (!priv_nh_.hasParam("PilotingSettingsMaxTiltCurrent"))
       {
         ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  No");
-        priv_nh_.setParam("PilotingSettingsMaxTiltCurrent", arg->value.Float);
-        PilotingSettingsMaxTiltCurrent_ = static_cast<double>(arg->value.Float);
+        priv_nh_.setParam("PilotingSettingsMaxTiltCurrent", static_cast<double>(arg->value.Float));
       }
       else
       {
         ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
+        //ROS_INFO_STREAM("New value for ros interanal variable: " << PilotingSettingsMaxTiltCurrent_rosparam_value_);
       }
     }
-
   }
-
 };  // PilotingSettingsMaxTilt
-
 
 // 
 class PilotingSettingsAbsolutControl : public AbstractSetting
 {
 private:
-int32_t PilotingSettingsAbsolutControlOn_;
+  int32_t PilotingSettingsAbsolutControlOn_bebop_value_;
+  bool PilotingSettingsAbsolutControlOn_bebop_sent_;
 
 public:
-
-  PilotingSettingsAbsolutControl()
-    : AbstractSetting(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_ABSOLUTCONTROLCHANGED)
+  PilotingSettingsAbsolutControl(ros::NodeHandle& priv_nh)
+    : AbstractSetting(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_ABSOLUTCONTROLCHANGED, priv_nh)
+      , PilotingSettingsAbsolutControlOn_bebop_sent_(false)
   {}
 
   // Runs in Nodelet's main thread's context (Dynamic Reconfigure Update Callback)
   void UpdateBebopFromROS(const BebopArdrone3Config &config, const ARCONTROLLER_Device_t* bebop_ctrl_ptr_)
   {
-    bool changed = false;
     ::boost::lock_guard<boost::mutex> lock(mutex_);
+    bool changed = false;
+    bool all_inited = true;
 
     // This will likely fail for float or double values
-    if (config.PilotingSettingsAbsolutControlOn != PilotingSettingsAbsolutControlOn_)
+    if ((config.PilotingSettingsAbsolutControlOn != PilotingSettingsAbsolutControlOn_bebop_value_))
     {
-      PilotingSettingsAbsolutControlOn_ = config.PilotingSettingsAbsolutControlOn;
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "PilotingSettingsAbsolutControlOn changed!");
+      //PilotingSettingsAbsolutControlOn_bebop_value_ = config.PilotingSettingsAbsolutControlOn;
       changed = true;
     }
+    all_inited &= PilotingSettingsAbsolutControlOn_bebop_sent_;
 
+    if (changed && !all_inited)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_ERROR, "CB", "Value of PilotingSettingsAbsolutControl was not initialized either by Bebop or Params.");
+    }
 
-    if (changed)
+    if (changed && all_inited)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Sending PilotingSettingsAbsolutControl changes to bebop");
 
@@ -198,7 +219,6 @@ public:
         , (config.PilotingSettingsAbsolutControlOn)
       );
     }
-
   }
 
   // Runs in SDK's CommandReceivedCallback's context
@@ -212,56 +232,64 @@ public:
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
 
-
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_ABSOLUTCONTROLCHANGED_ON, arg);
     if (arg)
     {
+      PilotingSettingsAbsolutControlOn_bebop_sent_ = true;
+      ROS_INFO_STREAM("Value for PilotingSettingsAbsolutControlOn recved: " << static_cast<int32_t>(arg->value.U8));
+      PilotingSettingsAbsolutControlOn_bebop_value_ = static_cast<int32_t>(arg->value.U8);
+
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Checking if PilotingSettingsAbsolutControlOn exists in params ...");
       if (!priv_nh_.hasParam("PilotingSettingsAbsolutControlOn"))
       {
         ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  No");
-        priv_nh_.setParam("PilotingSettingsAbsolutControlOn", arg->value.U8);
-        PilotingSettingsAbsolutControlOn_ = static_cast<int32_t>(arg->value.U8);
+        priv_nh_.setParam("PilotingSettingsAbsolutControlOn", static_cast<int32_t>(arg->value.U8));
       }
       else
       {
         ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
+        //ROS_INFO_STREAM("New value for ros interanal variable: " << PilotingSettingsAbsolutControlOn_rosparam_value_);
       }
     }
-
   }
-
 };  // PilotingSettingsAbsolutControl
-
 
 // 
 class PilotingSettingsMaxDistance : public AbstractSetting
 {
 private:
-double PilotingSettingsMaxDistanceValue_;
+  double PilotingSettingsMaxDistanceValue_bebop_value_;
+  bool PilotingSettingsMaxDistanceValue_bebop_sent_;
 
 public:
-
-  PilotingSettingsMaxDistance()
-    : AbstractSetting(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MAXDISTANCECHANGED)
+  PilotingSettingsMaxDistance(ros::NodeHandle& priv_nh)
+    : AbstractSetting(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MAXDISTANCECHANGED, priv_nh)
+      , PilotingSettingsMaxDistanceValue_bebop_sent_(false)
   {}
 
   // Runs in Nodelet's main thread's context (Dynamic Reconfigure Update Callback)
   void UpdateBebopFromROS(const BebopArdrone3Config &config, const ARCONTROLLER_Device_t* bebop_ctrl_ptr_)
   {
-    bool changed = false;
     ::boost::lock_guard<boost::mutex> lock(mutex_);
+    bool changed = false;
+    bool all_inited = true;
 
     // This will likely fail for float or double values
-    if (config.PilotingSettingsMaxDistanceValue != PilotingSettingsMaxDistanceValue_)
+    if ((config.PilotingSettingsMaxDistanceValue != PilotingSettingsMaxDistanceValue_bebop_value_))
     {
-      PilotingSettingsMaxDistanceValue_ = config.PilotingSettingsMaxDistanceValue;
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "PilotingSettingsMaxDistanceValue changed!");
+      //PilotingSettingsMaxDistanceValue_bebop_value_ = config.PilotingSettingsMaxDistanceValue;
       changed = true;
     }
+    all_inited &= PilotingSettingsMaxDistanceValue_bebop_sent_;
 
+    if (changed && !all_inited)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_ERROR, "CB", "Value of PilotingSettingsMaxDistance was not initialized either by Bebop or Params.");
+    }
 
-    if (changed)
+    if (changed && all_inited)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Sending PilotingSettingsMaxDistance changes to bebop");
 
@@ -269,7 +297,6 @@ public:
         , (config.PilotingSettingsMaxDistanceValue)
       );
     }
-
   }
 
   // Runs in SDK's CommandReceivedCallback's context
@@ -283,57 +310,64 @@ public:
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
 
-
     arg = NULL;
-    // Manual edit, report the bug upstream
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MAXDISTANCECHANGED_CURRENT, arg);
     if (arg)
     {
+      PilotingSettingsMaxDistanceValue_bebop_sent_ = true;
+      ROS_INFO_STREAM("Value for PilotingSettingsMaxDistanceValue recved: " << static_cast<double>(arg->value.Float));
+      PilotingSettingsMaxDistanceValue_bebop_value_ = static_cast<double>(arg->value.Float);
+
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Checking if PilotingSettingsMaxDistanceValue exists in params ...");
       if (!priv_nh_.hasParam("PilotingSettingsMaxDistanceValue"))
       {
         ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  No");
-        priv_nh_.setParam("PilotingSettingsMaxDistanceValue", arg->value.Float);
-        PilotingSettingsMaxDistanceValue_ = static_cast<double>(arg->value.Float);
+        priv_nh_.setParam("PilotingSettingsMaxDistanceValue", static_cast<double>(arg->value.Float));
       }
       else
       {
         ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
+        //ROS_INFO_STREAM("New value for ros interanal variable: " << PilotingSettingsMaxDistanceValue_rosparam_value_);
       }
     }
-
   }
-
 };  // PilotingSettingsMaxDistance
-
 
 // 
 class PilotingSettingsNoFlyOverMaxDistance : public AbstractSetting
 {
 private:
-int32_t PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover_;
+  int32_t PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover_bebop_value_;
+  bool PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover_bebop_sent_;
 
 public:
-
-  PilotingSettingsNoFlyOverMaxDistance()
-    : AbstractSetting(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_NOFLYOVERMAXDISTANCECHANGED)
+  PilotingSettingsNoFlyOverMaxDistance(ros::NodeHandle& priv_nh)
+    : AbstractSetting(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_NOFLYOVERMAXDISTANCECHANGED, priv_nh)
+      , PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover_bebop_sent_(false)
   {}
 
   // Runs in Nodelet's main thread's context (Dynamic Reconfigure Update Callback)
   void UpdateBebopFromROS(const BebopArdrone3Config &config, const ARCONTROLLER_Device_t* bebop_ctrl_ptr_)
   {
-    bool changed = false;
     ::boost::lock_guard<boost::mutex> lock(mutex_);
+    bool changed = false;
+    bool all_inited = true;
 
     // This will likely fail for float or double values
-    if (config.PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover != PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover_)
+    if ((config.PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover != PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover_bebop_value_))
     {
-      PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover_ = config.PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover;
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover changed!");
+      //PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover_bebop_value_ = config.PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover;
       changed = true;
     }
+    all_inited &= PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover_bebop_sent_;
 
+    if (changed && !all_inited)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_ERROR, "CB", "Value of PilotingSettingsNoFlyOverMaxDistance was not initialized either by Bebop or Params.");
+    }
 
-    if (changed)
+    if (changed && all_inited)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Sending PilotingSettingsNoFlyOverMaxDistance changes to bebop");
 
@@ -341,7 +375,6 @@ public:
         , (config.PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover)
       );
     }
-
   }
 
   // Runs in SDK's CommandReceivedCallback's context
@@ -355,56 +388,64 @@ public:
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
 
-
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_NOFLYOVERMAXDISTANCECHANGED_SHOULDNOTFLYOVER, arg);
     if (arg)
     {
+      PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover_bebop_sent_ = true;
+      ROS_INFO_STREAM("Value for PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover recved: " << static_cast<int32_t>(arg->value.U8));
+      PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover_bebop_value_ = static_cast<int32_t>(arg->value.U8);
+
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Checking if PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover exists in params ...");
       if (!priv_nh_.hasParam("PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover"))
       {
         ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  No");
-        priv_nh_.setParam("PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover", arg->value.U8);
-        PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover_ = static_cast<int32_t>(arg->value.U8);
+        priv_nh_.setParam("PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover", static_cast<int32_t>(arg->value.U8));
       }
       else
       {
         ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
+        //ROS_INFO_STREAM("New value for ros interanal variable: " << PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover_rosparam_value_);
       }
     }
-
   }
-
 };  // PilotingSettingsNoFlyOverMaxDistance
-
 
 // 
 class SpeedSettingsMaxVerticalSpeed : public AbstractSetting
 {
 private:
-double SpeedSettingsMaxVerticalSpeedCurrent_;
+  double SpeedSettingsMaxVerticalSpeedCurrent_bebop_value_;
+  bool SpeedSettingsMaxVerticalSpeedCurrent_bebop_sent_;
 
 public:
-
-  SpeedSettingsMaxVerticalSpeed()
-    : AbstractSetting(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED)
+  SpeedSettingsMaxVerticalSpeed(ros::NodeHandle& priv_nh)
+    : AbstractSetting(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED, priv_nh)
+      , SpeedSettingsMaxVerticalSpeedCurrent_bebop_sent_(false)
   {}
 
   // Runs in Nodelet's main thread's context (Dynamic Reconfigure Update Callback)
   void UpdateBebopFromROS(const BebopArdrone3Config &config, const ARCONTROLLER_Device_t* bebop_ctrl_ptr_)
   {
-    bool changed = false;
     ::boost::lock_guard<boost::mutex> lock(mutex_);
+    bool changed = false;
+    bool all_inited = true;
 
     // This will likely fail for float or double values
-    if (config.SpeedSettingsMaxVerticalSpeedCurrent != SpeedSettingsMaxVerticalSpeedCurrent_)
+    if ((config.SpeedSettingsMaxVerticalSpeedCurrent != SpeedSettingsMaxVerticalSpeedCurrent_bebop_value_))
     {
-      SpeedSettingsMaxVerticalSpeedCurrent_ = config.SpeedSettingsMaxVerticalSpeedCurrent;
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "SpeedSettingsMaxVerticalSpeedCurrent changed!");
+      //SpeedSettingsMaxVerticalSpeedCurrent_bebop_value_ = config.SpeedSettingsMaxVerticalSpeedCurrent;
       changed = true;
     }
+    all_inited &= SpeedSettingsMaxVerticalSpeedCurrent_bebop_sent_;
 
+    if (changed && !all_inited)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_ERROR, "CB", "Value of SpeedSettingsMaxVerticalSpeed was not initialized either by Bebop or Params.");
+    }
 
-    if (changed)
+    if (changed && all_inited)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Sending SpeedSettingsMaxVerticalSpeed changes to bebop");
 
@@ -412,7 +453,6 @@ public:
         , (config.SpeedSettingsMaxVerticalSpeedCurrent)
       );
     }
-
   }
 
   // Runs in SDK's CommandReceivedCallback's context
@@ -426,56 +466,64 @@ public:
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
 
-
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXVERTICALSPEEDCHANGED_CURRENT, arg);
     if (arg)
     {
+      SpeedSettingsMaxVerticalSpeedCurrent_bebop_sent_ = true;
+      ROS_INFO_STREAM("Value for SpeedSettingsMaxVerticalSpeedCurrent recved: " << static_cast<double>(arg->value.Float));
+      SpeedSettingsMaxVerticalSpeedCurrent_bebop_value_ = static_cast<double>(arg->value.Float);
+
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Checking if SpeedSettingsMaxVerticalSpeedCurrent exists in params ...");
       if (!priv_nh_.hasParam("SpeedSettingsMaxVerticalSpeedCurrent"))
       {
         ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  No");
-        priv_nh_.setParam("SpeedSettingsMaxVerticalSpeedCurrent", arg->value.Float);
-        SpeedSettingsMaxVerticalSpeedCurrent_ = static_cast<double>(arg->value.Float);
+        priv_nh_.setParam("SpeedSettingsMaxVerticalSpeedCurrent", static_cast<double>(arg->value.Float));
       }
       else
       {
         ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
+        //ROS_INFO_STREAM("New value for ros interanal variable: " << SpeedSettingsMaxVerticalSpeedCurrent_rosparam_value_);
       }
     }
-
   }
-
 };  // SpeedSettingsMaxVerticalSpeed
-
 
 // 
 class SpeedSettingsMaxRotationSpeed : public AbstractSetting
 {
 private:
-double SpeedSettingsMaxRotationSpeedCurrent_;
+  double SpeedSettingsMaxRotationSpeedCurrent_bebop_value_;
+  bool SpeedSettingsMaxRotationSpeedCurrent_bebop_sent_;
 
 public:
-
-  SpeedSettingsMaxRotationSpeed()
-    : AbstractSetting(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED)
+  SpeedSettingsMaxRotationSpeed(ros::NodeHandle& priv_nh)
+    : AbstractSetting(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED, priv_nh)
+      , SpeedSettingsMaxRotationSpeedCurrent_bebop_sent_(false)
   {}
 
   // Runs in Nodelet's main thread's context (Dynamic Reconfigure Update Callback)
   void UpdateBebopFromROS(const BebopArdrone3Config &config, const ARCONTROLLER_Device_t* bebop_ctrl_ptr_)
   {
-    bool changed = false;
     ::boost::lock_guard<boost::mutex> lock(mutex_);
+    bool changed = false;
+    bool all_inited = true;
 
     // This will likely fail for float or double values
-    if (config.SpeedSettingsMaxRotationSpeedCurrent != SpeedSettingsMaxRotationSpeedCurrent_)
+    if ((config.SpeedSettingsMaxRotationSpeedCurrent != SpeedSettingsMaxRotationSpeedCurrent_bebop_value_))
     {
-      SpeedSettingsMaxRotationSpeedCurrent_ = config.SpeedSettingsMaxRotationSpeedCurrent;
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "SpeedSettingsMaxRotationSpeedCurrent changed!");
+      //SpeedSettingsMaxRotationSpeedCurrent_bebop_value_ = config.SpeedSettingsMaxRotationSpeedCurrent;
       changed = true;
     }
+    all_inited &= SpeedSettingsMaxRotationSpeedCurrent_bebop_sent_;
 
+    if (changed && !all_inited)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_ERROR, "CB", "Value of SpeedSettingsMaxRotationSpeed was not initialized either by Bebop or Params.");
+    }
 
-    if (changed)
+    if (changed && all_inited)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Sending SpeedSettingsMaxRotationSpeed changes to bebop");
 
@@ -483,7 +531,6 @@ public:
         , (config.SpeedSettingsMaxRotationSpeedCurrent)
       );
     }
-
   }
 
   // Runs in SDK's CommandReceivedCallback's context
@@ -497,56 +544,64 @@ public:
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
 
-
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_MAXROTATIONSPEEDCHANGED_CURRENT, arg);
     if (arg)
     {
+      SpeedSettingsMaxRotationSpeedCurrent_bebop_sent_ = true;
+      ROS_INFO_STREAM("Value for SpeedSettingsMaxRotationSpeedCurrent recved: " << static_cast<double>(arg->value.Float));
+      SpeedSettingsMaxRotationSpeedCurrent_bebop_value_ = static_cast<double>(arg->value.Float);
+
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Checking if SpeedSettingsMaxRotationSpeedCurrent exists in params ...");
       if (!priv_nh_.hasParam("SpeedSettingsMaxRotationSpeedCurrent"))
       {
         ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  No");
-        priv_nh_.setParam("SpeedSettingsMaxRotationSpeedCurrent", arg->value.Float);
-        SpeedSettingsMaxRotationSpeedCurrent_ = static_cast<double>(arg->value.Float);
+        priv_nh_.setParam("SpeedSettingsMaxRotationSpeedCurrent", static_cast<double>(arg->value.Float));
       }
       else
       {
         ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
+        //ROS_INFO_STREAM("New value for ros interanal variable: " << SpeedSettingsMaxRotationSpeedCurrent_rosparam_value_);
       }
     }
-
   }
-
 };  // SpeedSettingsMaxRotationSpeed
-
 
 // 
 class SpeedSettingsHullProtection : public AbstractSetting
 {
 private:
-int32_t SpeedSettingsHullProtectionPresent_;
+  int32_t SpeedSettingsHullProtectionPresent_bebop_value_;
+  bool SpeedSettingsHullProtectionPresent_bebop_sent_;
 
 public:
-
-  SpeedSettingsHullProtection()
-    : AbstractSetting(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_HULLPROTECTIONCHANGED)
+  SpeedSettingsHullProtection(ros::NodeHandle& priv_nh)
+    : AbstractSetting(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_HULLPROTECTIONCHANGED, priv_nh)
+      , SpeedSettingsHullProtectionPresent_bebop_sent_(false)
   {}
 
   // Runs in Nodelet's main thread's context (Dynamic Reconfigure Update Callback)
   void UpdateBebopFromROS(const BebopArdrone3Config &config, const ARCONTROLLER_Device_t* bebop_ctrl_ptr_)
   {
-    bool changed = false;
     ::boost::lock_guard<boost::mutex> lock(mutex_);
+    bool changed = false;
+    bool all_inited = true;
 
     // This will likely fail for float or double values
-    if (config.SpeedSettingsHullProtectionPresent != SpeedSettingsHullProtectionPresent_)
+    if ((config.SpeedSettingsHullProtectionPresent != SpeedSettingsHullProtectionPresent_bebop_value_))
     {
-      SpeedSettingsHullProtectionPresent_ = config.SpeedSettingsHullProtectionPresent;
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "SpeedSettingsHullProtectionPresent changed!");
+      //SpeedSettingsHullProtectionPresent_bebop_value_ = config.SpeedSettingsHullProtectionPresent;
       changed = true;
     }
+    all_inited &= SpeedSettingsHullProtectionPresent_bebop_sent_;
 
+    if (changed && !all_inited)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_ERROR, "CB", "Value of SpeedSettingsHullProtection was not initialized either by Bebop or Params.");
+    }
 
-    if (changed)
+    if (changed && all_inited)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Sending SpeedSettingsHullProtection changes to bebop");
 
@@ -554,7 +609,6 @@ public:
         , (config.SpeedSettingsHullProtectionPresent)
       );
     }
-
   }
 
   // Runs in SDK's CommandReceivedCallback's context
@@ -568,56 +622,64 @@ public:
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
 
-
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_HULLPROTECTIONCHANGED_PRESENT, arg);
     if (arg)
     {
+      SpeedSettingsHullProtectionPresent_bebop_sent_ = true;
+      ROS_INFO_STREAM("Value for SpeedSettingsHullProtectionPresent recved: " << static_cast<int32_t>(arg->value.U8));
+      SpeedSettingsHullProtectionPresent_bebop_value_ = static_cast<int32_t>(arg->value.U8);
+
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Checking if SpeedSettingsHullProtectionPresent exists in params ...");
       if (!priv_nh_.hasParam("SpeedSettingsHullProtectionPresent"))
       {
         ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  No");
-        priv_nh_.setParam("SpeedSettingsHullProtectionPresent", arg->value.U8);
-        SpeedSettingsHullProtectionPresent_ = static_cast<int32_t>(arg->value.U8);
+        priv_nh_.setParam("SpeedSettingsHullProtectionPresent", static_cast<int32_t>(arg->value.U8));
       }
       else
       {
         ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
+        //ROS_INFO_STREAM("New value for ros interanal variable: " << SpeedSettingsHullProtectionPresent_rosparam_value_);
       }
     }
-
   }
-
 };  // SpeedSettingsHullProtection
-
 
 // 
 class SpeedSettingsOutdoor : public AbstractSetting
 {
 private:
-int32_t SpeedSettingsOutdoorOutdoor_;
+  int32_t SpeedSettingsOutdoorOutdoor_bebop_value_;
+  bool SpeedSettingsOutdoorOutdoor_bebop_sent_;
 
 public:
-
-  SpeedSettingsOutdoor()
-    : AbstractSetting(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_OUTDOORCHANGED)
+  SpeedSettingsOutdoor(ros::NodeHandle& priv_nh)
+    : AbstractSetting(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_OUTDOORCHANGED, priv_nh)
+      , SpeedSettingsOutdoorOutdoor_bebop_sent_(false)
   {}
 
   // Runs in Nodelet's main thread's context (Dynamic Reconfigure Update Callback)
   void UpdateBebopFromROS(const BebopArdrone3Config &config, const ARCONTROLLER_Device_t* bebop_ctrl_ptr_)
   {
-    bool changed = false;
     ::boost::lock_guard<boost::mutex> lock(mutex_);
+    bool changed = false;
+    bool all_inited = true;
 
     // This will likely fail for float or double values
-    if (config.SpeedSettingsOutdoorOutdoor != SpeedSettingsOutdoorOutdoor_)
+    if ((config.SpeedSettingsOutdoorOutdoor != SpeedSettingsOutdoorOutdoor_bebop_value_))
     {
-      SpeedSettingsOutdoorOutdoor_ = config.SpeedSettingsOutdoorOutdoor;
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "SpeedSettingsOutdoorOutdoor changed!");
+      //SpeedSettingsOutdoorOutdoor_bebop_value_ = config.SpeedSettingsOutdoorOutdoor;
       changed = true;
     }
+    all_inited &= SpeedSettingsOutdoorOutdoor_bebop_sent_;
 
+    if (changed && !all_inited)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_ERROR, "CB", "Value of SpeedSettingsOutdoor was not initialized either by Bebop or Params.");
+    }
 
-    if (changed)
+    if (changed && all_inited)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Sending SpeedSettingsOutdoor changes to bebop");
 
@@ -625,7 +687,6 @@ public:
         , (config.SpeedSettingsOutdoorOutdoor)
       );
     }
-
   }
 
   // Runs in SDK's CommandReceivedCallback's context
@@ -639,70 +700,88 @@ public:
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
 
-
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SPEEDSETTINGSSTATE_OUTDOORCHANGED_OUTDOOR, arg);
     if (arg)
     {
+      SpeedSettingsOutdoorOutdoor_bebop_sent_ = true;
+      ROS_INFO_STREAM("Value for SpeedSettingsOutdoorOutdoor recved: " << static_cast<int32_t>(arg->value.U8));
+      SpeedSettingsOutdoorOutdoor_bebop_value_ = static_cast<int32_t>(arg->value.U8);
+
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Checking if SpeedSettingsOutdoorOutdoor exists in params ...");
       if (!priv_nh_.hasParam("SpeedSettingsOutdoorOutdoor"))
       {
         ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  No");
-        priv_nh_.setParam("SpeedSettingsOutdoorOutdoor", arg->value.U8);
-        SpeedSettingsOutdoorOutdoor_ = static_cast<int32_t>(arg->value.U8);
+        priv_nh_.setParam("SpeedSettingsOutdoorOutdoor", static_cast<int32_t>(arg->value.U8));
       }
       else
       {
         ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
+        //ROS_INFO_STREAM("New value for ros interanal variable: " << SpeedSettingsOutdoorOutdoor_rosparam_value_);
       }
     }
-
   }
-
 };  // SpeedSettingsOutdoor
-
 
 // 
 class NetworkSettingsWifiSelection : public AbstractSetting
 {
 private:
-int32_t NetworkSettingsWifiSelectionType_;
-int32_t NetworkSettingsWifiSelectionBand_;
-int32_t NetworkSettingsWifiSelectionChannel_;
+  int32_t NetworkSettingsWifiSelectionType_bebop_value_;
+  bool NetworkSettingsWifiSelectionType_bebop_sent_;
+  int32_t NetworkSettingsWifiSelectionBand_bebop_value_;
+  bool NetworkSettingsWifiSelectionBand_bebop_sent_;
+  int32_t NetworkSettingsWifiSelectionChannel_bebop_value_;
+  bool NetworkSettingsWifiSelectionChannel_bebop_sent_;
 
 public:
-
-  NetworkSettingsWifiSelection()
-    : AbstractSetting(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED)
+  NetworkSettingsWifiSelection(ros::NodeHandle& priv_nh)
+    : AbstractSetting(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED, priv_nh)
+      , NetworkSettingsWifiSelectionType_bebop_sent_(false)
+      , NetworkSettingsWifiSelectionBand_bebop_sent_(false)
+      , NetworkSettingsWifiSelectionChannel_bebop_sent_(false)
   {}
 
   // Runs in Nodelet's main thread's context (Dynamic Reconfigure Update Callback)
   void UpdateBebopFromROS(const BebopArdrone3Config &config, const ARCONTROLLER_Device_t* bebop_ctrl_ptr_)
   {
-    bool changed = false;
     ::boost::lock_guard<boost::mutex> lock(mutex_);
+    bool changed = false;
+    bool all_inited = true;
 
     // This will likely fail for float or double values
-    if (config.NetworkSettingsWifiSelectionType != NetworkSettingsWifiSelectionType_)
+    if ((config.NetworkSettingsWifiSelectionType != NetworkSettingsWifiSelectionType_bebop_value_))
     {
-      NetworkSettingsWifiSelectionType_ = config.NetworkSettingsWifiSelectionType;
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "NetworkSettingsWifiSelectionType changed!");
+      //NetworkSettingsWifiSelectionType_bebop_value_ = config.NetworkSettingsWifiSelectionType;
       changed = true;
     }
+    all_inited &= NetworkSettingsWifiSelectionType_bebop_sent_;
 
-    if (config.NetworkSettingsWifiSelectionBand != NetworkSettingsWifiSelectionBand_)
+    // This will likely fail for float or double values
+    if ((config.NetworkSettingsWifiSelectionBand != NetworkSettingsWifiSelectionBand_bebop_value_))
     {
-      NetworkSettingsWifiSelectionBand_ = config.NetworkSettingsWifiSelectionBand;
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "NetworkSettingsWifiSelectionBand changed!");
+      //NetworkSettingsWifiSelectionBand_bebop_value_ = config.NetworkSettingsWifiSelectionBand;
       changed = true;
     }
+    all_inited &= NetworkSettingsWifiSelectionBand_bebop_sent_;
 
-    if (config.NetworkSettingsWifiSelectionChannel != NetworkSettingsWifiSelectionChannel_)
+    // This will likely fail for float or double values
+    if ((config.NetworkSettingsWifiSelectionChannel != NetworkSettingsWifiSelectionChannel_bebop_value_))
     {
-      NetworkSettingsWifiSelectionChannel_ = config.NetworkSettingsWifiSelectionChannel;
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "NetworkSettingsWifiSelectionChannel changed!");
+      //NetworkSettingsWifiSelectionChannel_bebop_value_ = config.NetworkSettingsWifiSelectionChannel;
       changed = true;
     }
+    all_inited &= NetworkSettingsWifiSelectionChannel_bebop_sent_;
 
+    if (changed && !all_inited)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_ERROR, "CB", "Value of NetworkSettingsWifiSelection was not initialized either by Bebop or Params.");
+    }
 
-    if (changed)
+    if (changed && all_inited)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Sending NetworkSettingsWifiSelection changes to bebop");
 
@@ -712,7 +791,6 @@ public:
         , (config.NetworkSettingsWifiSelectionChannel)
       );
     }
-
   }
 
   // Runs in SDK's CommandReceivedCallback's context
@@ -726,21 +804,24 @@ public:
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
 
-
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_TYPE, arg);
     if (arg)
     {
+      NetworkSettingsWifiSelectionType_bebop_sent_ = true;
+      ROS_INFO_STREAM("Value for NetworkSettingsWifiSelectionType recved: " << static_cast<int32_t>(arg->value.I32));
+      NetworkSettingsWifiSelectionType_bebop_value_ = static_cast<int32_t>(arg->value.I32);
+
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Checking if NetworkSettingsWifiSelectionType exists in params ...");
       if (!priv_nh_.hasParam("NetworkSettingsWifiSelectionType"))
       {
         ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  No");
-        priv_nh_.setParam("NetworkSettingsWifiSelectionType", arg->value.U8);
-        NetworkSettingsWifiSelectionType_ = static_cast<int32_t>(arg->value.U8);
+        priv_nh_.setParam("NetworkSettingsWifiSelectionType", static_cast<int32_t>(arg->value.I32));
       }
       else
       {
         ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
+        //ROS_INFO_STREAM("New value for ros interanal variable: " << NetworkSettingsWifiSelectionType_rosparam_value_);
       }
     }
 
@@ -748,16 +829,20 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_BAND, arg);
     if (arg)
     {
+      NetworkSettingsWifiSelectionBand_bebop_sent_ = true;
+      ROS_INFO_STREAM("Value for NetworkSettingsWifiSelectionBand recved: " << static_cast<int32_t>(arg->value.I32));
+      NetworkSettingsWifiSelectionBand_bebop_value_ = static_cast<int32_t>(arg->value.I32);
+
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Checking if NetworkSettingsWifiSelectionBand exists in params ...");
       if (!priv_nh_.hasParam("NetworkSettingsWifiSelectionBand"))
       {
         ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  No");
-        priv_nh_.setParam("NetworkSettingsWifiSelectionBand", arg->value.U8);
-        NetworkSettingsWifiSelectionBand_ = static_cast<int32_t>(arg->value.U8);
+        priv_nh_.setParam("NetworkSettingsWifiSelectionBand", static_cast<int32_t>(arg->value.I32));
       }
       else
       {
         ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
+        //ROS_INFO_STREAM("New value for ros interanal variable: " << NetworkSettingsWifiSelectionBand_rosparam_value_);
       }
     }
 
@@ -765,51 +850,60 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSETTINGSSTATE_WIFISELECTIONCHANGED_CHANNEL, arg);
     if (arg)
     {
+      NetworkSettingsWifiSelectionChannel_bebop_sent_ = true;
+      ROS_INFO_STREAM("Value for NetworkSettingsWifiSelectionChannel recved: " << static_cast<int32_t>(arg->value.U8));
+      NetworkSettingsWifiSelectionChannel_bebop_value_ = static_cast<int32_t>(arg->value.U8);
+
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Checking if NetworkSettingsWifiSelectionChannel exists in params ...");
       if (!priv_nh_.hasParam("NetworkSettingsWifiSelectionChannel"))
       {
         ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  No");
-        priv_nh_.setParam("NetworkSettingsWifiSelectionChannel", arg->value.U8);
-        NetworkSettingsWifiSelectionChannel_ = static_cast<int32_t>(arg->value.U8);
+        priv_nh_.setParam("NetworkSettingsWifiSelectionChannel", static_cast<int32_t>(arg->value.U8));
       }
       else
       {
         ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
+        //ROS_INFO_STREAM("New value for ros interanal variable: " << NetworkSettingsWifiSelectionChannel_rosparam_value_);
       }
     }
-
   }
-
 };  // NetworkSettingsWifiSelection
-
 
 // 
 class GPSSettingsHomeType : public AbstractSetting
 {
 private:
-int32_t GPSSettingsHomeTypeType_;
+  int32_t GPSSettingsHomeTypeType_bebop_value_;
+  bool GPSSettingsHomeTypeType_bebop_sent_;
 
 public:
-
-  GPSSettingsHomeType()
-    : AbstractSetting(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_HOMETYPECHANGED)
+  GPSSettingsHomeType(ros::NodeHandle& priv_nh)
+    : AbstractSetting(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_HOMETYPECHANGED, priv_nh)
+      , GPSSettingsHomeTypeType_bebop_sent_(false)
   {}
 
   // Runs in Nodelet's main thread's context (Dynamic Reconfigure Update Callback)
   void UpdateBebopFromROS(const BebopArdrone3Config &config, const ARCONTROLLER_Device_t* bebop_ctrl_ptr_)
   {
-    bool changed = false;
     ::boost::lock_guard<boost::mutex> lock(mutex_);
+    bool changed = false;
+    bool all_inited = true;
 
     // This will likely fail for float or double values
-    if (config.GPSSettingsHomeTypeType != GPSSettingsHomeTypeType_)
+    if ((config.GPSSettingsHomeTypeType != GPSSettingsHomeTypeType_bebop_value_))
     {
-      GPSSettingsHomeTypeType_ = config.GPSSettingsHomeTypeType;
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "GPSSettingsHomeTypeType changed!");
+      //GPSSettingsHomeTypeType_bebop_value_ = config.GPSSettingsHomeTypeType;
       changed = true;
     }
+    all_inited &= GPSSettingsHomeTypeType_bebop_sent_;
 
+    if (changed && !all_inited)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_ERROR, "CB", "Value of GPSSettingsHomeType was not initialized either by Bebop or Params.");
+    }
 
-    if (changed)
+    if (changed && all_inited)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Sending GPSSettingsHomeType changes to bebop");
 
@@ -817,7 +911,6 @@ public:
         , static_cast<eARCOMMANDS_ARDRONE3_GPSSETTINGS_HOMETYPE_TYPE>(config.GPSSettingsHomeTypeType)
       );
     }
-
   }
 
   // Runs in SDK's CommandReceivedCallback's context
@@ -831,56 +924,64 @@ public:
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
 
-
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_HOMETYPECHANGED_TYPE, arg);
     if (arg)
     {
+      GPSSettingsHomeTypeType_bebop_sent_ = true;
+      ROS_INFO_STREAM("Value for GPSSettingsHomeTypeType recved: " << static_cast<int32_t>(arg->value.I32));
+      GPSSettingsHomeTypeType_bebop_value_ = static_cast<int32_t>(arg->value.I32);
+
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Checking if GPSSettingsHomeTypeType exists in params ...");
       if (!priv_nh_.hasParam("GPSSettingsHomeTypeType"))
       {
         ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  No");
-        priv_nh_.setParam("GPSSettingsHomeTypeType", arg->value.U8);
-        GPSSettingsHomeTypeType_ = static_cast<int32_t>(arg->value.U8);
+        priv_nh_.setParam("GPSSettingsHomeTypeType", static_cast<int32_t>(arg->value.I32));
       }
       else
       {
         ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
+        //ROS_INFO_STREAM("New value for ros interanal variable: " << GPSSettingsHomeTypeType_rosparam_value_);
       }
     }
-
   }
-
 };  // GPSSettingsHomeType
-
 
 // 
 class GPSSettingsReturnHomeDelay : public AbstractSetting
 {
 private:
-int32_t GPSSettingsReturnHomeDelayDelay_;
+  int32_t GPSSettingsReturnHomeDelayDelay_bebop_value_;
+  bool GPSSettingsReturnHomeDelayDelay_bebop_sent_;
 
 public:
-
-  GPSSettingsReturnHomeDelay()
-    : AbstractSetting(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_RETURNHOMEDELAYCHANGED)
+  GPSSettingsReturnHomeDelay(ros::NodeHandle& priv_nh)
+    : AbstractSetting(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_RETURNHOMEDELAYCHANGED, priv_nh)
+      , GPSSettingsReturnHomeDelayDelay_bebop_sent_(false)
   {}
 
   // Runs in Nodelet's main thread's context (Dynamic Reconfigure Update Callback)
   void UpdateBebopFromROS(const BebopArdrone3Config &config, const ARCONTROLLER_Device_t* bebop_ctrl_ptr_)
   {
-    bool changed = false;
     ::boost::lock_guard<boost::mutex> lock(mutex_);
+    bool changed = false;
+    bool all_inited = true;
 
     // This will likely fail for float or double values
-    if (config.GPSSettingsReturnHomeDelayDelay != GPSSettingsReturnHomeDelayDelay_)
+    if ((config.GPSSettingsReturnHomeDelayDelay != GPSSettingsReturnHomeDelayDelay_bebop_value_))
     {
-      GPSSettingsReturnHomeDelayDelay_ = config.GPSSettingsReturnHomeDelayDelay;
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "GPSSettingsReturnHomeDelayDelay changed!");
+      //GPSSettingsReturnHomeDelayDelay_bebop_value_ = config.GPSSettingsReturnHomeDelayDelay;
       changed = true;
     }
+    all_inited &= GPSSettingsReturnHomeDelayDelay_bebop_sent_;
 
+    if (changed && !all_inited)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_ERROR, "CB", "Value of GPSSettingsReturnHomeDelay was not initialized either by Bebop or Params.");
+    }
 
-    if (changed)
+    if (changed && all_inited)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Sending GPSSettingsReturnHomeDelay changes to bebop");
 
@@ -888,7 +989,6 @@ public:
         , (config.GPSSettingsReturnHomeDelayDelay)
       );
     }
-
   }
 
   // Runs in SDK's CommandReceivedCallback's context
@@ -902,28 +1002,28 @@ public:
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
 
-
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSETTINGSSTATE_RETURNHOMEDELAYCHANGED_DELAY, arg);
     if (arg)
     {
+      GPSSettingsReturnHomeDelayDelay_bebop_sent_ = true;
+      ROS_INFO_STREAM("Value for GPSSettingsReturnHomeDelayDelay recved: " << static_cast<int32_t>(arg->value.U16));
+      GPSSettingsReturnHomeDelayDelay_bebop_value_ = static_cast<int32_t>(arg->value.U16);
+
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "Checking if GPSSettingsReturnHomeDelayDelay exists in params ...");
       if (!priv_nh_.hasParam("GPSSettingsReturnHomeDelayDelay"))
       {
         ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  No");
-        priv_nh_.setParam("GPSSettingsReturnHomeDelayDelay", arg->value.U16);
-        GPSSettingsReturnHomeDelayDelay_ = static_cast<int32_t>(arg->value.U16);
+        priv_nh_.setParam("GPSSettingsReturnHomeDelayDelay", static_cast<int32_t>(arg->value.U16));
       }
       else
       {
         ARSAL_PRINT(ARSAL_PRINT_INFO, "CB", "  Yes");
+        //ROS_INFO_STREAM("New value for ros interanal variable: " << GPSSettingsReturnHomeDelayDelay_rosparam_value_);
       }
     }
-
   }
-
 };  // GPSSettingsReturnHomeDelay
-
 
 }  // namespace cb
 }  // namespace bebop_autonomy

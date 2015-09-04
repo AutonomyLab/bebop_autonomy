@@ -67,10 +67,6 @@ private:
   geometry_msgs::Twist camera_twist;
   geometry_msgs::Twist prev_camera_twist;
 
-  bool do_takeoff;
-  bool do_land;
-  bool do_emergency;
-
   ros::Subscriber cmd_vel_sub_;
   ros::Subscriber camera_move_sub_;
   ros::Subscriber takeoff_sub_;
@@ -86,8 +82,8 @@ private:
   // Dynamic Reconfigure
   boost::shared_ptr<dynamic_reconfigure::Server<bebop_autonomy::BebopArdrone3Config> > dynr_serv_ptr_;
 
-  // Params
-  std::string frame_id_;
+  // Params (not dynamically reconfigurable, persistent)
+  std::string param_frame_id_;
 
   // This runs in its own context
   void CameraPublisherThread();

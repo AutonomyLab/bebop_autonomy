@@ -3,7 +3,7 @@
 /*
  * bebop_common_commands.h
  * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/7e2f55fafcd45ba2380ca2574a08b7359c005f47/Xml/ARDrone3_commands.xml
- * Date: 2015-09-02
+ * Date: 2015-09-03
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
@@ -63,8 +63,8 @@ protected:
   ros::NodeHandle priv_nh_;
 
 public:
-  AbstractSetting(eARCONTROLLER_DICTIONARY_KEY cmd_key)
-    : AbstractCommand(cmd_key), priv_nh_("~")
+  AbstractSetting(eARCONTROLLER_DICTIONARY_KEY cmd_key, ros::NodeHandle& priv_nh)
+    : AbstractCommand(cmd_key), priv_nh_(priv_nh)
   {}
 
   virtual ~AbstractSetting()

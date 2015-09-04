@@ -3,6 +3,7 @@
 #include <nodelet/nodelet.h>
 
 #include <boost/bind.hpp>
+#include <boost/make_shared.hpp>
 #include <cmath>
 #include <algorithm>
 #include <cstdio>
@@ -45,31 +46,30 @@ void BebopDriverNodelet::onInit()
   util::ResetTwist(camera_twist);
   util::ResetTwist(prev_bebop_twist);
   util::ResetTwist(prev_camera_twist);
-  do_takeoff = false;
-  do_emergency = false;
-  do_land = false;
 
-  // non-dynamically reconfigurable params
+  // Params (not dynamically reconfigurable, local)
+  // TODO: Wrap all calls to .param() in a function call to enable logging
   const bool param_reset_settings = private_nh.param("reset_settings", false);
+  const std::string& param_camera_info_url = private_nh.param<std::string>("camera_info_url", "");
 
-  NODELET_INFO("Trying to connect to Bebop ...");
+  param_frame_id_ = private_nh.param<std::string>("frame_id", "camera");
+
+  NODELET_INFO("Connecting to Bebop ...");
   try
   {
     bebop_.Connect(nh, private_nh);
 
     if (param_reset_settings)
     {
-      // This also trigger RequestAllSettings() internally
       NODELET_WARN("Resetting all settings ...");
       bebop_.ResetAllSettings();
-    }
-    else
-    {
-      NODELET_INFO("Fetching all settings from the Drone ...");
-      bebop_.RequestAllSettings();
+      // Wait for 5 seconds
+      ros::Rate(ros::Duration(3.0)).sleep();
     }
 
-    ros::Rate(0.2).sleep();
+    NODELET_INFO("Fetching all settings from the Drone ...");
+    bebop_.RequestAllSettings();
+    ros::Rate(ros::Duration(3.0)).sleep();
   }
   catch (const std::runtime_error& e)
   {
@@ -78,30 +78,40 @@ void BebopDriverNodelet::onInit()
     throw e;
   }
 
-  cmd_vel_sub_ = nh.subscribe("bebop/cmd_vel", 1, &BebopDriverNodelet::CmdVelCallback, this);
-  camera_move_sub_ = nh.subscribe("bebop/camera_control", 1, &BebopDriverNodelet::CameraMoveCallback, this);
-  takeoff_sub_ = nh.subscribe("bebop/takeoff", 1, &BebopDriverNodelet::TakeoffCallback, this);
-  land_sub_ = nh.subscribe("bebop/land", 1, &BebopDriverNodelet::LandCallback, this);
-  reset_sub_ = nh.subscribe("bebop/reset", 1, &BebopDriverNodelet::EmergencyCallback, this);
+  cmd_vel_sub_ = nh.subscribe("cmd_vel", 1, &BebopDriverNodelet::CmdVelCallback, this);
+  camera_move_sub_ = nh.subscribe("camera_control", 1, &BebopDriverNodelet::CameraMoveCallback, this);
+  takeoff_sub_ = nh.subscribe("takeoff", 1, &BebopDriverNodelet::TakeoffCallback, this);
+  land_sub_ = nh.subscribe("land", 1, &BebopDriverNodelet::LandCallback, this);
+  reset_sub_ = nh.subscribe("reset", 1, &BebopDriverNodelet::EmergencyCallback, this);
 
-  std::string camera_info_url;
-  private_nh.param<std::string>("camera_info_url", camera_info_url, "");
-  private_nh.param<std::string>("frame_id", frame_id_, "camera");
-
-  cinfo_manager_ptr_.reset(new camera_info_manager::CameraInfoManager(nh, "camera", camera_info_url));
+  cinfo_manager_ptr_.reset(new camera_info_manager::CameraInfoManager(nh, "camera", param_camera_info_url));
   image_transport_ptr_.reset(new image_transport::ImageTransport(nh));
-  image_transport_pub_ = image_transport_ptr_->advertiseCamera("bebop/image_raw", 10);
+  image_transport_pub_ = image_transport_ptr_->advertiseCamera("image_raw", 60);
 
   camera_info_msg_ptr_.reset(new sensor_msgs::CameraInfo());
-
-  mainloop_thread_ptr_.reset(new boost::thread(
-                               boost::bind(&bebop_autonomy::BebopDriverNodelet::BebopDriverNodelet::CameraPublisherThread, this)));
 
   dynr_serv_ptr_.reset(new dynamic_reconfigure::Server<bebop_autonomy::BebopArdrone3Config>(private_nh));
   dynamic_reconfigure::Server<bebop_autonomy::BebopArdrone3Config>::CallbackType cb =
       boost::bind(&bebop_autonomy::BebopDriverNodelet::ParamCallback, this, _1, _2);
 
   dynr_serv_ptr_->setCallback(cb);
+
+  try
+  {
+    NODELET_INFO("Enabling video stream ...");
+    bebop_.StartStreaming();
+  }
+  catch (const::std::runtime_error& e)
+  {
+    NODELET_ERROR_STREAM("Start() failed: " << e.what());
+    // TODO: Retry mechanism
+  }
+
+  if (bebop_.IsStreamingStarted())
+  {
+    mainloop_thread_ptr_ = boost::make_shared<boost::thread>(
+          boost::bind(&bebop_autonomy::BebopDriverNodelet::BebopDriverNodelet::CameraPublisherThread, this));
+  }
 
   NODELET_INFO_STREAM("Nodelet lwp_id: " << util::GetLWPId());
 }
@@ -114,10 +124,8 @@ BebopDriverNodelet::~BebopDriverNodelet()
     mainloop_thread_ptr_->interrupt();
     mainloop_thread_ptr_->join();
   }
-  if (bebop_.IsConnected() && !bebop_.Disconnect())
-  {
-    NODELET_ERROR_STREAM("Bebop disconnection failed.");
-  }
+  if (bebop_.IsStreamingStarted()) bebop_.StopStreaming();
+  if (bebop_.IsConnected()) bebop_.Disconnect();
 }
 
 void BebopDriverNodelet::CmdVelCallback(const geometry_msgs::TwistConstPtr& twist)
@@ -146,6 +154,7 @@ void BebopDriverNodelet::TakeoffCallback(const std_msgs::EmptyConstPtr& empty)
 {
   try
   {
+   util::ResetTwist(bebop_twist);
    bebop_.Takeoff();
   }
   catch (const std::runtime_error& e)
@@ -158,6 +167,7 @@ void BebopDriverNodelet::LandCallback(const std_msgs::EmptyConstPtr& empty)
 {
   try
   {
+    util::ResetTwist(bebop_twist);
     bebop_.Land();
   }
   catch (const std::runtime_error& e)
@@ -186,12 +196,20 @@ void BebopDriverNodelet::CameraMoveCallback(const geometry_msgs::TwistConstPtr& 
 
 void BebopDriverNodelet::EmergencyCallback(const std_msgs::EmptyConstPtr& empty)
 {
-  do_emergency = true;
+  try
+  {
+    util::ResetTwist(bebop_twist);
+    bebop_.Emergency();
+  }
+  catch (const std::runtime_error& e)
+  {
+    ROS_ERROR_STREAM(e.what());
+  }
 }
 
 void BebopDriverNodelet::ParamCallback(BebopArdrone3Config &config, uint32_t level)
 {
-  NODELET_DEBUG("Dynamic reconfigure callback with level: %d", level);
+  NODELET_INFO("Dynamic reconfigure callback with level: %d", level);
   bebop_.UpdateSettings(config);
 }
 
@@ -220,7 +238,7 @@ void BebopDriverNodelet::CameraPublisherThread()
       {
         image_msg_ptr_->encoding = "rgb8";
         image_msg_ptr_->is_bigendian = false;
-        image_msg_ptr_->header.frame_id = frame_id_;
+        image_msg_ptr_->header.frame_id = param_frame_id_;
         image_msg_ptr_->header.stamp = ros::Time::now();
         image_msg_ptr_->width = frame_w;
         image_msg_ptr_->height = frame_h;

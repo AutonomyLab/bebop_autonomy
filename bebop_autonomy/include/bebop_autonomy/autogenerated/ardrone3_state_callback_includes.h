@@ -1,7 +1,7 @@
 /*
  * ARDrone3_state_callback_includes.h
  * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/7e2f55fafcd45ba2380ca2574a08b7359c005f47/Xml/ARDrone3_commands.xml
- * Date: 2015-09-02
+ * Date: 2015-09-03
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
@@ -36,31 +36,31 @@ boost::shared_ptr<cb::Ardrone3PROStateFeatures> ardrone3_prostate_features_ptr;
 
 #ifdef UPDTAE_CALLBACK_MAP
 // Instantiate state callback wrappers
-ardrone3_mediarecordstate_picturestatechanged_ptr.reset(new cb::Ardrone3MediaRecordStatePictureStateChanged(nh, "states/ARDrone3/MediaRecordState/PictureStateChanged"));
-ardrone3_mediarecordstate_videostatechanged_ptr.reset(new cb::Ardrone3MediaRecordStateVideoStateChanged(nh, "states/ARDrone3/MediaRecordState/VideoStateChanged"));
-ardrone3_mediarecordstate_picturestatechangedv2_ptr.reset(new cb::Ardrone3MediaRecordStatePictureStateChangedV2(nh, "states/ARDrone3/MediaRecordState/PictureStateChangedV2"));
-ardrone3_mediarecordstate_videostatechangedv2_ptr.reset(new cb::Ardrone3MediaRecordStateVideoStateChangedV2(nh, "states/ARDrone3/MediaRecordState/VideoStateChangedV2"));
-ardrone3_pilotingstate_flattrimchanged_ptr.reset(new cb::Ardrone3PilotingStateFlatTrimChanged(nh, "states/ARDrone3/PilotingState/FlatTrimChanged"));
-ardrone3_pilotingstate_flyingstatechanged_ptr.reset(new cb::Ardrone3PilotingStateFlyingStateChanged(nh, "states/ARDrone3/PilotingState/FlyingStateChanged"));
-ardrone3_pilotingstate_alertstatechanged_ptr.reset(new cb::Ardrone3PilotingStateAlertStateChanged(nh, "states/ARDrone3/PilotingState/AlertStateChanged"));
-ardrone3_pilotingstate_navigatehomestatechanged_ptr.reset(new cb::Ardrone3PilotingStateNavigateHomeStateChanged(nh, "states/ARDrone3/PilotingState/NavigateHomeStateChanged"));
-ardrone3_pilotingstate_positionchanged_ptr.reset(new cb::Ardrone3PilotingStatePositionChanged(nh, "states/ARDrone3/PilotingState/PositionChanged"));
-ardrone3_pilotingstate_speedchanged_ptr.reset(new cb::Ardrone3PilotingStateSpeedChanged(nh, "states/ARDrone3/PilotingState/SpeedChanged"));
-ardrone3_pilotingstate_attitudechanged_ptr.reset(new cb::Ardrone3PilotingStateAttitudeChanged(nh, "states/ARDrone3/PilotingState/AttitudeChanged"));
-ardrone3_pilotingstate_autotakeoffmodechanged_ptr.reset(new cb::Ardrone3PilotingStateAutoTakeOffModeChanged(nh, "states/ARDrone3/PilotingState/AutoTakeOffModeChanged"));
-ardrone3_pilotingstate_altitudechanged_ptr.reset(new cb::Ardrone3PilotingStateAltitudeChanged(nh, "states/ARDrone3/PilotingState/AltitudeChanged"));
-ardrone3_networkstate_wifiscanlistchanged_ptr.reset(new cb::Ardrone3NetworkStateWifiScanListChanged(nh, "states/ARDrone3/NetworkState/WifiScanListChanged"));
-ardrone3_networkstate_allwifiscanchanged_ptr.reset(new cb::Ardrone3NetworkStateAllWifiScanChanged(nh, "states/ARDrone3/NetworkState/AllWifiScanChanged"));
-ardrone3_networkstate_wifiauthchannellistchanged_ptr.reset(new cb::Ardrone3NetworkStateWifiAuthChannelListChanged(nh, "states/ARDrone3/NetworkState/WifiAuthChannelListChanged"));
-ardrone3_networkstate_allwifiauthchannelchanged_ptr.reset(new cb::Ardrone3NetworkStateAllWifiAuthChannelChanged(nh, "states/ARDrone3/NetworkState/AllWifiAuthChannelChanged"));
-ardrone3_mediastreamingstate_videoenablechanged_ptr.reset(new cb::Ardrone3MediaStreamingStateVideoEnableChanged(nh, "states/ARDrone3/MediaStreamingState/VideoEnableChanged"));
-ardrone3_camerastate_orientation_ptr.reset(new cb::Ardrone3CameraStateOrientation(nh, "states/ARDrone3/CameraState/Orientation"));
-ardrone3_antiflickeringstate_electricfrequencychanged_ptr.reset(new cb::Ardrone3AntiflickeringStateelectricFrequencyChanged(nh, "states/ARDrone3/AntiflickeringState/electricFrequencyChanged"));
-ardrone3_antiflickeringstate_modechanged_ptr.reset(new cb::Ardrone3AntiflickeringStatemodeChanged(nh, "states/ARDrone3/AntiflickeringState/modeChanged"));
-ardrone3_gpsstate_numberofsatellitechanged_ptr.reset(new cb::Ardrone3GPSStateNumberOfSatelliteChanged(nh, "states/ARDrone3/GPSState/NumberOfSatelliteChanged"));
-ardrone3_gpsstate_hometypeavailabilitychanged_ptr.reset(new cb::Ardrone3GPSStateHomeTypeAvailabilityChanged(nh, "states/ARDrone3/GPSState/HomeTypeAvailabilityChanged"));
-ardrone3_gpsstate_hometypechosenchanged_ptr.reset(new cb::Ardrone3GPSStateHomeTypeChosenChanged(nh, "states/ARDrone3/GPSState/HomeTypeChosenChanged"));
-ardrone3_prostate_features_ptr.reset(new cb::Ardrone3PROStateFeatures(nh, "states/ARDrone3/PROState/Features"));
+ardrone3_mediarecordstate_picturestatechanged_ptr.reset(new cb::Ardrone3MediaRecordStatePictureStateChanged(nh, priv_nh, "states/ARDrone3/MediaRecordState/PictureStateChanged"));
+ardrone3_mediarecordstate_videostatechanged_ptr.reset(new cb::Ardrone3MediaRecordStateVideoStateChanged(nh, priv_nh, "states/ARDrone3/MediaRecordState/VideoStateChanged"));
+ardrone3_mediarecordstate_picturestatechangedv2_ptr.reset(new cb::Ardrone3MediaRecordStatePictureStateChangedV2(nh, priv_nh, "states/ARDrone3/MediaRecordState/PictureStateChangedV2"));
+ardrone3_mediarecordstate_videostatechangedv2_ptr.reset(new cb::Ardrone3MediaRecordStateVideoStateChangedV2(nh, priv_nh, "states/ARDrone3/MediaRecordState/VideoStateChangedV2"));
+ardrone3_pilotingstate_flattrimchanged_ptr.reset(new cb::Ardrone3PilotingStateFlatTrimChanged(nh, priv_nh, "states/ARDrone3/PilotingState/FlatTrimChanged"));
+ardrone3_pilotingstate_flyingstatechanged_ptr.reset(new cb::Ardrone3PilotingStateFlyingStateChanged(nh, priv_nh, "states/ARDrone3/PilotingState/FlyingStateChanged"));
+ardrone3_pilotingstate_alertstatechanged_ptr.reset(new cb::Ardrone3PilotingStateAlertStateChanged(nh, priv_nh, "states/ARDrone3/PilotingState/AlertStateChanged"));
+ardrone3_pilotingstate_navigatehomestatechanged_ptr.reset(new cb::Ardrone3PilotingStateNavigateHomeStateChanged(nh, priv_nh, "states/ARDrone3/PilotingState/NavigateHomeStateChanged"));
+ardrone3_pilotingstate_positionchanged_ptr.reset(new cb::Ardrone3PilotingStatePositionChanged(nh, priv_nh, "states/ARDrone3/PilotingState/PositionChanged"));
+ardrone3_pilotingstate_speedchanged_ptr.reset(new cb::Ardrone3PilotingStateSpeedChanged(nh, priv_nh, "states/ARDrone3/PilotingState/SpeedChanged"));
+ardrone3_pilotingstate_attitudechanged_ptr.reset(new cb::Ardrone3PilotingStateAttitudeChanged(nh, priv_nh, "states/ARDrone3/PilotingState/AttitudeChanged"));
+ardrone3_pilotingstate_autotakeoffmodechanged_ptr.reset(new cb::Ardrone3PilotingStateAutoTakeOffModeChanged(nh, priv_nh, "states/ARDrone3/PilotingState/AutoTakeOffModeChanged"));
+ardrone3_pilotingstate_altitudechanged_ptr.reset(new cb::Ardrone3PilotingStateAltitudeChanged(nh, priv_nh, "states/ARDrone3/PilotingState/AltitudeChanged"));
+ardrone3_networkstate_wifiscanlistchanged_ptr.reset(new cb::Ardrone3NetworkStateWifiScanListChanged(nh, priv_nh, "states/ARDrone3/NetworkState/WifiScanListChanged"));
+ardrone3_networkstate_allwifiscanchanged_ptr.reset(new cb::Ardrone3NetworkStateAllWifiScanChanged(nh, priv_nh, "states/ARDrone3/NetworkState/AllWifiScanChanged"));
+ardrone3_networkstate_wifiauthchannellistchanged_ptr.reset(new cb::Ardrone3NetworkStateWifiAuthChannelListChanged(nh, priv_nh, "states/ARDrone3/NetworkState/WifiAuthChannelListChanged"));
+ardrone3_networkstate_allwifiauthchannelchanged_ptr.reset(new cb::Ardrone3NetworkStateAllWifiAuthChannelChanged(nh, priv_nh, "states/ARDrone3/NetworkState/AllWifiAuthChannelChanged"));
+ardrone3_mediastreamingstate_videoenablechanged_ptr.reset(new cb::Ardrone3MediaStreamingStateVideoEnableChanged(nh, priv_nh, "states/ARDrone3/MediaStreamingState/VideoEnableChanged"));
+ardrone3_camerastate_orientation_ptr.reset(new cb::Ardrone3CameraStateOrientation(nh, priv_nh, "states/ARDrone3/CameraState/Orientation"));
+ardrone3_antiflickeringstate_electricfrequencychanged_ptr.reset(new cb::Ardrone3AntiflickeringStateelectricFrequencyChanged(nh, priv_nh, "states/ARDrone3/AntiflickeringState/electricFrequencyChanged"));
+ardrone3_antiflickeringstate_modechanged_ptr.reset(new cb::Ardrone3AntiflickeringStatemodeChanged(nh, priv_nh, "states/ARDrone3/AntiflickeringState/modeChanged"));
+ardrone3_gpsstate_numberofsatellitechanged_ptr.reset(new cb::Ardrone3GPSStateNumberOfSatelliteChanged(nh, priv_nh, "states/ARDrone3/GPSState/NumberOfSatelliteChanged"));
+ardrone3_gpsstate_hometypeavailabilitychanged_ptr.reset(new cb::Ardrone3GPSStateHomeTypeAvailabilityChanged(nh, priv_nh, "states/ARDrone3/GPSState/HomeTypeAvailabilityChanged"));
+ardrone3_gpsstate_hometypechosenchanged_ptr.reset(new cb::Ardrone3GPSStateHomeTypeChosenChanged(nh, priv_nh, "states/ARDrone3/GPSState/HomeTypeChosenChanged"));
+ardrone3_prostate_features_ptr.reset(new cb::Ardrone3PROStateFeatures(nh, priv_nh, "states/ARDrone3/PROState/Features"));
 
 // Add all wrappers to the callback map
 callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(

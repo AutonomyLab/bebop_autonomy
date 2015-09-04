@@ -35,10 +35,9 @@ private:
 
 public:
 
-  {{cpp_class_name}}(::ros::NodeHandle& nh, const ::std::string& topic)
+  {{cpp_class_name}}(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState({{key}})
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("{{cpp_class_param_name}}", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());

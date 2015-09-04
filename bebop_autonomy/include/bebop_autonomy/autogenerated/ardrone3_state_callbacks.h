@@ -4,7 +4,7 @@
 /*
  * ARDrone3_state_callbacks.h
  * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/7e2f55fafcd45ba2380ca2574a08b7359c005f47/Xml/ARDrone3_commands.xml
- * Date: 2015-09-02
+ * Date: 2015-09-03
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
@@ -56,10 +56,9 @@ private:
 
 public:
 
-  Ardrone3MediaRecordStatePictureStateChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  Ardrone3MediaRecordStatePictureStateChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_PICTURESTATECHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_mediarecordstate_picturestatechanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -115,10 +114,9 @@ private:
 
 public:
 
-  Ardrone3MediaRecordStateVideoStateChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  Ardrone3MediaRecordStateVideoStateChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_VIDEOSTATECHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_mediarecordstate_videostatechanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -150,7 +148,7 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_VIDEOSTATECHANGED_STATE, arg);
     if (arg)
     {
-      msg_ptr->state = arg->value.U8;
+      msg_ptr->state = arg->value.I32;
     }
 
     arg = NULL;
@@ -174,10 +172,9 @@ private:
 
 public:
 
-  Ardrone3MediaRecordStatePictureStateChangedV2(::ros::NodeHandle& nh, const ::std::string& topic)
+  Ardrone3MediaRecordStatePictureStateChangedV2(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_PICTURESTATECHANGEDV2)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_mediarecordstate_picturestatechangedv2", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -209,14 +206,14 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_PICTURESTATECHANGEDV2_STATE, arg);
     if (arg)
     {
-      msg_ptr->state = arg->value.U8;
+      msg_ptr->state = arg->value.I32;
     }
 
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_PICTURESTATECHANGEDV2_ERROR, arg);
     if (arg)
     {
-      msg_ptr->error = arg->value.U8;
+      msg_ptr->error = arg->value.I32;
     }
 
     if (pub_enabled_) ros_pub_.publish(msg_ptr);
@@ -233,10 +230,9 @@ private:
 
 public:
 
-  Ardrone3MediaRecordStateVideoStateChangedV2(::ros::NodeHandle& nh, const ::std::string& topic)
+  Ardrone3MediaRecordStateVideoStateChangedV2(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_VIDEOSTATECHANGEDV2)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_mediarecordstate_videostatechangedv2", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -268,14 +264,14 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_VIDEOSTATECHANGEDV2_STATE, arg);
     if (arg)
     {
-      msg_ptr->state = arg->value.U8;
+      msg_ptr->state = arg->value.I32;
     }
 
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_VIDEOSTATECHANGEDV2_ERROR, arg);
     if (arg)
     {
-      msg_ptr->error = arg->value.U8;
+      msg_ptr->error = arg->value.I32;
     }
 
     if (pub_enabled_) ros_pub_.publish(msg_ptr);
@@ -292,10 +288,9 @@ private:
 
 public:
 
-  Ardrone3PilotingStateFlatTrimChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  Ardrone3PilotingStateFlatTrimChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_FLATTRIMCHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_pilotingstate_flattrimchanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -337,10 +332,9 @@ private:
 
 public:
 
-  Ardrone3PilotingStateFlyingStateChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  Ardrone3PilotingStateFlyingStateChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_FLYINGSTATECHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_pilotingstate_flyingstatechanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -372,7 +366,7 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_FLYINGSTATECHANGED_STATE, arg);
     if (arg)
     {
-      msg_ptr->state = arg->value.U8;
+      msg_ptr->state = arg->value.I32;
     }
 
     if (pub_enabled_) ros_pub_.publish(msg_ptr);
@@ -389,10 +383,9 @@ private:
 
 public:
 
-  Ardrone3PilotingStateAlertStateChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  Ardrone3PilotingStateAlertStateChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_ALERTSTATECHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_pilotingstate_alertstatechanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -424,7 +417,7 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_ALERTSTATECHANGED_STATE, arg);
     if (arg)
     {
-      msg_ptr->state = arg->value.U8;
+      msg_ptr->state = arg->value.I32;
     }
 
     if (pub_enabled_) ros_pub_.publish(msg_ptr);
@@ -441,10 +434,9 @@ private:
 
 public:
 
-  Ardrone3PilotingStateNavigateHomeStateChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  Ardrone3PilotingStateNavigateHomeStateChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_NAVIGATEHOMESTATECHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_pilotingstate_navigatehomestatechanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -476,14 +468,14 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_NAVIGATEHOMESTATECHANGED_STATE, arg);
     if (arg)
     {
-      msg_ptr->state = arg->value.U8;
+      msg_ptr->state = arg->value.I32;
     }
 
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_NAVIGATEHOMESTATECHANGED_REASON, arg);
     if (arg)
     {
-      msg_ptr->reason = arg->value.U8;
+      msg_ptr->reason = arg->value.I32;
     }
 
     if (pub_enabled_) ros_pub_.publish(msg_ptr);
@@ -500,10 +492,9 @@ private:
 
 public:
 
-  Ardrone3PilotingStatePositionChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  Ardrone3PilotingStatePositionChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_POSITIONCHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_pilotingstate_positionchanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -566,10 +557,9 @@ private:
 
 public:
 
-  Ardrone3PilotingStateSpeedChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  Ardrone3PilotingStateSpeedChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_SPEEDCHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_pilotingstate_speedchanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -632,10 +622,9 @@ private:
 
 public:
 
-  Ardrone3PilotingStateAttitudeChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  Ardrone3PilotingStateAttitudeChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_ATTITUDECHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_pilotingstate_attitudechanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -698,10 +687,9 @@ private:
 
 public:
 
-  Ardrone3PilotingStateAutoTakeOffModeChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  Ardrone3PilotingStateAutoTakeOffModeChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_AUTOTAKEOFFMODECHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_pilotingstate_autotakeoffmodechanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -750,10 +738,9 @@ private:
 
 public:
 
-  Ardrone3PilotingStateAltitudeChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  Ardrone3PilotingStateAltitudeChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_ALTITUDECHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_pilotingstate_altitudechanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -802,10 +789,9 @@ private:
 
 public:
 
-  Ardrone3NetworkStateWifiScanListChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  Ardrone3NetworkStateWifiScanListChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSTATE_WIFISCANLISTCHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_networkstate_wifiscanlistchanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -851,7 +837,7 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSTATE_WIFISCANLISTCHANGED_BAND, arg);
     if (arg)
     {
-      msg_ptr->band = arg->value.U8;
+      msg_ptr->band = arg->value.I32;
     }
 
     arg = NULL;
@@ -875,10 +861,9 @@ private:
 
 public:
 
-  Ardrone3NetworkStateAllWifiScanChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  Ardrone3NetworkStateAllWifiScanChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSTATE_ALLWIFISCANCHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_networkstate_allwifiscanchanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -920,10 +905,9 @@ private:
 
 public:
 
-  Ardrone3NetworkStateWifiAuthChannelListChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  Ardrone3NetworkStateWifiAuthChannelListChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSTATE_WIFIAUTHCHANNELLISTCHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_networkstate_wifiauthchannellistchanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -955,7 +939,7 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSTATE_WIFIAUTHCHANNELLISTCHANGED_BAND, arg);
     if (arg)
     {
-      msg_ptr->band = arg->value.U8;
+      msg_ptr->band = arg->value.I32;
     }
 
     arg = NULL;
@@ -986,10 +970,9 @@ private:
 
 public:
 
-  Ardrone3NetworkStateAllWifiAuthChannelChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  Ardrone3NetworkStateAllWifiAuthChannelChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSTATE_ALLWIFIAUTHCHANNELCHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_networkstate_allwifiauthchannelchanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -1031,10 +1014,9 @@ private:
 
 public:
 
-  Ardrone3MediaStreamingStateVideoEnableChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  Ardrone3MediaStreamingStateVideoEnableChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_mediastreamingstate_videoenablechanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -1066,7 +1048,7 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED_ENABLED, arg);
     if (arg)
     {
-      msg_ptr->enabled = arg->value.U8;
+      msg_ptr->enabled = arg->value.I32;
     }
 
     if (pub_enabled_) ros_pub_.publish(msg_ptr);
@@ -1083,10 +1065,9 @@ private:
 
 public:
 
-  Ardrone3CameraStateOrientation(::ros::NodeHandle& nh, const ::std::string& topic)
+  Ardrone3CameraStateOrientation(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_ORIENTATION)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_camerastate_orientation", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -1142,10 +1123,9 @@ private:
 
 public:
 
-  Ardrone3AntiflickeringStateelectricFrequencyChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  Ardrone3AntiflickeringStateelectricFrequencyChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_ANTIFLICKERINGSTATE_ELECTRICFREQUENCYCHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_antiflickeringstate_electricfrequencychanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -1177,7 +1157,7 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_ANTIFLICKERINGSTATE_ELECTRICFREQUENCYCHANGED_FREQUENCY, arg);
     if (arg)
     {
-      msg_ptr->frequency = arg->value.U8;
+      msg_ptr->frequency = arg->value.I32;
     }
 
     if (pub_enabled_) ros_pub_.publish(msg_ptr);
@@ -1194,10 +1174,9 @@ private:
 
 public:
 
-  Ardrone3AntiflickeringStatemodeChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  Ardrone3AntiflickeringStatemodeChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_ANTIFLICKERINGSTATE_MODECHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_antiflickeringstate_modechanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -1229,7 +1208,7 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_ANTIFLICKERINGSTATE_MODECHANGED_MODE, arg);
     if (arg)
     {
-      msg_ptr->mode = arg->value.U8;
+      msg_ptr->mode = arg->value.I32;
     }
 
     if (pub_enabled_) ros_pub_.publish(msg_ptr);
@@ -1246,10 +1225,9 @@ private:
 
 public:
 
-  Ardrone3GPSStateNumberOfSatelliteChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  Ardrone3GPSStateNumberOfSatelliteChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSTATE_NUMBEROFSATELLITECHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_gpsstate_numberofsatellitechanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -1298,10 +1276,9 @@ private:
 
 public:
 
-  Ardrone3GPSStateHomeTypeAvailabilityChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  Ardrone3GPSStateHomeTypeAvailabilityChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSTATE_HOMETYPEAVAILABILITYCHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_gpsstate_hometypeavailabilitychanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -1333,7 +1310,7 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSTATE_HOMETYPEAVAILABILITYCHANGED_TYPE, arg);
     if (arg)
     {
-      msg_ptr->type = arg->value.U8;
+      msg_ptr->type = arg->value.I32;
     }
 
     arg = NULL;
@@ -1357,10 +1334,9 @@ private:
 
 public:
 
-  Ardrone3GPSStateHomeTypeChosenChanged(::ros::NodeHandle& nh, const ::std::string& topic)
+  Ardrone3GPSStateHomeTypeChosenChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSTATE_HOMETYPECHOSENCHANGED)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_gpsstate_hometypechosenchanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
@@ -1392,7 +1368,7 @@ public:
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSTATE_HOMETYPECHOSENCHANGED_TYPE, arg);
     if (arg)
     {
-      msg_ptr->type = arg->value.U8;
+      msg_ptr->type = arg->value.I32;
     }
 
     if (pub_enabled_) ros_pub_.publish(msg_ptr);
@@ -1409,10 +1385,9 @@ private:
 
 public:
 
-  Ardrone3PROStateFeatures(::ros::NodeHandle& nh, const ::std::string& topic)
+  Ardrone3PROStateFeatures(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PROSTATE_FEATURES)
   {
-    ros::NodeHandle priv_nh("~");
     if (priv_nh.getParam("enable_prostate_features", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());

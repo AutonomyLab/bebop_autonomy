@@ -46,7 +46,7 @@ BEBOP_TYPE_MAP = {
     "float": "Float",
     "double": "Double",
     "string": "String",
-    "enum": "U8"
+    "enum": "I32"
 }
 
 # From XML types to Dynamic Reconfigure Types
@@ -87,7 +87,7 @@ min_max_regex = re.compile('\[([0-9\.\-]+)\:([0-9\.\-]+)\]')
 rend = pystache.Renderer()
 
 def get_xml_url(filename):
-    return rend.render_path("templates/url.mustache", 
+    return rend.render_path("templates/url.mustache",
         {"repo_owner": LIBARCOMMANDS_GIT_OWNER, "hash": LIBARCOMMANDS_GIT_HASH, "filename": filename})
 
 def load_from_url(url):
@@ -97,13 +97,13 @@ def load_from_url(url):
     return data
 
 def is_state_tag(name):
-    return (not name.find("State") == -1) and (name.find("Settings") == -1) 
+    return (not name.find("State") == -1) and (name.find("Settings") == -1)
 
 def is_settings_tag(name):
-    return (not name.find("Settings") == -1) and (name.find("State") == -1) 
+    return (not name.find("Settings") == -1) and (name.find("State") == -1)
 
 def strip_text(text):
-    return re.sub("\s\s+", " ", text.strip().replace('\n', '').replace('\r', ''))
+    return re.sub("\s\s+", " ", text.strip().replace('\n', '').replace('\r', '')).replace('"', '').replace("'", "")
 
 def cap_word(text):
     return text.lower().title()
@@ -181,14 +181,14 @@ def generate_states(xml_filename):
 
     for cl in xml_root.iter("class"):
         if not is_state_tag(cl.attrib["name"]):
-            continue 
+            continue
 
         # Iterate all cmds
         # Generate one .msg and one C++ class for each of them
         for cmd in cl.iter("cmd"):
             # .msg
             msg_name = cap_word(project) + cl.attrib["name"] + cmd.attrib["name"]
-    
+
             d = dict({
                 "url": xml_url,
                 "msg_filename": msg_name,
@@ -225,7 +225,7 @@ def generate_states(xml_filename):
                             "constant_comment": strip_text(enum.text)
                             })
                         counter += 1
-                
+
                 d["msg_field"].append({
                     "msg_field_type": f_type,
                     "msg_field_name": f_name,
@@ -254,8 +254,8 @@ def generate_states(xml_filename):
                 "key": cpp_class_dict_key,
                 "cpp_class_arg": deepcopy(arg_list)
                 })
-    
-    logging.info("... Done iterating, writing results to file")      
+
+    logging.info("... Done iterating, writing results to file")
     # .msg write
     for k, d in d_msg.items():
         msg_filename = "%s.msg" % k
@@ -301,23 +301,23 @@ def generate_settings(xml_filename):
 
     for cl in xml_root.iter("class"):
         if not is_settings_tag(cl.attrib["name"]):
-            continue 
+            continue
 
         # At the moment the XML file is not 100% consistent between Settings and SettingsChanged and inner Commands
-        # 1. Check if `class["name"]State` exists 
+        # 1. Check if `class["name"]State` exists
         if not xml_root.findall(".//class[@name='%s']" % (cl.attrib["name"] + "State", )):
             logging.warning("No State Class for %s " % (cl.attrib["name"], ))
             continue
-        
+
         # Iterate all cmds
         # generate one C++ class for each command
         cfg_class_d = {
             "cfg_class_name": cl.attrib["name"].lower(),
-            "cfg_class_comment": strip_text(cl.text), 
+            "cfg_class_comment": strip_text(cl.text),
             "cfg_cmd": list()
         }
         for cmd in cl.iter("cmd"):
-            # 2. Check if `cmd["name"]Changed` exists 
+            # 2. Check if `cmd["name"]Changed` exists
             if not xml_root.findall(".//cmd[@name='%s']" % (cmd.attrib["name"] + "Changed", )):
                 logging.warning("No Changed CMD for %s " % (cmd.attrib["name"], ))
                 continue
@@ -339,7 +339,7 @@ def generate_settings(xml_filename):
             cpp_class_name = cl.attrib["name"] + cmd.attrib["name"]
             cpp_class_instance_name = project.lower() + "_" + cl.attrib["name"].lower() + "_" + cmd.attrib["name"].lower() + "_ptr";
             cpp_class_params = list()
-            
+
             counter = 0
             # generate one dyamic reconfigure variable per arg
             for arg in cmd.iter("arg"):
@@ -353,8 +353,10 @@ def generate_settings(xml_filename):
                 arg_min = 0.0
                 arg_max = 0.0
                 counter = 0
+                need_enum_cast = False
                 if (arg_type == "enum"):
-                    arg_type = "uint8"
+                    need_enum_cast = True
+                    arg_type = "int_t"
                     for enum in arg.iter("enum"):
                         arg_enum_list.append({
                             "constant_name": arg_name + "_" + enum.attrib["name"],
@@ -372,9 +374,25 @@ def generate_settings(xml_filename):
                         logging.info("  min: %s max: %s" % (arg_min, arg_max))
                     else:
                         logging.warning("  Can not guess [min:max] values for this arg, skipping it")
-                
+
+                    # We create a fake enum for int_t types that only accept bool values
+                    # The source XML should have defined them as bool_t
+                    # Since these are fake enums (no defines in SDK), we don't need int->enum casting
+                    if arg_type == "int_t" and arg_min == 0 and arg_max == 1:
+                        arg_enum_list.append({
+                            "constant_name": arg_name + "_OFF",
+                            "constant_value": 0,
+                            "constant_comment": "Disabled"
+                            })
+                        arg_enum_list.append({
+                            "constant_name": arg_name + "_ON",
+                            "constant_value": 1,
+                            "constant_comment": "Enabled"
+                            })
+                        counter = 2
+
                 # either we found minmax or the arg is of type enum
-                if len(minmax_list) or counter > 0:
+                if len(minmax_list) or need_enum_cast:
                     cfg_cmd_d["cfg_arg"].append({
                         "cfg_arg_type": arg_type,
                         "cfg_arg_name": arg_name,
@@ -387,7 +405,7 @@ def generate_settings(xml_filename):
                         })
 
                     # generate c enum type
-                    if (counter > 0):
+                    if (need_enum_cast):
                         enum_cast = "static_cast<eARCOMMANDS_%s_%s_%s_%s>" % (project.upper(), cl.attrib["name"].upper(), cmd.attrib["name"].upper(), arg.attrib["name"].upper())
                     else:
                         enum_cast = ""
@@ -411,10 +429,10 @@ def generate_settings(xml_filename):
                     })
 
         d_cfg["cfg_class"].append(deepcopy(cfg_class_d))
-        
-    
-    logging.info("... Done iterating, writing results to file")      
-    
+
+
+    logging.info("... Done iterating, writing results to file")
+
     # .cfg write
     cfg_file_name = d_cfg["cfg_filename"]
     logging.info("Writing %s" % (cfg_file_name, ))
@@ -444,7 +462,7 @@ def main():
     generator_git_hash = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).strip()
     with open("last_build_info", "w") as last_build_file:
         last_build_file.write(rend.render_path(
-            "templates/last_build_info.mustache", 
+            "templates/last_build_info.mustache",
             {
                 "source_hash": LIBARCOMMANDS_GIT_HASH,
                 "date": datetime.datetime.now(),
