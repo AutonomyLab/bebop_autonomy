@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>bebop_autonomy</name>
-  <version>0.1.0</version>
+  <version>0.1.1</version>
   <description>ROS driver for Parrot Bebop Drone, based on ARDroneSDK3/libARController</description>
 
   <maintainer email="mmonajje@sfu.ca">Mani Monajjemi</maintainer>

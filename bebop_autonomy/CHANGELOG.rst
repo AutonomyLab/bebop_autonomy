@@ -2,8 +2,8 @@
 Changelog for package bebop_autonomy
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.1.1 (2015-09-04)
+------------------
 * Add support for downloading and building ARDroneSDK3 during the build process
 * Add flattrim, flip and navigatehome interfaces
 * Add forward declaration to classes where it is possible
