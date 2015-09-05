@@ -25,6 +25,7 @@
   <build_depend>yasm</build_depend>
   <build_depend>nasm</build_depend> <!-- xxx -->
   <build_depend>zlib</build_depend>
+  <build_depend>unzip</build_depend>
 
   <!-- ROS dependencies -->
   <build_depend>bebop_autonomy_msgs</build_depend>
