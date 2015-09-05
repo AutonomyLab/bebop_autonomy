@@ -14,6 +14,19 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
+  <!-- ARDroneSDK3 deps -->
+  <!-- We need java since the SDK requires jar binary -->
+  <build_depend>git</build_depend>
+  <build_depend>wget</build_depend> <!-- xxx -->
+  <build_depend>java</build_depend>
+  <build_depend>automake</build_depend>
+  <build_depend>autoconf</build_depend>
+  <build_depend>libtool</build_depend>
+  <build_depend>yasm</build_depend>
+  <build_depend>nasm</build_depend> <!-- xxx -->
+  <build_depend>zlib</build_depend>
+
+  <!-- ROS dependencies -->
   <build_depend>bebop_autonomy_msgs</build_depend>
   <build_depend>pkg-config</build_depend>
   <build_depend>nodelet</build_depend>

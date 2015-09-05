@@ -21,101 +21,12 @@ generate_dynamic_reconfigure_options(
   ${CFGS}
 )
 
+# Video decoding dependencies (libbebop)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(AVCODEC REQUIRED libavcodec)
 pkg_check_modules(AVFORMAT REQUIRED libavformat)
 pkg_check_modules(SWSCALE REQUIRED libswscale)
 
-set(ARDRONESDK3_PATH "/home/autolab/Dev/ARDroneSDK3/ARSDKBuildUtils/Targets/Unix/Install")
-## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
-
-
-## Uncomment this if the package has a setup.py. This macro ensures
-## modules and global scripts declared therein get installed
-## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
-# catkin_python_setup()
-
-################################################
-## Declare ROS messages, services and actions ##
-################################################
-
-## To declare and build messages, services or actions from within this
-## package, follow these steps:
-## * Let MSG_DEP_SET be the set of packages whose message types you use in
-##   your messages/services/actions (e.g. std_msgs, actionlib_msgs, ...).
-## * In the file package.xml:
-##   * add a build_depend tag for "message_generation"
-##   * add a build_depend and a run_depend tag for each package in MSG_DEP_SET
-##   * If MSG_DEP_SET isn't empty the following dependency has been pulled in
-##     but can be declared for certainty nonetheless:
-##     * add a run_depend tag for "message_runtime"
-## * In this file (CMakeLists.txt):
-##   * add "message_generation" and every package in MSG_DEP_SET to
-##     find_package(catkin REQUIRED COMPONENTS ...)
-##   * add "message_runtime" and every package in MSG_DEP_SET to
-##     catkin_package(CATKIN_DEPENDS ...)
-##   * uncomment the add_*_files sections below as needed
-##     and list every .msg/.srv/.action file to be processed
-##   * uncomment the generate_messages entry below
-##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
-
-## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
-
-## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
-#   Service2.srv
-# )
-
-## Generate actions in the 'action' folder
-# add_action_files(
-#   FILES
-#   Action1.action
-#   Action2.action
-# )
-
-## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   nav_msgs#   std_msgs
-# )
-
-################################################
-## Declare ROS dynamic reconfigure parameters ##
-################################################
-
-## To declare and build dynamic reconfigure parameters within this
-## package, follow these steps:
-## * In the file package.xml:
-##   * add a build_depend and a run_depend tag for "dynamic_reconfigure"
-## * In this file (CMakeLists.txt):
-##   * add "dynamic_reconfigure" to
-##     find_package(catkin REQUIRED COMPONENTS ...)
-##   * uncomment the "generate_dynamic_reconfigure_options" section below
-##     and list every .cfg file to be processed
-
-## Generate dynamic reconfigure parameters in the 'cfg' folder
-# generate_dynamic_reconfigure_options(
-#   cfg/DynReconf1.cfg
-#   cfg/DynReconf2.cfg
-# )
-
-###################################
-## catkin specific configuration ##
-###################################
-## The catkin_package macro generates cmake config files for your package
-## Declare things to be passed to dependent projects
-## INCLUDE_DIRS: uncomment this if you package contains header files
-## LIBRARIES: libraries you create in this project that dependent projects also need
-## CATKIN_DEPENDS: catkin_packages dependent projects also need
-## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
    INCLUDE_DIRS include
 #  LIBRARIES bebop_autonomy
@@ -127,9 +38,20 @@ catkin_package(
 ## Build ##
 ###########
 
-## Specify additional locations of header files
-## Your package locations should be listed before other locations
-# include_directories(include)
+# Build ARDroneSDK3 through their custom build manager (ARSDKBuildUtils)
+include(ExternalProject)
+ExternalProject_Add(ARSDKBuildUtils
+    GIT_REPOSITORY https://github.com/ARDroneSDK3/ARSDKBuildUtils.git
+    GIT_TAG d4abf11773af1814cba3630ce45df6394d81bc54
+    PREFIX ${CATKIN_DEVEL_PREFIX}
+    CONFIGURE_COMMAND echo "No configure"
+    BUILD_COMMAND ./SDK3Build.py -t Unix
+    INSTALL_COMMAND echo "No install"
+    BUILD_IN_SOURCE 1
+)
+
+set(ARDRONESDK3_PATH "${CATKIN_DEVEL_PREFIX}/src/ARSDKBuildUtils/Targets/Unix/Install")
+
 include_directories(
   ${catkin_INCLUDE_DIRS}
   include
@@ -139,16 +61,6 @@ include_directories(
   ${SWSCALE_INCLUDE_DIRS}
 )
 link_directories(${ARDRONESDK3_PATH}/lib)
-
-## Declare a C++ library
-# add_library(bebop_autonomy
-#   src/${PROJECT_NAME}/bebop_autonomy.cpp
-# )
-
-## Add cmake target dependencies of the library
-## as an example, code may need to be generated before libraries
-## either from message generation or dynamic reconfigure
-# add_dependencies(bebop_autonomy ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 add_library(libbebop src/bebop.cpp src/bebop_video_decoder.cpp)
 target_link_libraries(libbebop
@@ -160,6 +72,7 @@ target_link_libraries(libbebop
   ${AVFORMAT_LIBRARIES}
   ${SWSCALE_LIBRARIES}
 )
+add_dependencies(libbebop ARSDKBuildUtils)
 
 add_library(bebop_driver_nodelet src/bebop_driver_nodelet.cpp)
 target_link_libraries(bebop_driver_nodelet
@@ -170,10 +83,6 @@ add_dependencies(bebop_driver_nodelet ${PROJECT_NAME}_gencfg)
 
 ## Declare a C++ executable
 add_executable(bebop_driver_node src/bebop_driver_node.cpp)
-
-## Add cmake target dependencies of the executable
-## same as for the library above
-#add_dependencies(bebop_driver_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(bebop_driver_node
