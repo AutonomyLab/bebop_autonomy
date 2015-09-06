@@ -1,8 +1,33 @@
+/**
+Software License Agreement (BSD)
+
+\file      bebop_video_decoder.cpp
+\authors   Mani Monajjemi <mmonajje@sfu.ca>
+\copyright Copyright (c) 2015, Autonomy Lab (Simon Fraser University), All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that
+the following conditions are met:
+ * Redistributions of source code must retain the above copyright notice, this list of conditions and the
+   following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the
+   following disclaimer in the documentation and/or other materials provided with the distribution.
+ * Neither the name of Autonomy Lab nor the names of its contributors may be used to endorse or promote
+   products derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WAR-
+RANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, IN-
+DIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include "bebop_autonomy/bebop_video_decoder.h"
 #include <stdexcept>
 #include <boost/lexical_cast.hpp>
 #include <boost/thread/lock_guard.hpp>
 #include <algorithm>
+#include <string>
 
 extern "C"
 {
@@ -14,7 +39,7 @@ namespace bebop_autonomy
 
 const char* VideoDecoder::LOG_TAG = "Decoder";
 
-// TODO: Move to util
+// TODO(mani-monaj): Move to util
 void VideoDecoder::ThrowOnCondition(const bool cond, const std::string &message)
 {
   if (!cond) return;
@@ -32,15 +57,13 @@ VideoDecoder::VideoDecoder()
     img_convert_ctx_ptr_(NULL),
     input_format_ptr_(NULL),
     frame_rgb_raw_ptr_(NULL)
-{
-  ;
-}
+{}
 
 bool VideoDecoder::InitCodec(const uint32_t width, const uint32_t height)
 {
   if (codec_initialized_)
   {
-    // TODO: Maybe re-initialize
+    // TODO(mani-monaj): Maybe re-initialize
     return true;
   }
 
@@ -82,12 +105,12 @@ bool VideoDecoder::InitCodec(const uint32_t width, const uint32_t height)
 
        ThrowOnCondition(!frame_ptr_ || !frame_rgb_ptr_, "Can not allocate memory for frames!");
 
-       frame_rgb_raw_ptr_ = (uint8_t*) av_malloc(num_bytes * sizeof(uint8_t));
+       frame_rgb_raw_ptr_ = reinterpret_cast<uint8_t*>(av_malloc(num_bytes * sizeof(uint8_t)));
        ThrowOnCondition(frame_rgb_raw_ptr_ == NULL,
                         std::string("Can not allocate memory for the buffer: ") +
                         boost::lexical_cast<std::string>(num_bytes));
        ThrowOnCondition(0 == avpicture_fill(
-                          (AVPicture*) frame_rgb_ptr_, frame_rgb_raw_ptr_, PIX_FMT_RGB24,
+                          reinterpret_cast<AVPicture*>(frame_rgb_ptr_), frame_rgb_raw_ptr_, PIX_FMT_RGB24,
                           codec_ctx_ptr_->width, codec_ctx_ptr_->height),
                         "Failed to initialize the picture data structure.");
     }
@@ -199,8 +222,6 @@ bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *bebop_frame_ptr_)
     {
       if (frame_finished)
       {
-//        ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "Res: %d, Frame Finished: %d, isIFrame: %d", len, frame_finished, bebop_frame_ptr_->isIFrame);
-
         ConvertFrameToRGB();
       }
 
@@ -211,23 +232,7 @@ bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *bebop_frame_ptr_)
       }
     }
   }
-  //ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "End of Decode");
   return true;
 }
-
-//void VideoDecoder::CopyDecodedFrame(std::vector<uint8_t>& buffer) const
-//{
-//  boost::lock_guard<boost::mutex> lock(frame_rgb_mutex_);
-//  std::copy(frame_rgb_raw_ptr_,
-//            frame_rgb_raw_ptr_ + (GetFrameWidth() * GetFrameHeight() * 3),
-//            buffer.begin());
-//}
-//const uint8_t* VideoDecoder::GetFrameRGBCstPtr() const
-//{
-//  ARSAL_PRINT(ARSAL_PRINT_ERROR, LOG_TAG, "LOCK");
-//  boost::lock_guard<boost::mutex> lock(frame_rgb_mutex_);
-//  ARSAL_PRINT(ARSAL_PRINT_ERROR, LOG_TAG, "UNLOCK");
-//  return frame_rgb_raw_ptr_;
-//}
 
 }  // namespace bebop_autonomy

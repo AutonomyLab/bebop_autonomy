@@ -1,3 +1,27 @@
+/**
+Software License Agreement (BSD)
+
+\file      bebop_driver_nodelet.cpp
+\authors   Mani Monajjemi <mmonajje@sfu.ca>
+\copyright Copyright (c) 2015, Autonomy Lab (Simon Fraser University), All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that
+the following conditions are met:
+ * Redistributions of source code must retain the above copyright notice, this list of conditions and the
+   following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the
+   following disclaimer in the documentation and/or other materials provided with the distribution.
+ * Neither the name of Autonomy Lab nor the names of its contributors may be used to endorse or promote
+   products derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WAR-
+RANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, IN-
+DIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <ros/ros.h>
 #include <pluginlib/class_list_macros.h>
 #include <nodelet/nodelet.h>
@@ -6,6 +30,7 @@
 #include <boost/make_shared.hpp>
 #include <cmath>
 #include <algorithm>
+#include <string>
 #include <cstdio>
 
 #include <bebop_autonomy/bebop_driver_nodelet.h>
@@ -24,7 +49,8 @@ int BebopPrintToROSLogCB(eARSAL_PRINT_LEVEL level, const char *tag, const char *
   const int32_t sz = vsnprintf(bebop_err_str, BEBOP_ERR_STR_SZ, format, va);
   bebop_err_str[std::min(BEBOP_ERR_STR_SZ, sz) - 1] = '\0';
   // We can't use variable names with ROS_*_NAMED macros
-  static const std::string logger_name = std::string(ROSCONSOLE_NAME_PREFIX) + "." + ros::this_node::getName() + ".bebopsdk";
+  static const std::string logger_name = std::string(ROSCONSOLE_NAME_PREFIX) + "." +
+      ros::this_node::getName() + ".bebopsdk";
   // Use tag inline
   ROS_LOG(util::arsal_level_to_ros[level], logger_name, "[%s] %s", tag, bebop_err_str);
   return 1;
@@ -49,7 +75,7 @@ void BebopDriverNodelet::onInit()
   util::ResetTwist(prev_camera_twist);
 
   // Params (not dynamically reconfigurable, local)
-  // TODO: Wrap all calls to .param() in a function call to enable logging
+  // TODO(mani-monaj): Wrap all calls to .param() in a function call to enable logging
   const bool param_reset_settings = private_nh.param("reset_settings", false);
   const std::string& param_camera_info_url = private_nh.param<std::string>("camera_info_url", "");
 
@@ -75,7 +101,7 @@ void BebopDriverNodelet::onInit()
   catch (const std::runtime_error& e)
   {
     NODELET_FATAL_STREAM("Init failed: " << e.what());
-    // TODO: Retry mechanism
+    // TODO(mani-monaj): Retry mechanism
     throw e;
   }
 
@@ -108,7 +134,7 @@ void BebopDriverNodelet::onInit()
   catch (const::std::runtime_error& e)
   {
     NODELET_ERROR_STREAM("Start() failed: " << e.what());
-    // TODO: Retry mechanism
+    // TODO(mani-monaj): Retry mechanism
   }
 
   if (bebop_ptr_->IsStreamingStarted())
@@ -158,8 +184,8 @@ void BebopDriverNodelet::TakeoffCallback(const std_msgs::EmptyConstPtr& empty_pt
 {
   try
   {
-   util::ResetTwist(bebop_twist);
-   bebop_ptr_->Takeoff();
+    util::ResetTwist(bebop_twist);
+    bebop_ptr_->Takeoff();
   }
   catch (const std::runtime_error& e)
   {
@@ -216,7 +242,7 @@ void BebopDriverNodelet::FlatTrimCallback(const std_msgs::EmptyConstPtr &empty_p
 {
   try
   {
-    // TODO: Check if landed
+    // TODO(mani-monaj): Check if landed
     ROS_INFO("Flat Trim");
     bebop_ptr_->FlatTrim();
   }
@@ -243,7 +269,7 @@ void BebopDriverNodelet::FlipAnimationCallback(const std_msgs::UInt8ConstPtr &an
 {
   try
   {
-    // TODO: Check if flying
+    // TODO(mani-monaj): Check if flying
     ROS_INFO("Performing flip animation %d ...", animid_ptr->data);
     bebop_ptr_->AnimationFlip(animid_ptr->data);
   }

@@ -1,6 +1,32 @@
+/**
+Software License Agreement (BSD)
+
+\file      bebop.cpp
+\authors   Mani Monajjemi <mmonajje@sfu.ca>
+\copyright Copyright (c) 2015, Autonomy Lab (Simon Fraser University), All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that
+the following conditions are met:
+ * Redistributions of source code must retain the above copyright notice, this list of conditions and the
+   following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the
+   following disclaimer in the documentation and/or other materials provided with the distribution.
+ * Neither the name of Autonomy Lab nor the names of its contributors may be used to endorse or promote
+   products derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WAR-
+RANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, IN-
+DIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 #include <stdexcept>
 #include <cmath>
 #include <string>
+#include <algorithm>
+#include <vector>
 
 #include <boost/bind.hpp>
 #include <boost/thread/locks.hpp>
@@ -26,14 +52,14 @@ namespace bebop_autonomy
 
 const char* Bebop::LOG_TAG = "BebopSDK";
 
-void Bebop::BatteryStateChangedCallback (uint8_t percent, void *bebop_void_ptr)
+void Bebop::BatteryStateChangedCallback(uint8_t percent, void *bebop_void_ptr)
 {
   ARSAL_PRINT(ARSAL_PRINT_WARNING, LOG_TAG, "bat: %d", percent);
 }
 
 void Bebop::StateChangedCallback(eARCONTROLLER_DEVICE_STATE new_state, eARCONTROLLER_ERROR error, void *bebop_void_ptr)
 {
-  // TODO: Log error
+  // TODO(mani-monaj): Log error
   Bebop* bebop_ptr_ = static_cast<Bebop*>(bebop_void_ptr);
 
   switch (new_state)
@@ -47,9 +73,11 @@ void Bebop::StateChangedCallback(eARCONTROLLER_DEVICE_STATE new_state, eARCONTRO
   }
 }
 
-void Bebop::CommandReceivedCallback(eARCONTROLLER_DICTIONARY_KEY cmd_key, ARCONTROLLER_DICTIONARY_ELEMENT_t *element_dict_ptr, void *bebop_void_ptr)
+void Bebop::CommandReceivedCallback(eARCONTROLLER_DICTIONARY_KEY cmd_key,
+                                    ARCONTROLLER_DICTIONARY_ELEMENT_t *element_dict_ptr,
+                                    void *bebop_void_ptr)
 {
-  static long int lwp_id = util::GetLWPId();
+  static int32_t lwp_id = util::GetLWPId();
   static bool lwp_id_printed = false;
 
   if (!lwp_id_printed)
@@ -65,15 +93,14 @@ void Bebop::CommandReceivedCallback(eARCONTROLLER_DICTIONARY_KEY cmd_key, ARCONT
   if (element_dict_ptr)
   {
     // We are only interested in single key dictionaries
-    HASH_FIND_STR (element_dict_ptr, ARCONTROLLER_DICTIONARY_SINGLE_KEY, single_element_ptr);
+    HASH_FIND_STR(element_dict_ptr, ARCONTROLLER_DICTIONARY_SINGLE_KEY, single_element_ptr);
 
     if (single_element_ptr)
     {
-//      boost::lock_guard<boost::mutex> lock(bebop_ptr_->callback_map_mutex_);
       callback_map_t::iterator it = bebop_ptr->callback_map_.find(cmd_key);
       if (it != bebop_ptr->callback_map_.end())
       {
-        // TODO: Check if we can find the time from the packets
+        // TODO(mani-monaj): Check if we can find the time from the packets
         it->second->Update(element_dict_ptr->arguments, ros::Time::now());
       }
     }
@@ -83,7 +110,7 @@ void Bebop::CommandReceivedCallback(eARCONTROLLER_DICTIONARY_KEY cmd_key, ARCONT
 // This Callback runs in ARCONTROLLER_Stream_ReaderThreadRun context and blocks it until it returns
 void Bebop::FrameReceivedCallback(ARCONTROLLER_Frame_t *frame, void *bebop_void_ptr_)
 {
-  static long int lwp_id = util::GetLWPId();
+  static int32_t lwp_id = util::GetLWPId();
   static bool lwp_id_printed = false;
   if (!lwp_id_printed)
   {
@@ -100,7 +127,7 @@ void Bebop::FrameReceivedCallback(ARCONTROLLER_Frame_t *frame, void *bebop_void_
   Bebop* bebop_ptr = static_cast<Bebop*>(bebop_void_ptr_);
   if (!bebop_ptr->IsConnected()) return;
 
-  // TODO: FixMe
+  // TODO(mani-monaj): Param? Fetch from Drone?
   frame->width = 640;
   frame->height = 368;
 
@@ -146,7 +173,6 @@ Bebop::Bebop(ARSAL_Print_Callback_t custom_print_callback):
 
 Bebop::~Bebop()
 {
-//  out_file.close();
   // This is the last resort, the program must run Cleanup() fo
   // proper disconnection and free
   if (device_ptr_) ARDISCOVERY_Device_Delete(&device_ptr_);
@@ -159,7 +185,7 @@ void Bebop::Connect(ros::NodeHandle& nh, ros::NodeHandle& priv_nh)
   {
     if (is_connected_) throw std::runtime_error("Already inited");
 
-    // TODO: Error checking;
+    // TODO(mani-monaj): Error checking;
     ARSAL_Sem_Init(&state_sem_, 0, 0);
 
     eARDISCOVERY_ERROR error_discovery = ARDISCOVERY_OK;
@@ -170,7 +196,7 @@ void Bebop::Connect(ros::NodeHandle& nh, ros::NodeHandle& priv_nh)
       throw std::runtime_error("Discovery failed: " + std::string(ARDISCOVERY_Error_ToString(error_discovery)));
     }
 
-    // TODO: Make ip and port params
+    // TODO(mani-monaj): Make ip and port params
     error_discovery = ARDISCOVERY_Device_InitWifi(device_ptr_,
                                                   ARDISCOVERY_PRODUCT_ARDRONE, "Bebop",
                                                   "192.168.42.1", 44444);
@@ -185,27 +211,27 @@ void Bebop::Connect(ros::NodeHandle& nh, ros::NodeHandle& priv_nh)
 
     ARDISCOVERY_Device_Delete(&device_ptr_);
 
-    //{
       // callback_map is not being modified after this initial update
-//      boost::lock_guard<boost::mutex> lock(callback_map_mutex_);
 #define UPDTAE_CALLBACK_MAP
       #include "bebop_autonomy/autogenerated/ardrone3_state_callback_includes.h"
       #include "bebop_autonomy/autogenerated/common_state_callback_includes.h"
       #include "bebop_autonomy/autogenerated/ardrone3_setting_callback_includes.h"
 #undef UPDTAE_CALLBACK_MAP
-    //}
 
     ThrowOnCtrlError(ARCONTROLLER_Device_Start(device_controller_ptr_), "Controller device start failed");
 
     ThrowOnCtrlError(
-          ARCONTROLLER_Device_AddStateChangedCallback(device_controller_ptr_, Bebop::StateChangedCallback, (void*) this),
+          ARCONTROLLER_Device_AddStateChangedCallback(
+            device_controller_ptr_, Bebop::StateChangedCallback, reinterpret_cast<void*>(this)),
           "Registering state callback failed");
     ThrowOnCtrlError(
-          ARCONTROLLER_Device_AddCommandReceivedCallback(device_controller_ptr_, Bebop::CommandReceivedCallback, (void*) this),
+          ARCONTROLLER_Device_AddCommandReceivedCallback(
+            device_controller_ptr_, Bebop::CommandReceivedCallback, reinterpret_cast<void*>(this)),
           "Registering command callback failed");
     // third argument is frame timeout callback
     ThrowOnCtrlError(
-          ARCONTROLLER_Device_SetVideoReceiveCallback (device_controller_ptr_, Bebop::FrameReceivedCallback, NULL , (void*) this),
+          ARCONTROLLER_Device_SetVideoReceiveCallback(
+            device_controller_ptr_, Bebop::FrameReceivedCallback, NULL , reinterpret_cast<void*>(this)),
           "Registering video callback failed");
 
     // Semaphore is touched inside the StateCallback
@@ -220,7 +246,6 @@ void Bebop::Connect(ros::NodeHandle& nh, ros::NodeHandle& priv_nh)
     // Enforce termination of video streaming ... (use Start/Stop streaming to enable/disable this)
     ThrowOnCtrlError(device_controller_ptr_->aRDrone3->sendMediaStreamingVideoEnable(
                        device_controller_ptr_->aRDrone3, 0), "Stopping video stream failed.");
-
   }
   catch (const std::runtime_error& e)
   {
@@ -376,7 +401,8 @@ void Bebop::NavigateHome(const bool &start_stop)
 {
   ThrowOnInternalError("Navigate home failed");
   ThrowOnCtrlError(
-        device_controller_ptr_->aRDrone3->sendPilotingNavigateHome(device_controller_ptr_->aRDrone3, start_stop ? 1 : 0),
+        device_controller_ptr_->aRDrone3->sendPilotingNavigateHome(
+          device_controller_ptr_->aRDrone3, start_stop ? 1 : 0),
         "Navigate home failed");
 }
 
@@ -395,7 +421,7 @@ void Bebop::AnimationFlip(const uint8_t &anim_id)
 
 void Bebop::Move(const double &roll, const double &pitch, const double &gaz_speed, const double &yaw_speed)
 {
-  // TODO: Bound check
+  // TODO(mani-monaj): Bound check
   ThrowOnInternalError("Move failure");
 
   // If roll or pitch value are non-zero, enabel roll/pitch flag
@@ -438,12 +464,12 @@ void Bebop::MoveCamera(const double &tilt, const double &pan)
 
 uint32_t Bebop::GetFrontCameraFrameWidth() const
 {
-   return video_decoder_ptr_->GetFrameWidth();
+  return video_decoder_ptr_->GetFrameWidth();
 }
 
 uint32_t Bebop::GetFrontCameraFrameHeight() const
 {
-   return video_decoder_ptr_->GetFrameHeight();
+  return video_decoder_ptr_->GetFrameHeight();
 }
 
 bool Bebop::GetFrontCameraFrame(std::vector<uint8_t> &buffer, uint32_t& width, uint32_t& height) const
@@ -488,4 +514,4 @@ void Bebop::ThrowOnCtrlError(const eARCONTROLLER_ERROR &error, const std::string
   }
 }
 
-}  // namespace bebop_autonomys
+}  // namespace bebop_autonomy
