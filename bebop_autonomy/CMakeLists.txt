@@ -137,11 +137,8 @@ add_dependencies(bebop_driver_node ${PROJECT_NAME}_gencfg)
 ## Testing ##
 #############
 
-## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_bebop_autonomy.cpp)
-# if(TARGET ${PROJECT_NAME}-test)
-#   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
-# endif()
-
-## Add folders to be run by python nosetests
-# catkin_add_nosetests(test)
+if(CATKIN_ENABLE_TESTING)
+  find_package(rostest REQUIRED)
+  add_rostest_gtest(bebop_itl_test test/bebop_itl_test.test test/bebop_itl_test.cpp)
+  target_link_libraries(bebop_itl_test ${catkin_LIBRARIES})
+endif()

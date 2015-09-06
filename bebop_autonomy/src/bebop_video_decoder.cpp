@@ -25,7 +25,6 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 #include "bebop_autonomy/bebop_video_decoder.h"
 #include <stdexcept>
 #include <boost/lexical_cast.hpp>
-#include <boost/thread/lock_guard.hpp>
 #include <algorithm>
 #include <string>
 
