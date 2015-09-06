@@ -2,8 +2,8 @@
 Changelog for package bebop_autonomy
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.1.2 (2015-09-05)
+------------------
 * Move 'state' params to their own param namespace
 * Add missing unzip dep to package.xml
 * Contributors: Mani Monajjemi
