@@ -205,7 +205,7 @@ def generate_states(xml_filename):
             # cmd.attrib["name"] and cl.attrib["name"] are already in CamelCase
             cpp_class_name = msg_name
             cpp_class_instance_name = project.lower() + "_" + cl.attrib["name"].lower() + "_" + cmd.attrib["name"].lower() + "_ptr";
-            cpp_class_param_name = "enable_" + cl.attrib["name"].lower() + "_" + cmd.attrib["name"].lower()
+            cpp_class_param_name = "states/enable_" + cl.attrib["name"].lower() + "_" + cmd.attrib["name"].lower()
             topic_name = "states/" + project + "/" + cl.attrib["name"] + "/" + cmd.attrib["name"]
 
             arg_list = []

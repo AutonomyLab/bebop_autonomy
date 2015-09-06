@@ -4,30 +4,7 @@
         <node pkg="nodelet" type="nodelet" name="bebop_nodelet_manager" args="manager" output="screen"/>
         <node pkg="nodelet" type="nodelet" name="bebop_nodelet"
           args="load bebop_autonomy/BebopDriverNodelet bebop_nodelet_manager">
-            <param name="enable_commonstate_batterystatechanged" value="true" />
-            <param name="enable_commonstate_wifisignalchanged" value="true" />
-            <param name="enable_overheatstate_overheatchanged" value="true" />
-            <param name="enable_controllerstate_ispilotingchanged" value="true" />
-            <param name="enable_mavlinkstate_mavlinkfileplayingstatechanged" value="true" />
-            <param name="enable_mavlinkstate_mavlinkplayerrorstatechanged" value="true" />
-            <param name="enable_flightplanstate_availabilitystatechanged" value="true" />
-            <param name="enable_flightplanstate_componentstatelistchanged" value="true" />
-            <param name="enable_pilotingstate_flattrimchanged" value="true" />
-            <param name="enable_pilotingstate_flyingstatechanged" value="true" />
-            <param name="enable_pilotingstate_navigatehomestatechanged" value="true" />
-            <param name="enable_pilotingstate_positionchanged" value="true" />
-            <param name="enable_pilotingstate_speedchanged" value="true" />
-            <param name="enable_pilotingstate_attitudechanged" value="true" />
-            <param name="enable_pilotingstate_positionchanged" value="true" />
-            <param name="enable_altitudechanged" value="true" />
-            <param name="enable_autotakeoffmodechanged" value="true" />
-            <param name="enable_mediastreamingstate_videoenablechanged" value="true" />
-            <param name="enable_camerastate_orientation" value="true" />
-            <param name="enable_gpsstate_numberofsatellitechanged" value="true" />
-            <param name="enable_numberofsatellitechanged" value="true" />
-
-            <param name="reset_settings" value="true" />
-            <!--param name="PilotingSettingsMaxAltitudeCurrent" value="60" /-->
+            <rosparam command="load" file="$(find bebop_autonomy)/config/defaults.yaml" />
         </node>
         <node pkg="nodelet" type="nodelet" name="bebop_image_view_nodelet"
           args="load image_view/image bebop_nodelet_manager">

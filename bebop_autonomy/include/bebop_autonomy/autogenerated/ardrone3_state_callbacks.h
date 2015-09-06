@@ -4,7 +4,7 @@
 /*
  * ARDrone3_state_callbacks.h
  * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/7e2f55fafcd45ba2380ca2574a08b7359c005f47/Xml/ARDrone3_commands.xml
- * Date: 2015-09-03
+ * Date: 2015-09-05
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
@@ -60,7 +60,7 @@ public:
   Ardrone3MediaRecordStatePictureStateChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_PICTURESTATECHANGED)
   {
-    if (priv_nh.getParam("enable_mediarecordstate_picturestatechanged", pub_enabled_) && pub_enabled_)
+    if (priv_nh.getParam("states/enable_mediarecordstate_picturestatechanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
       ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3MediaRecordStatePictureStateChanged>(topic, 10, true);
@@ -118,7 +118,7 @@ public:
   Ardrone3MediaRecordStateVideoStateChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_VIDEOSTATECHANGED)
   {
-    if (priv_nh.getParam("enable_mediarecordstate_videostatechanged", pub_enabled_) && pub_enabled_)
+    if (priv_nh.getParam("states/enable_mediarecordstate_videostatechanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
       ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3MediaRecordStateVideoStateChanged>(topic, 10, true);
@@ -176,7 +176,7 @@ public:
   Ardrone3MediaRecordStatePictureStateChangedV2(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_PICTURESTATECHANGEDV2)
   {
-    if (priv_nh.getParam("enable_mediarecordstate_picturestatechangedv2", pub_enabled_) && pub_enabled_)
+    if (priv_nh.getParam("states/enable_mediarecordstate_picturestatechangedv2", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
       ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3MediaRecordStatePictureStateChangedV2>(topic, 10, true);
@@ -234,7 +234,7 @@ public:
   Ardrone3MediaRecordStateVideoStateChangedV2(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIARECORDSTATE_VIDEOSTATECHANGEDV2)
   {
-    if (priv_nh.getParam("enable_mediarecordstate_videostatechangedv2", pub_enabled_) && pub_enabled_)
+    if (priv_nh.getParam("states/enable_mediarecordstate_videostatechangedv2", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
       ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3MediaRecordStateVideoStateChangedV2>(topic, 10, true);
@@ -292,7 +292,7 @@ public:
   Ardrone3PilotingStateFlatTrimChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_FLATTRIMCHANGED)
   {
-    if (priv_nh.getParam("enable_pilotingstate_flattrimchanged", pub_enabled_) && pub_enabled_)
+    if (priv_nh.getParam("states/enable_pilotingstate_flattrimchanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
       ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3PilotingStateFlatTrimChanged>(topic, 10, true);
@@ -336,7 +336,7 @@ public:
   Ardrone3PilotingStateFlyingStateChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_FLYINGSTATECHANGED)
   {
-    if (priv_nh.getParam("enable_pilotingstate_flyingstatechanged", pub_enabled_) && pub_enabled_)
+    if (priv_nh.getParam("states/enable_pilotingstate_flyingstatechanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
       ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3PilotingStateFlyingStateChanged>(topic, 10, true);
@@ -387,7 +387,7 @@ public:
   Ardrone3PilotingStateAlertStateChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_ALERTSTATECHANGED)
   {
-    if (priv_nh.getParam("enable_pilotingstate_alertstatechanged", pub_enabled_) && pub_enabled_)
+    if (priv_nh.getParam("states/enable_pilotingstate_alertstatechanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
       ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3PilotingStateAlertStateChanged>(topic, 10, true);
@@ -438,7 +438,7 @@ public:
   Ardrone3PilotingStateNavigateHomeStateChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_NAVIGATEHOMESTATECHANGED)
   {
-    if (priv_nh.getParam("enable_pilotingstate_navigatehomestatechanged", pub_enabled_) && pub_enabled_)
+    if (priv_nh.getParam("states/enable_pilotingstate_navigatehomestatechanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
       ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3PilotingStateNavigateHomeStateChanged>(topic, 10, true);
@@ -496,7 +496,7 @@ public:
   Ardrone3PilotingStatePositionChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_POSITIONCHANGED)
   {
-    if (priv_nh.getParam("enable_pilotingstate_positionchanged", pub_enabled_) && pub_enabled_)
+    if (priv_nh.getParam("states/enable_pilotingstate_positionchanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
       ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3PilotingStatePositionChanged>(topic, 10, true);
@@ -561,7 +561,7 @@ public:
   Ardrone3PilotingStateSpeedChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_SPEEDCHANGED)
   {
-    if (priv_nh.getParam("enable_pilotingstate_speedchanged", pub_enabled_) && pub_enabled_)
+    if (priv_nh.getParam("states/enable_pilotingstate_speedchanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
       ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3PilotingStateSpeedChanged>(topic, 10, true);
@@ -626,7 +626,7 @@ public:
   Ardrone3PilotingStateAttitudeChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_ATTITUDECHANGED)
   {
-    if (priv_nh.getParam("enable_pilotingstate_attitudechanged", pub_enabled_) && pub_enabled_)
+    if (priv_nh.getParam("states/enable_pilotingstate_attitudechanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
       ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3PilotingStateAttitudeChanged>(topic, 10, true);
@@ -691,7 +691,7 @@ public:
   Ardrone3PilotingStateAutoTakeOffModeChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_AUTOTAKEOFFMODECHANGED)
   {
-    if (priv_nh.getParam("enable_pilotingstate_autotakeoffmodechanged", pub_enabled_) && pub_enabled_)
+    if (priv_nh.getParam("states/enable_pilotingstate_autotakeoffmodechanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
       ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3PilotingStateAutoTakeOffModeChanged>(topic, 10, true);
@@ -742,7 +742,7 @@ public:
   Ardrone3PilotingStateAltitudeChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_ALTITUDECHANGED)
   {
-    if (priv_nh.getParam("enable_pilotingstate_altitudechanged", pub_enabled_) && pub_enabled_)
+    if (priv_nh.getParam("states/enable_pilotingstate_altitudechanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
       ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3PilotingStateAltitudeChanged>(topic, 10, true);
@@ -793,7 +793,7 @@ public:
   Ardrone3NetworkStateWifiScanListChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSTATE_WIFISCANLISTCHANGED)
   {
-    if (priv_nh.getParam("enable_networkstate_wifiscanlistchanged", pub_enabled_) && pub_enabled_)
+    if (priv_nh.getParam("states/enable_networkstate_wifiscanlistchanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
       ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3NetworkStateWifiScanListChanged>(topic, 10, true);
@@ -865,7 +865,7 @@ public:
   Ardrone3NetworkStateAllWifiScanChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSTATE_ALLWIFISCANCHANGED)
   {
-    if (priv_nh.getParam("enable_networkstate_allwifiscanchanged", pub_enabled_) && pub_enabled_)
+    if (priv_nh.getParam("states/enable_networkstate_allwifiscanchanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
       ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3NetworkStateAllWifiScanChanged>(topic, 10, true);
@@ -909,7 +909,7 @@ public:
   Ardrone3NetworkStateWifiAuthChannelListChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSTATE_WIFIAUTHCHANNELLISTCHANGED)
   {
-    if (priv_nh.getParam("enable_networkstate_wifiauthchannellistchanged", pub_enabled_) && pub_enabled_)
+    if (priv_nh.getParam("states/enable_networkstate_wifiauthchannellistchanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
       ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3NetworkStateWifiAuthChannelListChanged>(topic, 10, true);
@@ -974,7 +974,7 @@ public:
   Ardrone3NetworkStateAllWifiAuthChannelChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_NETWORKSTATE_ALLWIFIAUTHCHANNELCHANGED)
   {
-    if (priv_nh.getParam("enable_networkstate_allwifiauthchannelchanged", pub_enabled_) && pub_enabled_)
+    if (priv_nh.getParam("states/enable_networkstate_allwifiauthchannelchanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
       ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3NetworkStateAllWifiAuthChannelChanged>(topic, 10, true);
@@ -1018,7 +1018,7 @@ public:
   Ardrone3MediaStreamingStateVideoEnableChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_MEDIASTREAMINGSTATE_VIDEOENABLECHANGED)
   {
-    if (priv_nh.getParam("enable_mediastreamingstate_videoenablechanged", pub_enabled_) && pub_enabled_)
+    if (priv_nh.getParam("states/enable_mediastreamingstate_videoenablechanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
       ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3MediaStreamingStateVideoEnableChanged>(topic, 10, true);
@@ -1069,7 +1069,7 @@ public:
   Ardrone3CameraStateOrientation(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_ORIENTATION)
   {
-    if (priv_nh.getParam("enable_camerastate_orientation", pub_enabled_) && pub_enabled_)
+    if (priv_nh.getParam("states/enable_camerastate_orientation", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
       ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3CameraStateOrientation>(topic, 10, true);
@@ -1127,7 +1127,7 @@ public:
   Ardrone3AntiflickeringStateelectricFrequencyChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_ANTIFLICKERINGSTATE_ELECTRICFREQUENCYCHANGED)
   {
-    if (priv_nh.getParam("enable_antiflickeringstate_electricfrequencychanged", pub_enabled_) && pub_enabled_)
+    if (priv_nh.getParam("states/enable_antiflickeringstate_electricfrequencychanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
       ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3AntiflickeringStateelectricFrequencyChanged>(topic, 10, true);
@@ -1178,7 +1178,7 @@ public:
   Ardrone3AntiflickeringStatemodeChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_ANTIFLICKERINGSTATE_MODECHANGED)
   {
-    if (priv_nh.getParam("enable_antiflickeringstate_modechanged", pub_enabled_) && pub_enabled_)
+    if (priv_nh.getParam("states/enable_antiflickeringstate_modechanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
       ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3AntiflickeringStatemodeChanged>(topic, 10, true);
@@ -1229,7 +1229,7 @@ public:
   Ardrone3GPSStateNumberOfSatelliteChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSTATE_NUMBEROFSATELLITECHANGED)
   {
-    if (priv_nh.getParam("enable_gpsstate_numberofsatellitechanged", pub_enabled_) && pub_enabled_)
+    if (priv_nh.getParam("states/enable_gpsstate_numberofsatellitechanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
       ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3GPSStateNumberOfSatelliteChanged>(topic, 10, true);
@@ -1280,7 +1280,7 @@ public:
   Ardrone3GPSStateHomeTypeAvailabilityChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSTATE_HOMETYPEAVAILABILITYCHANGED)
   {
-    if (priv_nh.getParam("enable_gpsstate_hometypeavailabilitychanged", pub_enabled_) && pub_enabled_)
+    if (priv_nh.getParam("states/enable_gpsstate_hometypeavailabilitychanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
       ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3GPSStateHomeTypeAvailabilityChanged>(topic, 10, true);
@@ -1338,7 +1338,7 @@ public:
   Ardrone3GPSStateHomeTypeChosenChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_GPSSTATE_HOMETYPECHOSENCHANGED)
   {
-    if (priv_nh.getParam("enable_gpsstate_hometypechosenchanged", pub_enabled_) && pub_enabled_)
+    if (priv_nh.getParam("states/enable_gpsstate_hometypechosenchanged", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
       ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3GPSStateHomeTypeChosenChanged>(topic, 10, true);
@@ -1389,7 +1389,7 @@ public:
   Ardrone3PROStateFeatures(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
     : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PROSTATE_FEATURES)
   {
-    if (priv_nh.getParam("enable_prostate_features", pub_enabled_) && pub_enabled_)
+    if (priv_nh.getParam("states/enable_prostate_features", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
       ros_pub_ = nh.advertise<bebop_autonomy_msgs::Ardrone3PROStateFeatures>(topic, 10, true);
