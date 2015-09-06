@@ -2,6 +2,12 @@
 Changelog for package bebop_autonomy
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Move 'state' params to their own param namespace
+* Add missing unzip dep to package.xml
+* Contributors: Mani Monajjemi
+
 0.1.1 (2015-09-04)
 ------------------
 * Add support for downloading and building ARDroneSDK3 during the build process
