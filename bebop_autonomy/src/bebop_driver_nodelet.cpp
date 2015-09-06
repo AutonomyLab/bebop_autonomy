@@ -180,6 +180,7 @@ void BebopDriverNodelet::LandCallback(const std_msgs::EmptyConstPtr& empty_ptr)
   }
 }
 
+// We shoudld probably switch to sensor_msgs/JointState instead of Twist
 void BebopDriverNodelet::CameraMoveCallback(const geometry_msgs::TwistConstPtr& twist_ptr)
 {
   try
@@ -188,7 +189,7 @@ void BebopDriverNodelet::CameraMoveCallback(const geometry_msgs::TwistConstPtr& 
     const bool is_camera_twist_changed = !util::CompareTwists(camera_twist, prev_camera_twist);
     if (is_camera_twist_changed)
     {
-      bebop_ptr_->MoveCamera(camera_twist.linear.y, camera_twist.angular.z);
+      bebop_ptr_->MoveCamera(camera_twist.angular.y, camera_twist.angular.z);
       prev_camera_twist = camera_twist;
     }
   }

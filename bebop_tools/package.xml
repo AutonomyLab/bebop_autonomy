@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package>
+  <name>bebop_tools</name>
+  <version>0.1.1</version>
+  <description>Miscellaneous tools for bebop_autonomy</description>
+
+  <maintainer email="mmonajje@sfu.ca">Mani Monajjemi</maintainer>
+  <license>BSD</license>
+
+  <url type="website">http://wiki.ros.org/bebop_autonomy</url>
+  <url type="repository">http://github.com/AutonomyLab/bebop_autonomy</url>
+  <author email="mmonajje@sfu.ca">Mani Monajjemi</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>bebop_autonomy_msgs</build_depend>
+  <run_depend>bebop_autonomy_msgs</run_depend>
+  <run_depend>joy</run_depend>
+  <run_depend>joy_teleop</run_depend>
+
+  <export>
+    <!-- Other tools can request additional information be placed here -->
+  </export>
+</package>
