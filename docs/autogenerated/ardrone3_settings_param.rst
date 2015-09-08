@@ -1,67 +1,173 @@
  .. Ardrone3_settings_param.rst
  .. auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/7e2f55fafcd45ba2380ca2574a08b7359c005f47/Xml/ARDrone3_commands.xml
- .. Date: 2015-09-07
+ .. Date: 2015-09-08
  .. Do not modify this file by hand. Check scripts/meta folder for generator files.
 
 *****************************************************************************************
-List of Ardrone3 Setting and Corresponding ROS Parameter
+List of Ardrone3 Settings and Corresponding ROS Parameter
 *****************************************************************************************
 
-pilotingsettings
------------------------------------------------------------------------------------------
-Piloting Settings commands
+`pilotingsettings`_
+  Piloting Settings commands
 
+  `PilotingSettingsMaxAltitudeCurrent`_
+   Current altitude max in m
+  `PilotingSettingsMaxTiltCurrent`_
+   Current tilt max in degree
+  `PilotingSettingsAbsolutControlOn`_
+   1 to enable, 0 to disable
+  `PilotingSettingsMaxDistanceValue`_
+   Current max distance in meter
+  `PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover`_
+   1 if the drone cant fly further than max distance, 0 if no limitation on the drone should be done
+
+`speedsettings`_
+  Speed Settings commands
+
+  `SpeedSettingsMaxVerticalSpeedCurrent`_
+   Current max vertical speed in m/s
+  `SpeedSettingsMaxRotationSpeedCurrent`_
+   Current max rotation speed in degree/s
+  `SpeedSettingsHullProtectionPresent`_
+   1 if present, 0 if not present
+  `SpeedSettingsOutdoorOutdoor`_
+   1 if outdoor flight, 0 if indoor flight
+
+`networksettings`_
+  Network settings commands
+
+  `NetworkSettingsWifiSelectionType`_
+   The type of wifi selection (auto, manual)
+  `NetworkSettingsWifiSelectionBand`_
+   The allowed band(s) : 2.4 Ghz, 5 Ghz, or all
+  `NetworkSettingsWifiSelectionChannel`_
+   The channel (not used in auto mode)
+
+`settings`_
+  Settings commands
+
+
+`picturesettings`_
+  Photo settings chosen by the user
+
+
+`gpssettings`_
+  GPS settings
+
+  `GPSSettingsHomeTypeType`_
+   The type of the home position
+  `GPSSettingsReturnHomeDelayDelay`_
+   Delay in second
+
+
+pilotingsettings
+===========================================================
 PilotingSettingsMaxAltitudeCurrent
-  Current altitude max in m
+-----------------------------------------------------------
+* Parameter: ``~PilotingSettingsMaxAltitudeCurrent``
+* Details: Current altitude max in m
+* Type: ``double_t``
 PilotingSettingsMaxTiltCurrent
-  Current tilt max in degree
+-----------------------------------------------------------
+* Parameter: ``~PilotingSettingsMaxTiltCurrent``
+* Details: Current tilt max in degree
+* Type: ``double_t``
 PilotingSettingsAbsolutControlOn
-  1 to enable, 0 to disable
+-----------------------------------------------------------
+* Parameter: ``~PilotingSettingsAbsolutControlOn``
+* Details: 1 to enable, 0 to disable
+* Type: ``int_t``
+
+  * 0: Disabled
+  * 1: Enabled
+
 PilotingSettingsMaxDistanceValue
-  Current max distance in meter
+-----------------------------------------------------------
+* Parameter: ``~PilotingSettingsMaxDistanceValue``
+* Details: Current max distance in meter
+* Type: ``double_t``
 PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover
-  1 if the drone cant fly further than max distance, 0 if no limitation on the drone should be done
+-----------------------------------------------------------
+* Parameter: ``~PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover``
+* Details: 1 if the drone cant fly further than max distance, 0 if no limitation on the drone should be done
+* Type: ``int_t``
+
+  * 0: Disabled
+  * 1: Enabled
 
 speedsettings
------------------------------------------------------------------------------------------
-Speed Settings commands
-
+===========================================================
 SpeedSettingsMaxVerticalSpeedCurrent
-  Current max vertical speed in m/s
+-----------------------------------------------------------
+* Parameter: ``~SpeedSettingsMaxVerticalSpeedCurrent``
+* Details: Current max vertical speed in m/s
+* Type: ``double_t``
 SpeedSettingsMaxRotationSpeedCurrent
-  Current max rotation speed in degree/s
+-----------------------------------------------------------
+* Parameter: ``~SpeedSettingsMaxRotationSpeedCurrent``
+* Details: Current max rotation speed in degree/s
+* Type: ``double_t``
 SpeedSettingsHullProtectionPresent
-  1 if present, 0 if not present
+-----------------------------------------------------------
+* Parameter: ``~SpeedSettingsHullProtectionPresent``
+* Details: 1 if present, 0 if not present
+* Type: ``int_t``
+
+  * 0: Disabled
+  * 1: Enabled
+
 SpeedSettingsOutdoorOutdoor
-  1 if outdoor flight, 0 if indoor flight
+-----------------------------------------------------------
+* Parameter: ``~SpeedSettingsOutdoorOutdoor``
+* Details: 1 if outdoor flight, 0 if indoor flight
+* Type: ``int_t``
+
+  * 0: Disabled
+  * 1: Enabled
 
 networksettings
------------------------------------------------------------------------------------------
-Network settings commands
-
+===========================================================
 NetworkSettingsWifiSelectionType
-  The type of wifi selection (auto, manual)
+-----------------------------------------------------------
+* Parameter: ``~NetworkSettingsWifiSelectionType``
+* Details: The type of wifi selection (auto, manual)
+* Type: ``int_t``
+
+  * 0: Auto selection
+  * 1: Manual selection
+
 NetworkSettingsWifiSelectionBand
-  The allowed band(s) : 2.4 Ghz, 5 Ghz, or all
+-----------------------------------------------------------
+* Parameter: ``~NetworkSettingsWifiSelectionBand``
+* Details: The allowed band(s) : 2.4 Ghz, 5 Ghz, or all
+* Type: ``int_t``
+
+  * 0: 2.4 GHz band
+  * 1: 5 GHz band
+  * 2: Both 2.4 and 5 GHz bands
+
 NetworkSettingsWifiSelectionChannel
-  The channel (not used in auto mode)
-
+-----------------------------------------------------------
+* Parameter: ``~NetworkSettingsWifiSelectionChannel``
+* Details: The channel (not used in auto mode)
+* Type: ``int_t``
 settings
------------------------------------------------------------------------------------------
-Settings commands
-
-
+===========================================================
 picturesettings
------------------------------------------------------------------------------------------
-Photo settings chosen by the user
-
-
+===========================================================
 gpssettings
------------------------------------------------------------------------------------------
-GPS settings
-
+===========================================================
 GPSSettingsHomeTypeType
-  The type of the home position
-GPSSettingsReturnHomeDelayDelay
-  Delay in second
+-----------------------------------------------------------
+* Parameter: ``~GPSSettingsHomeTypeType``
+* Details: The type of the home position
+* Type: ``int_t``
 
+  * 0: The drone will try to return to the take off position
+  * 1: The drone will try to return to the pilot position
+
+GPSSettingsReturnHomeDelayDelay
+-----------------------------------------------------------
+* Parameter: ``~GPSSettingsReturnHomeDelayDelay``
+* Details: Delay in second
+* Type: ``int_t``
