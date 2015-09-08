@@ -22,8 +22,10 @@ OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTE
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#ifndef BEBOP_DRIVER_NODELET_H
-#define BEBOP_DRIVER_NODELET_H
+#ifndef BEBOP_AUTONOMY_BEBOP_DRIVER_NODELET_H
+#define BEBOP_AUTONOMY_BEBOP_DRIVER_NODELET_H
+
+// TODO(mani-monaj): Use forward decl here if possible
 
 #include <string>
 
@@ -45,8 +47,17 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 namespace bebop_autonomy
 {
 
+// TODO(mani-monaj): Move these to util.h
 namespace util
 {
+  static const ros::console::levels::Level arsal_level_to_ros[ARSAL_PRINT_MAX] = {
+    ros::console::levels::Fatal,
+    ros::console::levels::Error,
+    ros::console::levels::Warn,
+    ros::console::levels::Info,
+    ros::console::levels::Debug,
+    ros::console::levels::Debug};
+
   static const double eps = 1.0e-6;
 
   static char bebop_err_str[BEBOP_ERR_STR_SZ];
@@ -71,14 +82,7 @@ namespace util
         (fabs(lhs.angular.z - rhs.angular.z) < eps);
   }
 
-  const static ros::console::levels::Level arsal_level_to_ros[ARSAL_PRINT_MAX] = {ros::console::levels::Fatal,
-                                                                                  ros::console::levels::Error,
-                                                                                  ros::console::levels::Warn,
-                                                                                  ros::console::levels::Info,
-                                                                                  ros::console::levels::Debug,
-                                                                                  ros::console::levels::Debug};
-
-  int BebopPrintToROSLogCB (eARSAL_PRINT_LEVEL level, const char *tag, const char *format, va_list va);
+  int BebopPrintToROSLogCB(eARSAL_PRINT_LEVEL level, const char *tag, const char *format, va_list va);
 }  // namespace util
 
 // Forward decl
@@ -120,9 +124,6 @@ private:
   // This runs in its own context
   void CameraPublisherThread();
 
-//private:
-//  volatile bool running_;
-
   void CmdVelCallback(const geometry_msgs::TwistConstPtr& twist_ptr);
   void CameraMoveCallback(const geometry_msgs::TwistConstPtr& twist_ptr);
   void TakeoffCallback(const std_msgs::EmptyConstPtr& empty_ptr);
@@ -139,9 +140,7 @@ public:
   ~BebopDriverNodelet();
 
   virtual void onInit();
-
 };
-
 }  // namespace bebop_autonomy
 
-#endif  // BEBOP_DRIVER_NODELET_H
+#endif  // BEBOP_AUTONOMY_BEBOP_DRIVER_NODELET_H

@@ -22,13 +22,17 @@ OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTE
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#ifndef BEBOP_H
-#define BEBOP_H
+#ifndef BEBOP_AUTONOMY_BEBOP_H
+#define BEBOP_AUTONOMY_BEBOP_H
 
 #define BEBOP_ERR_STR_SZ  150
 
 #include <sys/syscall.h>
 #include <sys/types.h>
+
+#include <string>
+#include <vector>
+#include <utility>
 #include <map>
 
 #include <boost/shared_ptr.hpp>
@@ -107,9 +111,19 @@ private:
   mutable boost::mutex frame_avail_mutex_;
   mutable bool is_frame_avail_;
 
-  static void StateChangedCallback(eARCONTROLLER_DEVICE_STATE new_state, eARCONTROLLER_ERROR error, void *bebop_void_ptr);
-  static void CommandReceivedCallback(eARCONTROLLER_DICTIONARY_KEY cmd_key, ARCONTROLLER_DICTIONARY_ELEMENT_t* element_dict_ptr, void* bebop_void_ptr);
-  static void FrameReceivedCallback(ARCONTROLLER_Frame_t *frame, void *bebop_void_ptr_);
+  static void StateChangedCallback(
+      eARCONTROLLER_DEVICE_STATE new_state,
+      eARCONTROLLER_ERROR error,
+      void *bebop_void_ptr);
+
+  static void CommandReceivedCallback(
+      eARCONTROLLER_DICTIONARY_KEY cmd_key,
+      ARCONTROLLER_DICTIONARY_ELEMENT_t* element_dict_ptr,
+      void* bebop_void_ptr);
+
+  static void FrameReceivedCallback(
+      ARCONTROLLER_Frame_t *frame,
+      void *bebop_void_ptr_);
 
   // nothrow
   void Cleanup();
@@ -118,14 +132,13 @@ private:
   void ThrowOnCtrlError(const eARCONTROLLER_ERROR& error, const std::string& message = std::string());
 
 public:
-
   inline ARSAL_Sem_t* GetStateSemPtr() {return &state_sem_;}
   inline const ARCONTROLLER_Device_t* GetControllerCstPtr() const {return device_controller_ptr_;}
 
   inline bool IsConnected() const {return is_connected_;}
   inline bool IsStreamingStarted() const {return is_streaming_started_;}
 
-  Bebop(ARSAL_Print_Callback_t custom_print_callback = 0);
+  explicit Bebop(ARSAL_Print_Callback_t custom_print_callback = 0);
   ~Bebop();
 
   void Connect(ros::NodeHandle& nh, ros::NodeHandle& priv_nh);
@@ -157,10 +170,9 @@ public:
   bool GetFrontCameraFrame(std::vector<uint8_t>& buffer, uint32_t &width, uint32_t &height) const;
   uint32_t GetFrontCameraFrameWidth() const;
   uint32_t GetFrontCameraFrameHeight() const;
-
 };
 
 }  // namespace bebop_autonomy
 
 
-#endif  // BEBOP_H
+#endif  // BEBOP_AUTONOMY_BEBOP_H

@@ -36,7 +36,16 @@ catkin_package(
 )
 
 # roslint
-roslint_cpp()
+set(ROSLINT_CPP_OPTS "--filter=-build/include")
+roslint_cpp(
+  src/bebop.cpp
+  src/bebop_driver_node.cpp
+  src/bebop_driver_nodelet.cpp
+  src/bebop_video_decoder.cpp
+  include/bebop_autonomy/bebop.h
+  include/bebop_autonomy/bebop_driver_nodelet.h
+  include/bebop_autonomy/bebop_video_decoder.h
+)
 
 ###########
 ## Build ##
