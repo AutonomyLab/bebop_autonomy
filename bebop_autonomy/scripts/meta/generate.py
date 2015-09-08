@@ -273,8 +273,10 @@ def generate_states(xml_filename):
     with open(include_file_name, "w") as include_file:
         include_file.write(rend.render_path("templates/state_callback_includes.h.mustache", d_cpp))
 
-    with open("callbacks_common.h", "w") as header_file:
-        header_file.write(rend.render_path("templates/callbacks_common.h.mustache", d_cpp))
+    rst_file_name = "%s_states_param_topic.rst" % (project.lower(), )
+    logging.info("Writing %s" % (rst_file_name, ))
+    with open(rst_file_name, "w") as rst_file:
+        rst_file.write(rend.render_path("templates/states_param_topic.rst.mustache", d_cpp))
 
 def generate_settings(xml_filename):
     xml_url = get_xml_url(xml_filename)
@@ -331,12 +333,13 @@ def generate_settings(xml_filename):
             # C++
             # We are iterating classes with names ending in "Setting". For each of these classes
             # there exists a corresponding class with the same name + "State" (e.g PilotingSetting and PilottingSettingState)
-            # The inner commands of the corresponding class are also follow a similar conevtion, they end in "CHANGED"
-            # We create the cfg files based on Settings and ROS param updates based on SettingsChanged
+            # The inner commands of the corresponding class are also follow a similar conention, they end in "CHANGED".
+            # We create cfg files based on Settings, and ROS param updates based on SettingsChanged
             cpp_class_dict_key = rend.render_path("templates/dictionary_key.mustache",
                 {"project": project.upper(), "class": cl.attrib["name"].upper() + "STATE", "cmd": cmd.attrib["name"].upper() + "CHANGED"} )
             # cmd.attrib["name"] and cl.attrib["name"] are already in CamelCase
             cpp_class_name = cl.attrib["name"] + cmd.attrib["name"]
+            cpp_class_comment = strip_text(cmd.text)
             cpp_class_instance_name = project.lower() + "_" + cl.attrib["name"].lower() + "_" + cmd.attrib["name"].lower() + "_ptr";
             cpp_class_params = list()
 
@@ -413,6 +416,7 @@ def generate_settings(xml_filename):
                     cpp_class_params.append({
                         "cpp_class_arg_key": cpp_class_dict_key + "_" + arg.attrib["name"].upper(),
                         "cpp_class_param_name": arg_name,
+                        "cpp_class_comment": cpp_class_comment,
                         "cpp_class_param_enum_cast": enum_cast,
                         "cpp_class_param_type": C_TYPE_MAP[arg.attrib.get("type", "bool")],
                         "cpp_class_param_sdk_type": BEBOP_TYPE_MAP[arg.attrib.get("type", "bool")]
@@ -448,6 +452,11 @@ def generate_settings(xml_filename):
     logging.info("Writing %s" % (include_file_name, ))
     with open(include_file_name, "w") as include_file:
         include_file.write(rend.render_path("templates/setting_callback_includes.h.mustache", d_cfg))
+
+    rst_file_name = "%s_settings_param.rst" % (project.lower(), )
+    logging.info("Writing %s" % (rst_file_name, ))
+    with open(rst_file_name, "w") as rst_file:
+        rst_file.write(rend.render_path("templates/settings_param.rst.mustache", d_cfg))
 
 def main():
     # Setup stuff
