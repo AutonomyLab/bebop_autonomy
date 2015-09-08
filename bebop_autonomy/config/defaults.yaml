@@ -7,6 +7,7 @@ states:
   enable_mavlinkstate_mavlinkplayerrorstatechanged: true
   enable_flightplanstate_availabilitystatechanged: true
   enable_flightplanstate_componentstatelistchanged: true
+  enable_pilotingstate_altitudechanged: true
   enable_pilotingstate_flattrimchanged: true
   enable_pilotingstate_flyingstatechanged: true
   enable_pilotingstate_navigatehomestatechanged: true

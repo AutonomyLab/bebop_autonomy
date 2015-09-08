@@ -427,7 +427,7 @@ void Bebop::Move(const double &roll, const double &pitch, const double &gaz_spee
 
   if (do_hover)
   {
-    ARSAL_PRINT(ARSAL_PRINT_ERROR, LOG_TAG, "STOP");
+    ARSAL_PRINT(ARSAL_PRINT_DEBUG, LOG_TAG, "STOP");
     ThrowOnCtrlError(
           device_controller_ptr_->aRDrone3->setPilotingPCMD(
             device_controller_ptr_->aRDrone3,

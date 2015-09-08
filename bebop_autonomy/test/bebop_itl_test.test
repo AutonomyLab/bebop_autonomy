@@ -4,6 +4,14 @@
         <node pkg="bebop_autonomy" name="bebop_driver" type="bebop_driver_node" output="log">
             <rosparam command="load" file="$(find bebop_autonomy)/config/defaults.yaml" />
         </node>
+
         <test test-name="bebop_in_the_loop_test" pkg="bebop_autonomy" type="bebop_itl_test"/>
+        <test test-name="image_hztest" pkg="rostest" type="hztest" name="hztest">
+            <param name="topic" value="image_raw" />
+            <param name="hz" value="25.0" />
+            <param name="hzerror" value="5.0" />
+            <param name="wait_time" value="20.0" />
+            <param name="test_duration" value="5.0" />
+        </test>
     </group>
 </launch>
