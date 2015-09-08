@@ -91,7 +91,7 @@ State sent when all product states has been sent.
   :lines: 8-
   :language: python
   :caption: CommonCommonStateAllStatesChanged.msg
-  :name: CommonCommonStateAllStatesChanged
+  :name: CommonCommonStateAllStatesChanged_msg
 
 CommonCommonStateBatteryStateChanged
 ####################################################################################
@@ -106,7 +106,7 @@ Battery state
   :lines: 8-
   :language: python
   :caption: CommonCommonStateBatteryStateChanged.msg
-  :name: CommonCommonStateBatteryStateChanged
+  :name: CommonCommonStateBatteryStateChanged_msg
 
 CommonCommonStateMassStorageStateListChanged
 ####################################################################################
@@ -121,7 +121,7 @@ Mass storage state list
   :lines: 8-
   :language: python
   :caption: CommonCommonStateMassStorageStateListChanged.msg
-  :name: CommonCommonStateMassStorageStateListChanged
+  :name: CommonCommonStateMassStorageStateListChanged_msg
 
 CommonCommonStateMassStorageInfoStateListChanged
 ####################################################################################
@@ -136,7 +136,7 @@ Mass storage info state list
   :lines: 8-
   :language: python
   :caption: CommonCommonStateMassStorageInfoStateListChanged.msg
-  :name: CommonCommonStateMassStorageInfoStateListChanged
+  :name: CommonCommonStateMassStorageInfoStateListChanged_msg
 
 CommonCommonStateCurrentDateChanged
 ####################################################################################
@@ -151,7 +151,7 @@ Current date state
   :lines: 8-
   :language: python
   :caption: CommonCommonStateCurrentDateChanged.msg
-  :name: CommonCommonStateCurrentDateChanged
+  :name: CommonCommonStateCurrentDateChanged_msg
 
 CommonCommonStateCurrentTimeChanged
 ####################################################################################
@@ -166,7 +166,7 @@ Current time state
   :lines: 8-
   :language: python
   :caption: CommonCommonStateCurrentTimeChanged.msg
-  :name: CommonCommonStateCurrentTimeChanged
+  :name: CommonCommonStateCurrentTimeChanged_msg
 
 CommonCommonStateMassStorageInfoRemainingListChanged
 ####################################################################################
@@ -181,7 +181,7 @@ Mass storage info remaining list
   :lines: 8-
   :language: python
   :caption: CommonCommonStateMassStorageInfoRemainingListChanged.msg
-  :name: CommonCommonStateMassStorageInfoRemainingListChanged
+  :name: CommonCommonStateMassStorageInfoRemainingListChanged_msg
 
 CommonCommonStateWifiSignalChanged
 ####################################################################################
@@ -196,7 +196,7 @@ Wifi Signal between controller and product state
   :lines: 8-
   :language: python
   :caption: CommonCommonStateWifiSignalChanged.msg
-  :name: CommonCommonStateWifiSignalChanged
+  :name: CommonCommonStateWifiSignalChanged_msg
 
 CommonCommonStateSensorsStatesListChanged
 ####################################################################################
@@ -211,7 +211,7 @@ Sensors states list
   :lines: 8-
   :language: python
   :caption: CommonCommonStateSensorsStatesListChanged.msg
-  :name: CommonCommonStateSensorsStatesListChanged
+  :name: CommonCommonStateSensorsStatesListChanged_msg
 
 CommonCommonStateProductModel
 ####################################################################################
@@ -226,7 +226,7 @@ Inform of the product model. This is used to customize the UI depending on the c
   :lines: 8-
   :language: python
   :caption: CommonCommonStateProductModel.msg
-  :name: CommonCommonStateProductModel
+  :name: CommonCommonStateProductModel_msg
 
 CommonCommonStateCountryListKnown
 ####################################################################################
@@ -241,7 +241,7 @@ List of the countries known by the device
   :lines: 8-
   :language: python
   :caption: CommonCommonStateCountryListKnown.msg
-  :name: CommonCommonStateCountryListKnown
+  :name: CommonCommonStateCountryListKnown_msg
 
 CommonOverHeatStateOverHeatChanged
 ####################################################################################
@@ -256,7 +256,7 @@ Overheat temperature reached
   :lines: 8-
   :language: python
   :caption: CommonOverHeatStateOverHeatChanged.msg
-  :name: CommonOverHeatStateOverHeatChanged
+  :name: CommonOverHeatStateOverHeatChanged_msg
 
 CommonOverHeatStateOverHeatRegulationChanged
 ####################################################################################
@@ -271,7 +271,7 @@ Overheat regulation state changed
   :lines: 8-
   :language: python
   :caption: CommonOverHeatStateOverHeatRegulationChanged.msg
-  :name: CommonOverHeatStateOverHeatRegulationChanged
+  :name: CommonOverHeatStateOverHeatRegulationChanged_msg
 
 CommonControllerStateisPilotingChanged
 ####################################################################################
@@ -286,7 +286,7 @@ Tell the device when the controller application enters/leaves the piloting HUD.
   :lines: 8-
   :language: python
   :caption: CommonControllerStateisPilotingChanged.msg
-  :name: CommonControllerStateisPilotingChanged
+  :name: CommonControllerStateisPilotingChanged_msg
 
 CommonMavlinkStateMavlinkFilePlayingStateChanged
 ####################################################################################
@@ -301,7 +301,7 @@ Playing state of a mavlink flight plan
   :lines: 8-
   :language: python
   :caption: CommonMavlinkStateMavlinkFilePlayingStateChanged.msg
-  :name: CommonMavlinkStateMavlinkFilePlayingStateChanged
+  :name: CommonMavlinkStateMavlinkFilePlayingStateChanged_msg
 
 CommonMavlinkStateMavlinkPlayErrorStateChanged
 ####################################################################################
@@ -316,7 +316,7 @@ FlightPlan play state error
   :lines: 8-
   :language: python
   :caption: CommonMavlinkStateMavlinkPlayErrorStateChanged.msg
-  :name: CommonMavlinkStateMavlinkPlayErrorStateChanged
+  :name: CommonMavlinkStateMavlinkPlayErrorStateChanged_msg
 
 CommonCalibrationStateMagnetoCalibrationStateChanged
 ####################################################################################
@@ -331,7 +331,7 @@ Sent when the state of the magneto calibration has changed
   :lines: 8-
   :language: python
   :caption: CommonCalibrationStateMagnetoCalibrationStateChanged.msg
-  :name: CommonCalibrationStateMagnetoCalibrationStateChanged
+  :name: CommonCalibrationStateMagnetoCalibrationStateChanged_msg
 
 CommonCalibrationStateMagnetoCalibrationRequiredState
 ####################################################################################
@@ -346,7 +346,7 @@ Status of the calibration requirement
   :lines: 8-
   :language: python
   :caption: CommonCalibrationStateMagnetoCalibrationRequiredState.msg
-  :name: CommonCalibrationStateMagnetoCalibrationRequiredState
+  :name: CommonCalibrationStateMagnetoCalibrationRequiredState_msg
 
 CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged
 ####################################################################################
@@ -361,7 +361,7 @@ Event sent by a product to inform about the axis to calibrate
   :lines: 8-
   :language: python
   :caption: CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged.msg
-  :name: CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged
+  :name: CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged_msg
 
 CommonCalibrationStateMagnetoCalibrationStartedChanged
 ####################################################################################
@@ -376,7 +376,7 @@ Status of the calibration process
   :lines: 8-
   :language: python
   :caption: CommonCalibrationStateMagnetoCalibrationStartedChanged.msg
-  :name: CommonCalibrationStateMagnetoCalibrationStartedChanged
+  :name: CommonCalibrationStateMagnetoCalibrationStartedChanged_msg
 
 CommonFlightPlanStateAvailabilityStateChanged
 ####################################################################################
@@ -391,7 +391,7 @@ State of availability to run a flight plan file
   :lines: 8-
   :language: python
   :caption: CommonFlightPlanStateAvailabilityStateChanged.msg
-  :name: CommonFlightPlanStateAvailabilityStateChanged
+  :name: CommonFlightPlanStateAvailabilityStateChanged_msg
 
 CommonFlightPlanStateComponentStateListChanged
 ####################################################################################
@@ -406,7 +406,7 @@ List of state of drone flightPlan components
   :lines: 8-
   :language: python
   :caption: CommonFlightPlanStateComponentStateListChanged.msg
-  :name: CommonFlightPlanStateComponentStateListChanged
+  :name: CommonFlightPlanStateComponentStateListChanged_msg
 
 CommonARLibsVersionsStateControllerLibARCommandsVersion
 ####################################################################################
@@ -421,7 +421,7 @@ Controller libARCommands version
   :lines: 8-
   :language: python
   :caption: CommonARLibsVersionsStateControllerLibARCommandsVersion.msg
-  :name: CommonARLibsVersionsStateControllerLibARCommandsVersion
+  :name: CommonARLibsVersionsStateControllerLibARCommandsVersion_msg
 
 CommonARLibsVersionsStateSkyControllerLibARCommandsVersion
 ####################################################################################
@@ -436,7 +436,7 @@ SkyController libARCommands version
   :lines: 8-
   :language: python
   :caption: CommonARLibsVersionsStateSkyControllerLibARCommandsVersion.msg
-  :name: CommonARLibsVersionsStateSkyControllerLibARCommandsVersion
+  :name: CommonARLibsVersionsStateSkyControllerLibARCommandsVersion_msg
 
 CommonARLibsVersionsStateDeviceLibARCommandsVersion
 ####################################################################################
@@ -451,7 +451,7 @@ Device libARCommands version
   :lines: 8-
   :language: python
   :caption: CommonARLibsVersionsStateDeviceLibARCommandsVersion.msg
-  :name: CommonARLibsVersionsStateDeviceLibARCommandsVersion
+  :name: CommonARLibsVersionsStateDeviceLibARCommandsVersion_msg
 
 CommonAudioStateAudioStreamingRunning
 ####################################################################################
@@ -466,7 +466,7 @@ Notify the controller whether the audio streaming is running.
   :lines: 8-
   :language: python
   :caption: CommonAudioStateAudioStreamingRunning.msg
-  :name: CommonAudioStateAudioStreamingRunning
+  :name: CommonAudioStateAudioStreamingRunning_msg
 
 CommonHeadlightsStateintensityChanged
 ####################################################################################
@@ -481,7 +481,7 @@ Notify the instensity values for headlight LEDs.
   :lines: 8-
   :language: python
   :caption: CommonHeadlightsStateintensityChanged.msg
-  :name: CommonHeadlightsStateintensityChanged
+  :name: CommonHeadlightsStateintensityChanged_msg
 
 CommonAnimationsStateList
 ####################################################################################
@@ -496,7 +496,7 @@ List of animations state.
   :lines: 8-
   :language: python
   :caption: CommonAnimationsStateList.msg
-  :name: CommonAnimationsStateList
+  :name: CommonAnimationsStateList_msg
 
 CommonAccessoryStateSupportedAccessoriesListChanged
 ####################################################################################
@@ -511,7 +511,7 @@ List of supported accessories
   :lines: 8-
   :language: python
   :caption: CommonAccessoryStateSupportedAccessoriesListChanged.msg
-  :name: CommonAccessoryStateSupportedAccessoriesListChanged
+  :name: CommonAccessoryStateSupportedAccessoriesListChanged_msg
 
 CommonAccessoryStateAccessoryConfigChanged
 ####################################################################################
@@ -526,7 +526,7 @@ Accessory config response.
   :lines: 8-
   :language: python
   :caption: CommonAccessoryStateAccessoryConfigChanged.msg
-  :name: CommonAccessoryStateAccessoryConfigChanged
+  :name: CommonAccessoryStateAccessoryConfigChanged_msg
 
 CommonAccessoryStateAccessoryConfigModificationEnabled
 ####################################################################################
@@ -541,7 +541,7 @@ Possibility to modify the accessory configuration.
   :lines: 8-
   :language: python
   :caption: CommonAccessoryStateAccessoryConfigModificationEnabled.msg
-  :name: CommonAccessoryStateAccessoryConfigModificationEnabled
+  :name: CommonAccessoryStateAccessoryConfigModificationEnabled_msg
 
 CommonChargerStateMaxChargeRateChanged
 ####################################################################################
@@ -556,7 +556,7 @@ CommonChargerStateMaxChargeRateChanged
   :lines: 8-
   :language: python
   :caption: CommonChargerStateMaxChargeRateChanged.msg
-  :name: CommonChargerStateMaxChargeRateChanged
+  :name: CommonChargerStateMaxChargeRateChanged_msg
 
 CommonChargerStateCurrentChargeStateChanged
 ####################################################################################
@@ -571,7 +571,7 @@ CommonChargerStateCurrentChargeStateChanged
   :lines: 8-
   :language: python
   :caption: CommonChargerStateCurrentChargeStateChanged.msg
-  :name: CommonChargerStateCurrentChargeStateChanged
+  :name: CommonChargerStateCurrentChargeStateChanged_msg
 
 CommonChargerStateLastChargeRateChanged
 ####################################################################################
@@ -586,7 +586,7 @@ CommonChargerStateLastChargeRateChanged
   :lines: 8-
   :language: python
   :caption: CommonChargerStateLastChargeRateChanged.msg
-  :name: CommonChargerStateLastChargeRateChanged
+  :name: CommonChargerStateLastChargeRateChanged_msg
 
 CommonChargerStateChargingInfo
 ####################################################################################
@@ -601,5 +601,5 @@ Information of the charge.
   :lines: 8-
   :language: python
   :caption: CommonChargerStateChargingInfo.msg
-  :name: CommonChargerStateChargingInfo
+  :name: CommonChargerStateChargingInfo_msg
 

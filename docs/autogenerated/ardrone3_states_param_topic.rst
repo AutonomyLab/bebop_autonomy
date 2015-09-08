@@ -71,7 +71,7 @@ Ardrone3MediaRecordStatePictureStateChanged
   :lines: 8-
   :language: python
   :caption: Ardrone3MediaRecordStatePictureStateChanged.msg
-  :name: Ardrone3MediaRecordStatePictureStateChanged
+  :name: Ardrone3MediaRecordStatePictureStateChanged_msg
 
 Ardrone3MediaRecordStateVideoStateChanged
 ####################################################################################
@@ -86,7 +86,7 @@ Ardrone3MediaRecordStateVideoStateChanged
   :lines: 8-
   :language: python
   :caption: Ardrone3MediaRecordStateVideoStateChanged.msg
-  :name: Ardrone3MediaRecordStateVideoStateChanged
+  :name: Ardrone3MediaRecordStateVideoStateChanged_msg
 
 Ardrone3MediaRecordStatePictureStateChangedV2
 ####################################################################################
@@ -101,7 +101,7 @@ State of device picture recording changed
   :lines: 8-
   :language: python
   :caption: Ardrone3MediaRecordStatePictureStateChangedV2.msg
-  :name: Ardrone3MediaRecordStatePictureStateChangedV2
+  :name: Ardrone3MediaRecordStatePictureStateChangedV2_msg
 
 Ardrone3MediaRecordStateVideoStateChangedV2
 ####################################################################################
@@ -116,7 +116,7 @@ State of device video recording changed
   :lines: 8-
   :language: python
   :caption: Ardrone3MediaRecordStateVideoStateChangedV2.msg
-  :name: Ardrone3MediaRecordStateVideoStateChangedV2
+  :name: Ardrone3MediaRecordStateVideoStateChangedV2_msg
 
 Ardrone3PilotingStateFlatTrimChanged
 ####################################################################################
@@ -131,7 +131,7 @@ Drone acknowledges that flat trim was correctly processed
   :lines: 8-
   :language: python
   :caption: Ardrone3PilotingStateFlatTrimChanged.msg
-  :name: Ardrone3PilotingStateFlatTrimChanged
+  :name: Ardrone3PilotingStateFlatTrimChanged_msg
 
 Ardrone3PilotingStateFlyingStateChanged
 ####################################################################################
@@ -146,7 +146,7 @@ Drone flying state changed
   :lines: 8-
   :language: python
   :caption: Ardrone3PilotingStateFlyingStateChanged.msg
-  :name: Ardrone3PilotingStateFlyingStateChanged
+  :name: Ardrone3PilotingStateFlyingStateChanged_msg
 
 Ardrone3PilotingStateAlertStateChanged
 ####################################################################################
@@ -161,7 +161,7 @@ Drone alert state changed
   :lines: 8-
   :language: python
   :caption: Ardrone3PilotingStateAlertStateChanged.msg
-  :name: Ardrone3PilotingStateAlertStateChanged
+  :name: Ardrone3PilotingStateAlertStateChanged_msg
 
 Ardrone3PilotingStateNavigateHomeStateChanged
 ####################################################################################
@@ -176,7 +176,7 @@ Navigating home state
   :lines: 8-
   :language: python
   :caption: Ardrone3PilotingStateNavigateHomeStateChanged.msg
-  :name: Ardrone3PilotingStateNavigateHomeStateChanged
+  :name: Ardrone3PilotingStateNavigateHomeStateChanged_msg
 
 Ardrone3PilotingStatePositionChanged
 ####################################################################################
@@ -191,7 +191,7 @@ Drone position changed
   :lines: 8-
   :language: python
   :caption: Ardrone3PilotingStatePositionChanged.msg
-  :name: Ardrone3PilotingStatePositionChanged
+  :name: Ardrone3PilotingStatePositionChanged_msg
 
 Ardrone3PilotingStateSpeedChanged
 ####################################################################################
@@ -206,7 +206,7 @@ Drone speed changed
   :lines: 8-
   :language: python
   :caption: Ardrone3PilotingStateSpeedChanged.msg
-  :name: Ardrone3PilotingStateSpeedChanged
+  :name: Ardrone3PilotingStateSpeedChanged_msg
 
 Ardrone3PilotingStateAttitudeChanged
 ####################################################################################
@@ -221,7 +221,7 @@ Drone attitude changed
   :lines: 8-
   :language: python
   :caption: Ardrone3PilotingStateAttitudeChanged.msg
-  :name: Ardrone3PilotingStateAttitudeChanged
+  :name: Ardrone3PilotingStateAttitudeChanged_msg
 
 Ardrone3PilotingStateAutoTakeOffModeChanged
 ####################################################################################
@@ -236,7 +236,7 @@ Status of the drone3 automatic take off mode
   :lines: 8-
   :language: python
   :caption: Ardrone3PilotingStateAutoTakeOffModeChanged.msg
-  :name: Ardrone3PilotingStateAutoTakeOffModeChanged
+  :name: Ardrone3PilotingStateAutoTakeOffModeChanged_msg
 
 Ardrone3PilotingStateAltitudeChanged
 ####################################################################################
@@ -251,7 +251,7 @@ Drone altitude changed
   :lines: 8-
   :language: python
   :caption: Ardrone3PilotingStateAltitudeChanged.msg
-  :name: Ardrone3PilotingStateAltitudeChanged
+  :name: Ardrone3PilotingStateAltitudeChanged_msg
 
 Ardrone3NetworkStateWifiScanListChanged
 ####################################################################################
@@ -266,7 +266,7 @@ One scanning result found
   :lines: 8-
   :language: python
   :caption: Ardrone3NetworkStateWifiScanListChanged.msg
-  :name: Ardrone3NetworkStateWifiScanListChanged
+  :name: Ardrone3NetworkStateWifiScanListChanged_msg
 
 Ardrone3NetworkStateAllWifiScanChanged
 ####################################################################################
@@ -281,7 +281,7 @@ State sent when all scanning result sent
   :lines: 8-
   :language: python
   :caption: Ardrone3NetworkStateAllWifiScanChanged.msg
-  :name: Ardrone3NetworkStateAllWifiScanChanged
+  :name: Ardrone3NetworkStateAllWifiScanChanged_msg
 
 Ardrone3NetworkStateWifiAuthChannelListChanged
 ####################################################################################
@@ -296,7 +296,7 @@ Notify of an Authorized Channel.
   :lines: 8-
   :language: python
   :caption: Ardrone3NetworkStateWifiAuthChannelListChanged.msg
-  :name: Ardrone3NetworkStateWifiAuthChannelListChanged
+  :name: Ardrone3NetworkStateWifiAuthChannelListChanged_msg
 
 Ardrone3NetworkStateAllWifiAuthChannelChanged
 ####################################################################################
@@ -311,7 +311,7 @@ Notify the end of the list of Authorized wifi Channel.
   :lines: 8-
   :language: python
   :caption: Ardrone3NetworkStateAllWifiAuthChannelChanged.msg
-  :name: Ardrone3NetworkStateAllWifiAuthChannelChanged
+  :name: Ardrone3NetworkStateAllWifiAuthChannelChanged_msg
 
 Ardrone3MediaStreamingStateVideoEnableChanged
 ####################################################################################
@@ -326,7 +326,7 @@ Return video streaming status.
   :lines: 8-
   :language: python
   :caption: Ardrone3MediaStreamingStateVideoEnableChanged.msg
-  :name: Ardrone3MediaStreamingStateVideoEnableChanged
+  :name: Ardrone3MediaStreamingStateVideoEnableChanged_msg
 
 Ardrone3CameraStateOrientation
 ####################################################################################
@@ -341,7 +341,7 @@ Camera orientation
   :lines: 8-
   :language: python
   :caption: Ardrone3CameraStateOrientation.msg
-  :name: Ardrone3CameraStateOrientation
+  :name: Ardrone3CameraStateOrientation_msg
 
 Ardrone3AntiflickeringStateelectricFrequencyChanged
 ####################################################################################
@@ -356,7 +356,7 @@ Electric frequency of the country determined by the position of the controller
   :lines: 8-
   :language: python
   :caption: Ardrone3AntiflickeringStateelectricFrequencyChanged.msg
-  :name: Ardrone3AntiflickeringStateelectricFrequencyChanged
+  :name: Ardrone3AntiflickeringStateelectricFrequencyChanged_msg
 
 Ardrone3AntiflickeringStatemodeChanged
 ####################################################################################
@@ -371,7 +371,7 @@ Anti flickering mode
   :lines: 8-
   :language: python
   :caption: Ardrone3AntiflickeringStatemodeChanged.msg
-  :name: Ardrone3AntiflickeringStatemodeChanged
+  :name: Ardrone3AntiflickeringStatemodeChanged_msg
 
 Ardrone3GPSStateNumberOfSatelliteChanged
 ####################################################################################
@@ -386,7 +386,7 @@ The number of satellite used to compute the gps position
   :lines: 8-
   :language: python
   :caption: Ardrone3GPSStateNumberOfSatelliteChanged.msg
-  :name: Ardrone3GPSStateNumberOfSatelliteChanged
+  :name: Ardrone3GPSStateNumberOfSatelliteChanged_msg
 
 Ardrone3GPSStateHomeTypeAvailabilityChanged
 ####################################################################################
@@ -401,7 +401,7 @@ Availability of the return home types in a map : for each type other args will b
   :lines: 8-
   :language: python
   :caption: Ardrone3GPSStateHomeTypeAvailabilityChanged.msg
-  :name: Ardrone3GPSStateHomeTypeAvailabilityChanged
+  :name: Ardrone3GPSStateHomeTypeAvailabilityChanged_msg
 
 Ardrone3GPSStateHomeTypeChosenChanged
 ####################################################################################
@@ -416,7 +416,7 @@ The return home type chosen
   :lines: 8-
   :language: python
   :caption: Ardrone3GPSStateHomeTypeChosenChanged.msg
-  :name: Ardrone3GPSStateHomeTypeChosenChanged
+  :name: Ardrone3GPSStateHomeTypeChosenChanged_msg
 
 Ardrone3PROStateFeatures
 ####################################################################################
@@ -431,5 +431,5 @@ Features enabled
   :lines: 8-
   :language: python
   :caption: Ardrone3PROStateFeatures.msg
-  :name: Ardrone3PROStateFeatures
+  :name: Ardrone3PROStateFeatures_msg
 
