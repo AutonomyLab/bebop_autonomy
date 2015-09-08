@@ -4,8 +4,19 @@ bebop_autonomy
 
 Introduction goes here.
 
-Roadmap
+Features and Roadmap
 =======
+
+.. csv-table::
+  :header: "Feature", "Status", "Notes"
+
+  Core piloting, Yes, ""
+  H264 video decoding, Yes, "Possible improvement"
+  ROS Camera Interface, Yes,
+  Nodelet implementation, Yes, "Possible improvements"
+  Publish Bebop states as ROS topics, Yes, ""
+  Dynamically reconfigurable Bebop settings, Yes, "Possible improvements"
+  Bebop In The Loop unit test, Yes, ""
 
 
 Table of Contents
@@ -16,6 +27,7 @@ Table of Contents
 
   changelog
   installation
+  running
   piloting
   states
   configuration

@@ -2,6 +2,18 @@
 Sending Commands to Bebop
 *************************
 
+Joystick Telop
+=============
+
+Takeoff
+=======
+
+Land
+====
+
+Emergency
+=========
+
 Piloting
 ========
 
