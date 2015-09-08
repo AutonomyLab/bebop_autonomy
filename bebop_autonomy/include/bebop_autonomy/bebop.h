@@ -107,7 +107,6 @@ private:
   mutable boost::mutex frame_avail_mutex_;
   mutable bool is_frame_avail_;
 
-  static void BatteryStateChangedCallback(uint8_t percent, void *bebop_void_ptr);
   static void StateChangedCallback(eARCONTROLLER_DEVICE_STATE new_state, eARCONTROLLER_ERROR error, void *bebop_void_ptr);
   static void CommandReceivedCallback(eARCONTROLLER_DICTIONARY_KEY cmd_key, ARCONTROLLER_DICTIONARY_ELEMENT_t* element_dict_ptr, void* bebop_void_ptr);
   static void FrameReceivedCallback(ARCONTROLLER_Frame_t *frame, void *bebop_void_ptr_);

@@ -52,11 +52,6 @@ namespace bebop_autonomy
 
 const char* Bebop::LOG_TAG = "BebopSDK";
 
-void Bebop::BatteryStateChangedCallback(uint8_t percent, void *bebop_void_ptr)
-{
-  ARSAL_PRINT(ARSAL_PRINT_WARNING, LOG_TAG, "bat: %d", percent);
-}
-
 void Bebop::StateChangedCallback(eARCONTROLLER_DEVICE_STATE new_state, eARCONTROLLER_ERROR error, void *bebop_void_ptr)
 {
   // TODO(mani-monaj): Log error

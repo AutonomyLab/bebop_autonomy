@@ -22,6 +22,7 @@ OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTE
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+#include <string>
 #include <boost/shared_ptr.hpp>
 #include <boost/bind.hpp>
 #include <boost/thread/mutex.hpp>
@@ -85,9 +86,9 @@ public:
     return msg_cptr_;
   }
 
-  //T operator ()() const {return GetMsgCopy();}
+  // T operator ()() const {return GetMsgCopy();}
 
-  // Not thread safe
+  // Not thread safe?
   const boost::shared_ptr<T const>& operator()() const
   {
     boost::lock_guard<boost::mutex> lock(mutex_);
@@ -174,7 +175,6 @@ protected:
     spinner_ptr_->stop();
     ros::shutdown();
   }
-
 };
 
 TEST_F(BebopInTheLoopTest, Dummy)
@@ -200,12 +200,16 @@ TEST_F(BebopInTheLoopTest, Dummy)
   while (((ros::Time::now() - start).toSec() < 5.0))
   {
     ROS_INFO("Waiting for takeoff ...");
-    if ((flying_state_->IsActive()) && (flying_state_->GetMsgCopy().state == bebop_autonomy_msgs::Ardrone3PilotingStateFlyingStateChanged::state_hovering))
+    if ((flying_state_->IsActive()) && (
+          flying_state_->GetMsgCopy().state ==
+          bebop_autonomy_msgs::Ardrone3PilotingStateFlyingStateChanged::state_hovering))
       break;
     ros::Rate(1.0).sleep();
   }
   ASSERT_TRUE(flying_state_->IsActive());
-  ASSERT_EQ(flying_state_->GetMsgCopy().state, bebop_autonomy_msgs::Ardrone3PilotingStateFlyingStateChanged::state_hovering);
+  ASSERT_EQ(
+        flying_state_->GetMsgCopy().state,
+        bebop_autonomy_msgs::Ardrone3PilotingStateFlyingStateChanged::state_hovering);
 
   ROS_WARN("Landing ...");
   land_pub_.publish(em);
@@ -214,12 +218,16 @@ TEST_F(BebopInTheLoopTest, Dummy)
   while (((ros::Time::now() - start).toSec() < 5.0))
   {
     ROS_INFO("Waiting for landing ...");
-    if ((flying_state_->IsActive()) && (flying_state_->GetMsgCopy().state == bebop_autonomy_msgs::Ardrone3PilotingStateFlyingStateChanged::state_landed))
+    if ((flying_state_->IsActive()) && (
+          flying_state_->GetMsgCopy().state ==
+          bebop_autonomy_msgs::Ardrone3PilotingStateFlyingStateChanged::state_landed))
       break;
     ros::Rate(1.0).sleep();
   }
   ASSERT_TRUE(flying_state_->IsActive());
-  ASSERT_EQ(flying_state_->GetMsgCopy().state, bebop_autonomy_msgs::Ardrone3PilotingStateFlyingStateChanged::state_landed);
+  ASSERT_EQ(
+        flying_state_->GetMsgCopy().state,
+        bebop_autonomy_msgs::Ardrone3PilotingStateFlyingStateChanged::state_landed);
 }
 
 }  // namespace test
