@@ -273,6 +273,9 @@ def generate_states(xml_filename):
     with open(include_file_name, "w") as include_file:
         include_file.write(rend.render_path("templates/state_callback_includes.h.mustache", d_cpp))
 
+    with open("callbacks_common.h", "w") as header_file:
+        header_file.write(rend.render_path("templates/callbacks_common.h.mustache", d_cpp))
+
     rst_file_name = "%s_states_param_topic.rst" % (project.lower(), )
     logging.info("Writing %s" % (rst_file_name, ))
     with open(rst_file_name, "w") as rst_file:
