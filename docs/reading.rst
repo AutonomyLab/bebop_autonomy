@@ -9,6 +9,8 @@ The video stream from Bebop's front camera is published on ``image_raw`` topic a
 
 To set the location of camera calibration data, please check this page: :doc:`configuration`
 
+.. _sec-states:
+
 States (aka Navdata)
 ====================
 

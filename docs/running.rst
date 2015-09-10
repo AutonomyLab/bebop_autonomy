@@ -26,15 +26,19 @@ The executable node is called ``bebop_driver_node``. It's recommended to run the
 Running the driver as a Nodelet
 ===================================
 
-To run the driver as a ROS Nodelet, you need to first run a Nodelet manager, then load the driver's Nodelet (``bebop_autonomy/BebopDriverNodelet``) in it, along with other Nodelets that need to communicate with the driver. `launch/bebop_nodelet.launch` is a sample launch file that demonstrates these steps by visualizing Bebop's video stream using an instance of `image_view/image <http://wiki.ros.org/image_view#image_view.2BAC8-diamondback.image_view.2BAC8-image>`_ Nodelet. Similar to `bebop_node.launch`, it also runs everything in a namespace and loads the default configuration.
+To run the driver as a ROS Nodelet, you need to first run a Nodelet manager, then load the driver's Nodelet (``bebop_autonomy/BebopDriverNodelet``) in it, along with other Nodelets that need to communicate with the driver. `bebop_tools/launch/bebop_nodelet_iv.launch` is a sample launch file that demonstrates these steps by visualizing Bebop's video stream using an instance of `image_view/image <http://wiki.ros.org/image_view#image_view.2BAC8-diamondback.image_view.2BAC8-image>`_ Nodelet. Similar to `bebop_node.launch`, it also runs everything in a namespace and loads the default configuration.
 
 .. code-block:: bash
 
-  $ roslaunch bebop_autonomy bebop_nodelet.launch
+  $ roslaunch bebop_tools bebop_nodelet_iv.launch
 
+
+.. literalinclude::
+  ../bebop_tools/launch/bebop_nodelet_iv.launch
+  :language: XML
+  :caption: bebop_tools/launch/bebop_nodelet_iv.launch
 
 .. literalinclude::
   ../bebop_autonomy/launch/bebop_nodelet.launch
   :language: XML
-  :caption: bebop_nodelet.launch
-
+  :caption: bebop_autonomy/launch/bebop_nodelet.launch

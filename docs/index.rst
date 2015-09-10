@@ -7,7 +7,7 @@ bebop_autonomy
 [`Source Code <https://github.com/AutonomyLab/bebop_autonomy>`_]
 [`Support <http://answers.ros.org/questions/scope:all/sort:activity-desc/tags:bebop_autonomy/page:1/>`_]
 [`Bug Tracker <https://github.com/AutonomyLab/bebop_autonomy/issues>`_]
-[`Developer Mailing List <https://github.com/AutonomyLab/bebop_autonomy/issues>`_]
+[`Developer Forum <https://trello.com/b/C6rNl8Ux/parrot-drones-in-ros-development>`_]
 
 Features and Roadmap
 ====================
@@ -44,6 +44,7 @@ Table of Contents
   configuration
   contribute
   FAQ
+  dev
   license
 
 Indices and tables
