@@ -410,7 +410,8 @@ void Bebop::AnimationFlip(const uint8_t &anim_id)
   }
   ThrowOnCtrlError(
         device_controller_ptr_->aRDrone3->sendAnimationsFlip(
-          device_controller_ptr_->aRDrone3, static_cast<eARCOMMANDS_ARDRONE3_ANIMATIONS_FLIP_DIRECTION>(anim_id)),
+          device_controller_ptr_->aRDrone3, static_cast<eARCOMMANDS_ARDRONE3_ANIMATIONS_FLIP_DIRECTION>(
+            anim_id % ARCOMMANDS_ARDRONE3_ANIMATIONS_FLIP_DIRECTION_MAX)),
         "Navigate home failed");
 }
 
@@ -439,10 +440,10 @@ void Bebop::Move(const double &roll, const double &pitch, const double &gaz_spee
           device_controller_ptr_->aRDrone3->setPilotingPCMD(
             device_controller_ptr_->aRDrone3,
             do_rp,
-            roll * 100.0,
-            pitch * 100.0,
-            yaw_speed * 100.0,
-            gaz_speed * 100.0,
+            static_cast<int8_t>(roll * 100.0),
+            static_cast<int8_t>(pitch * 100.0),
+            static_cast<int8_t>(yaw_speed * 100.0),
+            static_cast<int8_t>(gaz_speed * 100.0),
             0));
   }
 }

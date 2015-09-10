@@ -79,7 +79,7 @@ void BebopDriverNodelet::onInit()
   const bool param_reset_settings = private_nh.param("reset_settings", false);
   const std::string& param_camera_info_url = private_nh.param<std::string>("camera_info_url", "");
 
-  param_frame_id_ = private_nh.param<std::string>("frame_id", "camera");
+  param_frame_id_ = private_nh.param<std::string>("camera_frame_id", "camera");
 
   NODELET_INFO("Connecting to Bebop ...");
   try
@@ -160,8 +160,6 @@ BebopDriverNodelet::~BebopDriverNodelet()
 
 void BebopDriverNodelet::CmdVelCallback(const geometry_msgs::TwistConstPtr& twist_ptr)
 {
-//  NODELET_INFO_STREAM("[THREAD] CmdVel: " << boost::this_thread::get_id());
-//  NODELET_INFO("In cmd_vel callback");
   try
   {
     bebop_twist = *twist_ptr;
@@ -170,7 +168,10 @@ void BebopDriverNodelet::CmdVelCallback(const geometry_msgs::TwistConstPtr& twis
 
     if (is_bebop_twist_changed)
     {
-      bebop_ptr_->Move(bebop_twist.linear.y, bebop_twist.linear.x, bebop_twist.linear.z, bebop_twist.angular.z);
+      bebop_ptr_->Move(CLAMP(bebop_twist.linear.y, -1.0, 1.0),
+                       CLAMP(bebop_twist.linear.x, -1.0, 1.0),
+                       CLAMP(bebop_twist.linear.z, -1.0, 1.0),
+                       CLAMP(bebop_twist.angular.z, -1.0, 1.0));
       prev_bebop_twist = bebop_twist;
     }
   }
@@ -215,7 +216,9 @@ void BebopDriverNodelet::CameraMoveCallback(const geometry_msgs::TwistConstPtr& 
     const bool is_camera_twist_changed = !util::CompareTwists(camera_twist, prev_camera_twist);
     if (is_camera_twist_changed)
     {
-      bebop_ptr_->MoveCamera(camera_twist.angular.y, camera_twist.angular.z);
+      // TODO(mani-monaj): Set |90| limit to appropriate value (|45|??)
+      bebop_ptr_->MoveCamera(CLAMP(camera_twist.angular.y, -90.0, 90.0),
+                             CLAMP(camera_twist.angular.z, -90.0, 90.0));
       prev_camera_twist = camera_twist;
     }
   }
@@ -303,6 +306,7 @@ void BebopDriverNodelet::CameraPublisherThread()
 
       NODELET_DEBUG_STREAM("Frame grabbed: " << frame_w << " , " << frame_h);
       camera_info_msg_ptr_->header.stamp = ros::Time::now();
+      camera_info_msg_ptr_->header.frame_id = param_frame_id_;
       camera_info_msg_ptr_->width = frame_w;
       camera_info_msg_ptr_->height = frame_h;
 
