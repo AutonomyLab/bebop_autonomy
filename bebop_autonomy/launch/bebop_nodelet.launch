@@ -1,14 +1,12 @@
 <?xml version="1.0"?>
 <launch>
     <group ns="bebop">
+        <!-- nodelet manager -->
         <node pkg="nodelet" type="nodelet" name="bebop_nodelet_manager" args="manager" output="screen"/>
+        <!-- bebop_nodelet -->
         <node pkg="nodelet" type="nodelet" name="bebop_nodelet"
           args="load bebop_autonomy/BebopDriverNodelet bebop_nodelet_manager">
             <rosparam command="load" file="$(find bebop_autonomy)/config/defaults.yaml" />
         </node>
-        <node pkg="nodelet" type="nodelet" name="bebop_image_view_nodelet"
-          args="load image_view/image bebop_nodelet_manager">
-          <remap from="image" to="image_raw" />
-        </node>
-    </group>
+   </group>
 </launch>
