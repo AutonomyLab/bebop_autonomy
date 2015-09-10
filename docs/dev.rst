@@ -19,10 +19,14 @@ Publishing States
 
 TBA
 
+.. _sec-dev-dyn:
+
 Configuring the Drone
 =====================
 
 TBA
+
+.. _sec-dev-test:
 
 Tests
 =====

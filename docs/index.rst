@@ -7,7 +7,7 @@ bebop_autonomy
 [`Source Code <https://github.com/AutonomyLab/bebop_autonomy>`_]
 [`Support <http://answers.ros.org/questions/scope:all/sort:activity-desc/tags:bebop_autonomy/page:1/>`_]
 [`Bug Tracker <https://github.com/AutonomyLab/bebop_autonomy/issues>`_]
-[`Developer Forum <https://trello.com/b/C6rNl8Ux/parrot-drones-in-ros-development>`_]
+[`Developer Forum <https://trello.com/b/C6rNl8Ux>`_]
 
 Features and Roadmap
 ====================
@@ -16,17 +16,19 @@ Features and Roadmap
   :header: "Feature", "Status", "Notes"
 
   Core piloting, Yes, ""
-  H264 video decoding, Yes, "Possible improvement"
+  H264 video decoding, Yes, "Enhancement: `#1 <https://github.com/AutonomyLab/bebop_autonomy/issues/1>`_"
   ROS Camera Interface, Yes, ""
-  Nodelet implementation, Yes, "Possible improvements"
+  Nodelet implementation, Yes, ""
   Publish Bebop states as ROS topics, Yes, ""
-  Dynamically reconfigurable Bebop settings, Yes, "Possible improvements"
-  Inline build of ARDroneSDK3, Yes, ""
-  Bebop In The Loop tests, Yes, ""
+  Dynamically reconfigurable Bebop settings, Yes, ":ref:`sec-dev-dyn`"
+  Inline build of ARDroneSDK3, Yes, "Enhancement: `#2 <https://github.com/AutonomyLab/bebop_autonomy/issues/2>`_"
+  Bebop In The Loop tests, Yes, ":ref:`sec-dev-test`"
   Joystick teleop demo, Yes, ""
-  TF Publisher, No (Planned), ""
-  Odometry Publisher, No (Planned), ""
-  Provide ROS API for on-board picture/video recording, No (Planned), ""
+  TF Publisher, No (Planned), "`#3 <https://github.com/AutonomyLab/bebop_autonomy/issues/3>`_"
+  Odometry Publisher, No (Planned), "`#4 <https://github.com/AutonomyLab/bebop_autonomy/issues/4>`_"
+  Provide ROS API for on-board picture/video recording, No (Planned), "`#5 <https://github.com/AutonomyLab/bebop_autonomy/issues/5>`_"
+  GPS Support, Partial, "Not fully tested"
+  Mavlink Support, No, ""
   Binary Release, No, ""
   Support for Parrot Sky Controller, No, ""
 

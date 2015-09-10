@@ -51,7 +51,7 @@ do                                                                              
   ros::Time start = ros::Time::now();                                             \
   while (((ros::Time::now() - start).toSec() < TIMEOUT) && (!(WAIT_UNTIL_TRUE)))  \
   {                                                                               \
-    ROS_INFO_ONCE(WAITING_TEXT);                                                       \
+    ROS_INFO_ONCE(WAITING_TEXT);                                                  \
     ros::Rate(5.0).sleep();                                                       \
   }                                                                               \
   ASSERT_TRUE(WAIT_UNTIL_TRUE);                                                   \
@@ -208,7 +208,7 @@ protected:
 };
 
 
-TEST_F(BebopInTheLoopTest, TakeOffLand)
+TEST_F(BebopInTheLoopTest, Piloting)
 {
   boost::shared_ptr<util::ASyncSub<bebop_autonomy_msgs::Ardrone3PilotingStateFlyingStateChanged> >
       flying_state(new util::ASyncSub<bebop_autonomy_msgs::Ardrone3PilotingStateFlyingStateChanged>(
@@ -233,11 +233,13 @@ TEST_F(BebopInTheLoopTest, TakeOffLand)
                       nh_, "states/common/CommonState/BatteryStateChanged", 10));
 
   ros::Publisher takeoff_pub =  nh_.advertise<std_msgs::Empty>("takeoff", 1);
+  ros::Publisher reset_pub = nh_.advertise<std_msgs::Empty>("reset", 1);
   ros::Publisher cmdvel_pub = nh_.advertise<geometry_msgs::Twist>("cmd_vel", 1);
 
   // Wait 5s time for connections to establish
   TIMED_ASSERT(5.0, takeoff_pub.getNumSubscribers() > 0, "Waiting for takeoff subscription ...");
   TIMED_ASSERT(5.0, cmdvel_pub.getNumSubscribers() > 0, "Waiting for cmd_vel subscription ...");
+  TIMED_ASSERT(5.0, reset_pub.getNumSubscribers() > 0, "Waiting for reset subscription ...");
 
   ROS_WARN("Taking off ...");
   takeoff_pub.publish(em);
@@ -351,6 +353,16 @@ TEST_F(BebopInTheLoopTest, TakeOffLand)
                  bebop_autonomy_msgs::Ardrone3PilotingStateFlyingStateChanged::state_landed,
                "Waiting for land to finish..."
                );
+
+  // emergency state is transient (unlike ardrone), we may miss the signal
+//  ROS_WARN("Emergency ...");
+//  reset_pub.publish(em);
+
+//  TIMED_ASSERT(5.0,
+//               flying_state->IsActive() && flying_state->GetMsgCopy().state ==
+//                 bebop_autonomy_msgs::Ardrone3PilotingStateFlyingStateChanged::state_emergency,
+//               "Waiting for reset to happen..."
+//               );
 
   ASSERT_GE(bat_percent - bat_state->GetMsgCopy().percent, 0);
 }
