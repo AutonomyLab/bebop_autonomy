@@ -2,7 +2,7 @@
 <package>
   <name>bebop_tools</name>
   <version>0.1.2</version>
-  <description>Miscellaneous tools for bebop_autonomy</description>
+  <description>Miscellaneous tools for bebop_autonomy package</description>
 
   <maintainer email="mmonajje@sfu.ca">Mani Monajjemi</maintainer>
   <license>BSD</license>

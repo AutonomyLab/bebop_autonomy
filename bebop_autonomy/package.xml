@@ -2,7 +2,7 @@
 <package>
   <name>bebop_autonomy</name>
   <version>0.1.2</version>
-  <description>ROS driver for Parrot Bebop Drone, based on Parrot's ARDroneSDK3/libARController</description>
+  <description>bebop_autonomy is a ROS driver for Parrot Bebop drone, based on Parrot’s official ARDroneSDK3</description>
 
   <maintainer email="mmonajje@sfu.ca">Mani Monajjemi</maintainer>
   <license>BSD</license>

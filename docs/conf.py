@@ -44,7 +44,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'bebop_autonomy'
-copyright = u'2015, Mani Monajjemi'
+copyright = u'2015, Mani Monajjemi (AutonomyLab, Simon Fraser University)'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
