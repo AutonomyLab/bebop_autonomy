@@ -2,8 +2,8 @@
 Changelog for package bebop_tools
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.2.0 (2015-09-10)
+------------------
 * Move image_view nodelet demo to bebop_tools package
 * Contributors: Mani Monajjemi
 

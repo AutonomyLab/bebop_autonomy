@@ -2,8 +2,8 @@
 Changelog for package bebop_autonomy
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.2.0 (2015-09-10)
+------------------
 * Finalized documentation
 * Remove bebop_autonomy's dependency to image_view
 * Imrovements to code autogeneration scripts.
