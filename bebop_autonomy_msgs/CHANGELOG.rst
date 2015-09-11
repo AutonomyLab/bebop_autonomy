@@ -2,6 +2,10 @@
 Changelog for package bebop_autonomy_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Contributors: Mani Monajjemi
+
 0.1.2 (2015-09-05)
 ------------------
 * Contributors: Mani Monajjemi
