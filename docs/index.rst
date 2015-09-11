@@ -9,6 +9,8 @@ bebop_autonomy
 [`Bug Tracker <https://github.com/AutonomyLab/bebop_autonomy/issues>`_]
 [`Developer Forum <https://trello.com/b/C6rNl8Ux>`_]
 
+.. _sec-roadmap:
+
 Features and Roadmap
 ====================
 

@@ -60,7 +60,6 @@ int BebopPrintToROSLogCB(eARSAL_PRINT_LEVEL level, const char *tag, const char *
 
 BebopDriverNodelet::BebopDriverNodelet()
   : bebop_ptr_(new bebop_autonomy::Bebop(util::BebopPrintToROSLogCB))
-//    : running_(false)
 {
   NODELET_INFO("Nodelet Cstr");
 }
