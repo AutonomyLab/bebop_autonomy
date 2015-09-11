@@ -13,6 +13,7 @@
 
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>bebop_autonomy_msgs</build_depend>
+  <run_depend>bebop_autonomy</run_depend>
   <run_depend>bebop_autonomy_msgs</run_depend>
   <run_depend>joy</run_depend>
   <run_depend>joy_teleop</run_depend>

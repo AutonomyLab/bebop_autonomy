@@ -4,9 +4,10 @@ bebop_autonomy
 
 *bebop_autonomy* is a :abbr:`ROS (Robot Operating System)` driver for `Parrot Bebop drone <http://www.parrot.com/ca/products/bebop-drone/>`_ (quadrocopter), based on Parrot's official `ARDroneSDK3 <https://github.com/Parrot-Developers/ARSDKBuildUtils>`_. This driver has been developed in `Autonomy Lab <http://autonomylab.org/>`_ of `Simon Fraser University <http://www.sfu.ca/>`_ by `Mani Monajjemi <http://mani.im>`_.
 
-[`Source Code <https://github.com/AutonomyLab/bebop_autonomy>`_]
-[`Support <http://answers.ros.org/questions/scope:all/sort:activity-desc/tags:bebop_autonomy/page:1/>`_]
-[`Bug Tracker <https://github.com/AutonomyLab/bebop_autonomy/issues>`_]
+[`Source Code <https://github.com/AutonomyLab/bebop_autonomy>`_] 
+[`ROS wiki page <http://wiki.ros.org/bebop_autonomy>`_] 
+[`Support <http://answers.ros.org/questions/scope:all/sort:activity-desc/tags:bebop_autonomy/page:1/>`_] 
+[`Bug Tracker <https://github.com/AutonomyLab/bebop_autonomy/issues>`_] 
 [`Developer Forum <https://trello.com/b/C6rNl8Ux>`_]
 
 .. _sec-roadmap:
