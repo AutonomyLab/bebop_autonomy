@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+    <group ns="bebop">
+        <node pkg="bebop_driver" name="bebop_driver" type="bebop_driver_node" output="screen">
+            <rosparam command="load" file="$(find bebop_driver)/config/defaults.yaml" />
+        </node>
+    </group>
+</launch>

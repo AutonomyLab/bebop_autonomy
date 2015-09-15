@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<launch>
+    <group ns="bebop">
+        <node pkg="bebop_driver" name="bebop_driver" type="bebop_driver_node" output="log">
+            <rosparam command="load" file="$(find bebop_driver)/config/defaults.yaml" />
+        </node>
+
+        <test test-name="bebop_in_the_loop_test" pkg="bebop_driver" type="bebop_itl_test"/>
+        <test test-name="image_hztest" pkg="rostest" type="hztest" name="hztest">
+            <param name="topic" value="image_raw" />
+            <param name="hz" value="25.0" />
+            <param name="hzerror" value="5.0" />
+            <param name="wait_time" value="20.0" />
+            <param name="test_duration" value="5.0" />
+        </test>
+    </group>
+</launch>

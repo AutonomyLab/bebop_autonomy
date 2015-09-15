@@ -1,5 +1,0 @@
-<library path="lib/libbebop_driver_nodelet">
-  <class name="bebop_autonomy/BebopDriverNodelet" type="bebop_autonomy::BebopDriverNodelet" base_class_type="nodelet::Nodelet">
-    <description>This is the nodelet for the Parrot Bebop Drone.</description>
-  </class>
-</library>

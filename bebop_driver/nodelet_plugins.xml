@@ -1,0 +1,5 @@
+<library path="lib/libbebop_driver_nodelet">
+  <class name="bebop_driver/BebopDriverNodelet" type="bebop_driver::BebopDriverNodelet" base_class_type="nodelet::Nodelet">
+    <description>Nodelet implementation of bebop_autonomy/bebop_driver.</description>
+  </class>
+</library>

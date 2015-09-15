@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<launch>
+    <group ns="bebop">
+        <!-- nodelet manager -->
+        <node pkg="nodelet" type="nodelet" name="bebop_nodelet_manager" args="manager" output="screen"/>
+        <!-- bebop_nodelet -->
+        <node pkg="nodelet" type="nodelet" name="bebop_nodelet"
+          args="load bebop_driver/BebopDriverNodelet bebop_nodelet_manager">
+            <rosparam command="load" file="$(find bebop_driver)/config/defaults.yaml" />
+        </node>
+   </group>
+</launch>
