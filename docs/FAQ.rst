@@ -8,7 +8,7 @@ Is *bebop_autonomy* based on *ardrone_autonomy*?
 No. `ardrone_autonomy <http://wiki.ros.org/ardrone_autonomy>`_ is based on Parrot's `legacy SDK <https://github.com/AutonomyLab/ardronelib>`_ for AR-Drone 1.0 and 2.0, while *bebop_autonomy* uses Parrot's new SDK for its third generation drones. Since these two SDKs and their underlying protocols are totally different and incompatible, we had to develop *bebop_autonomy* from scrath.
 
 Is *bebop_autonomy* compatible with *ardrone_autonomy*?
-===================================================
+=======================================================
 
 Not completely.
 
