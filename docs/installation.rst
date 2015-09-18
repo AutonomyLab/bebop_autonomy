@@ -32,8 +32,6 @@ To compile from source, you need to clone the source code in a new or existing `
 
 The first time build may take up to 15 minutes, since ARDroneSDK3's build script downloads and compiles ~20 packages from Internet.
 
-.. note:: On ROS *Jade*, if you receive a ``rosdep`` error about ``ros-jade-joy-teleop`` package, please clone ``teleop_tools`` in your workspace:
-
 .. code-block:: bash
 
   $ cd ~/bebop_ws/src
