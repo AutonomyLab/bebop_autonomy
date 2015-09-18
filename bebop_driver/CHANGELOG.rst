@@ -2,8 +2,8 @@
 Changelog for package bebop_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.3.0 (2015-09-17)
+------------------
 * Renamed package to bebop_driver
 * Built against ARSDK3_version_3_6
 * bebop_autonomy is now a metapackage

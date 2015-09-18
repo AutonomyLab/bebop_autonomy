@@ -2,8 +2,8 @@
 Changelog for package bebop_tools
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.3.0 (2015-09-17)
+------------------
 * Renamed package to bebop_tools
 * Contributors: Mani Monajjemi
 

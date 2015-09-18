@@ -2,8 +2,8 @@
 Changelog for package bebop_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.3.0 (2015-09-17)
+------------------
 * Renamed to bebop_msgs
 * Contributors: Mani Monajjemi
 

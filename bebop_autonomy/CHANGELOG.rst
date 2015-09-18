@@ -2,8 +2,8 @@
 Changelog for package bebop_autonomy
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.3.0 (2015-09-17)
+------------------
 * New in 0.3.0
 * Create ROS metapackage for bebop_autonomy
   - bebop_autonomy is the ROS metapackage name
