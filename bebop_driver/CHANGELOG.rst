@@ -2,6 +2,16 @@
 Changelog for package bebop_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Renamed package to bebop_driver
+* Built against ARSDK3_version_3_6
+* bebop_autonomy is now a metapackage
+  - bebop_autonomy is the ROS metapackage name
+  - Rename bebop_autonomy package to bebop_driver
+  - Rename bebop_autonomy_msgs to bebop_msgs
+* Contributors: Mani Monajjemi
+
 0.2.0 (2015-09-10)
 ------------------
 * Finalized documentation
