@@ -27,6 +27,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 #include <boost/bind.hpp>
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/locks.hpp>
+#include <boost/function.hpp>
 
 #include <ros/ros.h>
 #include <std_msgs/Empty.h>
@@ -48,7 +49,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 #define TIMED_ASSERT(TIMEOUT, WAIT_UNTIL_TRUE, WAITING_TEXT)                      \
 do                                                                                \
 {                                                                                 \
-  ros::Time start = ros::Time::now();                                             \
+  const ros::Time start = ros::Time::now();                                       \
   while (((ros::Time::now() - start).toSec() < TIMEOUT) && (!(WAIT_UNTIL_TRUE)))  \
   {                                                                               \
     ROS_INFO_ONCE(WAITING_TEXT);                                                  \
@@ -67,11 +68,14 @@ template<typename T>
 class ASyncSub
 {
 private:
+  typedef boost::function<void (const boost::shared_ptr<T const>& data)> callback_t;
+
   ros::NodeHandle nh;
   bool active_;
   ros::Time last_updated_;
   std::string topic_;
   std::size_t queue_size_;
+  callback_t user_callback_;
   ros::Subscriber sub_;
   boost::shared_ptr<T const> msg_cptr_;
   mutable boost::mutex mutex_;
@@ -82,13 +86,15 @@ private:
     active_ = true;
     last_updated_ = ros::Time::now();
     msg_cptr_ = msg_cptr;
+    if (user_callback_) user_callback_(msg_cptr_);
   }
 
 public:
   ASyncSub(ros::NodeHandle& nh,
-                    const std::string& topic,
-                    const std::size_t queue_size)
-    : nh(nh), active_(false), last_updated_(0), topic_(topic)
+           const std::string& topic,
+           const std::size_t queue_size,
+           callback_t user_callback = 0)
+    : nh(nh), active_(false), last_updated_(0), topic_(topic), user_callback_(user_callback)
   {
     sub_ = nh.subscribe<T>(topic_, queue_size, boost::bind(&ASyncSub<T>::cb, this, _1));
   }
@@ -155,6 +161,12 @@ public:
 namespace test
 {
 
+void dummy_cb(const bebop_msgs::Ardrone3PilotingStateAttitudeChanged::ConstPtr& msg_ptr)
+{
+  ROS_INFO("Roll: %0.2lf, Pitch: %0.2lf, Yaw: %0.2lf",
+           msg_ptr->roll, msg_ptr->pitch, msg_ptr->yaw);
+}
+
 class BebopInTheLoopTest: public ::testing::Test
 {
 protected:
@@ -162,6 +174,7 @@ protected:
   boost::shared_ptr<ros::AsyncSpinner> spinner_ptr_;
 
   ros::Publisher land_pub_;
+  ros::Publisher cmdvel_pub_;
 
   std_msgs::Empty em;
   geometry_msgs::Twist tw;
@@ -178,6 +191,8 @@ protected:
 
     // Common Publishers
     land_pub_= nh_.advertise<std_msgs::Empty>("land", 1);
+    cmdvel_pub_ = nh_.advertise<geometry_msgs::Twist>("cmd_vel", 1);
+
 
     // Common Subs
     image_.reset(new util::ASyncSub<sensor_msgs::Image>(
@@ -197,17 +212,38 @@ protected:
     ROS_INFO("End SetUp()");
   }
 
+  void StopBebop()
+  {
+    tw.linear.x = 0.0;
+    tw.linear.y = 0.0;
+    tw.linear.z = 0.0;
+    tw.angular.z = 0.0;
+    ROS_WARN("Stopping ...");
+    cmdvel_pub_.publish(tw);
+    ros::Duration(1.0).sleep();
+  }
+
   virtual void TearDown()
   {
     ROS_INFO("In teardown()");
+    StopBebop();
     std_msgs::Empty em;
     land_pub_.publish(em);
     ros::Rate(ros::Duration(2.0)).sleep();
     spinner_ptr_->stop();
   }
+
 };
 
-
+/*
+ * Parrot's coordinate system for velocities:
+ * +x: forward
+ * +y: right
+ * +z: downward
+ *
+ * (not ROS compatible)
+ *
+ */
 TEST_F(BebopInTheLoopTest, Piloting)
 {
   boost::shared_ptr<util::ASyncSub<bebop_msgs::Ardrone3PilotingStateFlyingStateChanged> >
@@ -234,11 +270,10 @@ TEST_F(BebopInTheLoopTest, Piloting)
 
   ros::Publisher takeoff_pub =  nh_.advertise<std_msgs::Empty>("takeoff", 1);
   ros::Publisher reset_pub = nh_.advertise<std_msgs::Empty>("reset", 1);
-  ros::Publisher cmdvel_pub = nh_.advertise<geometry_msgs::Twist>("cmd_vel", 1);
 
   // Wait 5s time for connections to establish
   TIMED_ASSERT(5.0, takeoff_pub.getNumSubscribers() > 0, "Waiting for takeoff subscription ...");
-  TIMED_ASSERT(5.0, cmdvel_pub.getNumSubscribers() > 0, "Waiting for cmd_vel subscription ...");
+  TIMED_ASSERT(5.0, cmdvel_pub_.getNumSubscribers() > 0, "Waiting for cmd_vel subscription ...");
   TIMED_ASSERT(5.0, reset_pub.getNumSubscribers() > 0, "Waiting for reset subscription ...");
 
   ROS_WARN("Taking off ...");
@@ -253,37 +288,52 @@ TEST_F(BebopInTheLoopTest, Piloting)
   TIMED_ASSERT(5.0, alt_state->IsActive(), "Waiting for alt measurements ...");
   TIMED_ASSERT(5.0, att_state->IsActive(), "Waiting for attitude measurements ...");
 
-  tw.linear.x = 0.5;
+  // TODO(mani-monaj): Use proper values for pitch/roll test thresholds based on cmd_vel
+
+  tw.linear.x = 0.4;
   tw.linear.y = 0.0;
   tw.linear.z = 0.0;
   tw.angular.z = 0.0;
   ROS_WARN("Moving forwared ...");
-  cmdvel_pub.publish(tw);
-  TIMED_ASSERT(2.0, speed_state->GetMsgCopy().speedX > 0.2, "Measuring speed X ...");
+  cmdvel_pub_.publish(tw);
+  TIMED_ASSERT(2.0, angles::to_degrees(att_state->GetMsgCopy().pitch) < -5.0 , "Measuring pitch ...");
 
-  tw.linear.x = -0.5;
+  StopBebop();
+  TIMED_ASSERT(5.0,
+               (fabs(speed_state->GetMsgCopy().speedX) < 0.05) &&
+               (fabs(speed_state->GetMsgCopy().speedY) < 0.05) &&
+               (fabs(speed_state->GetMsgCopy().speedZ) < 0.05)
+               , "Measuring speed vector ...");
+
+  tw.linear.x = -0.4;
   tw.linear.y = 0.0;
   tw.linear.z = 0.0;
   tw.angular.z = 0.0;
   ROS_WARN("Moving Backward ...");
-  cmdvel_pub.publish(tw);
-  TIMED_ASSERT(2.0, speed_state->GetMsgCopy().speedX < -0.2, "Measuring speed X ...");
+  cmdvel_pub_.publish(tw);
+  TIMED_ASSERT(2.0, angles::to_degrees(att_state->GetMsgCopy().pitch) > 5.0, "Measuring pitch ...");
+
+  StopBebop();
 
   tw.linear.x = 0.0;
-  tw.linear.y = 0.5;
-  tw.linear.z = 0.0;
-  tw.angular.z = 0.0;
-  ROS_WARN("Moving right ...");
-  cmdvel_pub.publish(tw);
-  TIMED_ASSERT(2.0, speed_state->GetMsgCopy().speedY > 0.2, "Measuring speed Y ...");
-
-  tw.linear.x = 0.0;
-  tw.linear.y = -0.5;
+  tw.linear.y = 0.4;
   tw.linear.z = 0.0;
   tw.angular.z = 0.0;
   ROS_WARN("Moving left ...");
-  cmdvel_pub.publish(tw);
-  TIMED_ASSERT(2.0, speed_state->GetMsgCopy().speedY < -0.2, "Measuring speed Y ...");
+  cmdvel_pub_.publish(tw);
+  TIMED_ASSERT(2.0, angles::to_degrees(att_state->GetMsgCopy().roll) < -5.0, "Measuring roll ...");
+
+  StopBebop();
+
+  tw.linear.x = 0.0;
+  tw.linear.y = -0.4;
+  tw.linear.z = 0.0;
+  tw.angular.z = 0.0;
+  ROS_WARN("Moving right ...");
+  cmdvel_pub_.publish(tw);
+  TIMED_ASSERT(2.0, angles::to_degrees(att_state->GetMsgCopy().roll) > 5.0, "Measuring roll ...");
+
+  StopBebop();
 
   /* By this time, battery state must have been changed */
   TIMED_ASSERT(2.0, bat_state->IsActive(), "Measuring battery ...");
@@ -297,9 +347,14 @@ TEST_F(BebopInTheLoopTest, Piloting)
   tw.linear.y = 0.0;
   tw.linear.z = 0.2;
   tw.angular.z = 0.0;
-  ROS_WARN("Going up for 0.5m ...");
-  cmdvel_pub.publish(tw);
-  TIMED_ASSERT(10.0, (alt_state->GetMsgCopy().altitude - alt_start) >= 0.5, "Measuring altitude ...");
+  ROS_WARN("Ascending for 0.5m ...");
+  cmdvel_pub_.publish(tw);
+  TIMED_ASSERT(10.0,
+               ((alt_state->GetMsgCopy().altitude - alt_start) >= 0.5) &&
+               (speed_state->GetMsgCopy().speedZ < -0.05),
+               "Measuring altitude and speed.z...");
+
+  StopBebop();
 
   // Make sure altitude is fresh
   ASSERT_LT(alt_state->GetFreshness().toSec(), 0.5);
@@ -308,9 +363,14 @@ TEST_F(BebopInTheLoopTest, Piloting)
   tw.linear.y = 0.0;
   tw.linear.z = -0.2;
   tw.angular.z = 0.0;
-  ROS_WARN("Going down for 0.5m ...");
-  cmdvel_pub.publish(tw);
-  TIMED_ASSERT(10.0, (alt_state->GetMsgCopy().altitude - alt_start) <= -0.5, "Measuring altitude ...");
+  ROS_WARN("Descending for 0.5m ...");
+  cmdvel_pub_.publish(tw);
+  TIMED_ASSERT(10.0,
+               ((alt_state->GetMsgCopy().altitude - alt_start) <= -0.5) &&
+               (speed_state->GetMsgCopy().speedZ > 0.05),
+               "Measuring altitude and speed.z ...");
+
+  StopBebop();
 
   // Make sure alttitude is fresh
   ASSERT_LT(att_state->GetFreshness().toSec(), 0.5);
@@ -320,10 +380,12 @@ TEST_F(BebopInTheLoopTest, Piloting)
   tw.linear.z = 0.0;
   tw.angular.z = 0.5;
   ROS_WARN("Rotating CW for 90 degrees ...");
-  cmdvel_pub.publish(tw);
+  cmdvel_pub_.publish(tw);
   TIMED_ASSERT(10.0,
                angles::normalize_angle(att_state->GetMsgCopy().yaw - yaw_start) >= 0.5 * 3.141596,
                "Measuring Yaw");
+
+  StopBebop();
 
   // Make sure alttitude is fresh
   ASSERT_LT(att_state->GetFreshness().toSec(), 0.5);
@@ -333,17 +395,19 @@ TEST_F(BebopInTheLoopTest, Piloting)
   tw.linear.z = 0.0;
   tw.angular.z = -0.5;
   ROS_WARN("Rotating CCW for 90 degrees ...");
-  cmdvel_pub.publish(tw);
+  cmdvel_pub_.publish(tw);
   TIMED_ASSERT(10.0,
                angles::normalize_angle(att_state->GetMsgCopy().yaw - yaw_start) <= -0.5 * 3.141596,
                "Measuring Yaw");
+
+  StopBebop();
 
   tw.linear.x = 0.0;
   tw.linear.y = 0.0;
   tw.linear.z = 0.0;
   tw.angular.z = 0.0;
   ROS_WARN("Stop ...");
-  cmdvel_pub.publish(tw);
+  cmdvel_pub_.publish(tw);
 
   ROS_WARN("Landing ...");
   land_pub_.publish(em);
