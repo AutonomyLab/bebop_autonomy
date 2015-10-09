@@ -15,7 +15,7 @@ teleop:
       -
         axis: 2  # Right thumb stick (left/right)
         target: linear.y
-        scale: -1.0
+        scale: 1.0
         offset: 0.0
       -
         axis: 1  # Left thumb stick (up/down)
