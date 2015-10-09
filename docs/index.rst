@@ -47,6 +47,7 @@ Table of Contents
   piloting
   reading
   configuration
+  coordinates
   contribute
   FAQ
   dev
