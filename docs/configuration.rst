@@ -15,7 +15,11 @@ Setting this parameter to ``true`` will reset all Bebop configurations to factor
 ~camera_info_url
 ----------------
 
-Sets the location of the camera caliberation data. Default is empty string.
+Sets the location of the camera caliberation data. Default is empty string. For more information check `this documentation <http://wiki.ros.org/camera_info_manager#URL_Names>`_.
+
+.. note::
+
+  Since v0.4, the package comes with a default camera caliberation file located at ``bebop_driver/data/bebop_front_calib.yaml``.
 
 ~camera_frame_id
 ----------------

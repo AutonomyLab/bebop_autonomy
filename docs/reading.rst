@@ -7,7 +7,7 @@ Camera
 
 The video stream from Bebop's front camera is published on ``image_raw`` topic as ``sensor_msgs/Image`` messages. *bebop_driver* complies with ROS camera interface specifications and publishes camera information and calibration data to ``camera_info`` topic. Due to limitations in Parrot's ARDroneSDK3, the quality of video stream is limited to **640 x 368 @ 30 Hz**.
 
-To set the location of camera calibration data, please check this page: :doc:`configuration`
+To set the location of camera calibration data, please check this page: :doc:`configuration`. Since v0.4, the package ships with a default camera caliberation file located at ``bebop_driver/data/bebop_front_calib.yaml``. Both default node/nodelet launch files, load this file when executing the driver.
 
 .. _sec-states:
 

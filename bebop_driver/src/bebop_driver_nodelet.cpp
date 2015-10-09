@@ -113,7 +113,7 @@ void BebopDriverNodelet::onInit()
   navigatehome_sub_ = nh.subscribe("navigate_home", 1, &BebopDriverNodelet::NavigateHomeCallback, this);
   animation_sub_ = nh.subscribe("flip", 1, &BebopDriverNodelet::FlipAnimationCallback, this);
 
-  cinfo_manager_ptr_.reset(new camera_info_manager::CameraInfoManager(nh, "camera", param_camera_info_url));
+  cinfo_manager_ptr_.reset(new camera_info_manager::CameraInfoManager(nh, "bebop_front", param_camera_info_url));
   image_transport_ptr_.reset(new image_transport::ImageTransport(nh));
   image_transport_pub_ = image_transport_ptr_->advertiseCamera("image_raw", 60);
 
@@ -299,12 +299,14 @@ void BebopDriverNodelet::CameraPublisherThread()
     try
     {
       sensor_msgs::ImagePtr image_msg_ptr_(new sensor_msgs::Image());
+      const ros::Time t_now = ros::Time::now();
 
       NODELET_DEBUG_STREAM("Grabbing a frame from Bebop");
       bebop_ptr_->GetFrontCameraFrame(image_msg_ptr_->data, frame_w, frame_h);
 
       NODELET_DEBUG_STREAM("Frame grabbed: " << frame_w << " , " << frame_h);
-      camera_info_msg_ptr_->header.stamp = ros::Time::now();
+      camera_info_msg_ptr_.reset(new sensor_msgs::CameraInfo(cinfo_manager_ptr_->getCameraInfo()));
+      camera_info_msg_ptr_->header.stamp = t_now;
       camera_info_msg_ptr_->header.frame_id = param_frame_id_;
       camera_info_msg_ptr_->width = frame_w;
       camera_info_msg_ptr_->height = frame_h;
@@ -314,7 +316,7 @@ void BebopDriverNodelet::CameraPublisherThread()
         image_msg_ptr_->encoding = "rgb8";
         image_msg_ptr_->is_bigendian = false;
         image_msg_ptr_->header.frame_id = param_frame_id_;
-        image_msg_ptr_->header.stamp = ros::Time::now();
+        image_msg_ptr_->header.stamp = t_now;
         image_msg_ptr_->width = frame_w;
         image_msg_ptr_->height = frame_h;
         image_msg_ptr_->step = image_msg_ptr_->width * 3;

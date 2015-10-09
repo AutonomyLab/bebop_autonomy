@@ -23,6 +23,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCL
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include <string>
+#include <numeric>
 #include <boost/shared_ptr.hpp>
 #include <boost/bind.hpp>
 #include <boost/thread/mutex.hpp>
@@ -34,6 +35,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 #include <geometry_msgs/Twist.h>
 #include <sensor_msgs/Image.h>
 #include <angles/angles.h>
+#include <sensor_msgs/CameraInfo.h>
 
 #include <gtest/gtest.h>
 
@@ -196,7 +198,7 @@ protected:
 
     // Common Subs
     image_.reset(new util::ASyncSub<sensor_msgs::Image>(
-                          nh_, "image_raw", 10));
+                   nh_, "image_raw", 10));
 
 
     spinner_ptr_.reset(new ros::AsyncSpinner(4));
@@ -431,9 +433,13 @@ TEST_F(BebopInTheLoopTest, Piloting)
   ASSERT_GE(bat_percent - bat_state->GetMsgCopy().percent, 0);
 }
 
-TEST_F(BebopInTheLoopTest, ImageTest)
+TEST_F(BebopInTheLoopTest, VisionTest)
 {
-  TIMED_ASSERT(2.0, image_->IsActive(), "Waiting for front video stream ...");
+  boost::shared_ptr<util::ASyncSub<sensor_msgs::CameraInfo> > camera_(
+        new util::ASyncSub<sensor_msgs::CameraInfo>(nh_, "camera_info", 10));
+
+  TIMED_ASSERT(2.0, image_->IsActive() && camera_->IsActive() , "Waiting for front video stream ...");
+
   sensor_msgs::Image img = image_->GetMsgCopy();
 
   const std::size_t sz = img.step * img.height;
@@ -444,10 +450,25 @@ TEST_F(BebopInTheLoopTest, ImageTest)
   ASSERT_GT(img.header.stamp.toSec(), 0.0);
   ASSERT_GT(sz, 0);
 
-  double sum = 0.0;
-  for (std::size_t i = 0; i < sz; i++, sum += img.data[i]);
+  ASSERT_GE(std::accumulate(img.data.begin(), img.data.end(), 0.0) , 0.0);
 
-  ASSERT_GE(sum , 0.0);
+  sensor_msgs::CameraInfo cam_msg = camera_->GetMsgCopy();
+
+  ASSERT_EQ(cam_msg.width, img.width);
+  ASSERT_EQ(cam_msg.height, img.height);
+  ASSERT_EQ(cam_msg.header.frame_id, img.header.frame_id);
+  ASSERT_GT(cam_msg.header.stamp.toSec(), 0.0);
+  ASSERT_FALSE(cam_msg.distortion_model.empty());
+
+  ASSERT_FALSE(cam_msg.D.empty());
+  ASSERT_FALSE(cam_msg.K.empty());
+  ASSERT_FALSE(cam_msg.R.empty());
+  ASSERT_FALSE(cam_msg.P.empty());
+
+  ASSERT_GT(fabs(cam_msg.D[0]), 0.0);
+  ASSERT_GT(fabs(cam_msg.K[0]), 0.0);
+  ASSERT_GT(fabs(cam_msg.R[0]), 0.0);
+  ASSERT_GT(fabs(cam_msg.P[0]), 0.0);
 }
 
 TEST_F(BebopInTheLoopTest, CameraMoveTest)
