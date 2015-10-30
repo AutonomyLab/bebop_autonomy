@@ -56,19 +56,18 @@ roslint_cpp(
 # Build ARDroneSDK3 through their custom build manager (ARSDKBuildUtils)
 # TODO: Replace ExternalProject with a catkin package wrapper or a cmake macro.
 # the build time is unnecessarily long due to many git checkout ./SDK3Build.py performs.
-#include(ExternalProject)
-#ExternalProject_Add(ARSDKBuildUtils
-#    GIT_REPOSITORY https://github.com/ARDroneSDK3/ARSDKBuildUtils.git
-#    GIT_TAG ARSDK3_version_3_6
-#    PREFIX ${CATKIN_DEVEL_PREFIX}
-#    CONFIGURE_COMMAND echo "No configure"
-#    BUILD_COMMAND ./SDK3Build.py -t Unix
-#    INSTALL_COMMAND echo "No install"
-#    BUILD_IN_SOURCE 1
-#)
+include(ExternalProject)
+ExternalProject_Add(ARSDKBuildUtils
+    GIT_REPOSITORY https://github.com/ARDroneSDK3/ARSDKBuildUtils.git
+    GIT_TAG ARSDK3_version_3_6
+    PREFIX ${CATKIN_DEVEL_PREFIX}
+    CONFIGURE_COMMAND echo "No configure"
+    BUILD_COMMAND ./SDK3Build.py -t Unix
+    INSTALL_COMMAND echo "No install"
+    BUILD_IN_SOURCE 1
+)
 
-set(ARDRONESDK3_PATH "/home/edison/bebop_sdk_ws/ARSDKBuildUtils/Targets/Unix/Install")
-#set(ARDRONESDK3_PATH "${CATKIN_DEVEL_PREFIX}/src/ARSDKBuildUtils/Targets/Unix/Install")
+set(ARDRONESDK3_PATH "${CATKIN_DEVEL_PREFIX}/src/ARSDKBuildUtils/Targets/Unix/Install")
 
 include_directories(
   ${catkin_INCLUDE_DIRS}
