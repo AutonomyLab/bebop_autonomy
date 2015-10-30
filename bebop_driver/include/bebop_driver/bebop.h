@@ -34,9 +34,9 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 #include <vector>
 #include <utility>
 #include <map>
+#include <atomic>
 
 #include <boost/shared_ptr.hpp>
-#include <boost/atomic.hpp>
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/condition_variable.hpp>
 
@@ -85,8 +85,8 @@ class Bebop
 {
 private:
   static const char* LOG_TAG;
-  boost::atomic<bool> is_connected_;
-  boost::atomic<bool> is_streaming_started_;
+  std::atomic<bool> is_connected_;
+  std::atomic<bool> is_streaming_started_;
   ARDISCOVERY_Device_t* device_ptr_;
   ARCONTROLLER_Device_t* device_controller_ptr_;
   eARCONTROLLER_ERROR error_;

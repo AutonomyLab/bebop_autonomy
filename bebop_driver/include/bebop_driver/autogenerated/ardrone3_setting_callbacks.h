@@ -341,7 +341,6 @@ public:
     ::boost::lock_guard<boost::mutex> lock(mutex_);
 
     arg = NULL;
-    // manual edit to a bug in upstream XML
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MAXDISTANCECHANGED_CURRENT, arg);
     if (arg)
     {
