@@ -36,3 +36,6 @@ bebop_driver/scripts/meta/*.msg
 bebop_driver/scripts/meta/*.h
 bebop_driver/scripts/meta/*.cfg
 bebop_driver/scripts/meta/*.rst
+
+# Temporary files
+*~
