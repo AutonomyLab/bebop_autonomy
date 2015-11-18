@@ -206,7 +206,7 @@ Bebop::~Bebop()
   if (device_controller_ptr_) ARCONTROLLER_Device_Delete(&device_controller_ptr_);
 }
 
-void Bebop::Connect(ros::NodeHandle& nh, ros::NodeHandle& priv_nh)
+void Bebop::Connect(ros::NodeHandle& nh, ros::NodeHandle& priv_nh, const std::string& bebop_ip)
 {
   try
   {
@@ -222,11 +222,14 @@ void Bebop::Connect(ros::NodeHandle& nh, ros::NodeHandle& priv_nh)
     {
       throw std::runtime_error("Discovery failed: " + std::string(ARDISCOVERY_Error_ToString(error_discovery)));
     }
+    
+    // set/save ip
+    bebop_ip_ = bebop_ip;
 
     // TODO(mani-monaj): Make ip and port params
     error_discovery = ARDISCOVERY_Device_InitWifi(device_ptr_,
                                                   ARDISCOVERY_PRODUCT_ARDRONE, "Bebop",
-                                                  "192.168.42.1", 44444);
+                                                  bebop_ip_.c_str(), 44444);
 
     if (error_discovery != ARDISCOVERY_OK)
     {
