@@ -59,7 +59,6 @@ int BebopPrintToROSLogCB(eARSAL_PRINT_LEVEL level, const char *tag, const char *
 }  // namespace util
 
 BebopDriverNodelet::BebopDriverNodelet()
-  : bebop_ptr_(new bebop_driver::Bebop(util::BebopPrintToROSLogCB))
 {
   NODELET_INFO("Nodelet Cstr");
 }
@@ -77,8 +76,11 @@ void BebopDriverNodelet::onInit()
   // TODO(mani-monaj): Wrap all calls to .param() in a function call to enable logging
   const bool param_reset_settings = private_nh.param("reset_settings", false);
   const std::string& param_camera_info_url = private_nh.param<std::string>("camera_info_url", "");
+  const std::string& bebop_ip = private_nh.param<std::string>("bebop_ip", "192.168.42.1");
 
   param_frame_id_ = private_nh.param<std::string>("camera_frame_id", "camera");
+  
+  bebop_ptr_.reset(new bebop_driver::Bebop(util::BebopPrintToROSLogCB,bebop_ip));
 
   NODELET_INFO("Connecting to Bebop ...");
   try

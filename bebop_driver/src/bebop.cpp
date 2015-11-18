@@ -180,7 +180,7 @@ void Bebop::FrameReceivedCallback(ARCONTROLLER_Frame_t *frame, void *bebop_void_
 }
 
 
-Bebop::Bebop(ARSAL_Print_Callback_t custom_print_callback):
+Bebop::Bebop(ARSAL_Print_Callback_t custom_print_callback, const std::string& bebop_ip):
   is_connected_(false),
   is_streaming_started_(false),
   device_ptr_(NULL),
@@ -188,7 +188,8 @@ Bebop::Bebop(ARSAL_Print_Callback_t custom_print_callback):
   error_(ARCONTROLLER_OK),
   device_state_(ARCONTROLLER_DEVICE_STATE_MAX),
   video_decoder_ptr_(new bebop_driver::VideoDecoder()),
-  is_frame_avail_(false)
+  is_frame_avail_(false),
+  bebop_ip_(bebop_ip)
 //  out_file("/tmp/ts.txt")
 {
   // Redirect all calls to AR_PRINT_* to this function if provided
@@ -226,7 +227,7 @@ void Bebop::Connect(ros::NodeHandle& nh, ros::NodeHandle& priv_nh)
     // TODO(mani-monaj): Make ip and port params
     error_discovery = ARDISCOVERY_Device_InitWifi(device_ptr_,
                                                   ARDISCOVERY_PRODUCT_ARDRONE, "Bebop",
-                                                  "192.168.42.1", 44444);
+                                                  bebop_ip_.c_str(), 44444);
 
     if (error_discovery != ARDISCOVERY_OK)
     {
