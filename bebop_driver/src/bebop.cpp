@@ -180,7 +180,7 @@ void Bebop::FrameReceivedCallback(ARCONTROLLER_Frame_t *frame, void *bebop_void_
 }
 
 
-Bebop::Bebop(ARSAL_Print_Callback_t custom_print_callback, const std::string& bebop_ip):
+Bebop::Bebop(ARSAL_Print_Callback_t custom_print_callback):
   is_connected_(false),
   is_streaming_started_(false),
   device_ptr_(NULL),
@@ -188,8 +188,7 @@ Bebop::Bebop(ARSAL_Print_Callback_t custom_print_callback, const std::string& be
   error_(ARCONTROLLER_OK),
   device_state_(ARCONTROLLER_DEVICE_STATE_MAX),
   video_decoder_ptr_(new bebop_driver::VideoDecoder()),
-  is_frame_avail_(false),
-  bebop_ip_(bebop_ip)
+  is_frame_avail_(false)
 //  out_file("/tmp/ts.txt")
 {
   // Redirect all calls to AR_PRINT_* to this function if provided
@@ -207,7 +206,7 @@ Bebop::~Bebop()
   if (device_controller_ptr_) ARCONTROLLER_Device_Delete(&device_controller_ptr_);
 }
 
-void Bebop::Connect(ros::NodeHandle& nh, ros::NodeHandle& priv_nh)
+void Bebop::Connect(ros::NodeHandle& nh, ros::NodeHandle& priv_nh, const std::string& bebop_ip)
 {
   try
   {
@@ -223,6 +222,9 @@ void Bebop::Connect(ros::NodeHandle& nh, ros::NodeHandle& priv_nh)
     {
       throw std::runtime_error("Discovery failed: " + std::string(ARDISCOVERY_Error_ToString(error_discovery)));
     }
+    
+    // set/save ip
+    bebop_ip_ = bebop_ip;
 
     // TODO(mani-monaj): Make ip and port params
     error_discovery = ARDISCOVERY_Device_InitWifi(device_ptr_,

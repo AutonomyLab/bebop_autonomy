@@ -93,7 +93,7 @@ private:
   eARCONTROLLER_DEVICE_STATE device_state_;
   ARSAL_Sem_t state_sem_;
   boost::shared_ptr<VideoDecoder> video_decoder_ptr_;
-  const std::string bebop_ip_;
+  std::string bebop_ip_;
 
   // Navdata Callbacks
 #define DEFINE_SHARED_PTRS
@@ -139,10 +139,10 @@ public:
   inline bool IsConnected() const {return is_connected_;}
   inline bool IsStreamingStarted() const {return is_streaming_started_;}
 
-  explicit Bebop(ARSAL_Print_Callback_t custom_print_callback = 0, const std::string& = "192.168.42.1");
+  explicit Bebop(ARSAL_Print_Callback_t custom_print_callback = 0);
   ~Bebop();
 
-  void Connect(ros::NodeHandle& nh, ros::NodeHandle& priv_nh);
+  void Connect(ros::NodeHandle& nh, ros::NodeHandle& priv_nh, const std::string& bebop_ip = "192.168.42.1");
   void StartStreaming();
 
   // Disable all data callback and streaming (nothrow)
