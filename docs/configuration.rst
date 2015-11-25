@@ -7,6 +7,11 @@ Driver Parameters
 
 Following parameters are set during driver's startup:
 
+~bebop_ip
+---------
+
+Sets the IP addres of the Bebop. The default value is ``192.168.42.1``.
+
 ~reset_settings
 ---------------
 

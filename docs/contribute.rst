@@ -14,10 +14,17 @@ You can contribute to *bebop_autonomy* by:
 
 * Joining driver's `developers forum <https://trello.com/b/C6rNl8Ux>`_ and participate in technical discussions on new features, bugs and roadmap.
 
+List of Developers
+==================
+
+- `Mani Monajjemi <https://github.com/mani-monaj>`_
+
 List of Contributers
 ====================
 
-- `Mani Monajjemi <https://github.com/mani-monaj>`_
+- `Anup Parikh` <https://github.com/anuppari>`_
+
+  - `#19 Add bebop ip address as ROS parameter <https://github.com/AutonomyLab/bebop_autonomy/pull/19>`_
 
 Acknowledgments
 ================
