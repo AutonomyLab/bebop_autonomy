@@ -222,6 +222,9 @@ void Bebop::Connect(ros::NodeHandle& nh, ros::NodeHandle& priv_nh, const std::st
     {
       throw std::runtime_error("Discovery failed: " + std::string(ARDISCOVERY_Error_ToString(error_discovery)));
     }
+    
+    // set/save ip
+    bebop_ip_ = bebop_ip;
 
     // set/save ip
     bebop_ip_ = bebop_ip;
