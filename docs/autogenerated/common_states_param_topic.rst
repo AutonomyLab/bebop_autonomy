@@ -1,5 +1,5 @@
  .. common_states_param_topic.rst
- .. auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/7e2f55fafcd45ba2380ca2574a08b7359c005f47/Xml/common_commands.xml
+ .. auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/e1cbcad39d6b2999faa457a1d42d0ea3a1060765/Xml/common_commands.xml
  .. Do not modify this file by hand. Check scripts/meta folder for generator files.
 
 *****************************************************************************************

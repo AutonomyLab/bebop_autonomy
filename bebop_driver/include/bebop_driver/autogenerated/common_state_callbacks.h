@@ -23,7 +23,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCL
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  * common_state_callbacks.h
- * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/7e2f55fafcd45ba2380ca2574a08b7359c005f47/Xml/common_commands.xml
+ * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/e1cbcad39d6b2999faa457a1d42d0ea3a1060765/Xml/common_commands.xml
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
@@ -684,6 +684,13 @@ public:
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN_LISTFLAGS, arg);
+    if (arg)
+    {
+      msg_ptr->listFlags = arg->value.U8;
+    }
 
     arg = NULL;
     HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_COUNTRYLISTKNOWN_COUNTRYCODES, arg);

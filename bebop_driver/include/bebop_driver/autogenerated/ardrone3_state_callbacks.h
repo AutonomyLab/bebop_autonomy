@@ -23,7 +23,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCL
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  * ARDrone3_state_callbacks.h
- * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/7e2f55fafcd45ba2380ca2574a08b7359c005f47/Xml/ARDrone3_commands.xml
+ * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/e1cbcad39d6b2999faa457a1d42d0ea3a1060765/Xml/ARDrone3_commands.xml
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
@@ -58,6 +58,7 @@ extern "C"
 #include "bebop_msgs/Ardrone3NetworkStateAllWifiAuthChannelChanged.h"
 #include "bebop_msgs/Ardrone3MediaStreamingStateVideoEnableChanged.h"
 #include "bebop_msgs/Ardrone3CameraStateOrientation.h"
+#include "bebop_msgs/Ardrone3CameraStatedefaultCameraOrientation.h"
 #include "bebop_msgs/Ardrone3AntiflickeringStateelectricFrequencyChanged.h"
 #include "bebop_msgs/Ardrone3AntiflickeringStatemodeChanged.h"
 #include "bebop_msgs/Ardrone3GPSStateNumberOfSatelliteChanged.h"
@@ -1136,6 +1137,64 @@ public:
   }
 
 };  // Ardrone3CameraStateOrientation
+
+
+// Orientation of the camera center. This is the value to send when we want to center the camera.
+class Ardrone3CameraStatedefaultCameraOrientation : public AbstractState
+{
+private:
+  ::bebop_msgs::Ardrone3CameraStatedefaultCameraOrientation::Ptr msg_ptr;
+
+public:
+
+  Ardrone3CameraStatedefaultCameraOrientation(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
+    : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_DEFAULTCAMERAORIENTATION)
+  {
+    if (priv_nh.getParam("states/enable_camerastate_defaultcameraorientation", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_msgs::Ardrone3CameraStatedefaultCameraOrientation>(topic, 10, true);
+    } // pub_enabled_ is false
+  }
+
+  ::bebop_msgs::Ardrone3CameraStatedefaultCameraOrientation::ConstPtr GetDataCstPtr() const
+  {
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    return msg_ptr;
+  }
+
+  void Update(const ARCONTROLLER_DICTIONARY_ARG_t *arguments, const ::ros::Time& t)
+  {
+    if (arguments == NULL)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3CameraStatedefaultCameraOrientation::Update() arguments is NULL");
+      return;
+    }
+
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    msg_ptr.reset(new ::bebop_msgs::Ardrone3CameraStatedefaultCameraOrientation());
+    msg_ptr->header.stamp = t;
+    msg_ptr->header.frame_id = "base_link";
+
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_DEFAULTCAMERAORIENTATION_TILT, arg);
+    if (arg)
+    {
+      msg_ptr->tilt = arg->value.I8;
+    }
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_DEFAULTCAMERAORIENTATION_PAN, arg);
+    if (arg)
+    {
+      msg_ptr->pan = arg->value.I8;
+    }
+
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+  }
+
+};  // Ardrone3CameraStatedefaultCameraOrientation
 
 
 // Electric frequency of the country determined by the position of the controller
