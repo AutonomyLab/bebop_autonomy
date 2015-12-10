@@ -57,7 +57,7 @@ roslint_cpp(
 include(ExternalProject)
 ExternalProject_Add(ARSDKBuildUtils
     GIT_REPOSITORY https://github.com/ARDroneSDK3/ARSDKBuildUtils.git
-    GIT_TAG ARSDK3_version_3_6
+    GIT_TAG ARSDK3_version_3_7
     PREFIX ${CATKIN_DEVEL_PREFIX}
     PATCH_COMMAND curl -s https://github.com/mani-monaj/ARSDKBuildUtils/commit/6c5b4186ab1d7cfd963b7dfa2070ece7650b2a5e.patch | git apply -v --index
     CONFIGURE_COMMAND echo "No configure"
