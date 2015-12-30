@@ -57,7 +57,7 @@ roslint_cpp(
 include(ExternalProject)
 ExternalProject_Add(ARSDKBuildUtils
     GIT_REPOSITORY https://github.com/ARDroneSDK3/ARSDKBuildUtils.git
-    GIT_TAG ARSDK3_version_3_7
+    GIT_TAG ARSDK3_version_3_7_5
     PREFIX ${CATKIN_DEVEL_PREFIX}
     CONFIGURE_COMMAND echo "No configure"
     BUILD_COMMAND ./SDK3Build.py -t Unix
