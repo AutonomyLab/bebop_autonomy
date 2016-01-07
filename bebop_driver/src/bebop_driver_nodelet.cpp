@@ -66,6 +66,9 @@ BebopDriverNodelet::BebopDriverNodelet()
 
 void BebopDriverNodelet::onInit()
 {
+  // TODO: Remove this in future release
+  warnedOnce = false;
+
   ros::NodeHandle& nh = getNodeHandle();
   ros::NodeHandle& private_nh = getPrivateNodeHandle();
   util::ResetTwist(bebop_twist);
@@ -168,10 +171,18 @@ void BebopDriverNodelet::CmdVelCallback(const geometry_msgs::TwistConstPtr& twis
 
     if (is_bebop_twist_changed)
     {
+      // TODO: Remove message in future release
+      if (!warnedOnce) {
+        ROS_ERROR("ATTENTION: * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *");
+        ROS_ERROR("ATTENTION: Bebop driver now follows right-hand convention (ie. +angular.z translates to CCW rotation). This message will be removed in a future release.");
+        ROS_ERROR("ATTENTION: * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *");
+        warnedOnce = true;
+      }
+
       bebop_ptr_->Move(CLAMP(-bebop_twist.linear.y, -1.0, 1.0),
                        CLAMP(bebop_twist.linear.x, -1.0, 1.0),
                        CLAMP(bebop_twist.linear.z, -1.0, 1.0),
-                       CLAMP(bebop_twist.angular.z, -1.0, 1.0));
+                       CLAMP(-bebop_twist.angular.z, -1.0, 1.0));
       prev_bebop_twist = bebop_twist;
     }
   }
