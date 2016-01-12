@@ -1,0 +1,139 @@
+INFO:root:Fetching source XML file for project common 
+INFO:root:URL: https://raw.githubusercontent.com/Parrot-Developers/libARCommands/e1cbcad39d6b2999faa457a1d42d0ea3a1060765/Xml/common_commands.xml
+INFO:root:Iterating all State <class> tags ...
+INFO:root:... Done iterating, writing results to file
+INFO:root:Writing CommonCalibrationStateMagnetoCalibrationRequiredState.msg
+INFO:root:Writing CommonCommonStateMassStorageInfoRemainingListChanged.msg
+INFO:root:Writing CommonCommonStateCurrentDateChanged.msg
+INFO:root:Writing CommonAccessoryStateAccessoryConfigChanged.msg
+INFO:root:Writing CommonCommonStateWifiSignalChanged.msg
+INFO:root:Writing CommonCommonStateMassStorageStateListChanged.msg
+INFO:root:Writing CommonARLibsVersionsStateSkyControllerLibARCommandsVersion.msg
+INFO:root:Writing CommonAnimationsStateList.msg
+INFO:root:Writing CommonChargerStateLastChargeRateChanged.msg
+INFO:root:Writing CommonCalibrationStateMagnetoCalibrationStartedChanged.msg
+INFO:root:Writing CommonFlightPlanStateComponentStateListChanged.msg
+INFO:root:Writing CommonAudioStateAudioStreamingRunning.msg
+INFO:root:Writing CommonHeadlightsStateintensityChanged.msg
+INFO:root:Writing CommonControllerStateisPilotingChanged.msg
+INFO:root:Writing CommonARLibsVersionsStateDeviceLibARCommandsVersion.msg
+INFO:root:Writing CommonCommonStateAllStatesChanged.msg
+INFO:root:Writing CommonARLibsVersionsStateControllerLibARCommandsVersion.msg
+INFO:root:Writing CommonAccessoryStateAccessoryConfigModificationEnabled.msg
+INFO:root:Writing CommonOverHeatStateOverHeatRegulationChanged.msg
+INFO:root:Writing CommonChargerStateCurrentChargeStateChanged.msg
+INFO:root:Writing CommonAccessoryStateSupportedAccessoriesListChanged.msg
+INFO:root:Writing CommonCommonStateMassStorageInfoStateListChanged.msg
+INFO:root:Writing CommonMavlinkStateMavlinkPlayErrorStateChanged.msg
+INFO:root:Writing CommonChargerStateMaxChargeRateChanged.msg
+INFO:root:Writing CommonCalibrationStateMagnetoCalibrationStateChanged.msg
+INFO:root:Writing CommonMavlinkStateMavlinkFilePlayingStateChanged.msg
+INFO:root:Writing CommonCommonStateBatteryStateChanged.msg
+INFO:root:Writing CommonChargerStateChargingInfo.msg
+INFO:root:Writing CommonCommonStateProductModel.msg
+INFO:root:Writing CommonCommonStateSensorsStatesListChanged.msg
+INFO:root:Writing CommonOverHeatStateOverHeatChanged.msg
+INFO:root:Writing CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged.msg
+INFO:root:Writing CommonFlightPlanStateAvailabilityStateChanged.msg
+INFO:root:Writing CommonCommonStateCurrentTimeChanged.msg
+INFO:root:Writing CommonCommonStateCountryListKnown.msg
+INFO:root:Writing common_state_callbacks.h
+INFO:root:Writing common_state_callback_includes.h
+INFO:root:Writing common_states_param_topic.rst
+INFO:root:Fetching source XML file for project ARDrone3 
+INFO:root:URL: https://raw.githubusercontent.com/Parrot-Developers/libARCommands/e1cbcad39d6b2999faa457a1d42d0ea3a1060765/Xml/ARDrone3_commands.xml
+INFO:root:Iterating all State <class> tags ...
+INFO:root:... Done iterating, writing results to file
+INFO:root:Writing Ardrone3PilotingStateAutoTakeOffModeChanged.msg
+INFO:root:Writing Ardrone3GPSStateHomeTypeAvailabilityChanged.msg
+INFO:root:Writing Ardrone3PilotingStateAttitudeChanged.msg
+INFO:root:Writing Ardrone3MediaStreamingStateVideoEnableChanged.msg
+INFO:root:Writing Ardrone3NetworkStateAllWifiAuthChannelChanged.msg
+INFO:root:Writing Ardrone3GPSStateNumberOfSatelliteChanged.msg
+INFO:root:Writing Ardrone3PilotingStateFlyingStateChanged.msg
+INFO:root:Writing Ardrone3MediaRecordStateVideoStateChanged.msg
+INFO:root:Writing Ardrone3MediaRecordStatePictureStateChangedV2.msg
+INFO:root:Writing Ardrone3PilotingStateNavigateHomeStateChanged.msg
+INFO:root:Writing Ardrone3AntiflickeringStatemodeChanged.msg
+INFO:root:Writing Ardrone3PilotingStatePositionChanged.msg
+INFO:root:Writing Ardrone3MediaRecordStatePictureStateChanged.msg
+INFO:root:Writing Ardrone3PilotingStateAltitudeChanged.msg
+INFO:root:Writing Ardrone3NetworkStateAllWifiScanChanged.msg
+INFO:root:Writing Ardrone3PilotingStateAlertStateChanged.msg
+INFO:root:Writing Ardrone3PROStateFeatures.msg
+INFO:root:Writing Ardrone3NetworkStateWifiScanListChanged.msg
+INFO:root:Writing Ardrone3CameraStateOrientation.msg
+INFO:root:Writing Ardrone3MediaRecordStateVideoStateChangedV2.msg
+INFO:root:Writing Ardrone3GPSStateHomeTypeChosenChanged.msg
+INFO:root:Writing Ardrone3NetworkStateWifiAuthChannelListChanged.msg
+INFO:root:Writing Ardrone3CameraStatedefaultCameraOrientation.msg
+INFO:root:Writing Ardrone3PilotingStateFlatTrimChanged.msg
+INFO:root:Writing Ardrone3PilotingStateSpeedChanged.msg
+INFO:root:Writing Ardrone3AntiflickeringStateelectricFrequencyChanged.msg
+INFO:root:Writing ardrone3_state_callbacks.h
+INFO:root:Writing ardrone3_state_callback_includes.h
+INFO:root:Writing ardrone3_states_param_topic.rst
+INFO:root:Fetching source XML file for project ARDrone3 
+INFO:root:URL: https://raw.githubusercontent.com/Parrot-Developers/libARCommands/e1cbcad39d6b2999faa457a1d42d0ea3a1060765/Xml/ARDrone3_commands.xml
+INFO:root:Guessing type of "PilotingSettingsMaxAltitudeCurrent"
+INFO:root:  from: Current altitude max in m
+INFO:root:  ... meters
+INFO:root:  min: 0 max: 160
+INFO:root:Guessing type of "PilotingSettingsMaxTiltCurrent"
+INFO:root:  from: Current tilt max in degree
+INFO:root:  ... degrees
+INFO:root:  min: -180.0 max: 180.0
+INFO:root:Guessing type of "PilotingSettingsAbsolutControlOn"
+INFO:root:  from: 1 to enable, 0 to disable
+INFO:root:  ... bool
+INFO:root:  min: 0 max: 1
+INFO:root:Guessing type of "PilotingSettingsMaxDistanceValue"
+INFO:root:  from: Current max distance in meter
+INFO:root:  ... meters
+INFO:root:  min: 0 max: 160
+INFO:root:Guessing type of "PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover"
+INFO:root:  from: 1 if the drone cant fly further than max distance, 0 if no limitation on the drone should be done
+INFO:root:  ... bool
+INFO:root:  min: 0 max: 1
+WARNING:root:No Changed CMD for setAutonomousFlightMaxHorizontalSpeed 
+WARNING:root:No Changed CMD for setAutonomousFlightMaxVerticalSpeed 
+WARNING:root:No Changed CMD for setAutonomousFlightMaxHorizontalAcceleration 
+WARNING:root:No Changed CMD for setAutonomousFlightMaxVerticalAcceleration 
+WARNING:root:No Changed CMD for setAutonomousFlightMaxRotationSpeed 
+INFO:root:Guessing type of "SpeedSettingsMaxVerticalSpeedCurrent"
+INFO:root:  from: Current max vertical speed in m/s
+INFO:root:  ... speed (m/s)
+INFO:root:  min: 0.0 max: 10.0
+INFO:root:Guessing type of "SpeedSettingsMaxRotationSpeedCurrent"
+INFO:root:  from: Current max rotation speed in degree/s
+INFO:root:  ... rotations speed degrees/s
+INFO:root:  min: 0 max: 900.0
+INFO:root:Guessing type of "SpeedSettingsHullProtectionPresent"
+INFO:root:  from: 1 if present, 0 if not present
+INFO:root:  ... bool
+INFO:root:  min: 0 max: 1
+INFO:root:Guessing type of "SpeedSettingsOutdoorOutdoor"
+INFO:root:  from: 1 if outdoor flight, 0 if indoor flight
+INFO:root:  ... bool
+INFO:root:  min: 0 max: 1
+INFO:root:Guessing type of "NetworkSettingsWifiSelectionChannel"
+INFO:root:  from: The channel (not used in auto mode)
+INFO:root:  ... unknown int
+INFO:root:  min: 0 max: 50
+WARNING:root:No Changed CMD for PictureFormatSelection 
+WARNING:root:No Changed CMD for AutoWhiteBalanceSelection 
+WARNING:root:No Changed CMD for ExpositionSelection 
+WARNING:root:No Changed CMD for SaturationSelection 
+WARNING:root:No Changed CMD for TimelapseSelection 
+WARNING:root:No Changed CMD for VideoAutorecordSelection 
+WARNING:root:No Changed CMD for SetHome 
+WARNING:root:No Changed CMD for SendControllerGPS 
+INFO:root:Guessing type of "GPSSettingsReturnHomeDelayDelay"
+INFO:root:  from: Delay in second
+INFO:root:  ... time (s)
+INFO:root:  min: 0 max: 120
+INFO:root:... Done iterating, writing results to file
+INFO:root:Writing bebop_ardrone3.cfg
+INFO:root:Writing ardrone3_setting_callbacks.h
+INFO:root:Writing ardrone3_setting_callback_includes.h
+INFO:root:Writing ardrone3_settings_param.rst

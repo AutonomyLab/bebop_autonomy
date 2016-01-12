@@ -23,7 +23,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCL
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  * ARDrone3_state_callback_includes.h
- * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/7e2f55fafcd45ba2380ca2574a08b7359c005f47/Xml/ARDrone3_commands.xml
+ * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/e1cbcad39d6b2999faa457a1d42d0ea3a1060765/Xml/ARDrone3_commands.xml
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
@@ -49,6 +49,7 @@ namespace cb
   class Ardrone3NetworkStateAllWifiAuthChannelChanged;
   class Ardrone3MediaStreamingStateVideoEnableChanged;
   class Ardrone3CameraStateOrientation;
+  class Ardrone3CameraStatedefaultCameraOrientation;
   class Ardrone3AntiflickeringStateelectricFrequencyChanged;
   class Ardrone3AntiflickeringStatemodeChanged;
   class Ardrone3GPSStateNumberOfSatelliteChanged;
@@ -98,6 +99,8 @@ boost::shared_ptr<cb::Ardrone3MediaStreamingStateVideoEnableChanged>
   ardrone3_mediastreamingstate_videoenablechanged_ptr;
 boost::shared_ptr<cb::Ardrone3CameraStateOrientation>
   ardrone3_camerastate_orientation_ptr;
+boost::shared_ptr<cb::Ardrone3CameraStatedefaultCameraOrientation>
+  ardrone3_camerastate_defaultcameraorientation_ptr;
 boost::shared_ptr<cb::Ardrone3AntiflickeringStateelectricFrequencyChanged>
   ardrone3_antiflickeringstate_electricfrequencychanged_ptr;
 boost::shared_ptr<cb::Ardrone3AntiflickeringStatemodeChanged>
@@ -171,6 +174,9 @@ ardrone3_mediastreamingstate_videoenablechanged_ptr.reset(
 ardrone3_camerastate_orientation_ptr.reset(
   new cb::Ardrone3CameraStateOrientation(
     nh, priv_nh, "states/ARDrone3/CameraState/Orientation"));
+ardrone3_camerastate_defaultcameraorientation_ptr.reset(
+  new cb::Ardrone3CameraStatedefaultCameraOrientation(
+    nh, priv_nh, "states/ARDrone3/CameraState/defaultCameraOrientation"));
 ardrone3_antiflickeringstate_electricfrequencychanged_ptr.reset(
   new cb::Ardrone3AntiflickeringStateelectricFrequencyChanged(
     nh, priv_nh, "states/ARDrone3/AntiflickeringState/electricFrequencyChanged"));
@@ -266,6 +272,10 @@ callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<c
 callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       ardrone3_camerastate_orientation_ptr->GetCommandKey(),
                       ardrone3_camerastate_orientation_ptr));
+// Add all wrappers to the callback map
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
+                      ardrone3_camerastate_defaultcameraorientation_ptr->GetCommandKey(),
+                      ardrone3_camerastate_defaultcameraorientation_ptr));
 // Add all wrappers to the callback map
 callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       ardrone3_antiflickeringstate_electricfrequencychanged_ptr->GetCommandKey(),
