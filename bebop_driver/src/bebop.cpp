@@ -36,6 +36,7 @@ extern "C"
 {
   #include "libARCommands/ARCommands.h"
   #include "libARDiscovery/ARDiscovery.h"
+  #include <libARController/ARController.h>
 }
 
 #include <bebop_driver/bebop.h>
@@ -260,7 +261,7 @@ void Bebop::Connect(ros::NodeHandle& nh, ros::NodeHandle& priv_nh, const std::st
           "Registering command callback failed");
     // third argument is frame timeout callback
     ThrowOnCtrlError(
-          ARCONTROLLER_Device_SetVideoReceiveCallback(
+          ARCONTROLLER_Device_SetVideoStreamCallbacks(
             device_controller_ptr_, Bebop::FrameReceivedCallback, NULL , reinterpret_cast<void*>(this)),
           "Registering video callback failed");
 

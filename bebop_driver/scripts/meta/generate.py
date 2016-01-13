@@ -13,7 +13,7 @@ import subprocess
 import urllib2
 
 LIBARCOMMANDS_GIT_OWNER = "Parrot-Developers"
-LIBARCOMMANDS_GIT_HASH = "e1cbcad39d6b2999faa457a1d42d0ea3a1060765"
+LIBARCOMMANDS_GIT_HASH = "8f7c71fca1c0f8c4214318630801f11c2f786f1d"
 
 # From XML types to ROS primitive types
 ROS_TYPE_MAP = {

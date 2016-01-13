@@ -1,5 +1,5 @@
  .. Ardrone3_settings_param.rst
- .. auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/e1cbcad39d6b2999faa457a1d42d0ea3a1060765/Xml/ARDrone3_commands.xml
+ .. auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/8f7c71fca1c0f8c4214318630801f11c2f786f1d/Xml/ARDrone3_commands.xml
  .. Do not modify this file by hand. Check scripts/meta folder for generator files.
 
 *****************************************************************************************
@@ -41,6 +41,10 @@ List of Ardrone3 Settings and Corresponding ROS Parameter
    The allowed band(s) : 2.4 Ghz, 5 Ghz, or all
   `NetworkSettingsWifiSelectionChannel`_
    The channel (not used in auto mode)
+  `NetworkSettingswifiSecurityType`_
+   The type of wifi security (open, wpa2)
+  `NetworkSettingswifiSecurityKeytype`_
+   Type of the key
 
 `settings`_
   Settings commands
@@ -150,6 +154,23 @@ NetworkSettingsWifiSelectionChannel
 * Parameter: ``~NetworkSettingsWifiSelectionChannel``
 * Details: The channel (not used in auto mode)
 * Type: ``int_t``
+NetworkSettingswifiSecurityType
+-----------------------------------------------------------
+* Parameter: ``~NetworkSettingswifiSecurityType``
+* Details: The type of wifi security (open, wpa2)
+* Type: ``int_t``
+
+  * 0: Wifi is not protected by any security (default)
+  * 1: Wifi is protected by wpa2
+
+NetworkSettingswifiSecurityKeytype
+-----------------------------------------------------------
+* Parameter: ``~NetworkSettingswifiSecurityKeytype``
+* Details: Type of the key
+* Type: ``int_t``
+
+  * 0: Key is plain text, not encrypted
+
 settings
 ===========================================================
 picturesettings

@@ -23,7 +23,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCL
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  * bebop_common_commands.h
- * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/e1cbcad39d6b2999faa457a1d42d0ea3a1060765/Xml/ARDrone3_commands.xml
+ * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/8f7c71fca1c0f8c4214318630801f11c2f786f1d/Xml/ARDrone3_commands.xml
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 #ifndef BEBOP_COMMON_COMMANDS_H

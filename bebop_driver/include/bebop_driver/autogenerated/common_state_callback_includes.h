@@ -23,7 +23,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCL
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  * common_state_callback_includes.h
- * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/e1cbcad39d6b2999faa457a1d42d0ea3a1060765/Xml/common_commands.xml
+ * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/8f7c71fca1c0f8c4214318630801f11c2f786f1d/Xml/common_commands.xml
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
@@ -65,6 +65,7 @@ namespace cb
   class CommonChargerStateCurrentChargeStateChanged;
   class CommonChargerStateLastChargeRateChanged;
   class CommonChargerStateChargingInfo;
+  class CommonRunStateRunIdChanged;
 }  // namespace cb
 #endif  // FORWARD_DECLARATIONS
 
@@ -140,6 +141,8 @@ boost::shared_ptr<cb::CommonChargerStateLastChargeRateChanged>
   common_chargerstate_lastchargeratechanged_ptr;
 boost::shared_ptr<cb::CommonChargerStateChargingInfo>
   common_chargerstate_charginginfo_ptr;
+boost::shared_ptr<cb::CommonRunStateRunIdChanged>
+  common_runstate_runidchanged_ptr;
 #endif  // DEFINE_SHARED_PTRS
 
 #ifdef UPDTAE_CALLBACK_MAP
@@ -249,6 +252,9 @@ common_chargerstate_lastchargeratechanged_ptr.reset(
 common_chargerstate_charginginfo_ptr.reset(
   new cb::CommonChargerStateChargingInfo(
     nh, priv_nh, "states/common/ChargerState/ChargingInfo"));
+common_runstate_runidchanged_ptr.reset(
+  new cb::CommonRunStateRunIdChanged(
+    nh, priv_nh, "states/common/RunState/RunIdChanged"));
 
 // Add all wrappers to the callback map
 callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
@@ -390,4 +396,8 @@ callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<c
 callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_chargerstate_charginginfo_ptr->GetCommandKey(),
                       common_chargerstate_charginginfo_ptr));
+// Add all wrappers to the callback map
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
+                      common_runstate_runidchanged_ptr->GetCommandKey(),
+                      common_runstate_runidchanged_ptr));
 #endif  // UPDTAE_CALLBACK_MAP
