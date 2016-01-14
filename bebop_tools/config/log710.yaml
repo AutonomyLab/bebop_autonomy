@@ -25,7 +25,7 @@ teleop:
       -
         axis: 0  # Left thumb stick (left/right)
         target: angular.z
-        scale: -1.0
+        scale: 1.0
         offset: 0.0
   camera:
     type: topic

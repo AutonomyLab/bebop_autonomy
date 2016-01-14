@@ -380,7 +380,7 @@ TEST_F(BebopInTheLoopTest, Piloting)
   tw.linear.x = 0.0;
   tw.linear.y = 0.0;
   tw.linear.z = 0.0;
-  tw.angular.z = 0.5;
+  tw.angular.z = -0.5;
   ROS_WARN("Rotating CW for 90 degrees ...");
   cmdvel_pub_.publish(tw);
   TIMED_ASSERT(10.0,
@@ -395,7 +395,7 @@ TEST_F(BebopInTheLoopTest, Piloting)
   tw.linear.x = 0.0;
   tw.linear.y = 0.0;
   tw.linear.z = 0.0;
-  tw.angular.z = -0.5;
+  tw.angular.z = 0.5;
   ROS_WARN("Rotating CCW for 90 degrees ...");
   cmdvel_pub_.publish(tw);
   TIMED_ASSERT(10.0,
