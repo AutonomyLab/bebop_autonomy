@@ -74,6 +74,8 @@ namespace util
     t.angular.z = 0.0;
   }
 
+  // True: Equal, false otherwise
+  // TODO(mani-monaj): refactor
   inline bool CompareTwists(const geometry_msgs::Twist& lhs, const geometry_msgs::Twist& rhs)
   {
     return (fabs(lhs.linear.x - rhs.linear.x) < eps) &&
@@ -95,12 +97,15 @@ class BebopDriverNodelet : public nodelet::Nodelet
 {
 private:
   boost::shared_ptr<bebop_driver::Bebop> bebop_ptr_;
-  boost::shared_ptr<boost::thread> mainloop_thread_ptr_;
+  boost::shared_ptr<boost::thread> camera_pub_thread_ptr_;
+  boost::shared_ptr<boost::thread> aux_thread_ptr_;
 
-  geometry_msgs::Twist bebop_twist;
-  geometry_msgs::Twist prev_bebop_twist;
-  geometry_msgs::Twist camera_twist;
-  geometry_msgs::Twist prev_camera_twist;
+  geometry_msgs::Twist prev_bebop_twist_;
+  ros::Time prev_twist_stamp_;
+  boost::mutex twist_mutex_;
+
+  geometry_msgs::Twist camera_twist_;
+  geometry_msgs::Twist prev_camera_twist_;
 
   ros::Subscriber cmd_vel_sub_;
   ros::Subscriber camera_move_sub_;
@@ -122,9 +127,13 @@ private:
 
   // Params (not dynamically reconfigurable, persistent)
   std::string param_frame_id_;
+  double param_cmd_vel_timeout_;
 
   // This runs in its own context
   void CameraPublisherThread();
+
+  // Safety monitor + ROS specfic publishers (TF, Odom, etc)
+  void AuxThread();
 
   void CmdVelCallback(const geometry_msgs::TwistConstPtr& twist_ptr);
   void CameraMoveCallback(const geometry_msgs::TwistConstPtr& twist_ptr);

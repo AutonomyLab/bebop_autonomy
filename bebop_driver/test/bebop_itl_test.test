@@ -4,6 +4,7 @@
         <node pkg="bebop_driver" name="bebop_driver" type="bebop_driver_node" output="log">
             <param name="camera_info_url" value="package://bebop_driver/data/bebop_camera_calib.yaml" />
             <rosparam command="load" file="$(find bebop_driver)/config/defaults.yaml" />
+            <param name="cmd_vel_timeout" value="10" />
         </node>
 
         <test test-name="bebop_in_the_loop_test" pkg="bebop_driver" type="bebop_itl_test"/>
