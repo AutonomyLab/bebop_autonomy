@@ -2,6 +2,30 @@
 Changelog for package bebop_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Update Parrot SDK to 3.7.5 (from 3.6)
+  - Remove upstream XML hash from .msg files to minmize msg type changes from now on
+  - New Topic and Message type for `DefaultCameraOrientation`
+* Add cmd_vel timeout for safety
+  - The driver now sends stop command if no new cmd_vel is received
+  within a pre-defined timeout period. This timeout is set to 0.1s by default and can be changed via `cmd_vel_timeout` parameter.
+* Fix right-jand rule bug of angular.z @jacobperron (fixes `#26 <https://github.com/AutonomyLab/bebop_autonomy/issues/26>`_)
+* Patch ARSDK to fix Sanselan's old URL
+  - This is temporary and must be reverted when this is fixed upstream.
+  Issue reported here: `Parrot-Developers/ARSDKBuildUtils#61 <https://github.com/Parrot-Developers/ARSDKBuildUtils/issues/61>`_
+* Add bebop ip address as ROS parameter (fixes `#19 <https://github.com/AutonomyLab/bebop_autonomy/issues/19>`_) - (Param name: `bebop_ip`, default value: 192.168.42.1)
+* Fix CameraInfo issues (closes `#10 <https://github.com/AutonomyLab/bebop_autonomy/issues/10>`_)
+  - Fix bugs in loading camera calibration data and update the tests
+  - Add a sample calibration file for bebop camera: bebop_camera_calib.yaml
+  - Load camera calibration file by default in both node/nodelet launch
+  files
+* Remove redundant bebop.launch file (closes `#11 <https://github.com/AutonomyLab/bebop_autonomy/issues/11>`_)
+* Fix coordinate system inconsistencies (fixes `#13 <https://github.com/AutonomyLab/bebop_autonomy/issues/13>`_)
+  - Fix cmd_vel.linear.y sign error
+  - Use attitude values in tests instead of velocities
+* Contributors: Anup, Mani Monajjemi, Jacob Perron
+
 0.3.0 (2015-09-17)
 ------------------
 * Renamed package to bebop_driver
