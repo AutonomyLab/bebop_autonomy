@@ -2,8 +2,8 @@
 Changelog for package bebop_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.4.0 (2016-01-17)
+------------------
 * Update Parrot SDK to 3.7.5 (from 3.6)
   - Remove upstream XML hash from .msg files to minmize msg type changes from now on
   - New Topic and Message type for `DefaultCameraOrientation`

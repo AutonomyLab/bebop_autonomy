@@ -2,8 +2,8 @@
 Changelog for package bebop_tools
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.4.0 (2016-01-17)
+------------------
 * Fix cmd_vel.linear.y sign issue in joystick config file
 * Contributors: Mani Monajjemi
 

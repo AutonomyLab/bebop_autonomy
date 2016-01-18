@@ -2,8 +2,8 @@
 Changelog for package bebop_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.4.0 (2016-01-17)
+------------------
 * Update Parrot SDK to 3.7.5 (from 3.6)
 * New Topic and Message type for `DefaultCameraOrientation`
 * Contributors: Mani Monajjemi
