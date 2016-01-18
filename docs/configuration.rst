@@ -32,6 +32,13 @@ Sets the location of the camera caliberation data. Default is empty string. For 
 Sets the ``frame_id`` of camera and image messages. Default value is ``camera``.
 
 
+~cmd_vel_timeout
+----------------
+
+.. versionadded:: 0.4
+
+Sets the safety timeout for piloting ``cmd_vel`` commands in seconds. Deafult is set to **0.1** seconds (100 miliseconds). If no piloting command is received by the driver within this timeout period, the driver issues a stop command which causes the drone to hover.
+
 Dynamically Reconfigurable Parameters for Bebop
 ===============================================
 

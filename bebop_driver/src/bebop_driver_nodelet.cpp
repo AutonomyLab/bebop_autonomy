@@ -68,10 +68,13 @@ void BebopDriverNodelet::onInit()
 {
   ros::NodeHandle& nh = getNodeHandle();
   ros::NodeHandle& private_nh = getPrivateNodeHandle();
-  util::ResetTwist(bebop_twist);
-  util::ResetTwist(camera_twist);
-  util::ResetTwist(prev_bebop_twist);
-  util::ResetTwist(prev_camera_twist);
+  util::ResetTwist(camera_twist_);
+  {
+    boost::unique_lock<boost::mutex> twist_lock(twist_mutex_);
+    util::ResetTwist(prev_bebop_twist_);
+    util::ResetTwist(prev_camera_twist_);
+    prev_twist_stamp_ = ros::Time(0);
+  }
 
   // Params (not dynamically reconfigurable, local)
   // TODO(mani-monaj): Wrap all calls to .param() in a function call to enable logging
@@ -80,6 +83,7 @@ void BebopDriverNodelet::onInit()
   const std::string& param_bebop_ip = private_nh.param<std::string>("bebop_ip", "192.168.42.1");
 
   param_frame_id_ = private_nh.param<std::string>("camera_frame_id", "camera");
+  param_cmd_vel_timeout_ = private_nh.param<double>("cmd_vel_timeout", 0.2);
 
   NODELET_INFO("Connecting to Bebop ...");
   try
@@ -130,6 +134,11 @@ void BebopDriverNodelet::onInit()
   {
     NODELET_INFO("Enabling video stream ...");
     bebop_ptr_->StartStreaming();
+    if (bebop_ptr_->IsStreamingStarted())
+    {
+      camera_pub_thread_ptr_ = boost::make_shared<boost::thread>(
+            boost::bind(&bebop_driver::BebopDriverNodelet::BebopDriverNodelet::CameraPublisherThread, this));
+    }
   }
   catch (const::std::runtime_error& e)
   {
@@ -137,11 +146,8 @@ void BebopDriverNodelet::onInit()
     // TODO(mani-monaj): Retry mechanism
   }
 
-  if (bebop_ptr_->IsStreamingStarted())
-  {
-    mainloop_thread_ptr_ = boost::make_shared<boost::thread>(
-          boost::bind(&bebop_driver::BebopDriverNodelet::BebopDriverNodelet::CameraPublisherThread, this));
-  }
+  aux_thread_ptr_ = boost::make_shared<boost::thread>(
+        boost::bind(&bebop_driver::BebopDriverNodelet::BebopDriverNodelet::AuxThread, this));
 
   NODELET_INFO_STREAM("Nodelet lwp_id: " << util::GetLWPId());
 }
@@ -149,10 +155,17 @@ void BebopDriverNodelet::onInit()
 BebopDriverNodelet::~BebopDriverNodelet()
 {
   NODELET_INFO_STREAM("Bebop Nodelet Dstr: " << bebop_ptr_->IsConnected());
-  if (mainloop_thread_ptr_)
+  NODELET_INFO_STREAM("Killing Camera Thread ...");
+  if (camera_pub_thread_ptr_)
   {
-    mainloop_thread_ptr_->interrupt();
-    mainloop_thread_ptr_->join();
+    camera_pub_thread_ptr_->interrupt();
+    camera_pub_thread_ptr_->join();
+  }
+  NODELET_INFO_STREAM("Killing Aux Thread ...");
+  if (aux_thread_ptr_)
+  {
+    aux_thread_ptr_->interrupt();
+    aux_thread_ptr_->join();
   }
   if (bebop_ptr_->IsStreamingStarted()) bebop_ptr_->StopStreaming();
   if (bebop_ptr_->IsConnected()) bebop_ptr_->Disconnect();
@@ -162,22 +175,26 @@ void BebopDriverNodelet::CmdVelCallback(const geometry_msgs::TwistConstPtr& twis
 {
   try
   {
-    bebop_twist = *twist_ptr;
+    const geometry_msgs::Twist& bebop_twist_ = *twist_ptr;
+    bool is_bebop_twist_changed = false;
+    {
+      boost::unique_lock<boost::mutex> twist_lock(twist_mutex_);
+      is_bebop_twist_changed = !util::CompareTwists(bebop_twist_, prev_bebop_twist_);
+      prev_twist_stamp_ = ros::Time::now();
+      prev_bebop_twist_ = bebop_twist_;
+    }
 
-    const bool is_bebop_twist_changed = !util::CompareTwists(bebop_twist, prev_bebop_twist);
-
+    // TODO: Always apply zero after non-zero values
     if (is_bebop_twist_changed)
     {
       // TODO: Remove message in future release
       ROS_ERROR_ONCE("ATTENTION: * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *");
       ROS_ERROR_ONCE("ATTENTION: Bebop driver now follows right-hand convention (ie. +angular.z translates to CCW rotation). This message will be removed in a future release.");
       ROS_ERROR_ONCE("ATTENTION: * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *");
-
-      bebop_ptr_->Move(CLAMP(-bebop_twist.linear.y, -1.0, 1.0),
-                       CLAMP(bebop_twist.linear.x, -1.0, 1.0),
-                       CLAMP(bebop_twist.linear.z, -1.0, 1.0),
-                       CLAMP(-bebop_twist.angular.z, -1.0, 1.0));
-      prev_bebop_twist = bebop_twist;
+      bebop_ptr_->Move(CLAMP(-bebop_twist_.linear.y, -1.0, 1.0),
+                       CLAMP(bebop_twist_.linear.x, -1.0, 1.0),
+                       CLAMP(bebop_twist_.linear.z, -1.0, 1.0),
+                       CLAMP(-bebop_twist_.angular.z, -1.0, 1.0));
     }
   }
   catch (const std::runtime_error& e)
@@ -190,7 +207,6 @@ void BebopDriverNodelet::TakeoffCallback(const std_msgs::EmptyConstPtr& empty_pt
 {
   try
   {
-    util::ResetTwist(bebop_twist);
     bebop_ptr_->Takeoff();
   }
   catch (const std::runtime_error& e)
@@ -203,7 +219,6 @@ void BebopDriverNodelet::LandCallback(const std_msgs::EmptyConstPtr& empty_ptr)
 {
   try
   {
-    util::ResetTwist(bebop_twist);
     bebop_ptr_->Land();
   }
   catch (const std::runtime_error& e)
@@ -217,14 +232,14 @@ void BebopDriverNodelet::CameraMoveCallback(const geometry_msgs::TwistConstPtr& 
 {
   try
   {
-    camera_twist = *twist_ptr;
-    const bool is_camera_twist_changed = !util::CompareTwists(camera_twist, prev_camera_twist);
+    camera_twist_ = *twist_ptr;
+    const bool is_camera_twist_changed = !util::CompareTwists(camera_twist_, prev_camera_twist_);
     if (is_camera_twist_changed)
     {
       // TODO(mani-monaj): Set |90| limit to appropriate value (|45|??)
-      bebop_ptr_->MoveCamera(CLAMP(camera_twist.angular.y, -90.0, 90.0),
-                             CLAMP(camera_twist.angular.z, -90.0, 90.0));
-      prev_camera_twist = camera_twist;
+      bebop_ptr_->MoveCamera(CLAMP(camera_twist_.angular.y, -90.0, 90.0),
+                             CLAMP(camera_twist_.angular.z, -90.0, 90.0));
+      prev_camera_twist_ = camera_twist_;
     }
   }
   catch (const std::runtime_error& e)
@@ -237,7 +252,6 @@ void BebopDriverNodelet::EmergencyCallback(const std_msgs::EmptyConstPtr& empty_
 {
   try
   {
-    util::ResetTwist(bebop_twist);
     bebop_ptr_->Emergency();
   }
   catch (const std::runtime_error& e)
@@ -298,7 +312,7 @@ void BebopDriverNodelet::CameraPublisherThread()
 {
   uint32_t frame_w = 0;
   uint32_t frame_h = 0;
-  ROS_INFO_STREAM("Camera publisher thread lwp_id: " << util::GetLWPId());
+  NODELET_INFO_STREAM("[CameraThread] thread lwp_id: " << util::GetLWPId());
 
   while (!boost::this_thread::interruption_requested())
   {
@@ -308,6 +322,7 @@ void BebopDriverNodelet::CameraPublisherThread()
       const ros::Time t_now = ros::Time::now();
 
       NODELET_DEBUG_STREAM("Grabbing a frame from Bebop");
+      // This is blocking
       bebop_ptr_->GetFrontCameraFrame(image_msg_ptr_->data, frame_w, frame_h);
 
       NODELET_DEBUG_STREAM("Frame grabbed: " << frame_w << " , " << frame_h);
@@ -332,11 +347,48 @@ void BebopDriverNodelet::CameraPublisherThread()
     }
     catch (const std::runtime_error& e)
     {
-      NODELET_ERROR_STREAM("[CameraPublisher] " << e.what());
+      NODELET_ERROR_STREAM("[CameraThread] " << e.what());
     }
   }
 
   NODELET_INFO("Camera publisher thread died.");
+}
+
+void BebopDriverNodelet::AuxThread()
+{
+  NODELET_INFO_STREAM("[AuxThread] thread lwp_id: " << util::GetLWPId());
+  ros::Rate loop_rate(30.0);
+  geometry_msgs::Twist zero_twist;
+  util::ResetTwist(zero_twist);
+
+  while (!boost::this_thread::interruption_requested())
+  {
+    try
+    {
+      if (!bebop_ptr_->IsConnected())
+      {
+        loop_rate.sleep();
+        continue;
+      }
+      {
+        // cmd_vel safety
+        boost::unique_lock<boost::mutex> twist_lock(twist_mutex_);
+        if ( !util::CompareTwists(prev_bebop_twist_, zero_twist) &&
+            ((ros::Time::now() - prev_twist_stamp_).toSec() > param_cmd_vel_timeout_)
+           )
+        {
+          NODELET_WARN("[AuxThread] Input cmd_vel timeout, reseting cmd_vel ...");
+          util::ResetTwist(prev_bebop_twist_);
+          bebop_ptr_->Move(0.0, 0.0, 0.0, 0.0);
+        }
+      }
+      loop_rate.sleep();
+    }
+    catch (const std::runtime_error& e)
+    {
+      NODELET_ERROR_STREAM("[AuxThread] " << e.what());
+    }
+  }
 }
 
 }  // namespace bebop_driver

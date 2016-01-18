@@ -31,9 +31,6 @@ TBA
 Tests
 =====
 
-TBA
-
-
 Upgrading Bebop SDK
 ===================
 

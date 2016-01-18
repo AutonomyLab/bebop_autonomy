@@ -44,19 +44,19 @@ To move Bebop around, publish messages of type `geometry_msgs/Twist <http://docs
             (-)      Translate to right
   linear.z  (+)      Ascend
             (-)      Descend
-  angular.z (+)      Rotate clockwise
-            (-)      Rotate counter clockwise
+  angular.z (+)      Rotate counter clockwise
+            (-)      Rotate clockwise
 
 Acceptable range for all fields are ``[-1..1]``. The drone executes the last received command as long as the driver is running. This command is reset to when Takeoff_, Land_ or Emergency_ command is received. To make Bebop hover and maintain its current position, you need to publish a message with all fields set to zero to ``cmd_vel``.
 
-.. note:: TODO: Add the unit and min/max mapping for each field.
+.. note:: Since version 0.4, sign of ``angular.z`` has been negated to conform with :ref:`sec-coords` and `ardrone_autonomy <http://wiki.ros.org/ardrone_autonomy>`_.
 
 Moving the Virtual Camera
 =========================
 
 To move Bebop's virtual camera, publish a message of type `geometry_msgs/Twist <http://docs.ros.org/api/geometry_msgs/html/msg/Twist.html>`_ to `camera_control` topic. ``angular.y`` and ``angular.z`` fields of this message set **absolute** tilt and pan of the camera in **degrees** respectively. The field of view of this virtual camera (based on our measurements) is ~80 (horizontal) and ~50 (vertical) degrees.
 
-.. warning:: The API for this command is not stable. We plan to use ``JointState`` message in feature versions.
+.. warning:: The API for this command is not stable. We plan to use ``JointState`` message in future versions.
 
 .. code-block:: text
 

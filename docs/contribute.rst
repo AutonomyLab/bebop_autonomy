@@ -22,9 +22,13 @@ List of Developers
 List of Contributers
 ====================
 
-- `Anup Parikh` <https://github.com/anuppari>`_
+- `Anup Parikh <https://github.com/anuppari>`_
 
   - `#19 Add bebop ip address as ROS parameter <https://github.com/AutonomyLab/bebop_autonomy/pull/19>`_
+
+- `Jacob Perron <https://github.com/jacobperron>`_
+
+  - `#26 Bebop now follows right-hand rule <https://github.com/AutonomyLab/bebop_autonomy/pull/26>`_
 
 Acknowledgments
 ================

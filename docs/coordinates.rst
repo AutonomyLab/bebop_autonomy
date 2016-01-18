@@ -2,7 +2,9 @@
 Coordinate System Conventions
 *****************************
 
-ROS Standard Message Types (i.e Twist) - REP 103
+.. _sec-coords:
+
+ROS Standard Message Types (i.e Twisl) - REP 103
 ================================================
 
 +x    forward
