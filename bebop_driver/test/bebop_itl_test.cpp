@@ -107,7 +107,6 @@ public:
     return *msg_cptr_;
   }
 
-  // Not thread safe
   const boost::shared_ptr<T const>& GetMsgConstPtr() const
   {
     boost::lock_guard<boost::mutex> lock(mutex_);
@@ -116,10 +115,9 @@ public:
 
   // T operator ()() const {return GetMsgCopy();}
 
-  // Not thread safe?
   const boost::shared_ptr<T const>& operator()() const
   {
-    boost::lock_guard<boost::mutex> lock(mutex_);
+    // no need to acquire the lock here, since the underlying function does that
     return GetMsgConstPtr();
   }
 

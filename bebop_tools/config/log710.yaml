@@ -1,5 +1,6 @@
 # Logitech F710 wireless controller
 # Deadman (enable) button: Right Trigger
+# D<>X button (located on the back panel) must be set to D
 teleop:
   piloting:
     type: topic

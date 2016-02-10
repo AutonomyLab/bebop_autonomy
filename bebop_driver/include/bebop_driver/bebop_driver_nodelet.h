@@ -148,7 +148,7 @@ private:
 
 public:
   BebopDriverNodelet();
-  ~BebopDriverNodelet();
+  virtual ~BebopDriverNodelet();
 
   virtual void onInit();
 };
