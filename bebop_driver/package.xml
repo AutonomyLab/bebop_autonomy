@@ -17,15 +17,16 @@
   <!-- ARDroneSDK3 deps -->
   <!-- We need java since the SDK requires jar binary -->
   <build_depend>git</build_depend>
-  <build_depend>wget</build_depend> <!-- xxx -->
+  <build_depend>wget</build_depend>
   <build_depend>java</build_depend>
   <build_depend>automake</build_depend>
   <build_depend>autoconf</build_depend>
   <build_depend>libtool</build_depend>
   <build_depend>yasm</build_depend>
-  <build_depend>nasm</build_depend> <!-- xxx -->
+  <build_depend>nasm</build_depend>
   <build_depend>zlib</build_depend>
   <build_depend>unzip</build_depend>
+  <build_depend>curl</build_depend>
 
   <!-- ROS dependencies -->
   <build_depend>bebop_msgs</build_depend>
