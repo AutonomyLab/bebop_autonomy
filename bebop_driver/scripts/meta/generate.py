@@ -293,8 +293,10 @@ def generate_settings(xml_filename):
     generator = os.path.basename(__file__)
     generator_git_hash = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).strip()
 
+    # make sure that the name of the config file matches the third argument
+    # of gen.generate()
     d_cfg = dict({
-            "cfg_filename": "bebop_%s.cfg" % (project.lower(), ),
+            "cfg_filename": "Bebop%s.cfg" % (project.title(), ),
             "url": xml_url,
             "project": project.title(),
             "date": today(),
