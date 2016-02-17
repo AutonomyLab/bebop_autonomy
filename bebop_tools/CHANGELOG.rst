@@ -2,6 +2,12 @@
 Changelog for package bebop_tools
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Update the joystick configuration file for taking snapshots
+* Make bebop's namespace in joy_teleop launch file a parameter
+* Contributors: Mani Monajjemi
+
 0.4.0 (2016-01-17)
 ------------------
 * Fix cmd_vel.linear.y sign issue in joystick config file

@@ -2,6 +2,12 @@
 Changelog for package bebop_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Fix dynamic_reconfigure's inconsistency
+  - The inconsisteny was between the filename and the target name
+* Contributors: Mani Monajjemi
+
 0.4.0 (2016-01-17)
 ------------------
 * Update Parrot SDK to 3.7.5 (from 3.6)

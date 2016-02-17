@@ -2,6 +2,17 @@
 Changelog for package bebop_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add ROS API for recording on-board picture/video (closes `#5 <https://github.com/AutonomyLab/bebop_autonomy/issues/5>`_)
+* Add a new ROS topic for taking on-board snapshot: `snapshot`
+* Add a new ROS topic for toggling on-board video recording: `record`
+* Update the docs
+* Add curl as a rosdep build dep (fixes `#33 <https://github.com/AutonomyLab/bebop_autonomy/issues/33>`_)
+* Fix a bug in bebop_driver's nodelet destructor
+* Fix a bug in ASyncSub class
+* Contributors: Mani Monajjemi
+
 0.4.0 (2016-01-17)
 ------------------
 * Update Parrot SDK to 3.7.5 (from 3.6)
