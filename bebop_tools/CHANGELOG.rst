@@ -2,8 +2,8 @@
 Changelog for package bebop_tools
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.4.1 (2016-02-17)
+------------------
 * Update the joystick configuration file for taking snapshots
 * Make bebop's namespace in joy_teleop launch file a parameter
 * Contributors: Mani Monajjemi

@@ -2,8 +2,8 @@
 Changelog for package bebop_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.4.1 (2016-02-17)
+------------------
 * Fix dynamic_reconfigure's inconsistency
   - The inconsisteny was between the filename and the target name
 * Contributors: Mani Monajjemi

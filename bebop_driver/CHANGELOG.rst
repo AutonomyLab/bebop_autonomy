@@ -2,8 +2,8 @@
 Changelog for package bebop_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.4.1 (2016-02-17)
+------------------
 * Add ROS API for recording on-board picture/video (closes `#5 <https://github.com/AutonomyLab/bebop_autonomy/issues/5>`_)
 * Add a new ROS topic for taking on-board snapshot: `snapshot`
 * Add a new ROS topic for toggling on-board video recording: `record`
