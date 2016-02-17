@@ -166,6 +166,10 @@ public:
   void Move(const double& roll, const double& pitch, const double& gaz_speed, const double& yaw_speed);
   void MoveCamera(const double& tilt, const double& pan);
 
+  void TakeSnapshot();
+  // true: start, false: stop
+  void ToggleVideoRecording(const bool start);
+
   // This function is blocking and runs in the caller's thread's context
   // which is different from FrameReceivedCallback's context
   bool GetFrontCameraFrame(std::vector<uint8_t>& buffer, uint32_t &width, uint32_t &height) const;

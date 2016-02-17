@@ -74,3 +74,9 @@ teleop:
     topic_name: flip
     deadman_buttons: [6, 7, 0] # RT + LT + X
     axis_mappings: []
+  snapshot:
+    type: topic
+    message_type: "std_msgs/Empty"
+    topic_name: snapshot
+    deadman_buttons: [7, 4] # RT + LB
+    axis_mappings: []

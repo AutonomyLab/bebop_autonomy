@@ -529,6 +529,23 @@ bool Bebop::GetFrontCameraFrame(std::vector<uint8_t> &buffer, uint32_t& width, u
   return true;
 }
 
+void Bebop::TakeSnapshot()
+{
+  ThrowOnInternalError("Snapshot Failure");
+  ThrowOnCtrlError(
+    device_controller_ptr_->aRDrone3->sendMediaRecordPictureV2(
+          device_controller_ptr_->aRDrone3));
+}
+
+void Bebop::ToggleVideoRecording(const bool start)
+{
+  ThrowOnInternalError("Video Toggle Failure");
+  ThrowOnCtrlError(device_controller_ptr_->aRDrone3->sendMediaRecordVideoV2(
+                     device_controller_ptr_->aRDrone3,
+                     start ? ARCOMMANDS_ARDRONE3_MEDIARECORD_VIDEOV2_RECORD_START :
+                             ARCOMMANDS_ARDRONE3_MEDIARECORD_VIDEOV2_RECORD_STOP));
+}
+
 void Bebop::ThrowOnInternalError(const std::string &message)
 {
   if (!is_connected_ || !device_controller_ptr_)

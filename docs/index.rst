@@ -29,7 +29,7 @@ Features and Roadmap
   Joystick teleop demo, Yes, ""
   TF Publisher, No (Planned), "`#3 <https://github.com/AutonomyLab/bebop_autonomy/issues/3>`_"
   Odometry Publisher, No (Planned), "`#4 <https://github.com/AutonomyLab/bebop_autonomy/issues/4>`_"
-  Provide ROS API for on-board picture/video recording, No (Planned), "`#5 <https://github.com/AutonomyLab/bebop_autonomy/issues/5>`_"
+  Provide ROS API for on-board picture/video recording, Yes, ".. versionadded:: 0.4.1"
   GPS Support, Partial, "Not fully tested"
   Mavlink Support, No, ""
   Binary Release, No, ""

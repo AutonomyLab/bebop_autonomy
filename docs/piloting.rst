@@ -86,7 +86,7 @@ Flight Animations
 
 .. warning:: Be extra cautious when performing any flight animations, specially in indoor environments.
 
-Bebop can perform four different types of flight animation (flipping). To perform an animation, publish a message of type `std_msgs/UInt8` to `flip` topic while drone is flying. The `data` field determines the requested animation type.
+Bebop can perform four different types of flight animation (flipping). To perform an animation, publish a message of type ``std_msgs/UInt8`` to `flip` topic while drone is flying. The ``data`` field determines the requested animation type.
 
 
 .. code-block:: text
@@ -95,3 +95,24 @@ Bebop can perform four different types of flight animation (flipping). To perfor
   1       Flip Backward
   2       Flip Right
   3       Flip Left
+
+
+Take on-board Snapshot
+======================
+
+.. versionadded:: 0.4.1
+
+To take a high resolution on-board snapshot, publish a ``std_msgs/Empty`` message on ``snapshot`` topic. The resulting snapshot is stored on the internal storage of the Bebop. The quality and type of this image is not configurable using the ROS driver. You can use the official FreeFlight3 app to configure your Bebop prior to flying. To access the on-board media, either connect your Bebop over USB to a computer, or use a FTP client to connect to your Bebop using the following settings:
+
+* Default IP: ``192.168.42.11``
+* Port: ``21``
+* Path: ``internal_000/Bebop_Drone/media``
+* Username: ``anonymous``
+* Password: *<no password>*
+
+Toggle on-board Video Recording
+===============================
+
+.. versionadded:: 0.4.1
+
+To start or stop on-board high-resolution video recording, publish a ``std_msgs/Bool`` message on the ``record`` topic. The value of ``true`` starts the recording while the value of ``false`` stops it. Please refer to the previous section for information on how to access the on-board recorded media.

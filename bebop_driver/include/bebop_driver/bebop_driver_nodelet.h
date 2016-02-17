@@ -115,6 +115,8 @@ private:
   ros::Subscriber flattrim_sub_;
   ros::Subscriber navigatehome_sub_;
   ros::Subscriber animation_sub_;
+  ros::Subscriber snapshot_sub_;
+  ros::Subscriber toggle_recording_sub_;
 
   boost::shared_ptr<camera_info_manager::CameraInfoManager> cinfo_manager_ptr_;
   boost::shared_ptr<image_transport::ImageTransport> image_transport_ptr_;
@@ -143,6 +145,8 @@ private:
   void FlatTrimCallback(const std_msgs::EmptyConstPtr& empty_ptr);
   void NavigateHomeCallback(const std_msgs::BoolConstPtr& start_stop_ptr);
   void FlipAnimationCallback(const std_msgs::UInt8ConstPtr& animid_ptr);
+  void TakeSnapshotCallback(const std_msgs::EmptyConstPtr& empty_ptr);
+  void ToggleRecordingCallback(const std_msgs::BoolConstPtr& toggle_ptr);
 
   void ParamCallback(bebop_driver::BebopArdrone3Config &config, uint32_t level);
 

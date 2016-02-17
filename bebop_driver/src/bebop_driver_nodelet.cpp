@@ -117,6 +117,8 @@ void BebopDriverNodelet::onInit()
   flattrim_sub_ = nh.subscribe("flattrim", 1, &BebopDriverNodelet::FlatTrimCallback, this);
   navigatehome_sub_ = nh.subscribe("navigate_home", 1, &BebopDriverNodelet::NavigateHomeCallback, this);
   animation_sub_ = nh.subscribe("flip", 1, &BebopDriverNodelet::FlipAnimationCallback, this);
+  snapshot_sub_ = nh.subscribe("snapshot", 10, &BebopDriverNodelet::TakeSnapshotCallback, this);
+  toggle_recording_sub_ = nh.subscribe("record", 10, &BebopDriverNodelet::ToggleRecordingCallback, this);
 
   cinfo_manager_ptr_.reset(new camera_info_manager::CameraInfoManager(nh, "bebop_front", param_camera_info_url));
   image_transport_ptr_.reset(new image_transport::ImageTransport(nh));
@@ -294,6 +296,34 @@ void BebopDriverNodelet::FlipAnimationCallback(const std_msgs::UInt8ConstPtr &an
     // TODO(mani-monaj): Check if flying
     ROS_INFO("Performing flip animation %d ...", animid_ptr->data);
     bebop_ptr_->AnimationFlip(animid_ptr->data);
+  }
+  catch (const std::runtime_error& e)
+  {
+    ROS_ERROR_STREAM(e.what());
+  }
+}
+
+void BebopDriverNodelet::TakeSnapshotCallback(const std_msgs::EmptyConstPtr &empty_ptr)
+{
+  try
+  {
+    ROS_INFO("Taking a high-res snapshot on-board");
+    bebop_ptr_->TakeSnapshot();
+  }
+  catch (const std::runtime_error& e)
+  {
+    ROS_ERROR_STREAM(e.what());
+  }
+}
+
+void BebopDriverNodelet::ToggleRecordingCallback(const std_msgs::BoolConstPtr &toggle_ptr)
+{
+  const bool& start_record = toggle_ptr->data;
+  try
+  {
+    ROS_INFO_STREAM("Sending request to " << (start_record ? "start" : "stop")
+                    << " on board video recording");
+    bebop_ptr_->ToggleVideoRecording(start_record);
   }
   catch (const std::runtime_error& e)
   {
