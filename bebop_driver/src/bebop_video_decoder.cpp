@@ -76,7 +76,7 @@ bool VideoDecoder::InitCodec(const uint32_t width, const uint32_t height)
     av_register_all();
     av_log_set_level(AV_LOG_QUIET);
 
-    codec_ptr_ = avcodec_find_decoder(CODEC_ID_H264);
+    codec_ptr_ = avcodec_find_decoder(AV_CODEC_ID_H264);
     ThrowOnCondition(codec_ptr_ == NULL, "Codec H264 not found!");
 
 
