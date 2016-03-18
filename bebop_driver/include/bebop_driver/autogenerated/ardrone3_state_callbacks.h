@@ -23,7 +23,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCL
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  * ARDrone3_state_callbacks.h
- * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/8f7c71fca1c0f8c4214318630801f11c2f786f1d/Xml/ARDrone3_commands.xml
+ * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/5898658a925245555153459ea4684aa87f220e07/Xml/ARDrone3_commands.xml
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
@@ -703,7 +703,7 @@ public:
 };  // Ardrone3PilotingStateAttitudeChanged
 
 
-// Status of the drone3 automatic take off mode
+// @deprecated Status of the drone3 automatic take off mode
 class Ardrone3PilotingStateAutoTakeOffModeChanged : public AbstractState
 {
 private:

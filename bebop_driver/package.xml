@@ -18,7 +18,6 @@
   <!-- We need java since the SDK requires jar binary -->
   <build_depend>git</build_depend>
   <build_depend>wget</build_depend>
-  <build_depend>java</build_depend>
   <build_depend>automake</build_depend>
   <build_depend>autoconf</build_depend>
   <build_depend>libtool</build_depend>

@@ -23,7 +23,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCL
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  * common_state_callback_includes.h
- * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/8f7c71fca1c0f8c4214318630801f11c2f786f1d/Xml/common_commands.xml
+ * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/5898658a925245555153459ea4684aa87f220e07/Xml/common_commands.xml
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
@@ -43,7 +43,6 @@ namespace cb
   class CommonCommonStateCountryListKnown;
   class CommonOverHeatStateOverHeatChanged;
   class CommonOverHeatStateOverHeatRegulationChanged;
-  class CommonControllerStateisPilotingChanged;
   class CommonMavlinkStateMavlinkFilePlayingStateChanged;
   class CommonMavlinkStateMavlinkPlayErrorStateChanged;
   class CommonCalibrationStateMagnetoCalibrationStateChanged;
@@ -97,8 +96,6 @@ boost::shared_ptr<cb::CommonOverHeatStateOverHeatChanged>
   common_overheatstate_overheatchanged_ptr;
 boost::shared_ptr<cb::CommonOverHeatStateOverHeatRegulationChanged>
   common_overheatstate_overheatregulationchanged_ptr;
-boost::shared_ptr<cb::CommonControllerStateisPilotingChanged>
-  common_controllerstate_ispilotingchanged_ptr;
 boost::shared_ptr<cb::CommonMavlinkStateMavlinkFilePlayingStateChanged>
   common_mavlinkstate_mavlinkfileplayingstatechanged_ptr;
 boost::shared_ptr<cb::CommonMavlinkStateMavlinkPlayErrorStateChanged>
@@ -186,9 +183,6 @@ common_overheatstate_overheatchanged_ptr.reset(
 common_overheatstate_overheatregulationchanged_ptr.reset(
   new cb::CommonOverHeatStateOverHeatRegulationChanged(
     nh, priv_nh, "states/common/OverHeatState/OverHeatRegulationChanged"));
-common_controllerstate_ispilotingchanged_ptr.reset(
-  new cb::CommonControllerStateisPilotingChanged(
-    nh, priv_nh, "states/common/ControllerState/isPilotingChanged"));
 common_mavlinkstate_mavlinkfileplayingstatechanged_ptr.reset(
   new cb::CommonMavlinkStateMavlinkFilePlayingStateChanged(
     nh, priv_nh, "states/common/MavlinkState/MavlinkFilePlayingStateChanged"));
@@ -308,10 +302,6 @@ callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<c
 callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_overheatstate_overheatregulationchanged_ptr->GetCommandKey(),
                       common_overheatstate_overheatregulationchanged_ptr));
-// Add all wrappers to the callback map
-callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
-                      common_controllerstate_ispilotingchanged_ptr->GetCommandKey(),
-                      common_controllerstate_ispilotingchanged_ptr));
 // Add all wrappers to the callback map
 callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_mavlinkstate_mavlinkfileplayingstatechanged_ptr->GetCommandKey(),

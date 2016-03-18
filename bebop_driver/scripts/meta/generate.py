@@ -12,8 +12,9 @@ import sys
 import subprocess
 import urllib2
 
+# SDK 3.8.3: https://github.com/Parrot-Developers/arsdk_manifests/blob/2930cc7f7a79173d51c1fc167475fa9fa6650def/release.xml
 LIBARCOMMANDS_GIT_OWNER = "Parrot-Developers"
-LIBARCOMMANDS_GIT_HASH = "8f7c71fca1c0f8c4214318630801f11c2f786f1d"
+LIBARCOMMANDS_GIT_HASH = "5898658a925245555153459ea4684aa87f220e07"
 
 # From XML types to ROS primitive types
 ROS_TYPE_MAP = {
@@ -82,6 +83,7 @@ C_TYPE_MAP = {
     "enum": "int32_t"
 }
 
+blacklist_settings_keys = set(["wifiSecurity"])
 
 min_max_regex = re.compile('\[([0-9\.\-]+)\:([0-9\.\-]+)\]')
 rend = pystache.Renderer()
@@ -329,6 +331,10 @@ def generate_settings(xml_filename):
                 logging.warning("No Changed CMD for %s " % (cmd.attrib["name"], ))
                 continue
 
+            # blacklist
+            if strip_text(cmd.attrib["name"]) in blacklist_settings_keys:
+                logging.warning("Key %s is blacklisted!" % (cmd.attrib["name"], ))
+                continue
             # .cfg
             cfg_cmd_d = {
                 "cfg_cmd_comment": strip_text(cmd.text),
@@ -358,6 +364,7 @@ def generate_settings(xml_filename):
 
                 arg_enum_list = list()
                 minmax_list = list()
+                arg_default = 0
                 arg_min = 0.0
                 arg_max = 0.0
                 counter = 0
@@ -372,7 +379,7 @@ def generate_settings(xml_filename):
                             "constant_comment": strip_text(enum.text)
                             })
                         counter += 1
-                else:
+                elif not arg_type == "str_t":
                     # No min/max values defined in XML, guessing the type and propose a value:
                     logging.info("Guessing type of \"%s\"" % (arg_name))
                     logging.info("  from: %s" % (arg_comment))
@@ -400,11 +407,18 @@ def generate_settings(xml_filename):
                         counter = 2
 
                 # either we found minmax or the arg is of type enum
-                if len(minmax_list) or need_enum_cast:
+                if len(minmax_list) or need_enum_cast or arg_type == "str_t":
+                    # hack
+                    if arg_type == "str_t":
+                        arg_min = "''"
+                        arg_max = "''"
+                        arg_default = "''"
+
                     cfg_cmd_d["cfg_arg"].append({
                         "cfg_arg_type": arg_type,
                         "cfg_arg_name": arg_name,
                         "cfg_arg_comment": arg_comment,
+                        "cfg_arg_default": arg_default,
                         "cfg_arg_min": arg_min,
                         "cfg_arg_max": arg_max,
                         # Render once trick: http://stackoverflow.com/a/10118092

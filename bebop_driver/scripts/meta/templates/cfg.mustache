@@ -25,7 +25,7 @@ gen = ParameterGenerator()
 {{cfg_class_name}}_group_gen.add("{{cfg_arg_name}}", int_t, 0, "{{cfg_arg_comment}}", 0, 0, {{enum_max}}, edit_method={{cfg_arg_name}}_enum)
 {{/cfg_arg_enum}}
 {{^cfg_arg_enum}}
-{{cfg_class_name}}_group_gen.add("{{cfg_arg_name}}", {{cfg_arg_type}}, 0, "{{cfg_arg_comment}}", 0, {{cfg_arg_min}}, {{cfg_arg_max}})
+{{cfg_class_name}}_group_gen.add("{{cfg_arg_name}}", {{cfg_arg_type}}, 0, "{{cfg_arg_comment}}", {{cfg_arg_default}} , {{cfg_arg_min}}, {{cfg_arg_max}})
 {{/cfg_arg_enum}}
 {{/cfg_arg}}
 {{/cfg_cmd}}
