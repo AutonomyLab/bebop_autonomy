@@ -58,6 +58,11 @@ private:
   AVInputFormat* input_format_ptr_;
   uint8_t *frame_rgb_raw_ptr_;
 
+  uint8_t *sps_buffer_ptr_;
+  uint32_t sps_buffer_size_;
+  uint8_t * pps_buffer_ptr_;
+  uint32_t pps_buffer_size_;
+
   static void ThrowOnCondition(const bool cond, const std::string& message);
   bool InitCodec(const uint32_t width, const uint32_t height);
   void Cleanup();
@@ -68,6 +73,8 @@ public:
   VideoDecoder();
   ~VideoDecoder();
 
+  bool SetH264Params(uint8_t* sps_buffer, uint32_t sps_buffer_size,
+                     uint8_t* pps_buffer, uint32_t pps_buffer_size);
   bool Decode(const ARCONTROLLER_Frame_t* bebop_frame_ptr_);
   inline uint32_t GetFrameWidth() const {return codec_initialized_ ? codec_ctx_ptr_->width : 0;}
   inline uint32_t GetFrameHeight() const {return codec_initialized_ ? codec_ctx_ptr_->height : 0;}

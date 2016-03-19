@@ -55,7 +55,11 @@ VideoDecoder::VideoDecoder()
     frame_rgb_ptr_(NULL),
     img_convert_ctx_ptr_(NULL),
     input_format_ptr_(NULL),
-    frame_rgb_raw_ptr_(NULL)
+    frame_rgb_raw_ptr_(NULL),
+    sps_buffer_ptr_(NULL),
+    sps_buffer_size_(0),
+    pps_buffer_ptr_(NULL),
+    pps_buffer_size_(0)
 {}
 
 bool VideoDecoder::InitCodec(const uint32_t width, const uint32_t height)
@@ -91,11 +95,15 @@ bool VideoDecoder::InitCodec(const uint32_t width, const uint32_t height)
     codec_ctx_ptr_->width = width;
     codec_ctx_ptr_->height = height;
 
+    if (codec_ptr_->capabilities & CODEC_CAP_TRUNCATED)
+    {
+      codec_ctx_ptr_->flags |= CODEC_FLAG_TRUNCATED;
+    }
+    codec_ctx_ptr_->flags2 |= CODEC_FLAG2_CHUNKS;
+
     ThrowOnCondition(
           avcodec_open2(codec_ctx_ptr_, codec_ptr_, NULL) < 0,
           "Can not open the decoder!");
-
-
 
     const uint32_t num_bytes = avpicture_get_size(PIX_FMT_RGB24, codec_ctx_ptr_->width, codec_ctx_ptr_->height);
     {
@@ -179,6 +187,15 @@ void VideoDecoder::ConvertFrameToRGB()
             codec_ctx_ptr_->height, frame_rgb_ptr_->data, frame_rgb_ptr_->linesize);
 }
 
+bool VideoDecoder::SetH264Params(uint8_t *sps_buffer, uint32_t sps_buffer_size,
+                                 uint8_t *pps_buffer, uint32_t pps_buffer_size)
+{
+  sps_buffer_ptr_ = sps_buffer;
+  sps_buffer_size_ = sps_buffer_size;
+  pps_buffer_ptr_ = pps_buffer;
+  pps_buffer_size_ = pps_buffer_size;
+}
+
 bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *bebop_frame_ptr_)
 {
   if (!codec_initialized_)
@@ -189,7 +206,7 @@ bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *bebop_frame_ptr_)
     }
   }
 
-  // Wait for first IFrame
+  // Wait for first IFrame (VideoStream1)
   if (!first_iframe_recv_)
   {
     if (bebop_frame_ptr_->isIFrame)
@@ -198,9 +215,16 @@ bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *bebop_frame_ptr_)
     }
     else
     {
-      ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "Waiting for the first IFrame.");
       return false;
     }
+  }
+
+  // VideoStream2
+  // TODO: Backward-compat
+  if (!pps_buffer_ptr_ || !sps_buffer_ptr_)
+  {
+    ARSAL_PRINT(ARSAL_PRINT_ERROR, LOG_TAG, "Waiting for SPS and PPS data");
+    return false;
   }
 
   if (!bebop_frame_ptr_->data || !bebop_frame_ptr_->used)
@@ -209,15 +233,26 @@ bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *bebop_frame_ptr_)
     return false;
   }
 
-  packet_.data = bebop_frame_ptr_->data;
-  packet_.size = bebop_frame_ptr_->used;
+  const uint32_t sz = bebop_frame_ptr_->used + pps_buffer_size_ + sps_buffer_size_;
+
+  uint8_t* recunstructed_data = (uint8_t*) av_malloc(sz);
+  memcpy(recunstructed_data, sps_buffer_ptr_, sps_buffer_size_);
+  memcpy(recunstructed_data + sps_buffer_size_, pps_buffer_ptr_, pps_buffer_size_);
+  memcpy(recunstructed_data + sps_buffer_size_ + pps_buffer_size_, bebop_frame_ptr_->data, bebop_frame_ptr_->used);
+
+  packet_.data = recunstructed_data;
+  packet_.size = sz;
+//  packet_.data = bebop_frame_ptr_->data;
+//  packet_.size = bebop_frame_ptr_->used;
 
   int32_t frame_finished = 0;
   while (packet_.size > 0)
   {
     const int32_t len = avcodec_decode_video2(codec_ctx_ptr_, frame_ptr_, &frame_finished, &packet_);
 
-    if (len > 0)
+    // ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "Size: %d len: %d", packet_.size, len);
+
+    if (len >= 0)
     {
       if (frame_finished)
       {
@@ -230,7 +265,13 @@ bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *bebop_frame_ptr_)
         packet_.data += len;
       }
     }
+    else
+    {
+      av_free(recunstructed_data);
+      return false;
+    }
   }
+  av_free(recunstructed_data);
   return true;
 }
 

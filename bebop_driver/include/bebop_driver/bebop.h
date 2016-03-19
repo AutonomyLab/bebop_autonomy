@@ -122,9 +122,11 @@ private:
       ARCONTROLLER_DICTIONARY_ELEMENT_t* element_dict_ptr,
       void* bebop_void_ptr);
 
-  static void FrameReceivedCallback(
-      ARCONTROLLER_Frame_t *frame,
-      void *bebop_void_ptr_);
+  static eARCONTROLLER_ERROR FrameReceivedCallback(ARCONTROLLER_Frame_t *frame,
+      void *bebop_void_ptr);
+
+  static eARCONTROLLER_ERROR DecoderConfigCallback(ARCONTROLLER_Stream_Codec_t codec,
+      void *bebop_void_ptr);
 
   // nothrow
   void Cleanup();
