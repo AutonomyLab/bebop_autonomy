@@ -79,9 +79,8 @@ bool VideoDecoder::InitCodec(const uint32_t width, const uint32_t height)
     av_register_all();
     av_log_set_level(AV_LOG_QUIET);
 
-    codec_ptr_ = avcodec_find_decoder(CODEC_ID_H264);
+    codec_ptr_ = avcodec_find_decoder(AV_CODEC_ID_H264);
     ThrowOnCondition(codec_ptr_ == NULL, "Codec H264 not found!");
-
 
     codec_ctx_ptr_ = avcodec_alloc_context3(codec_ptr_);
     codec_ctx_ptr_->pix_fmt = AV_PIX_FMT_YUV420P;
