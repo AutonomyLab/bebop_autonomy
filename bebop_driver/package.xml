@@ -28,6 +28,8 @@
   <build_depend>curl</build_depend>
   <build_depend>ffmpeg</build_depend>
   <build_depend>libncurses-dev</build_depend>
+  <build_depend>libavahi-client-dev</build_depend>
+  <build_depend>libavahi-core-dev</build_depend>
 
   <!-- ROS dependencies -->
   <build_depend>bebop_msgs</build_depend>

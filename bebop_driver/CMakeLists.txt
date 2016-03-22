@@ -51,38 +51,21 @@ roslint_cpp(
 ## Build ##
 ###########
 
-# Build ARDroneSDK3 through their custom build manager (arsdk_manifests)
-# TODO: Replace ExternalProject with a catkin package wrapper or a cmake macro.
-# http://developer.parrot.com/docs/bebop/#how-to-build-the-sdk
-# The new build system (>= 3.8) uses Android `repo-git` tool
-#include(ExternalProject)
-#ExternalProject_Add(ARSDKBuildUtils
-#    GIT_REPOSITORY https://github.com/Parrot-Developers/arsdk_manifests.git
-#    GIT_TAG ARSDK3_version_3_8
-#    PREFIX ${CATKIN_DEVEL_PREFIX}
-#    UPDATE_COMMAND curl https://storage.googleapis.com/git-repo-downloads/repo > ./repo COMMAND chmod a+x ./repo COMMAND ./repo --color=never init -u ./
-#    CONFIGURE_COMMAND ./repo sync
-#    BUILD_COMMAND ./build.sh -p Unix-forall -t build-sdk -j
-#    INSTALL_COMMAND echo "No install"
-#    BUILD_IN_SOURCE 1
-#)
-#
-
-#message(STATUS "Building ARDroneSDK3")
-#include(cmake/BuildARSDK3.cmake)
-#build_arsdk3("54e1827594068d5c2be55d836e8be6f532770c48" ARDRONESDK3_PATH)
+add_custom_target(ARSDK_MKDIR
+  COMMAND ${CMAKE_COMMAND} -E make_directory ${CATKIN_DEVEL_PREFIX}/arsdk)
 
 add_custom_target(ARSDKBuildUtils
-  WORKING_DIRECTORY ${CATKIN_DEVEL_PREFIX}
+  COMMENT "Building Parrot ARDroneSDK3"
+  WORKING_DIRECTORY ${CATKIN_DEVEL_PREFIX}/arsdk
   COMMAND curl -s https://storage.googleapis.com/git-repo-downloads/repo > ./repo
   COMMAND chmod a+x ./repo
   COMMAND ./repo init || true
   COMMAND ./repo --color=never init -u https://github.com/Parrot-Developers/arsdk_manifests.git -b 2930cc7f7a79173d51c1fc167475fa9fa6650def
   COMMAND ./repo sync
-  COMMAND ./build.sh -p Unix-forall -t build-sdk
+  COMMAND ./build.sh -p Unix-base -t build-sdk
 )
-
-set(ARDRONESDK3_PATH "${CATKIN_DEVEL_PREFIX}/out/Unix-base/staging/usr")
+add_dependencies(ARSDKBuildUtils ARSDK_MKDIR)
+set(ARDRONESDK3_PATH "${CATKIN_DEVEL_PREFIX}/arsdk/out/Unix-base/staging/usr")
 
 include_directories(
   ${catkin_INCLUDE_DIRS}
