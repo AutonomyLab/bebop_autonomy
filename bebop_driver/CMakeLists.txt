@@ -75,7 +75,12 @@ include_directories(
   ${AVFORMAT_INCLUDE_DIRS}
   ${SWSCALE_INCLUDE_DIRS}
 )
-link_directories(${ARDRONESDK3_PATH}/lib)
+
+link_directories(${ARDRONESDK3_PATH}/lib
+  ${AVCODEC_LIBRARY_DIRS}
+  ${AVFORMAT_LIBRARY_DIRS}
+  ${SWSCALE_LIBRARY_DIRS}
+)
 
 add_library(libbebop src/bebop.cpp src/bebop_video_decoder.cpp)
 target_link_libraries(libbebop
