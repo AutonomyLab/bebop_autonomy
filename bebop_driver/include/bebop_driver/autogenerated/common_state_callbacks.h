@@ -23,7 +23,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCL
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  * common_state_callbacks.h
- * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/e1cbcad39d6b2999faa457a1d42d0ea3a1060765/Xml/common_commands.xml
+ * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/5898658a925245555153459ea4684aa87f220e07/Xml/common_commands.xml
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
@@ -52,7 +52,6 @@ extern "C"
 #include "bebop_msgs/CommonCommonStateCountryListKnown.h"
 #include "bebop_msgs/CommonOverHeatStateOverHeatChanged.h"
 #include "bebop_msgs/CommonOverHeatStateOverHeatRegulationChanged.h"
-#include "bebop_msgs/CommonControllerStateisPilotingChanged.h"
 #include "bebop_msgs/CommonMavlinkStateMavlinkFilePlayingStateChanged.h"
 #include "bebop_msgs/CommonMavlinkStateMavlinkPlayErrorStateChanged.h"
 #include "bebop_msgs/CommonCalibrationStateMagnetoCalibrationStateChanged.h"
@@ -74,6 +73,7 @@ extern "C"
 #include "bebop_msgs/CommonChargerStateCurrentChargeStateChanged.h"
 #include "bebop_msgs/CommonChargerStateLastChargeRateChanged.h"
 #include "bebop_msgs/CommonChargerStateChargingInfo.h"
+#include "bebop_msgs/CommonRunStateRunIdChanged.h"
 
 namespace bebop_driver
 {
@@ -422,7 +422,7 @@ public:
 };  // CommonCommonStateCurrentTimeChanged
 
 
-// Mass storage info remaining list
+// @deprecated Mass storage info remaining list
 class CommonCommonStateMassStorageInfoRemainingListChanged : public AbstractState
 {
 private:
@@ -705,7 +705,7 @@ public:
 };  // CommonCommonStateCountryListKnown
 
 
-// Overheat temperature reached
+// @deprecated Overheat temperature reached
 class CommonOverHeatStateOverHeatChanged : public AbstractState
 {
 private:
@@ -749,7 +749,7 @@ public:
 };  // CommonOverHeatStateOverHeatChanged
 
 
-// Overheat regulation state changed
+// @deprecated Overheat regulation state changed
 class CommonOverHeatStateOverHeatRegulationChanged : public AbstractState
 {
 private:
@@ -798,57 +798,6 @@ public:
   }
 
 };  // CommonOverHeatStateOverHeatRegulationChanged
-
-
-// Tell the device when the controller application enters/leaves the piloting HUD.
-class CommonControllerStateisPilotingChanged : public AbstractState
-{
-private:
-  ::bebop_msgs::CommonControllerStateisPilotingChanged::Ptr msg_ptr;
-
-public:
-
-  CommonControllerStateisPilotingChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
-    : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_CONTROLLERSTATE_ISPILOTINGCHANGED)
-  {
-    if (priv_nh.getParam("states/enable_controllerstate_ispilotingchanged", pub_enabled_) && pub_enabled_)
-    {
-      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = nh.advertise<bebop_msgs::CommonControllerStateisPilotingChanged>(topic, 10, true);
-    } // pub_enabled_ is false
-  }
-
-  ::bebop_msgs::CommonControllerStateisPilotingChanged::ConstPtr GetDataCstPtr() const
-  {
-    ::boost::lock_guard<boost::mutex> lock(mutex_);
-    return msg_ptr;
-  }
-
-  void Update(const ARCONTROLLER_DICTIONARY_ARG_t *arguments, const ::ros::Time& t)
-  {
-    if (arguments == NULL)
-    {
-      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonControllerStateisPilotingChanged::Update() arguments is NULL");
-      return;
-    }
-
-    ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonControllerStateisPilotingChanged());
-    msg_ptr->header.stamp = t;
-    msg_ptr->header.frame_id = "base_link";
-
-
-    arg = NULL;
-    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_CONTROLLERSTATE_ISPILOTINGCHANGED_PILOTING, arg);
-    if (arg)
-    {
-      msg_ptr->piloting = arg->value.U8;
-    }
-
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
-  }
-
-};  // CommonControllerStateisPilotingChanged
 
 
 // Playing state of a mavlink flight plan
@@ -2018,6 +1967,57 @@ public:
   }
 
 };  // CommonChargerStateChargingInfo
+
+
+// Sent when a run id has changed Run ids are uniquely identifying a run or a flight
+class CommonRunStateRunIdChanged : public AbstractState
+{
+private:
+  ::bebop_msgs::CommonRunStateRunIdChanged::Ptr msg_ptr;
+
+public:
+
+  CommonRunStateRunIdChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
+    : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_RUNSTATE_RUNIDCHANGED)
+  {
+    if (priv_nh.getParam("states/enable_runstate_runidchanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_msgs::CommonRunStateRunIdChanged>(topic, 10, true);
+    } // pub_enabled_ is false
+  }
+
+  ::bebop_msgs::CommonRunStateRunIdChanged::ConstPtr GetDataCstPtr() const
+  {
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    return msg_ptr;
+  }
+
+  void Update(const ARCONTROLLER_DICTIONARY_ARG_t *arguments, const ::ros::Time& t)
+  {
+    if (arguments == NULL)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonRunStateRunIdChanged::Update() arguments is NULL");
+      return;
+    }
+
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    msg_ptr.reset(new ::bebop_msgs::CommonRunStateRunIdChanged());
+    msg_ptr->header.stamp = t;
+    msg_ptr->header.frame_id = "base_link";
+
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_RUNSTATE_RUNIDCHANGED_RUNID, arg);
+    if (arg)
+    {
+      msg_ptr->runId = arg->value.String;
+    }
+
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+  }
+
+};  // CommonRunStateRunIdChanged
 
 
 }  // namespace cb

@@ -1,5 +1,5 @@
  .. Ardrone3_settings_param.rst
- .. auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/e1cbcad39d6b2999faa457a1d42d0ea3a1060765/Xml/ARDrone3_commands.xml
+ .. auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/5898658a925245555153459ea4684aa87f220e07/Xml/ARDrone3_commands.xml
  .. Do not modify this file by hand. Check scripts/meta folder for generator files.
 
 *****************************************************************************************

@@ -8,5 +8,5 @@
 
 Header header
 
-# Bitfield representing enabled features. Currently supported bits are: - 0 : 720p streaming - 1 : No interface on SkyController HDMI
+# Bitfield representing enabled features.
 uint64 features

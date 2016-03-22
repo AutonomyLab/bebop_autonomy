@@ -36,6 +36,7 @@ extern "C"
 {
   #include "libARCommands/ARCommands.h"
   #include "libARDiscovery/ARDiscovery.h"
+  #include <libARController/ARController.h>
 }
 
 #include <bebop_driver/bebop.h>
@@ -104,7 +105,7 @@ void Bebop::CommandReceivedCallback(eARCONTROLLER_DICTIONARY_KEY cmd_key,
                                     ARCONTROLLER_DICTIONARY_ELEMENT_t *element_dict_ptr,
                                     void *bebop_void_ptr)
 {
-  static int32_t lwp_id = util::GetLWPId();
+  static long int lwp_id = util::GetLWPId();
   static bool lwp_id_printed = false;
 
   if (!lwp_id_printed)
@@ -134,10 +135,39 @@ void Bebop::CommandReceivedCallback(eARCONTROLLER_DICTIONARY_KEY cmd_key,
   }
 }
 
-// This Callback runs in ARCONTROLLER_Stream_ReaderThreadRun context and blocks it until it returns
-void Bebop::FrameReceivedCallback(ARCONTROLLER_Frame_t *frame, void *bebop_void_ptr_)
+// This callback is called within the same context as FrameReceivedCallback()
+eARCONTROLLER_ERROR Bebop::DecoderConfigCallback(ARCONTROLLER_Stream_Codec_t codec, void *bebop_void_ptr)
 {
-  static int32_t lwp_id = util::GetLWPId();
+  Bebop* bebop_ptr = static_cast<Bebop*>(bebop_void_ptr);
+  if (codec.type = ARCONTROLLER_STREAM_CODEC_TYPE_H264)
+  {
+    ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "H264 configuration packet received: #SPS: %d #PPS: %d (MP4? %d)",
+                codec.parameters.h264parameters.spsSize,
+                codec.parameters.h264parameters.ppsSize,
+                codec.parameters.h264parameters.isMP4Compliant);
+
+    if (!bebop_ptr->video_decoder_ptr_->SetH264Params(
+          codec.parameters.h264parameters.spsBuffer,
+          codec.parameters.h264parameters.spsSize,
+          codec.parameters.h264parameters.ppsBuffer,
+          codec.parameters.h264parameters.ppsSize))
+    {
+      return ARCONTROLLER_ERROR;
+    }
+  }
+  else
+  {
+    ARSAL_PRINT(ARSAL_PRINT_WARNING, LOG_TAG, "Codec type is not H264");
+    return ARCONTROLLER_ERROR;
+  }
+
+  return ARCONTROLLER_OK;
+}
+
+// This Callback runs in ARCONTROLLER_Stream_ReaderThreadRun context and blocks it until it returns
+eARCONTROLLER_ERROR Bebop::FrameReceivedCallback(ARCONTROLLER_Frame_t *frame, void *bebop_void_ptr)
+{
+  static long int lwp_id = util::GetLWPId();
   static bool lwp_id_printed = false;
   if (!lwp_id_printed)
   {
@@ -148,17 +178,17 @@ void Bebop::FrameReceivedCallback(ARCONTROLLER_Frame_t *frame, void *bebop_void_
   if (!frame)
   {
     ARSAL_PRINT(ARSAL_PRINT_WARNING, LOG_TAG, "Received frame is NULL");
-    return;
+    return ARCONTROLLER_ERROR_NO_VIDEO;
   }
 
-  Bebop* bebop_ptr = static_cast<Bebop*>(bebop_void_ptr_);
-  if (!bebop_ptr->IsConnected()) return;
+  Bebop* bebop_ptr = static_cast<Bebop*>(bebop_void_ptr);
+  if (!bebop_ptr->IsConnected()) return ARCONTROLLER_ERROR;
 
   // TODO(mani-monaj): Param? Fetch from Drone?
   frame->width = 640;
   frame->height = 368;
 
-//  ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "In RECV FRAME");
+  // ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "In RECV FRAME");
   {
     boost::unique_lock<boost::mutex> lock(bebop_ptr->frame_avail_mutex_);
     if (bebop_ptr->is_frame_avail_)
@@ -173,10 +203,12 @@ void Bebop::FrameReceivedCallback(ARCONTROLLER_Frame_t *frame, void *bebop_void_
     else
     {
       bebop_ptr->is_frame_avail_ = true;
-//      ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "FRAME IS READY");
+      // ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "FRAME IS READY");
       bebop_ptr->frame_avail_cond_.notify_one();
     }
   }
+
+  return ARCONTROLLER_OK;
 }
 
 
@@ -258,13 +290,20 @@ void Bebop::Connect(ros::NodeHandle& nh, ros::NodeHandle& priv_nh, const std::st
           ARCONTROLLER_Device_AddCommandReceivedCallback(
             device_controller_ptr_, Bebop::CommandReceivedCallback, reinterpret_cast<void*>(this)),
           "Registering command callback failed");
-    // third argument is frame timeout callback
+
+//    ThrowOnCtrlError(
+//          ARCONTROLLER_Device_SetVideoStreamMP4Compliant(
+//            device_controller_ptr_, 1),
+//          "Enforcing MP4 compliancy failed");
+
+    // The forth argument is frame timeout callback
     ThrowOnCtrlError(
-          ARCONTROLLER_Device_SetVideoReceiveCallback(
-            device_controller_ptr_, Bebop::FrameReceivedCallback, NULL , reinterpret_cast<void*>(this)),
+          ARCONTROLLER_Device_SetVideoStreamCallbacks(
+            device_controller_ptr_,  Bebop::DecoderConfigCallback, Bebop::FrameReceivedCallback,
+            NULL , reinterpret_cast<void*>(this)),
           "Registering video callback failed");
 
-    // Semaphore is touched inside the StateCallback
+    // This semaphore is touched inside the StateCallback
     ARSAL_Sem_Wait(&state_sem_);
 
     device_state_ = ARCONTROLLER_Device_GetState(device_controller_ptr_, &error_);

@@ -1,12 +1,12 @@
-# Ardrone3PilotingStateAutoTakeOffModeChanged
+# CommonRunStateRunIdChanged
 # auto-generated from up stream XML files at
 #   github.com/Parrot-Developers/libARCommands/tree/master/Xml
 # To check upstream commit hash, refer to last_build_info file
 # Do not modify this file by hand. Check scripts/meta folder for generator files.
 #
-# SDK Comment: @deprecated Status of the drone3 automatic take off mode
+# SDK Comment: Sent when a run id has changed Run ids are uniquely identifying a run or a flight
 
 Header header
 
-# State of automatic take off mode (1 if enabled)
-uint8 state
+# Id of the run
+string runId

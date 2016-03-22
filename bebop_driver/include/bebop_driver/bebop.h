@@ -61,9 +61,9 @@ namespace bebop_driver
 
 namespace util
 {
-inline int32_t GetLWPId()
+inline long int GetLWPId()
 {
-  return static_cast<int32_t>(syscall(SYS_gettid));
+  return (syscall(SYS_gettid));
 }
 
 }  // namespace util
@@ -122,9 +122,11 @@ private:
       ARCONTROLLER_DICTIONARY_ELEMENT_t* element_dict_ptr,
       void* bebop_void_ptr);
 
-  static void FrameReceivedCallback(
-      ARCONTROLLER_Frame_t *frame,
-      void *bebop_void_ptr_);
+  static eARCONTROLLER_ERROR FrameReceivedCallback(ARCONTROLLER_Frame_t *frame,
+      void *bebop_void_ptr);
+
+  static eARCONTROLLER_ERROR DecoderConfigCallback(ARCONTROLLER_Stream_Codec_t codec,
+      void *bebop_void_ptr);
 
   // nothrow
   void Cleanup();

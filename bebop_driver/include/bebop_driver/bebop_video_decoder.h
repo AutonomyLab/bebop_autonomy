@@ -38,6 +38,17 @@ extern "C"
 #include <string>
 #include <vector>
 
+// https://github.com/libav/libav/commit/104e10fb426f903ba9157fdbfe30292d0e4c3d72
+// https://github.com/libav/libav/blob/33d18982fa03feb061c8f744a4f0a9175c1f63ab/doc/APIchanges#L697
+#if (LIBAVCODEC_VERSION_INT < AV_VERSION_INT(54, 25, 0))
+#define AV_CODEC_ID_H264 CODEC_ID_H264
+#endif
+
+// https://github.com/libav/libav/blob/33d18982fa03feb061c8f744a4f0a9175c1f63ab/doc/APIchanges#L653
+#if (LIBAVCODEC_VERSION_INT < AV_VERSION_INT(51, 42, 0))
+#define AV_PIX_FMT_YUV420P PIX_FMT_YUV420P
+#endif
+
 namespace bebop_driver
 {
 
@@ -58,6 +69,9 @@ private:
   AVInputFormat* input_format_ptr_;
   uint8_t *frame_rgb_raw_ptr_;
 
+  bool update_codec_params_;
+  std::vector<uint8_t> codec_data_;
+
   static void ThrowOnCondition(const bool cond, const std::string& message);
   bool InitCodec(const uint32_t width, const uint32_t height);
   void Cleanup();
@@ -68,6 +82,8 @@ public:
   VideoDecoder();
   ~VideoDecoder();
 
+  bool SetH264Params(uint8_t* sps_buffer_ptr, uint32_t sps_buffer_size,
+                     uint8_t* pps_buffer_ptr, uint32_t pps_buffer_size);
   bool Decode(const ARCONTROLLER_Frame_t* bebop_frame_ptr_);
   inline uint32_t GetFrameWidth() const {return codec_initialized_ ? codec_ctx_ptr_->width : 0;}
   inline uint32_t GetFrameHeight() const {return codec_initialized_ ? codec_ctx_ptr_->height : 0;}

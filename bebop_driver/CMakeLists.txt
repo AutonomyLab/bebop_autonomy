@@ -51,22 +51,21 @@ roslint_cpp(
 ## Build ##
 ###########
 
-# Build ARDroneSDK3 through their custom build manager (ARSDKBuildUtils)
-# TODO: Replace ExternalProject with a catkin package wrapper or a cmake macro.
-# the build time is unnecessarily long due to many git checkout ./SDK3Build.py performs.
-include(ExternalProject)
-ExternalProject_Add(ARSDKBuildUtils
-    GIT_REPOSITORY https://github.com/ARDroneSDK3/ARSDKBuildUtils.git
-    GIT_TAG ARSDK3_version_3_7_5
-    PREFIX ${CATKIN_DEVEL_PREFIX}
-    PATCH_COMMAND curl -s https://github.com/mani-monaj/ARSDKBuildUtils/commit/6c5b4186ab1d7cfd963b7dfa2070ece7650b2a5e.patch | git apply -v --index
-    CONFIGURE_COMMAND echo "No configure"
-    BUILD_COMMAND ./SDK3Build.py -t Unix
-    INSTALL_COMMAND echo "No install"
-    BUILD_IN_SOURCE 1
-)
+add_custom_target(ARSDK_MKDIR
+  COMMAND ${CMAKE_COMMAND} -E make_directory ${CATKIN_DEVEL_PREFIX}/arsdk)
 
-set(ARDRONESDK3_PATH "${CATKIN_DEVEL_PREFIX}/src/ARSDKBuildUtils/Targets/Unix/Install")
+add_custom_target(ARSDKBuildUtils
+  COMMENT "Building Parrot ARDroneSDK3"
+  WORKING_DIRECTORY ${CATKIN_DEVEL_PREFIX}/arsdk
+  COMMAND curl -s https://storage.googleapis.com/git-repo-downloads/repo > ./repo
+  COMMAND chmod a+x ./repo
+  COMMAND ./repo init || true
+  COMMAND ./repo --color=never init -u https://github.com/Parrot-Developers/arsdk_manifests.git -b 2930cc7f7a79173d51c1fc167475fa9fa6650def
+  COMMAND ./repo sync
+  COMMAND ./build.sh -p Unix-base -t build-sdk
+)
+add_dependencies(ARSDKBuildUtils ARSDK_MKDIR)
+set(ARDRONESDK3_PATH "${CATKIN_DEVEL_PREFIX}/arsdk/out/Unix-base/staging/usr")
 
 include_directories(
   ${catkin_INCLUDE_DIRS}
@@ -76,7 +75,12 @@ include_directories(
   ${AVFORMAT_INCLUDE_DIRS}
   ${SWSCALE_INCLUDE_DIRS}
 )
-link_directories(${ARDRONESDK3_PATH}/lib)
+
+link_directories(${ARDRONESDK3_PATH}/lib
+  ${AVCODEC_LIBRARY_DIRS}
+  ${AVFORMAT_LIBRARY_DIRS}
+  ${SWSCALE_LIBRARY_DIRS}
+)
 
 add_library(libbebop src/bebop.cpp src/bebop_video_decoder.cpp)
 target_link_libraries(libbebop

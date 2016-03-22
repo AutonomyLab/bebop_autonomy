@@ -1,5 +1,5 @@
  .. ARDrone3_states_param_topic.rst
- .. auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/e1cbcad39d6b2999faa457a1d42d0ea3a1060765/Xml/ARDrone3_commands.xml
+ .. auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/5898658a925245555153459ea4684aa87f220e07/Xml/ARDrone3_commands.xml
  .. Do not modify this file by hand. Check scripts/meta folder for generator files.
 
 *****************************************************************************************
@@ -29,7 +29,7 @@ List of ARDrone3 States and Corresponding ROS Parameters and Topics
 `Ardrone3PilotingStateAttitudeChanged`_
   Drone attitude changed
 `Ardrone3PilotingStateAutoTakeOffModeChanged`_
-  Status of the drone3 automatic take off mode
+  @deprecated Status of the drone3 automatic take off mode
 `Ardrone3PilotingStateAltitudeChanged`_
   Drone altitude changed
 `Ardrone3NetworkStateWifiScanListChanged`_
@@ -226,7 +226,7 @@ Drone attitude changed
 
 Ardrone3PilotingStateAutoTakeOffModeChanged
 ####################################################################################
-Status of the drone3 automatic take off mode
+@deprecated Status of the drone3 automatic take off mode
 
 - Parameter: ``~states/enable_pilotingstate_autotakeoffmodechanged``
 - Topic: ``states/ARDrone3/PilotingState/AutoTakeOffModeChanged``
