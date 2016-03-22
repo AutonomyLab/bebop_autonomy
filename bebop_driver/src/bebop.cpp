@@ -105,7 +105,7 @@ void Bebop::CommandReceivedCallback(eARCONTROLLER_DICTIONARY_KEY cmd_key,
                                     ARCONTROLLER_DICTIONARY_ELEMENT_t *element_dict_ptr,
                                     void *bebop_void_ptr)
 {
-  static int32_t lwp_id = util::GetLWPId();
+  static long int lwp_id = util::GetLWPId();
   static bool lwp_id_printed = false;
 
   if (!lwp_id_printed)
@@ -135,20 +135,25 @@ void Bebop::CommandReceivedCallback(eARCONTROLLER_DICTIONARY_KEY cmd_key,
   }
 }
 
+// This callback is called within the same context as FrameReceivedCallback()
 eARCONTROLLER_ERROR Bebop::DecoderConfigCallback(ARCONTROLLER_Stream_Codec_t codec, void *bebop_void_ptr)
 {
   Bebop* bebop_ptr = static_cast<Bebop*>(bebop_void_ptr);
   if (codec.type = ARCONTROLLER_STREAM_CODEC_TYPE_H264)
   {
-    // TODO: Reconfigure the decoder
-    ARSAL_PRINT(ARSAL_PRINT_ERROR, LOG_TAG, "Decoder COnfig! %d %d",
+    ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "H264 configuration packet received: #SPS: %d #PPS: %d (MP4? %d)",
                 codec.parameters.h264parameters.spsSize,
-                codec.parameters.h264parameters.ppsSize);
-    bebop_ptr->video_decoder_ptr_->SetH264Params(
+                codec.parameters.h264parameters.ppsSize,
+                codec.parameters.h264parameters.isMP4Compliant);
+
+    if (!bebop_ptr->video_decoder_ptr_->SetH264Params(
           codec.parameters.h264parameters.spsBuffer,
           codec.parameters.h264parameters.spsSize,
           codec.parameters.h264parameters.ppsBuffer,
-          codec.parameters.h264parameters.ppsSize);
+          codec.parameters.h264parameters.ppsSize))
+    {
+      return ARCONTROLLER_ERROR;
+    }
   }
   else
   {
@@ -162,7 +167,7 @@ eARCONTROLLER_ERROR Bebop::DecoderConfigCallback(ARCONTROLLER_Stream_Codec_t cod
 // This Callback runs in ARCONTROLLER_Stream_ReaderThreadRun context and blocks it until it returns
 eARCONTROLLER_ERROR Bebop::FrameReceivedCallback(ARCONTROLLER_Frame_t *frame, void *bebop_void_ptr)
 {
-  static int32_t lwp_id = util::GetLWPId();
+  static long int lwp_id = util::GetLWPId();
   static bool lwp_id_printed = false;
   if (!lwp_id_printed)
   {

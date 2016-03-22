@@ -23,10 +23,12 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCL
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "bebop_driver/bebop_video_decoder.h"
+
 #include <stdexcept>
-#include <boost/lexical_cast.hpp>
 #include <algorithm>
 #include <string>
+
+#include <boost/lexical_cast.hpp>
 
 extern "C"
 {
@@ -56,10 +58,7 @@ VideoDecoder::VideoDecoder()
     img_convert_ctx_ptr_(NULL),
     input_format_ptr_(NULL),
     frame_rgb_raw_ptr_(NULL),
-    sps_buffer_ptr_(NULL),
-    sps_buffer_size_(0),
-    pps_buffer_ptr_(NULL),
-    pps_buffer_size_(0)
+    update_codec_params_(false)
 {}
 
 bool VideoDecoder::InitCodec(const uint32_t width, const uint32_t height)
@@ -187,13 +186,28 @@ void VideoDecoder::ConvertFrameToRGB()
             codec_ctx_ptr_->height, frame_rgb_ptr_->data, frame_rgb_ptr_->linesize);
 }
 
-bool VideoDecoder::SetH264Params(uint8_t *sps_buffer, uint32_t sps_buffer_size,
-                                 uint8_t *pps_buffer, uint32_t pps_buffer_size)
+bool VideoDecoder::SetH264Params(uint8_t *sps_buffer_ptr, uint32_t sps_buffer_size,
+                                 uint8_t *pps_buffer_ptr, uint32_t pps_buffer_size)
 {
-  sps_buffer_ptr_ = sps_buffer;
-  sps_buffer_size_ = sps_buffer_size;
-  pps_buffer_ptr_ = pps_buffer;
-  pps_buffer_size_ = pps_buffer_size;
+  // This function is called in the same thread as Decode(), so no sync is necessary
+  // TODO: Exact sizes + more error checkings
+  update_codec_params_ = (sps_buffer_ptr && pps_buffer_ptr &&
+                          sps_buffer_size && pps_buffer_size &&
+                          (pps_buffer_size < 32) && (sps_buffer_size < 32));
+
+  if (update_codec_params_)
+  {
+    codec_data_.resize(sps_buffer_size + pps_buffer_size);
+    std::copy(sps_buffer_ptr, sps_buffer_ptr + sps_buffer_size, codec_data_.begin());
+    std::copy(pps_buffer_ptr, pps_buffer_ptr + pps_buffer_size, codec_data_.begin() + sps_buffer_size);
+  }
+  else
+  {
+    // invalid data
+    codec_data_.clear();
+  }
+
+  return update_codec_params_;
 }
 
 bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *bebop_frame_ptr_)
@@ -206,7 +220,8 @@ bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *bebop_frame_ptr_)
     }
   }
 
-  // Wait for first IFrame (VideoStream1)
+  // Wait for the first IFrame (VideoStream1)
+  // forward-compatible with VideoStream2
   if (!first_iframe_recv_)
   {
     if (bebop_frame_ptr_->isIFrame)
@@ -219,12 +234,36 @@ bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *bebop_frame_ptr_)
     }
   }
 
-  // VideoStream2
-  // TODO: Backward-compat
-  if (!pps_buffer_ptr_ || !sps_buffer_ptr_)
+  /*
+   * For VideoStream2, we trick avcodec whenever we receive a new SPS/PPS
+   * info from the Bebop. SetH264Params() function will fill a buffer with SPS/PPS
+   * data, then these are passed to avcodec_decode_video2() here, once for each SPS/PPS update.
+   * Apparantly, avcodec_decode_video2() function picks up the changes and apply them to
+   * upcoming video packets.
+   *
+   * (not tested) For VideoStream1, update_codec_params_ will always be false, thus the old
+   * method for decoding the H264 stream should work find.
+   *
+   * More info on VS v2.0: http://developer.parrot.com/blog/2016/ARSDK-3-8-release/
+   *
+   * */
+  if (update_codec_params_ && codec_data_.size())
   {
-    ARSAL_PRINT(ARSAL_PRINT_ERROR, LOG_TAG, "Waiting for SPS and PPS data");
-    return false;
+    ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "Updating H264 codec parameters (Buffer Size: %u) ...", codec_data_.size());
+    packet_.data = &codec_data_[0];
+    packet_.size = codec_data_.size();
+    int32_t frame_finished = 0;
+    const int32_t len = avcodec_decode_video2(codec_ctx_ptr_, frame_ptr_, &frame_finished, &packet_);
+    if (len >= 0 && len == packet_.size)
+    {
+      // success, skip this step until next codec update
+      update_codec_params_ = false;
+    }
+    else
+    {
+      ARSAL_PRINT(ARSAL_PRINT_ERROR, LOG_TAG, "Unexpected error while updating H264 parameters.");
+      return false;
+    }
   }
 
   if (!bebop_frame_ptr_->data || !bebop_frame_ptr_->used)
@@ -233,25 +272,13 @@ bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *bebop_frame_ptr_)
     return false;
   }
 
-  const uint32_t sz = bebop_frame_ptr_->used + pps_buffer_size_ + sps_buffer_size_;
-
-  uint8_t* recunstructed_data = (uint8_t*) av_malloc(sz);
-  memcpy(recunstructed_data, sps_buffer_ptr_, sps_buffer_size_);
-  memcpy(recunstructed_data + sps_buffer_size_, pps_buffer_ptr_, pps_buffer_size_);
-  memcpy(recunstructed_data + sps_buffer_size_ + pps_buffer_size_, bebop_frame_ptr_->data, bebop_frame_ptr_->used);
-
-  packet_.data = recunstructed_data;
-  packet_.size = sz;
-//  packet_.data = bebop_frame_ptr_->data;
-//  packet_.size = bebop_frame_ptr_->used;
+  packet_.data = bebop_frame_ptr_->data;
+  packet_.size = bebop_frame_ptr_->used;
 
   int32_t frame_finished = 0;
   while (packet_.size > 0)
   {
     const int32_t len = avcodec_decode_video2(codec_ctx_ptr_, frame_ptr_, &frame_finished, &packet_);
-
-    // ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "Size: %d len: %d", packet_.size, len);
-
     if (len >= 0)
     {
       if (frame_finished)
@@ -267,11 +294,9 @@ bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *bebop_frame_ptr_)
     }
     else
     {
-      av_free(recunstructed_data);
       return false;
     }
   }
-  av_free(recunstructed_data);
   return true;
 }
 

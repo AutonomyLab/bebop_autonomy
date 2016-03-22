@@ -61,9 +61,9 @@ namespace bebop_driver
 
 namespace util
 {
-inline int32_t GetLWPId()
+inline long int GetLWPId()
 {
-  return static_cast<int32_t>(syscall(SYS_gettid));
+  return (syscall(SYS_gettid));
 }
 
 }  // namespace util
