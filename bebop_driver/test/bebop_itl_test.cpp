@@ -335,10 +335,6 @@ TEST_F(BebopInTheLoopTest, Piloting)
 
   StopBebop();
 
-  /* By this time, battery state must have been changed */
-  TIMED_ASSERT(2.0, bat_state->IsActive(), "Measuring battery ...");
-  const uint8_t bat_percent = bat_state->GetMsgCopy().percent;
-
   double alt_start, yaw_start;
   // Make sure altitude is fresh
   ASSERT_LT(alt_state->GetFreshness().toSec(), 0.5);
@@ -401,6 +397,10 @@ TEST_F(BebopInTheLoopTest, Piloting)
                "Measuring Yaw");
 
   StopBebop();
+
+  /* By this time, battery state must have been changed (even on Bebop 2) */
+  TIMED_ASSERT(20.0, bat_state->IsActive(), "Measuring battery ...");
+  const uint8_t bat_percent = bat_state->GetMsgCopy().percent;
 
   tw.linear.x = 0.0;
   tw.linear.y = 0.0;

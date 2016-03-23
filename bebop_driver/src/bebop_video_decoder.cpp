@@ -215,20 +215,7 @@ bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *bebop_frame_ptr_)
   {
     if (!InitCodec(bebop_frame_ptr_->width, bebop_frame_ptr_->height))
     {
-      return false;
-    }
-  }
-
-  // Wait for the first IFrame (VideoStream1)
-  // forward-compatible with VideoStream2
-  if (!first_iframe_recv_)
-  {
-    if (bebop_frame_ptr_->isIFrame)
-    {
-      first_iframe_recv_ = true;
-    }
-    else
-    {
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, LOG_TAG, "Codec initialization failed!");
       return false;
     }
   }
@@ -239,9 +226,6 @@ bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *bebop_frame_ptr_)
    * data, then these are passed to avcodec_decode_video2() here, once for each SPS/PPS update.
    * Apparantly, avcodec_decode_video2() function picks up the changes and apply them to
    * upcoming video packets.
-   *
-   * (not tested) For VideoStream1, update_codec_params_ will always be false, thus the old
-   * method for decoding the H264 stream should work find.
    *
    * More info on VS v2.0: http://developer.parrot.com/blog/2016/ARSDK-3-8-release/
    *
