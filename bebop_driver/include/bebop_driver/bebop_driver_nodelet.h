@@ -118,6 +118,8 @@ private:
   ros::Subscriber snapshot_sub_;
   ros::Subscriber toggle_recording_sub_;
 
+  ros::Publisher odom_pub_;
+
   boost::shared_ptr<camera_info_manager::CameraInfoManager> cinfo_manager_ptr_;
   boost::shared_ptr<image_transport::ImageTransport> image_transport_ptr_;
   image_transport::CameraPublisher image_transport_pub_;
