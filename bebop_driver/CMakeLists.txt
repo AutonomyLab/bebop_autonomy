@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   tf2
   tf2_ros
+  tf2_geometry_msgs
   dynamic_reconfigure
   roslint
 )
@@ -32,7 +33,7 @@ pkg_check_modules(SWSCALE REQUIRED libswscale)
 catkin_package(
    INCLUDE_DIRS include
    LIBRARIES libbebop bebop_driver_nodelet
-   CATKIN_DEPENDS bebop_msgs roscpp nodelet camera_info_manager image_transport nav_msgs std_msgs tf2 tf2_ros dynamic_reconfigure
+   CATKIN_DEPENDS bebop_msgs roscpp nodelet camera_info_manager image_transport nav_msgs std_msgs tf2 tf2_ros tf2_geometry_msgs dynamic_reconfigure
    DEPENDS system_lib libavcodec libavformat libswscale
 )
 
