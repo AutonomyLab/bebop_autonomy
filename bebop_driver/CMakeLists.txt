@@ -33,7 +33,7 @@ pkg_check_modules(SWSCALE REQUIRED libswscale)
 catkin_package(
    INCLUDE_DIRS include
    LIBRARIES libbebop bebop_driver_nodelet
-   CATKIN_DEPENDS bebop_msgs roscpp nodelet camera_info_manager image_transport nav_msgs std_msgs tf2 tf2_ros tf2_geometry_msgs dynamic_reconfigure
+   CATKIN_DEPENDS bebop_msgs bebop_description roscpp nodelet camera_info_manager image_transport nav_msgs std_msgs tf2 tf2_ros tf2_geometry_msgs dynamic_reconfigure
    DEPENDS system_lib libavcodec libavformat libswscale
 )
 
@@ -61,10 +61,10 @@ add_custom_target(ARSDKBuildUtils
   WORKING_DIRECTORY ${CATKIN_DEVEL_PREFIX}/arsdk
   COMMAND curl -s https://storage.googleapis.com/git-repo-downloads/repo > ./repo
   COMMAND chmod a+x ./repo
-  COMMAND ./repo init || true
-  COMMAND ./repo --color=never init -u https://github.com/Parrot-Developers/arsdk_manifests.git -b 2930cc7f7a79173d51c1fc167475fa9fa6650def
+  COMMAND echo "y" | ./repo init -u https://github.com/Parrot-Developers/arsdk_manifests.git -b 2930cc7f7a79173d51c1fc167475fa9fa6650def
   COMMAND ./repo sync
-  COMMAND ./build.sh -p Unix-base -t build-sdk
+  # TODO
+  COMMAND ./build.sh -p Unix-base -t build-sdk || xterm -e ./build.sh -p Unix-base -t build-sdk
 )
 add_dependencies(ARSDKBuildUtils ARSDK_MKDIR)
 set(ARDRONESDK3_PATH "${CATKIN_DEVEL_PREFIX}/arsdk/out/Unix-base/staging/usr")
