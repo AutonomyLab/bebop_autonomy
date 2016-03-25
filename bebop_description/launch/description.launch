@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- this file is included by bebop_driver launch files by default in their own namespaces -->
+  <param name="robot_description" command="$(find xacro)/xacro $(find bebop_description)/urdf/bebop_base.urdf.xacro" />
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+</launch>

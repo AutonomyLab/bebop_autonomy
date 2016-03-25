@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!-- Kinematic model only, no visuals, no collisions -->
+<robot name="bebop" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:property name="PI" value="3.1415926535897931" />
+  <xacro:property name="camera_offset_len" value="0.1" />
+  <xacro:property name="camera_offset_ver" value="0.0" />
+  <!-- +- 35 degrees -->
+  <xacro:property name="pan_range" value="0.6108652381980153" />
+  <xacro:property name="pan_vel" value="2.0" />
+  <!-- +- 35 degrees -->
+  <xacro:property name="tilt_range" value="0.6108652381980153" />
+  <xacro:property name="tilt_vel" value="2.0" />
+  <xacro:property name="joint_effort" value="50" />
+
+  <link name="base_link"></link>
+  <link name="camera_base_link"></link>
+  <link name="camera_pan_link"></link>
+  <link name="camera_tilt_link"></link>
+  <link name="camera_optical"></link>
+
+  <joint name="base_link_joint" type="fixed">
+    <origin xyz="${camera_offset_len} 0 ${camera_offset_ver}" rpy="0 0 0" />
+    <parent link="base_link"/>
+    <child link="camera_base_link" />
+  </joint>
+
+  <joint name="camera_pan_joint" type="revolute">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="camera_base_link" />
+    <child link="camera_pan_link" />
+    <axis xyz="0 0 1" />
+    <limit lower="${-pan_range}" upper="${pan_range}"
+      effort="${joint_effort}" velocity="${pan_vel}" />
+  </joint>
+
+  <joint name="camera_tilt_joint" type="revolute">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="camera_pan_link" />
+    <child link="camera_tilt_link" />
+    <axis xyz="0 1 0" />
+    <limit lower="${-tilt_range}" upper="${tilt_range}"
+      effort="${joint_effort}" velocity="${tilt_vel}" />
+  </joint>
+
+  <joint name="camera_optical_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="${-PI/2} 0 ${-PI/2}" />
+    <parent link="camera_tilt_link" />
+    <child link="camera_optical" />
+  </joint>
+
+  <!-- [nice to have] -->
+  <!-- xacro:include filename="bebop.gazebo" /-->
+</robot>
