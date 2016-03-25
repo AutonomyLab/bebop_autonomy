@@ -4,9 +4,9 @@
   <arg name="joy_dev" default="/dev/input/js0" />
   <arg name="joy_config" default="log710" />
   <arg name="teleop_config" default="$(find bebop_tools)/config/$(arg joy_config).yaml" />
-  <arg name="group_ns" default="bebop" />
+  <arg name="namespace" default="bebop" />
 
-  <group ns="$(arg group_ns)">
+  <group ns="$(arg namespace)">
     <rosparam file="$(arg teleop_config)" command="load" />
 
     <node pkg="joy" type="joy_node" name="joy_node">

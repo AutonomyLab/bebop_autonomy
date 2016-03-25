@@ -29,7 +29,7 @@ Sets the location of the camera caliberation data. Default is empty string. For 
 ~camera_frame_id
 ----------------
 
-Sets the ``frame_id`` of camera and image messages. Default value is ``camera``.
+Sets the ``frame_id`` of camera and image messages. Default value is ``camera_optical``.
 
 
 ~cmd_vel_timeout

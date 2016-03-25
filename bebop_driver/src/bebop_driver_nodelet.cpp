@@ -26,6 +26,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 #include <pluginlib/class_list_macros.h>
 #include <nodelet/nodelet.h>
 #include <nav_msgs/Odometry.h>
+#include <sensor_msgs/JointState.h>
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 #include <tf2_ros/transform_broadcaster.h>
@@ -89,7 +90,9 @@ void BebopDriverNodelet::onInit()
   const std::string& param_camera_info_url = private_nh.param<std::string>("camera_info_url", "");
   const std::string& param_bebop_ip = private_nh.param<std::string>("bebop_ip", "192.168.42.1");
 
-  param_frame_id_ = private_nh.param<std::string>("camera_frame_id", "camera");
+  param_camera_frame_id_ = private_nh.param<std::string>("camera_frame_id", "camera_optical");
+  param_odom_frame_id_ = private_nh.param<std::string>("odom_frame_id", "odom");
+  param_publish_odom_tf_ = private_nh.param<bool>("publish_odom_tf", true);
   param_cmd_vel_timeout_ = private_nh.param<double>("cmd_vel_timeout", 0.2);
 
   NODELET_INFO("Connecting to Bebop ...");
@@ -128,6 +131,7 @@ void BebopDriverNodelet::onInit()
   toggle_recording_sub_ = nh.subscribe("record", 10, &BebopDriverNodelet::ToggleRecordingCallback, this);
 
   odom_pub_ = nh.advertise<nav_msgs::Odometry>("odom", 30);
+  camera_joint_pub_ = nh.advertise<sensor_msgs::JointState>("joint_states", 10, true);
 
   cinfo_manager_ptr_.reset(new camera_info_manager::CameraInfoManager(nh, "bebop_front", param_camera_info_url));
   image_transport_ptr_.reset(new image_transport::ImageTransport(nh));
@@ -199,9 +203,9 @@ void BebopDriverNodelet::CmdVelCallback(const geometry_msgs::TwistConstPtr& twis
     if (is_bebop_twist_changed)
     {
       // TODO: Remove message in future release
-      ROS_ERROR_ONCE("ATTENTION: * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *");
-      ROS_ERROR_ONCE("ATTENTION: Bebop driver now follows right-hand convention (ie. +angular.z translates to CCW rotation). This message will be removed in a future release.");
-      ROS_ERROR_ONCE("ATTENTION: * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *");
+      ROS_WARN_ONCE("ATTENTION: * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *");
+      ROS_WARN_ONCE("ATTENTION: Bebop driver now follows right-hand convention (ie. +angular.z translates to CCW rotation). This message will be removed in a future release.");
+      ROS_WARN_ONCE("ATTENTION: * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *");
       bebop_ptr_->Move(CLAMP(-bebop_twist_.linear.y, -1.0, 1.0),
                        CLAMP(bebop_twist_.linear.x, -1.0, 1.0),
                        CLAMP(bebop_twist_.linear.z, -1.0, 1.0),
@@ -248,8 +252,8 @@ void BebopDriverNodelet::CameraMoveCallback(const geometry_msgs::TwistConstPtr& 
     if (is_camera_twist_changed)
     {
       // TODO(mani-monaj): Set |90| limit to appropriate value (|45|??)
-      bebop_ptr_->MoveCamera(CLAMP(camera_twist_.angular.y, -90.0, 90.0),
-                             CLAMP(camera_twist_.angular.z, -90.0, 90.0));
+      bebop_ptr_->MoveCamera(CLAMP(camera_twist_.angular.y, -35.0, 35.0),
+                             CLAMP(camera_twist_.angular.z, -35.0, 35.0));
       prev_camera_twist_ = camera_twist_;
     }
   }
@@ -367,7 +371,7 @@ void BebopDriverNodelet::CameraPublisherThread()
       NODELET_DEBUG_STREAM("Frame grabbed: " << frame_w << " , " << frame_h);
       camera_info_msg_ptr_.reset(new sensor_msgs::CameraInfo(cinfo_manager_ptr_->getCameraInfo()));
       camera_info_msg_ptr_->header.stamp = t_now;
-      camera_info_msg_ptr_->header.frame_id = param_frame_id_;
+      camera_info_msg_ptr_->header.frame_id = param_camera_frame_id_;
       camera_info_msg_ptr_->width = frame_w;
       camera_info_msg_ptr_->height = frame_h;
 
@@ -375,7 +379,7 @@ void BebopDriverNodelet::CameraPublisherThread()
       {
         image_msg_ptr_->encoding = "rgb8";
         image_msg_ptr_->is_bigendian = false;
-        image_msg_ptr_->header.frame_id = param_frame_id_;
+        image_msg_ptr_->header.frame_id = param_camera_frame_id_;
         image_msg_ptr_->header.stamp = t_now;
         image_msg_ptr_->width = frame_w;
         image_msg_ptr_->height = frame_h;
@@ -396,14 +400,19 @@ void BebopDriverNodelet::CameraPublisherThread()
 void BebopDriverNodelet::AuxThread()
 {
   NODELET_INFO_STREAM("[AuxThread] thread lwp_id: " << util::GetLWPId());
-  ros::Rate loop_rate(30.0);
+  // Since the update rate of bebop states is 5Hz, 15Hz seems fine for this thread
+  ros::Rate loop_rate(15.0);
   geometry_msgs::Twist zero_twist;
   util::ResetTwist(zero_twist);
 
   // Helper timers to detect new data
   ros::Time last_speed_time(0);
   ros::Time last_att_time(0);
+  ros::Time last_camerastate_time(0);
   ros::Time last_odom_time(ros::Time::now());
+
+  // Camera Pan/Tilt State
+  bebop_msgs::Ardrone3CameraStateOrientation::ConstPtr camera_state_ptr;
 
   // East-South-Down
   bebop_msgs::Ardrone3PilotingStateSpeedChanged::ConstPtr speed_esd_ptr;
@@ -421,7 +430,7 @@ void BebopDriverNodelet::AuxThread()
 
   // TF2, Integerator
   geometry_msgs::TransformStamped odom_to_base_tf;
-  odom_to_base_tf.header.frame_id = "odom";
+  odom_to_base_tf.header.frame_id = param_odom_frame_id_;
   odom_to_base_tf.child_frame_id = "base_link";
   tf2_ros::TransformBroadcaster tf_broad;
   tf2::Vector3 odom_to_base_trans_v3(0.0, 0.0, 0.0);
@@ -429,6 +438,15 @@ void BebopDriverNodelet::AuxThread()
 
   bool new_speed_data = false;
   bool new_attitude_data = false;
+  bool new_camera_state = false;
+
+  // We do not publish JointState in a nodelet friendly way
+  // These names should match the joint name defined by bebop_description
+  sensor_msgs::JointState js_msg;
+  js_msg.name.push_back("camera_pan_joint");
+  js_msg.name.push_back("camera_tilt_joint");
+  js_msg.position.resize(2);
+
   while (!boost::this_thread::interruption_requested())
   {
     try
@@ -453,6 +471,17 @@ void BebopDriverNodelet::AuxThread()
       }
 
       // Experimental
+
+      if (bebop_ptr_->ardrone3_camerastate_orientation_ptr)
+      {
+        camera_state_ptr = bebop_ptr_->ardrone3_camerastate_orientation_ptr->GetDataCstPtr();
+
+        if ((camera_state_ptr->header.stamp - last_camerastate_time).toSec() > 1.0e-6)
+        {
+          last_camerastate_time = camera_state_ptr->header.stamp;
+          new_camera_state = true;
+        }
+      }
 
       if (bebop_ptr_->ardrone3_pilotingstate_speedchanged_ptr)
       {
@@ -503,7 +532,7 @@ void BebopDriverNodelet::AuxThread()
 
         nav_msgs::OdometryPtr odom_msg_ptr(new nav_msgs::Odometry());
         odom_msg_ptr->header.stamp = stamp;
-        odom_msg_ptr->header.frame_id = "odom";
+        odom_msg_ptr->header.frame_id = param_odom_frame_id_;
         odom_msg_ptr->child_frame_id = "base_link";
         odom_msg_ptr->twist.twist.linear.x = beb_vx_m;
         odom_msg_ptr->twist.twist.linear.y = beb_vy_m;
@@ -516,15 +545,27 @@ void BebopDriverNodelet::AuxThread()
         tf2::convert(odom_to_base_rot_q, odom_msg_ptr->pose.pose.orientation);
         odom_pub_.publish(odom_msg_ptr);
 
-        odom_to_base_tf.header.stamp = stamp;
-        tf2::convert(tf2::Transform(odom_to_base_rot_q, odom_to_base_trans_v3), odom_to_base_tf.transform);
-
-        tf_broad.sendTransform(odom_to_base_tf);
+        if (param_publish_odom_tf_)
+        {
+          odom_to_base_tf.header.stamp = stamp;
+          tf2::convert(tf2::Transform(odom_to_base_rot_q, odom_to_base_trans_v3), odom_to_base_tf.transform);
+          tf_broad.sendTransform(odom_to_base_tf);
+        }
 
         last_odom_time = ros::Time::now();
         new_speed_data = false;
         new_attitude_data = false;
       }
+
+      if (new_camera_state && camera_state_ptr)
+      {
+        js_msg.header.stamp = camera_state_ptr->header.stamp;
+        js_msg.position[0] = -camera_state_ptr->pan * util::deg2rad;
+        js_msg.position[1] = -camera_state_ptr->tilt * util::deg2rad;
+        camera_joint_pub_.publish(js_msg);
+        new_camera_state = false;
+      }
+
       loop_rate.sleep();
     }
     catch (const std::runtime_error& e)
