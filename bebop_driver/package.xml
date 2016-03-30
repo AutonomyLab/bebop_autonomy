@@ -45,6 +45,7 @@
   <build_depend>tf2_geometry_msgs</build_depend>
   <build_depend>dynamic_reconfigure</build_depend>
   <build_depend>roslint</build_depend>
+  <build_depend>rostest</build_depend>
 
   <run_depend>bebop_msgs</run_depend>
   <run_depend>bebop_description</run_depend>
@@ -60,7 +61,6 @@
   <run_depend>ffmpeg</run_depend>
   <run_depend>dynamic_reconfigure</run_depend>
 
-  <test_depend>rostest</test_depend>
   <test_depend>angles</test_depend>
 
   <export>
