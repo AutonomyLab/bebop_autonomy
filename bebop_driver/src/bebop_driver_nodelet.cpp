@@ -30,6 +30,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 #include <tf2_ros/transform_broadcaster.h>
+#include <sensor_msgs/NavSatFix.h>
 
 #include <boost/bind.hpp>
 #include <boost/make_shared.hpp>
@@ -132,6 +133,7 @@ void BebopDriverNodelet::onInit()
 
   odom_pub_ = nh.advertise<nav_msgs::Odometry>("odom", 30);
   camera_joint_pub_ = nh.advertise<sensor_msgs::JointState>("joint_states", 10, true);
+  gps_fix_pub_ = nh.advertise<sensor_msgs::NavSatFix>("fix", 10, true);
 
   cinfo_manager_ptr_.reset(new camera_info_manager::CameraInfoManager(nh, "bebop_front", param_camera_info_url));
   image_transport_ptr_.reset(new image_transport::ImageTransport(nh));
@@ -405,12 +407,6 @@ void BebopDriverNodelet::AuxThread()
   geometry_msgs::Twist zero_twist;
   util::ResetTwist(zero_twist);
 
-  // Helper timers to detect new data
-  ros::Time last_speed_time(0);
-  ros::Time last_att_time(0);
-  ros::Time last_camerastate_time(0);
-  ros::Time last_odom_time(ros::Time::now());
-
   // Camera Pan/Tilt State
   bebop_msgs::Ardrone3CameraStateOrientation::ConstPtr camera_state_ptr;
 
@@ -419,6 +415,9 @@ void BebopDriverNodelet::AuxThread()
 
   // Inertial frame
   bebop_msgs::Ardrone3PilotingStateAttitudeChanged::ConstPtr attitude_ptr;
+
+  // GPS
+  bebop_msgs::Ardrone3PilotingStatePositionChanged::ConstPtr gps_state_ptr;
 
   // REP-103
   double beb_roll_rad = 0.0;
@@ -429,6 +428,7 @@ void BebopDriverNodelet::AuxThread()
   double beb_vz_m = 0.0;
 
   // TF2, Integerator
+  ros::Time last_odom_time(ros::Time::now());
   geometry_msgs::TransformStamped odom_to_base_tf;
   odom_to_base_tf.header.frame_id = param_odom_frame_id_;
   odom_to_base_tf.child_frame_id = "base_link";
@@ -436,9 +436,16 @@ void BebopDriverNodelet::AuxThread()
   tf2::Vector3 odom_to_base_trans_v3(0.0, 0.0, 0.0);
   tf2::Quaternion odom_to_base_rot_q;
 
+  // Detect new messages
+  // TODO(mani-monaj): Wrap this functionality into a class to remove duplicate code
+  ros::Time last_speed_time(0);
+  ros::Time last_att_time(0);
+  ros::Time last_camerastate_time(0);
+  ros::Time last_gps_time(0);
   bool new_speed_data = false;
   bool new_attitude_data = false;
   bool new_camera_state = false;
+  bool new_gps_state = false;
 
   // We do not publish JointState in a nodelet friendly way
   // These names should match the joint name defined by bebop_description
@@ -446,6 +453,12 @@ void BebopDriverNodelet::AuxThread()
   js_msg.name.push_back("camera_pan_joint");
   js_msg.name.push_back("camera_tilt_joint");
   js_msg.position.resize(2);
+
+  sensor_msgs::NavSatFix gps_msg;
+  gps_msg.header.frame_id = "/gps";
+  gps_msg.status.status = sensor_msgs::NavSatStatus::STATUS_NO_FIX;
+  gps_msg.status.service = sensor_msgs::NavSatStatus::SERVICE_GPS | sensor_msgs::NavSatStatus::SERVICE_GLONASS;
+  gps_msg.position_covariance_type = sensor_msgs::NavSatFix::COVARIANCE_TYPE_UNKNOWN;
 
   while (!boost::this_thread::interruption_requested())
   {
@@ -471,12 +484,21 @@ void BebopDriverNodelet::AuxThread()
       }
 
       // Experimental
+      if (bebop_ptr_->ardrone3_pilotingstate_positionchanged_ptr)
+      {
+        gps_state_ptr = bebop_ptr_->ardrone3_pilotingstate_positionchanged_ptr->GetDataCstPtr();
+        if ((gps_state_ptr->header.stamp - last_gps_time).toSec() > util::eps)
+        {
+          last_gps_time = gps_state_ptr->header.stamp;
+          new_gps_state = true;
+        }
+      }
 
       if (bebop_ptr_->ardrone3_camerastate_orientation_ptr)
       {
         camera_state_ptr = bebop_ptr_->ardrone3_camerastate_orientation_ptr->GetDataCstPtr();
 
-        if ((camera_state_ptr->header.stamp - last_camerastate_time).toSec() > 1.0e-6)
+        if ((camera_state_ptr->header.stamp - last_camerastate_time).toSec() > util::eps)
         {
           last_camerastate_time = camera_state_ptr->header.stamp;
           new_camera_state = true;
@@ -488,7 +510,7 @@ void BebopDriverNodelet::AuxThread()
         speed_esd_ptr = bebop_ptr_->ardrone3_pilotingstate_speedchanged_ptr->GetDataCstPtr();
 
         // conside new data only
-        if ((speed_esd_ptr->header.stamp - last_speed_time).toSec() > 1.0e-6)
+        if ((speed_esd_ptr->header.stamp - last_speed_time).toSec() > util::eps)
         {
           last_speed_time = speed_esd_ptr->header.stamp;
           new_speed_data = true;
@@ -500,7 +522,7 @@ void BebopDriverNodelet::AuxThread()
         attitude_ptr = bebop_ptr_->ardrone3_pilotingstate_attitudechanged_ptr->GetDataCstPtr();
 
         // conside new data only
-        if ((attitude_ptr->header.stamp - last_att_time).toSec() > 1.0e-6)
+        if ((attitude_ptr->header.stamp - last_att_time).toSec() > util::eps)
         {
           last_att_time = attitude_ptr->header.stamp;
           beb_roll_rad = attitude_ptr->roll;
@@ -555,6 +577,23 @@ void BebopDriverNodelet::AuxThread()
         last_odom_time = ros::Time::now();
         new_speed_data = false;
         new_attitude_data = false;
+      }
+
+      if (new_gps_state && gps_state_ptr)
+      {
+        // The SDK reports 500, 500, 500 when there is no GPS fix
+        const bool is_valid_gps = (fabs(gps_state_ptr->latitude - 500.0) > util::eps) &&
+            (fabs(gps_state_ptr->longitude - 500.0) > util::eps) &&
+            (fabs(gps_state_ptr->altitude - 500.0) > util::eps);
+
+        gps_msg.header.stamp = gps_state_ptr->header.stamp;
+        gps_msg.status.status = is_valid_gps ? static_cast<int8_t>(sensor_msgs::NavSatStatus::STATUS_FIX):
+                                               static_cast<int8_t>(sensor_msgs::NavSatStatus::STATUS_NO_FIX);
+        gps_msg.latitude = gps_state_ptr->latitude;
+        gps_msg.longitude = gps_state_ptr->longitude;
+        gps_msg.altitude = gps_state_ptr->altitude;
+        gps_fix_pub_.publish(gps_msg);
+        new_gps_state = false;
       }
 
       if (new_camera_state && camera_state_ptr)

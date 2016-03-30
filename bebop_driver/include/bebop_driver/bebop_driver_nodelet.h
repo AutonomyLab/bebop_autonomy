@@ -121,6 +121,7 @@ private:
 
   ros::Publisher odom_pub_;
   ros::Publisher camera_joint_pub_;
+  ros::Publisher gps_fix_pub_;
 
   boost::shared_ptr<camera_info_manager::CameraInfoManager> cinfo_manager_ptr_;
   boost::shared_ptr<image_transport::ImageTransport> image_transport_ptr_;
