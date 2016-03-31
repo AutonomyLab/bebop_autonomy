@@ -9,6 +9,52 @@ The video stream from Bebop's front camera is published on ``image_raw`` topic a
 
 To set the location of camera calibration data, please check this page: :doc:`configuration`. Since v0.4, the package ships with a default camera caliberation file located at ``bebop_driver/data/bebop_front_calib.yaml``. Both default node/nodelet launch files, load this file when executing the driver.
 
+.. _sec-ros-topic:
+
+Standard ROS messages
+=====================
+
+.. _sec-odom:
+
+Odometery
+---------
+
+.. versionadded:: 0.5
+
+* ROS Topic: ``odom``
+* ROS Message Type: ``nav_msgs/Odometry``
+
+The driver integerates visual-inertial velocity estimates reported by Bebop's firmware to calculate the odometery. This message contains both the position and velocity of the Bebop in an ENU aligned odometery frame also named as ``odom``. This frame name is configurable (see :ref:`sec-params`) The cooridnate frame convention complies with ROS REP 103 (:ref:`sec-coords`). Please not that since odometery is calculated from Bebop States (see :ref:`sec-states`), the update rate is limited to **5 Hz**.
+
+.. _sec-gps:
+
+GPS
+---
+
+.. versionadded:: 0.5
+
+* ROS Topic: ``fix``
+* ROS Message Type: ``sensor_msgs/NavSatFix``
+
+Joint States (Pan/Tilt of The Virtual Camera)
+---------------------------------------------
+
+.. versionadded:: 0.5
+
+* ROS Topic: ``joint_states``
+* ROS Message Type: ``sensor_msgs/JointState``
+
+.. _sec-tf:
+
+TF
+==
+
+.. versionadded:: 0.5
+
+The driver updates the following `TF <http://wiki.ros.org/tf>`_ tree based on a simple kinematic model of the Bebop (provided by ``bebop_description``) pacakge, the current state of the virtual camera joints and the calculated odometery (if ``publish_odom_tf`` is set, see :ref:`sec-params`).
+
+.. image:: img/tf.png
+
 .. _sec-states:
 
 States (aka Navdata)

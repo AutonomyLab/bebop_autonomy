@@ -96,6 +96,7 @@ Bebop can perform four different types of flight animation (flipping). To perfor
   2       Flip Right
   3       Flip Left
 
+.. _sec-snapshot:
 
 Take on-board Snapshot
 ======================
