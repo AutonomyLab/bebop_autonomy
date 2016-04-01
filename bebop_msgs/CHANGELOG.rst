@@ -2,8 +2,8 @@
 Changelog for package bebop_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.5.0 (2016-04-01)
+------------------
 * Update to SDK 3.8.3
   - SDK 3.8.3 from
   https://github.com/Parrot-Developers/arsdk_manifests.git

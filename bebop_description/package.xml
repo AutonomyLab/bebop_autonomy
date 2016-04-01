@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>bebop_description</name>
-  <version>0.4.1</version>
+  <version>0.5.0</version>
   <description>URDF robot description for Parrot Bebop Drones</description>
 
   <maintainer email="mmonajje@sfu.ca">Mani Monajjemi</maintainer>

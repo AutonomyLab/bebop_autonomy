@@ -2,8 +2,8 @@
 Changelog for package bebop_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.5.0 (2016-04-01)
+------------------
 * Based on Parrot ARSDK 3.8.3. Tested with Bebop 1.0 (2.0.57) and Bebop 2.0 (3.1.0)
 * Update to SDK 3.8.3
   - SDK 3.8.3 from

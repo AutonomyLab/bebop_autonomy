@@ -2,8 +2,8 @@
 Changelog for package bebop_tools
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.5.0 (2016-04-01)
+------------------
 * Improve the organization of launch and param files
 * Contributors: Mani Monajjemi
 

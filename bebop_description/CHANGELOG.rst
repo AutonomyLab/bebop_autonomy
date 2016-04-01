@@ -2,8 +2,8 @@
 Changelog for package bebop_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.5.0 (2016-04-01)
+------------------
 * The initial version of bebop_description pacakge
   - Add a simple kinematic model of Bebop as URDF/Xacro (base_link,
   camera joints and the optical frame)
