@@ -2,6 +2,33 @@
 Changelog for package bebop_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Based on Parrot ARSDK 3.8.3. Tested with Bebop 1.0 (2.0.57) and Bebop 2.0 (3.1.0)
+* Update to SDK 3.8.3
+  - SDK 3.8.3 from
+  https://github.com/Parrot-Developers/arsdk_manifests.git
+  - SDK 3.8.3 git hash: 2930cc7f7a79173d51c1fc167475fa9fa6650def
+* Add support for VideoStream v2.0
+* Publish TF
+* Experimental implementation of odometery (pose, velocity)
+* Publish the GPS fix as a ROS standard message (closes `#39 <https://github.com/AutonomyLab/bebop_autonomy/issues/39>`_)
+  - Message type: sensor_msgs/NavSatFix
+  - Topic: fix
+* Add joint state publisher for camera's pan/tilt
+  - Add a new param to enable/disable the TF publisher for odom
+  - Add a new param to set the odom frame id
+* Include bebop_description and robot_state_publisher in driver's launch
+  files
+* Add proper limitations for camera's pan/tilt joints
+* Add explicit linkage to libav (fixes `#32 <https://github.com/AutonomyLab/bebop_autonomy/issues/32>`_)
+* Fix libav API inconsistency issues #30 #35 #36
+* Improve H264 parameter update method
+  - Implement a better way to pass SPS/PPS params to H264 decoder (SDK
+  3.8.x)
+* Add a new CMake option "RUN_HARDWARE_TESTS" to explicitly enable hardware in the loop testing (disabled by default)
+* Contributors: Mani Monajjemi, chartoin, Jake Bruce
+
 0.4.1 (2016-02-17)
 ------------------
 * Add ROS API for recording on-board picture/video (closes `#5 <https://github.com/AutonomyLab/bebop_autonomy/issues/5>`_)

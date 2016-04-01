@@ -2,6 +2,14 @@
 Changelog for package bebop_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Update to SDK 3.8.3
+  - SDK 3.8.3 from
+  https://github.com/Parrot-Developers/arsdk_manifests.git
+  - SDK 3.8.3 git hash: 2930cc7f7a79173d51c1fc167475fa9fa6650def
+* Contributors: Mani Monajjemi
+
 0.4.1 (2016-02-17)
 ------------------
 * Fix dynamic_reconfigure's inconsistency

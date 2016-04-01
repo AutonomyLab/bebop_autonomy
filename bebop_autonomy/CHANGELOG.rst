@@ -2,6 +2,11 @@
 Changelog for package bebop_autonomy
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add bebop_description package
+* Contributors: Mani Monajjemi
+
 0.4.1 (2016-02-17)
 ------------------
 

@@ -2,6 +2,11 @@
 Changelog for package bebop_tools
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Improve the organization of launch and param files
+* Contributors: Mani Monajjemi
+
 0.4.1 (2016-02-17)
 ------------------
 * Update the joystick configuration file for taking snapshots
