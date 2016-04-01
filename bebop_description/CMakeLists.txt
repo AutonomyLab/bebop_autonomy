@@ -7,6 +7,5 @@ find_package(catkin REQUIRED COMPONENTS
 
 catkin_package()
 
-roslaunch_add_file_check(launch/description.launch)
-
+# TODO: Tests
 # TODO: Install Rules
