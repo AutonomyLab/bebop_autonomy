@@ -1,8 +1,8 @@
 ****************************************************************************
-bebop_autonomy - ROS Driver for Parrot Bebbop Drone (quadrocopter) 1.0 & 2.0
+bebop_autonomy - ROS Driver for Parrot Bebop Drone (quadrocopter) 1.0 & 2.0
 ****************************************************************************
 
-*bebop_autonomy* is a :abbr:`ROS (Robot Operating System)` driver for `Parrot Bebop drone <http://www.parrot.com/ca/products/bebop-drone/>`_ (quadrocopter), based on Parrot's official `ARDroneSDK3 <https://github.com/Parrot-Developers/ARSDKBuildUtils>`_. This driver has been developed in `Autonomy Lab <http://autonomylab.org/>`_ of `Simon Fraser University <http://www.sfu.ca/>`_ by `Mani Monajjemi <http://mani.im>`_.
+*bebop_autonomy* is a :abbr:`ROS (Robot Operating System)` driver for `Parrot Bebop 1.0 <http://www.parrot.com/ca/products/bebop-drone/>`_ and 2.0 drones (quadrocopters), based on Parrot's official `ARDroneSDK3 <https://github.com/Parrot-Developers/arsdk_manifests>`_. This driver has been developed in `Autonomy Lab <http://autonomylab.org/>`_ of `Simon Fraser University <http://www.sfu.ca/>`_ by `Mani Monajjemi <http://mani.im>`_ and other contributers (:ref:`sec-contribs`).
 
 [`Source Code <https://github.com/AutonomyLab/bebop_autonomy>`_] 
 [`ROS wiki page <http://wiki.ros.org/bebop_autonomy>`_] 
@@ -27,10 +27,10 @@ Features and Roadmap
   Inline build of ARDroneSDK3, Yes, "Enhancement: `#2 <https://github.com/AutonomyLab/bebop_autonomy/issues/2>`_"
   Bebop In The Loop tests, Yes, ":ref:`sec-dev-test`"
   Joystick teleop demo, Yes, ""
-  TF Publisher, No (Planned), "`#3 <https://github.com/AutonomyLab/bebop_autonomy/issues/3>`_"
-  Odometry Publisher, No (Planned), "`#4 <https://github.com/AutonomyLab/bebop_autonomy/issues/4>`_"
-  Provide ROS API for on-board picture/video recording, Yes, ".. versionadded:: 0.4.1"
-  GPS Support, Partial, "Not fully tested"
+  TF Publisher, Yes, "Since v0.5 (:ref:`sec-tf`)"
+  Odometry Publisher, Yes, "Since v0.5 (:ref:`sec-odom`)"
+  Provide ROS API for on-board picture/video recording, Yes, "Since v0.4.1 (:ref:`sec-snapshot`)"
+  GPS Support, Yes, "Since v0.5 (:ref:`sec-gps`)"
   Mavlink Support, No, ""
   Binary Release, No, ""
   Support for Parrot Sky Controller, No, ""

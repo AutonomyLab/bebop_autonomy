@@ -61,6 +61,7 @@ namespace util
     ros::console::levels::Debug};
 
   static const double eps = 1.0e-6;
+  static const double deg2rad = 3.14159265 / 180.0;
 
   static char bebop_err_str[BEBOP_ERR_STR_SZ];
 
@@ -118,6 +119,10 @@ private:
   ros::Subscriber snapshot_sub_;
   ros::Subscriber toggle_recording_sub_;
 
+  ros::Publisher odom_pub_;
+  ros::Publisher camera_joint_pub_;
+  ros::Publisher gps_fix_pub_;
+
   boost::shared_ptr<camera_info_manager::CameraInfoManager> cinfo_manager_ptr_;
   boost::shared_ptr<image_transport::ImageTransport> image_transport_ptr_;
   image_transport::CameraPublisher image_transport_pub_;
@@ -128,7 +133,9 @@ private:
   boost::shared_ptr<dynamic_reconfigure::Server<bebop_driver::BebopArdrone3Config> > dynr_serv_ptr_;
 
   // Params (not dynamically reconfigurable, persistent)
-  std::string param_frame_id_;
+  std::string param_camera_frame_id_;
+  std::string param_odom_frame_id_;
+  bool param_publish_odom_tf_;
   double param_cmd_vel_timeout_;
 
   // This runs in its own context

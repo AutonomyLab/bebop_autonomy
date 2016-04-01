@@ -37,12 +37,12 @@ teleop:
       -
         axis: 5  # Left D-Pad (up/down)
         target: angular.y
-        scale: 40.0
+        scale: 35.0
         offset: 0.0
       -
         axis: 4  # Left D-Pad (left/right)
         target: angular.z
-        scale: -40.0
+        scale: -35.0
         offset: 0.0
   takeoff:
     type: topic

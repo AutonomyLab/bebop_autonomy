@@ -2,6 +2,8 @@
 Configuring Bebop and the Driver
 ********************************
 
+.. _sec-params:
+
 Driver Parameters
 =================
 
@@ -20,17 +22,11 @@ Setting this parameter to ``true`` will reset all Bebop configurations to factor
 ~camera_info_url
 ----------------
 
-Sets the location of the camera caliberation data. Default is empty string. For more information check `this documentation <http://wiki.ros.org/camera_info_manager#URL_Names>`_.
+Sets the location of the camera calibration data. Default is empty string. For more information check `this documentation <http://wiki.ros.org/camera_info_manager#URL_Names>`_.
 
 .. note::
 
-  Since v0.4, the package comes with a default camera caliberation file located at ``bebop_driver/data/bebop_front_calib.yaml``.
-
-~camera_frame_id
-----------------
-
-Sets the ``frame_id`` of camera and image messages. Default value is ``camera``.
-
+  Since v0.4, the package comes with a default camera calibration file located at ``bebop_driver/data/bebop_front_calib.yaml``.
 
 ~cmd_vel_timeout
 ----------------
@@ -38,6 +34,27 @@ Sets the ``frame_id`` of camera and image messages. Default value is ``camera``.
 .. versionadded:: 0.4
 
 Sets the safety timeout for piloting ``cmd_vel`` commands in seconds. Deafult is set to **0.1** seconds (100 miliseconds). If no piloting command is received by the driver within this timeout period, the driver issues a stop command which causes the drone to hover.
+
+~odom_frame_id
+--------------
+
+.. versionadded:: 0.5
+
+Sets the ``frame_id`` of the odometery message (see :ref:`sec-ros-topic`) and the odometery frame used in the TF tree (see :ref:`sec-tf`). The default value is ``odom``.
+
+~publish_odom_tf
+----------------
+
+.. versionadded:: 0.5
+
+Enables the publishing of ``odom`` to ``base_link`` TF transform (see :ref:`sec-tf`). The default value is ``true``.
+
+~camera_frame_id
+----------------
+
+.. deprecated:: 0.5
+
+Sets the ``frame_id`` of camera and image messages. The default value is ``camera_optical``.
 
 Dynamically Reconfigurable Parameters for Bebop
 ===============================================

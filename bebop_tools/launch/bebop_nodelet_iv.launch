@@ -1,9 +1,12 @@
 <?xml version="1.0"?>
 <launch>
     <!-- include the nodelet launch file from bebop_driver -->
-    <include file="$(find bebop_driver)/launch/bebop_nodelet.launch" />
+    <arg name="namespace" default="bebop" />
+    <include file="$(find bebop_driver)/launch/bebop_nodelet.launch">
+      <arg name="namespace" value="$(arg namespace)" />
+    </include>
     <!-- use the same nodelet manager and namespace, then load image_view nodelet -->
-    <group ns="bebop">
+    <group ns="$(arg namespace)">
        <node pkg="nodelet" type="nodelet" name="bebop_image_view_nodelet"
           args="load image_view/image bebop_nodelet_manager">
           <remap from="image" to="image_raw" />

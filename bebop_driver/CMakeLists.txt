@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(bebop_driver)
 
+## Enable hardware (Bebop In The Loop Tests)
+option(RUN_HARDWARE_TESTS "Enable hardware (Bebop In The Loop Tests" OFF)
+
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
@@ -12,7 +15,9 @@ find_package(catkin REQUIRED COMPONENTS
   nav_msgs
   roscpp
   std_msgs
-  tf
+  tf2
+  tf2_ros
+  tf2_geometry_msgs
   dynamic_reconfigure
   roslint
 )
@@ -31,7 +36,7 @@ pkg_check_modules(SWSCALE REQUIRED libswscale)
 catkin_package(
    INCLUDE_DIRS include
    LIBRARIES libbebop bebop_driver_nodelet
-   CATKIN_DEPENDS bebop_msgs roscpp nodelet camera_info_manager image_transport nav_msgs std_msgs tf dynamic_reconfigure
+   CATKIN_DEPENDS bebop_msgs bebop_description roscpp nodelet camera_info_manager image_transport nav_msgs std_msgs tf2 tf2_ros tf2_geometry_msgs dynamic_reconfigure
    DEPENDS system_lib libavcodec libavformat libswscale
 )
 
@@ -59,10 +64,10 @@ add_custom_target(ARSDKBuildUtils
   WORKING_DIRECTORY ${CATKIN_DEVEL_PREFIX}/arsdk
   COMMAND curl -s https://storage.googleapis.com/git-repo-downloads/repo > ./repo
   COMMAND chmod a+x ./repo
-  COMMAND ./repo init || true
-  COMMAND ./repo --color=never init -u https://github.com/Parrot-Developers/arsdk_manifests.git -b 2930cc7f7a79173d51c1fc167475fa9fa6650def
+  COMMAND echo "y" | ./repo init -u https://github.com/Parrot-Developers/arsdk_manifests.git -b 2930cc7f7a79173d51c1fc167475fa9fa6650def
   COMMAND ./repo sync
-  COMMAND ./build.sh -p Unix-base -t build-sdk
+  # TODO
+  COMMAND ./build.sh -p Unix-base -t build-sdk || xterm -e ./build.sh -p Unix-base -t build-sdk
 )
 add_dependencies(ARSDKBuildUtils ARSDK_MKDIR)
 set(ARDRONESDK3_PATH "${CATKIN_DEVEL_PREFIX}/arsdk/out/Unix-base/staging/usr")
@@ -148,7 +153,7 @@ add_dependencies(bebop_driver_node ${PROJECT_NAME}_gencfg)
 ## Testing ##
 #############
 
-if(CATKIN_ENABLE_TESTING)
+if(CATKIN_ENABLE_TESTING AND RUN_HARDWARE_TESTS)
   find_package(rostest REQUIRED)
   add_rostest_gtest(bebop_itl_test test/bebop_itl_test.test test/bebop_itl_test.cpp)
   target_link_libraries(bebop_itl_test ${catkin_LIBRARIES})

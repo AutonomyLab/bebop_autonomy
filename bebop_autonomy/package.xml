@@ -17,6 +17,7 @@
   <run_depend>bebop_driver</run_depend>
   <run_depend>bebop_msgs</run_depend>
   <run_depend>bebop_tools</run_depend>
+  <run_depend>bebop_description</run_depend>
 
   <export>
     <metapackage/>
