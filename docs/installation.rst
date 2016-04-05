@@ -30,11 +30,5 @@ To compile from source, you need to clone the source code in a new or existing `
   # Build the workspace
   $ catkin build -DCMAKE_BUILD_TYPE=RelWithDebInfo
 
-The first time build may take up to 15 minutes, since ARDroneSDK3's build script downloads and compiles ~20 packages from Internet.
-
-.. code-block:: bash
-
-  $ cd ~/bebop_ws/src
-  $ git clone https://github.com/ros-teleop/teleop_tools.git
-  # Do rosdep steps again
+The first time build may take up to 15 minutes, since ARDroneSDK3's build script downloads and compiles ~20 packages from the Internet.
 
