@@ -64,7 +64,7 @@ add_custom_target(ARSDKBuildUtils
   WORKING_DIRECTORY ${CATKIN_DEVEL_PREFIX}/arsdk
   COMMAND curl -s https://storage.googleapis.com/git-repo-downloads/repo > ./repo
   COMMAND chmod a+x ./repo
-  COMMAND echo "y" | ./repo init -u https://github.com/Parrot-Developers/arsdk_manifests.git -b 2930cc7f7a79173d51c1fc167475fa9fa6650def
+  COMMAND echo "y" | ./repo init -u https://github.com/Parrot-Developers/arsdk_manifests.git -b 2930cc7f7a79173d51c1fc167475fa9fa6650def -m release.xml
   COMMAND ./repo sync
   # TODO
   COMMAND ./build.sh -p Unix-base -t build-sdk || xterm -e ./build.sh -p Unix-base -t build-sdk
