@@ -2,6 +2,18 @@
 Changelog for package bebop_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add bebop_description as a build dep to bebop_driver (fixes `#45 <https://github.com/AutonomyLab/bebop_autonomy/issues/45>`_)
+* Fix inline build of arsdk to use the frozen manifest (fixes `#46 <https://github.com/AutonomyLab/bebop_autonomy/issues/46>`_)
+  - Prior to this release, the build script would always compile the
+  development branch of ARSDK. This fix ensures that instead of
+  `default.xml` manifest file - which represents the dev version of ARSDK
+  package - `release.xml` is used by `repo`. This manifest file includes a
+  certain hash for each ARSDK package that enforces a consistent build for
+  ARSDK.
+* Contributors: Mani Monajjemi
+
 0.5.0 (2016-04-01)
 ------------------
 * Based on Parrot ARSDK 3.8.3. Tested with Bebop 1.0 (2.0.57) and Bebop 2.0 (3.1.0)

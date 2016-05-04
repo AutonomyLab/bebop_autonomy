@@ -2,6 +2,9 @@
 Changelog for package bebop_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.5.0 (2016-04-01)
 ------------------
 * The initial version of bebop_description pacakge
