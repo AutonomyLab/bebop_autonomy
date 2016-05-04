@@ -2,8 +2,8 @@
 Changelog for package bebop_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.5.1 (2016-05-04)
+------------------
 * Add bebop_description as a build dep to bebop_driver (fixes `#45 <https://github.com/AutonomyLab/bebop_autonomy/issues/45>`_)
 * Fix inline build of arsdk to use the frozen manifest (fixes `#46 <https://github.com/AutonomyLab/bebop_autonomy/issues/46>`_)
   - Prior to this release, the build script would always compile the
