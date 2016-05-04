@@ -33,6 +33,7 @@
 
   <!-- ROS dependencies -->
   <build_depend>bebop_msgs</build_depend>
+  <build_depend>bebop_description</build_depend>
   <build_depend>pkg-config</build_depend>
   <build_depend>nodelet</build_depend>
   <build_depend>camera_info_manager</build_depend>
