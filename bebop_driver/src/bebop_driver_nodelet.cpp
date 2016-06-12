@@ -126,7 +126,7 @@ void BebopDriverNodelet::onInit()
   land_sub_ = nh.subscribe("land", 1, &BebopDriverNodelet::LandCallback, this);
   reset_sub_ = nh.subscribe("reset", 1, &BebopDriverNodelet::EmergencyCallback, this);
   flattrim_sub_ = nh.subscribe("flattrim", 1, &BebopDriverNodelet::FlatTrimCallback, this);
-  navigatehome_sub_ = nh.subscribe("navigate_home", 1, &BebopDriverNodelet::NavigateHomeCallback, this);
+  navigatehome_sub_ = nh.subscribe("autoflight/navigate_home", 1, &BebopDriverNodelet::NavigateHomeCallback, this);
   start_autoflight_sub_ = nh.subscribe("autoflight/start", 1, &BebopDriverNodelet::StartAutonomousFlightCallback, this);
   pause_autoflight_sub_ = nh.subscribe("autoflight/pause", 1, &BebopDriverNodelet::PauseAutonomousFlightCallback, this);
   stop_autoflight_sub_ = nh.subscribe("autoflight/stop", 1, &BebopDriverNodelet::StopAutonomousFlightCallback, this);
