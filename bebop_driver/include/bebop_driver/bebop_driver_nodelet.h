@@ -35,6 +35,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 #include <std_msgs/Empty.h>
 #include <std_msgs/UInt8.h>
 #include <std_msgs/Bool.h>
+#include <std_msgs/String.h>
 #include <camera_info_manager/camera_info_manager.h>
 #include <image_transport/image_transport.h>
 #include <dynamic_reconfigure/server.h>
@@ -115,6 +116,9 @@ private:
   ros::Subscriber reset_sub_;
   ros::Subscriber flattrim_sub_;
   ros::Subscriber navigatehome_sub_;
+  ros::Subscriber start_autoflight_sub_;
+  ros::Subscriber pause_autoflight_sub_;
+  ros::Subscriber stop_autoflight_sub_;
   ros::Subscriber animation_sub_;
   ros::Subscriber snapshot_sub_;
   ros::Subscriber toggle_recording_sub_;
@@ -151,6 +155,9 @@ private:
   void EmergencyCallback(const std_msgs::EmptyConstPtr& empty_ptr);
   void FlatTrimCallback(const std_msgs::EmptyConstPtr& empty_ptr);
   void NavigateHomeCallback(const std_msgs::BoolConstPtr& start_stop_ptr);
+  void StartAutonomousFlightCallback(const std_msgs::StringConstPtr& file_path_ptr);
+  void PauseAutonomousFlightCallback(const std_msgs::EmptyConstPtr& empty_ptr);
+  void StopAutonomousFlightCallback(const std_msgs::EmptyConstPtr& empty_ptr);
   void FlipAnimationCallback(const std_msgs::UInt8ConstPtr& animid_ptr);
   void TakeSnapshotCallback(const std_msgs::EmptyConstPtr& empty_ptr);
   void ToggleRecordingCallback(const std_msgs::BoolConstPtr& toggle_ptr);

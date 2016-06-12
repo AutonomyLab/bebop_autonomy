@@ -127,6 +127,9 @@ void BebopDriverNodelet::onInit()
   reset_sub_ = nh.subscribe("reset", 1, &BebopDriverNodelet::EmergencyCallback, this);
   flattrim_sub_ = nh.subscribe("flattrim", 1, &BebopDriverNodelet::FlatTrimCallback, this);
   navigatehome_sub_ = nh.subscribe("navigate_home", 1, &BebopDriverNodelet::NavigateHomeCallback, this);
+  start_autoflight_sub_ = nh.subscribe("autoflight/start", 1, &BebopDriverNodelet::StartAutonomousFlightCallback, this);
+  pause_autoflight_sub_ = nh.subscribe("autoflight/pause", 1, &BebopDriverNodelet::PauseAutonomousFlightCallback, this);
+  stop_autoflight_sub_ = nh.subscribe("autoflight/stop", 1, &BebopDriverNodelet::StopAutonomousFlightCallback, this);
   animation_sub_ = nh.subscribe("flip", 1, &BebopDriverNodelet::FlipAnimationCallback, this);
   snapshot_sub_ = nh.subscribe("snapshot", 10, &BebopDriverNodelet::TakeSnapshotCallback, this);
   toggle_recording_sub_ = nh.subscribe("record", 10, &BebopDriverNodelet::ToggleRecordingCallback, this);
@@ -297,6 +300,56 @@ void BebopDriverNodelet::NavigateHomeCallback(const std_msgs::BoolConstPtr &star
   {
     ROS_INFO("%sing navigate home behavior ...", start_stop_ptr->data ? "Start" : "Stopp");
     bebop_ptr_->NavigateHome(start_stop_ptr->data);
+  }
+  catch (const std::runtime_error& e)
+  {
+    ROS_ERROR_STREAM(e.what());
+  }
+}
+
+void BebopDriverNodelet::StartAutonomousFlightCallback(const std_msgs::StringConstPtr& filepath_ptr)
+{
+  std::string filepath;
+  if (filepath_ptr->data.empty())
+  {
+    ROS_WARN("No flight plan provided. Using default: 'flightplan.mavlink'");
+    filepath = "flightplan.mavlink";
+  }
+  else
+  {
+    filepath = filepath_ptr->data;
+  }
+
+  try
+  {
+    ROS_INFO("Starting autonomous flight path: %s", filepath.c_str());
+    bebop_ptr_->StartAutonomousFlight(filepath);
+  }
+  catch (const std::runtime_error& e)
+  {
+    ROS_ERROR_STREAM(e.what());
+  }
+}
+
+void BebopDriverNodelet::PauseAutonomousFlightCallback(const std_msgs::EmptyConstPtr& empty_ptr)
+{
+  try
+  {
+    ROS_INFO("Pausing autonomous flight");
+    bebop_ptr_->PauseAutonomousFlight();
+  }
+  catch (const std::runtime_error& e)
+  {
+    ROS_ERROR_STREAM(e.what());
+  }
+}
+
+void BebopDriverNodelet::StopAutonomousFlightCallback(const std_msgs::EmptyConstPtr& empty_ptr)
+{
+  try
+  {
+    ROS_INFO("Stopping autonomous flight");
+    bebop_ptr_->StopAutonomousFlight();
   }
   catch (const std::runtime_error& e)
   {
