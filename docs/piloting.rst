@@ -68,7 +68,59 @@ To move Bebop's virtual camera, publish a message of type `geometry_msgs/Twist <
 GPS Navigation
 ==============
 
-.. warning:: Not fully integrated/tested yet.
+Start Flight Plan
+-----------------
+
+An autonomous flight plan consists of a series of GPS waypoints along with Bebop velocities and camera angles encoded in an XML file.
+
+Requirements that must be met before an autonomous flight can start:
+
+    * Bebop is calibrated
+    * Bebop is in outdoor mode
+    * Bebop has fixed its GPS
+
+To start an autonomous flight plan, publish a message of type `std_msgs/String <http://docs.ros.org/api/std_msgs/html/msg/String.html>`_ to `autoflight/start` topic. The ``data`` field should contain the name of the flight plan to execute, which is already stored on-board Bebop.
+
+.. note:: If an empty string is published, then the default 'flightplan.mavlink' is used.
+
+.. warning:: If not already flying, Bebop will attempt to take off upon starting a flight plan.
+
+The `Flight Plan App <https://play.google.com/store/apps/details?id=com.parrot.freeflight3>`_ allows easy construction of flight plans and saves them on-board Bebop.
+
+An FTP client can also be used to view and copy flight plans on-board Bebop. `FileZilla` is recommended:
+
+.. code-block:: bash
+
+  $ sudo apt-get install filezilla
+  $ filezilla
+
+Then open `Site Manager` (top left), click `New Site`:
+
+    * `Host`: 192.168.42.1
+    * `Protocol`: FTP
+    * `Encrpytion`: Use plain FTP
+    * `Logon Type`: Anonymous
+    * Connect.
+
+Pause Flight Plan
+-----------------
+
+To pause the execution of an autonomous flight plan, publish a message of type `std_msgs/Empty <http://docs.ros.org/api/std_msgs/html/msg/Empty.html>`_ to `autoflight/pause` topic. Bebop will then hover and await further commands.
+To resume a paused flight plan, publish the same message that was used to start the autonomous flight (ie. to the topic `autoflight/start`). Bebop will fly to the lastest waypoint reached before continuing the flight plan.
+
+.. note:: Any velocity commands sent to Bebop during an autonomous flight plan will pause the plan.
+
+Stop Flight Plan
+----------------
+
+To stop the execution of an autonomous flight plan, publish a message of type `std_msgs/Empty <http://docs.ros.org/api/std_msgs/html/msg/Empty.html>`_ to `autoflight/stop` topic. Bebop will hover and await further commands.
+
+Navigate Home
+-------------
+
+To ask Bebop to autonomously fly to it's home position, publish a message of type `std_msgs/Bool <http://docs.ros.org/api/std_msgs/html/msg/Bool.html>`_ to `autoflight/navigate_home` topic with the ``data`` field set to ``true``. To stop Bebop from navigating home, publish another message with ``data`` set to ``false``.
+
+.. warning:: The topic has changed from `navigate_home` to `autoflight/navigate_home` after version 0.5.1.
 
 Flat Trim
 =========
