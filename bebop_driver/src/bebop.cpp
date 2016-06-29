@@ -475,6 +475,30 @@ void Bebop::NavigateHome(const bool &start_stop)
         "Navigate home failed");
 }
 
+void Bebop::StartAutonomousFlight(const std::string &filepath)
+{
+  ThrowOnInternalError("Start autonomous flight failed");
+  ThrowOnCtrlError(
+        device_controller_ptr_->common->sendMavlinkStart(device_controller_ptr_->common, const_cast<char*>(filepath.c_str()), (eARCOMMANDS_COMMON_MAVLINK_START_TYPE)0),
+        "Start autonomous flight failed");
+}
+
+void Bebop::PauseAutonomousFlight()
+{
+  ThrowOnInternalError("Pause autonomous flight failed");
+  ThrowOnCtrlError(
+        device_controller_ptr_->common->sendMavlinkPause(device_controller_ptr_->common),
+        "Pause autonomous flight failed");
+}
+
+void Bebop::StopAutonomousFlight()
+{
+  ThrowOnInternalError("Stop autonomous flight failed");
+  ThrowOnCtrlError(
+        device_controller_ptr_->common->sendMavlinkStop(device_controller_ptr_->common),
+        "Stop autonomous flight failed");
+}
+
 void Bebop::AnimationFlip(const uint8_t &anim_id)
 {
   ThrowOnInternalError("Animation failed");

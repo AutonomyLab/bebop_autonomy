@@ -162,6 +162,9 @@ public:
   void FlatTrim();
   // false: Stop, true: Start
   void NavigateHome(const bool& start_stop);
+  void StartAutonomousFlight(const std::string &filepath);
+  void PauseAutonomousFlight();
+  void StopAutonomousFlight();
   void AnimationFlip(const uint8_t& anim_id);
 
   // -1..1
