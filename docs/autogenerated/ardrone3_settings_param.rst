@@ -1,5 +1,5 @@
  .. Ardrone3_settings_param.rst
- .. auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/5898658a925245555153459ea4684aa87f220e07/Xml/ARDrone3_commands.xml
+ .. auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/7b5cf7a8009278cf634ee33d5c2ed5dd8e573eb4/Xml/ARDrone3_commands.xml
  .. Do not modify this file by hand. Check scripts/meta folder for generator files.
 
 *****************************************************************************************
@@ -19,6 +19,20 @@ List of Ardrone3 Settings and Corresponding ROS Parameter
    Current max distance in meter
   `PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover`_
    1 if the drone cant fly further than max distance, 0 if no limitation on the drone should be done
+  `PilotingSettingsBankedTurnValue`_
+   1 to enable, 0 to disable
+  `PilotingSettingsMinAltitudeCurrent`_
+   Current altitude min in m
+  `PilotingSettingsCirclingDirectionValue`_
+   The circling direction
+  `PilotingSettingsCirclingRadiusValue`_
+   The circling radius in meter
+  `PilotingSettingsCirclingAltitudeValue`_
+   The circling altitude in meter
+  `PilotingSettingsPitchModeValue`_
+   The Pitch mode
+  `PilotingSettingsLandingModeValue`_
+   The Landing mode
 
 `speedsettings`_
   Speed Settings commands
@@ -26,11 +40,13 @@ List of Ardrone3 Settings and Corresponding ROS Parameter
   `SpeedSettingsMaxVerticalSpeedCurrent`_
    Current max vertical speed in m/s
   `SpeedSettingsMaxRotationSpeedCurrent`_
-   Current max rotation speed in degree/s
+   Current max yaw rotation speed in degree/s
   `SpeedSettingsHullProtectionPresent`_
    1 if present, 0 if not present
   `SpeedSettingsOutdoorOutdoor`_
    1 if outdoor flight, 0 if indoor flight
+  `SpeedSettingsMaxPitchRollRotationSpeedCurrent`_
+   Current max pitch/roll rotation speed in degree/s
 
 `networksettings`_
   Network settings commands
@@ -42,13 +58,11 @@ List of Ardrone3 Settings and Corresponding ROS Parameter
   `NetworkSettingsWifiSelectionChannel`_
    The channel (not used in auto mode)
 
-`settings`_
-  Settings commands
-
-
 `picturesettings`_
   Photo settings chosen by the user
 
+  `PictureSettingsVideoStabilizationModeMode`_
+   Video stabilization mode
 
 `gpssettings`_
   GPS settings
@@ -94,6 +108,57 @@ PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover
   * 0: Disabled
   * 1: Enabled
 
+PilotingSettingsBankedTurnValue
+-----------------------------------------------------------
+* Parameter: ``~PilotingSettingsBankedTurnValue``
+* Details: 1 to enable, 0 to disable
+* Type: ``int_t``
+
+  * 0: Disabled
+  * 1: Enabled
+
+PilotingSettingsMinAltitudeCurrent
+-----------------------------------------------------------
+* Parameter: ``~PilotingSettingsMinAltitudeCurrent``
+* Details: Current altitude min in m
+* Type: ``double_t``
+PilotingSettingsCirclingDirectionValue
+-----------------------------------------------------------
+* Parameter: ``~PilotingSettingsCirclingDirectionValue``
+* Details: The circling direction
+* Type: ``int_t``
+
+  * 0: Circling ClockWise
+  * 1: Circling Counter ClockWise
+
+PilotingSettingsCirclingRadiusValue
+-----------------------------------------------------------
+* Parameter: ``~PilotingSettingsCirclingRadiusValue``
+* Details: The circling radius in meter
+* Type: ``int_t``
+PilotingSettingsCirclingAltitudeValue
+-----------------------------------------------------------
+* Parameter: ``~PilotingSettingsCirclingAltitudeValue``
+* Details: The circling altitude in meter
+* Type: ``int_t``
+PilotingSettingsPitchModeValue
+-----------------------------------------------------------
+* Parameter: ``~PilotingSettingsPitchModeValue``
+* Details: The Pitch mode
+* Type: ``int_t``
+
+  * 0: Positive pitch values will make the drone lower its nose. Negative pitch values will make the drone raise its nose.
+  * 1: Pitch commands are inverted. Positive pitch values will make the drone raise its nose. Negative pitch values will make the drone lower its nose.
+
+PilotingSettingsLandingModeValue
+-----------------------------------------------------------
+* Parameter: ``~PilotingSettingsLandingModeValue``
+* Details: The Landing mode
+* Type: ``int_t``
+
+  * 0: Linear landing.
+  * 1: Spirale landing.
+
 speedsettings
 ===========================================================
 SpeedSettingsMaxVerticalSpeedCurrent
@@ -104,7 +169,7 @@ SpeedSettingsMaxVerticalSpeedCurrent
 SpeedSettingsMaxRotationSpeedCurrent
 -----------------------------------------------------------
 * Parameter: ``~SpeedSettingsMaxRotationSpeedCurrent``
-* Details: Current max rotation speed in degree/s
+* Details: Current max yaw rotation speed in degree/s
 * Type: ``double_t``
 SpeedSettingsHullProtectionPresent
 -----------------------------------------------------------
@@ -124,6 +189,11 @@ SpeedSettingsOutdoorOutdoor
   * 0: Disabled
   * 1: Enabled
 
+SpeedSettingsMaxPitchRollRotationSpeedCurrent
+-----------------------------------------------------------
+* Parameter: ``~SpeedSettingsMaxPitchRollRotationSpeedCurrent``
+* Details: Current max pitch/roll rotation speed in degree/s
+* Type: ``double_t``
 networksettings
 ===========================================================
 NetworkSettingsWifiSelectionType
@@ -150,10 +220,19 @@ NetworkSettingsWifiSelectionChannel
 * Parameter: ``~NetworkSettingsWifiSelectionChannel``
 * Details: The channel (not used in auto mode)
 * Type: ``int_t``
-settings
-===========================================================
 picturesettings
 ===========================================================
+PictureSettingsVideoStabilizationModeMode
+-----------------------------------------------------------
+* Parameter: ``~PictureSettingsVideoStabilizationModeMode``
+* Details: Video stabilization mode
+* Type: ``int_t``
+
+  * 0: Video flat on roll and pitch
+  * 1: Video flat on pitch only
+  * 2: Video flat on roll only
+  * 3: Video follows drone angles
+
 gpssettings
 ===========================================================
 GPSSettingsHomeTypeType

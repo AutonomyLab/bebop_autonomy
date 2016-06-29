@@ -56,6 +56,9 @@ roslint_cpp(
 ## Build ##
 ###########
 
+# 3.9.1
+set(ARSDK_MANIFEST_HASH 40d5d08ff37a43b0b2deb641cc899d5356163db7)
+
 add_custom_target(ARSDK_MKDIR
   COMMAND ${CMAKE_COMMAND} -E make_directory ${CATKIN_DEVEL_PREFIX}/arsdk)
 
@@ -64,13 +67,13 @@ add_custom_target(ARSDKBuildUtils
   WORKING_DIRECTORY ${CATKIN_DEVEL_PREFIX}/arsdk
   COMMAND curl -s https://storage.googleapis.com/git-repo-downloads/repo > ./repo
   COMMAND chmod a+x ./repo
-  COMMAND echo "y" | ./repo init -u https://github.com/Parrot-Developers/arsdk_manifests.git -b 2930cc7f7a79173d51c1fc167475fa9fa6650def -m release.xml
+  COMMAND echo "y" | ./repo init -u https://github.com/Parrot-Developers/arsdk_manifests.git -b ${ARSDK_MANIFEST_HASH} -m release.xml
   COMMAND ./repo sync
   # TODO
-  COMMAND ./build.sh -p Unix-base -t build-sdk || xterm -e ./build.sh -p Unix-base -t build-sdk
+  COMMAND ./build.sh -p arsdk-native -t build-sdk -j || xterm -e ./build.sh -p arsdk-native -t build-sdk -j
 )
 add_dependencies(ARSDKBuildUtils ARSDK_MKDIR)
-set(ARDRONESDK3_PATH "${CATKIN_DEVEL_PREFIX}/arsdk/out/Unix-base/staging/usr")
+set(ARDRONESDK3_PATH "${CATKIN_DEVEL_PREFIX}/arsdk/out/arsdk-native/staging/usr")
 
 include_directories(
   ${catkin_INCLUDE_DIRS}
