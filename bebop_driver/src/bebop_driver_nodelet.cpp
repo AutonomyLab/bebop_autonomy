@@ -90,6 +90,8 @@ void BebopDriverNodelet::onInit()
   const bool param_reset_settings = private_nh.param("reset_settings", false);
   const std::string& param_camera_info_url = private_nh.param<std::string>("camera_info_url", "");
   const std::string& param_bebop_ip = private_nh.param<std::string>("bebop_ip", "192.168.42.1");
+  const int param_bebop_discovery_port = private_nh.param<int>("bebop_discovery_port", 44444);
+  const int param_bebop_d2c_port = private_nh.param<int>("bebop_d2c_port", 43210);  
 
   param_camera_frame_id_ = private_nh.param<std::string>("camera_frame_id", "camera_optical");
   param_odom_frame_id_ = private_nh.param<std::string>("odom_frame_id", "odom");
@@ -99,7 +101,10 @@ void BebopDriverNodelet::onInit()
   NODELET_INFO("Connecting to Bebop ...");
   try
   {
-    bebop_ptr_->Connect(nh, private_nh, param_bebop_ip);
+    NODELET_INFO( "      Bebop ip: %s", param_bebop_ip.c_str() );
+    NODELET_INFO( "Discovery port: %i", param_bebop_discovery_port );
+    NODELET_INFO( "      d2c port: %i", param_bebop_d2c_port );
+    bebop_ptr_->Connect(nh, private_nh, param_bebop_ip, param_bebop_discovery_port, param_bebop_d2c_port);
 
     if (param_reset_settings)
     {
