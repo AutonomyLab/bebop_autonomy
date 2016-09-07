@@ -12,4 +12,17 @@ catkin_package(
  CATKIN_DEPENDS bebop_msgs
 )
 
-# TODO: Install Rules
+#############
+## Install ##
+#############
+
+# Copy launch files
+install(DIRECTORY launch/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
+  FILES_MATCHING PATTERN "*.launch"
+)
+
+# Copy config files
+install(DIRECTORY config/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/config
+)
