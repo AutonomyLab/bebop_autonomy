@@ -8,4 +8,18 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package()
 
 # TODO: Tests
-# TODO: Install Rules
+
+#############
+## Install ##
+#############
+
+# Copy launch files
+install(DIRECTORY launch/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
+  FILES_MATCHING PATTERN "*.launch"
+)
+
+# Copy resources
+install(DIRECTORY urdf/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/urdf
+)
