@@ -156,8 +156,9 @@ def today():
 
 def generate_states(xml_filename):
     xml_url = get_xml_url(xml_filename)
-    project = xml_filename.split("_")[0]
+    project = xml_filename.split(".")[0]
 
+    logging.info("XML Filename: %s" % (xml_filename, ))
     logging.info("Fetching source XML file for project %s " % (project, ))
     logging.info("URL: %s" % (xml_url, ))
     xml = load_from_url(xml_url)
@@ -191,13 +192,18 @@ def generate_states(xml_filename):
             # .msg
             msg_name = cap_word(project) + cl.attrib["name"] + cmd.attrib["name"]
 
+            comment_el = cmd.find("comment")
+            msg_file_comment = ""
+            if not comment_el is None:
+                msg_file_comment = comment_el.attrib["desc"]
+
             d = dict({
                 "url": xml_url,
                 "msg_filename": msg_name,
                 "date": today(),
                 "generator": generator,
                 "generator_git_hash": generator_git_hash,
-                "msg_file_comment": strip_text(cmd.text),
+                "msg_file_comment": strip_text(msg_file_comment),
                 "msg_field": list()
             })
 
@@ -247,7 +253,7 @@ def generate_states(xml_filename):
             # C++ class
             d_cpp["cpp_class"].append({
                 "cpp_class_name": cpp_class_name,
-                "cpp_class_comment": strip_text(cmd.text),
+                "cpp_class_comment": strip_text(msg_file_comment),
                 "cpp_class_instance_name": cpp_class_instance_name,
                 "cpp_class_param_name": cpp_class_param_name,
                 "topic_name": topic_name,
@@ -285,7 +291,7 @@ def generate_states(xml_filename):
 
 def generate_settings(xml_filename):
     xml_url = get_xml_url(xml_filename)
-    project = xml_filename.split("_")[0]
+    project = xml_filename.split(".")[0]
 
     logging.info("Fetching source XML file for project %s " % (project, ))
     logging.info("URL: %s" % (xml_url, ))
@@ -335,9 +341,16 @@ def generate_settings(xml_filename):
             if strip_text(cmd.attrib["name"]) in blacklist_settings_keys:
                 logging.warning("Key %s is blacklisted!" % (cmd.attrib["name"], ))
                 continue
+
+            comment_el = cmd.find("comment")
+            cmd_comment = ""
+            if not comment_el is None:
+                cmd_comment = comment_el.attrib["desc"]
+
+
             # .cfg
             cfg_cmd_d = {
-                "cfg_cmd_comment": strip_text(cmd.text),
+                "cfg_cmd_comment": strip_text(cmd_comment),
                 "cfg_arg": list()
             }
 
@@ -350,7 +363,7 @@ def generate_settings(xml_filename):
                 {"project": project.upper(), "class": cl.attrib["name"].upper() + "STATE", "cmd": cmd.attrib["name"].upper() + "CHANGED"} )
             # cmd.attrib["name"] and cl.attrib["name"] are already in CamelCase
             cpp_class_name = cl.attrib["name"] + cmd.attrib["name"]
-            cpp_class_comment = strip_text(cmd.text)
+            cpp_class_comment = strip_text(cmd_comment)
             cpp_class_instance_name = project.lower() + "_" + cl.attrib["name"].lower() + "_" + cmd.attrib["name"].lower() + "_ptr";
             cpp_class_params = list()
 
