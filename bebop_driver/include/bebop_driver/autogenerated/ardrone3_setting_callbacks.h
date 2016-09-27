@@ -341,7 +341,7 @@ public:
     ::boost::lock_guard<boost::mutex> lock(mutex_);
 
     arg = NULL;
-    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MAXDISTANCECHANGED_VALUE, arg);
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_MAXDISTANCECHANGED_CURRENT, arg);
     if (arg)
     {
       PilotingSettingsMaxDistanceValue_bebop_sent_ = true;
@@ -501,7 +501,7 @@ public:
     ::boost::lock_guard<boost::mutex> lock(mutex_);
 
     arg = NULL;
-    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_BANKEDTURNCHANGED_VALUE, arg);
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_BANKEDTURNCHANGED_STATE, arg);
     if (arg)
     {
       PilotingSettingsBankedTurnValue_bebop_sent_ = true;
@@ -741,7 +741,7 @@ public:
     ::boost::lock_guard<boost::mutex> lock(mutex_);
 
     arg = NULL;
-    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGRADIUSCHANGED_VALUE, arg);
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGRADIUSCHANGED_CURRENT, arg);
     if (arg)
     {
       PilotingSettingsCirclingRadiusValue_bebop_sent_ = true;
@@ -821,7 +821,7 @@ public:
     ::boost::lock_guard<boost::mutex> lock(mutex_);
 
     arg = NULL;
-    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGALTITUDECHANGED_VALUE, arg);
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSETTINGSSTATE_CIRCLINGALTITUDECHANGED_CURRENT, arg);
     if (arg)
     {
       PilotingSettingsCirclingAltitudeValue_bebop_sent_ = true;
