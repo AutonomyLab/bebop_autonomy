@@ -4,7 +4,7 @@
 # To check upstream commit hash, refer to last_build_info file
 # Do not modify this file by hand. Check scripts/meta folder for generator files.
 #
-# SDK Comment: Availability of the return home types in a map : for each type other args will be sent by the drone
+# SDK Comment: Home type availability.
 
 Header header
 

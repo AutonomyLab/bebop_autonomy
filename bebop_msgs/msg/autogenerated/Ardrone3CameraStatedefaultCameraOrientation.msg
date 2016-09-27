@@ -4,7 +4,7 @@
 # To check upstream commit hash, refer to last_build_info file
 # Do not modify this file by hand. Check scripts/meta folder for generator files.
 #
-# SDK Comment: Orientation of the camera center. This is the value to send when we want to center the camera.
+# SDK Comment: Orientation of the center of the camera.\n This is the value to send when you want to center the camera.
 
 Header header
 
