@@ -12,9 +12,9 @@ import sys
 import subprocess
 import urllib2
 
-# SDK 3.9.1: https://github.com/Parrot-Developers/arsdk_manifests/blob/40d5d08ff37a43b0b2deb641cc899d5356163db7/release.xml
+# SDK 3.10.1: https://github.com/Parrot-Developers/arsdk_manifests/blob/149b0e0fe374c12db48c8beaed167a4a5555a370/release.xml
 LIBARCOMMANDS_GIT_OWNER = "Parrot-Developers"
-LIBARCOMMANDS_GIT_HASH = "7b5cf7a8009278cf634ee33d5c2ed5dd8e573eb4"
+LIBARCOMMANDS_GIT_HASH = "d0c8b256a8592b25a551f3ba742c58ae3da2f93a"
 
 # From XML types to ROS primitive types
 ROS_TYPE_MAP = {
@@ -481,10 +481,10 @@ def main():
     # Setup stuff
     logging.basicConfig(level="INFO")
 
-    generate_states("common_commands.xml")
-    generate_states("ARDrone3_commands.xml")
+    generate_states("common.xml")
+    generate_states("ardrone3.xml")
     #generate_settings("common_commands.xml")
-    generate_settings("ARDrone3_commands.xml")
+    generate_settings("ardrone3.xml")
 
     generator = os.path.basename(__file__)
     generator_git_hash = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).strip()
