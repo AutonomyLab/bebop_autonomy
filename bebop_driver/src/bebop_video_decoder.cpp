@@ -105,8 +105,8 @@ bool VideoDecoder::InitCodec(const uint32_t width, const uint32_t height)
 
     const uint32_t num_bytes = avpicture_get_size(PIX_FMT_RGB24, codec_ctx_ptr_->width, codec_ctx_ptr_->height);
     {
-       frame_ptr_ = avcodec_alloc_frame();
-       frame_rgb_ptr_ = avcodec_alloc_frame();
+       frame_ptr_ = av_frame_alloc();
+       frame_rgb_ptr_ = av_frame_alloc();
 
        ThrowOnCondition(!frame_ptr_ || !frame_rgb_ptr_, "Can not allocate memory for frames!");
 
