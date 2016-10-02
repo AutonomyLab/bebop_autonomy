@@ -545,7 +545,7 @@ void Bebop::Move(const double &roll, const double &pitch, const double &gaz_spee
 void Bebop::MoveCamera(const double &tilt, const double &pan)
 {
   ThrowOnInternalError("Camera Move Failure");
-  ThrowOnCtrlError(device_controller_ptr_->aRDrone3->sendCameraOrientation(
+  ThrowOnCtrlError(device_controller_ptr_->aRDrone3->setCameraOrientation(
                      device_controller_ptr_->aRDrone3,
                      static_cast<int8_t>(tilt),
                      static_cast<int8_t>(pan)));
