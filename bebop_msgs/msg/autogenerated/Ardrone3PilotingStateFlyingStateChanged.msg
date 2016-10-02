@@ -4,7 +4,7 @@
 # To check upstream commit hash, refer to last_build_info file
 # Do not modify this file by hand. Check scripts/meta folder for generator files.
 #
-# SDK Comment: Drone flying state changed
+# SDK Comment: Flying state.
 
 Header header
 
@@ -16,4 +16,5 @@ uint8 state_flying=3  # Flying state
 uint8 state_landing=4  # Landing state
 uint8 state_emergency=5  # Emergency state
 uint8 state_usertakeoff=6  # User take off state. Waiting for user action to take off.
+uint8 state_motor_ramping=7  # Motor ramping state (for fixed wings).
 uint8 state

@@ -4,7 +4,7 @@
 # To check upstream commit hash, refer to last_build_info file
 # Do not modify this file by hand. Check scripts/meta folder for generator files.
 #
-# SDK Comment: List of animations state.
+# SDK Comment: Paramaterless animations state list.
 
 Header header
 
@@ -22,6 +22,10 @@ uint8 anim_SPIN_TO_POSTURE=9  # Spin that end in standing posture, or in jumper 
 uint8 anim_SPIRAL=10  # Spiral animation.
 uint8 anim_SLALOM=11  # Slalom animation.
 uint8 anim_BOOST=12  # Boost animation.
+uint8 anim_LOOPING=13  # Make a looping. (Only for WingX)
+uint8 anim_BARREL_ROLL_180_RIGHT=14  # Make a barrel roll of 180 degree turning on right. (Only for WingX)
+uint8 anim_BARREL_ROLL_180_LEFT=15  # Make a barrel roll of 180 degree turning on left. (Only for WingX)
+uint8 anim_BACKSWAP=16  # Put the drone upside down. (Only for WingX)
 uint8 anim
 # State of the animation
 uint8 state_stopped=0  # animation is stopped

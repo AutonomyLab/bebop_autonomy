@@ -49,6 +49,11 @@ extern "C"
 #define AV_PIX_FMT_YUV420P PIX_FMT_YUV420P
 #endif
 
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(55,28,1)
+#define av_frame_alloc  avcodec_alloc_frame
+#define av_frame_free avcodec_free_frame
+#endif
+
 namespace bebop_driver
 {
 
@@ -73,8 +78,10 @@ private:
   std::vector<uint8_t> codec_data_;
 
   static void ThrowOnCondition(const bool cond, const std::string& message);
-  bool InitCodec(const uint32_t width, const uint32_t height);
-  void Cleanup();
+  bool InitCodec();
+  bool ReallocateBuffers();
+  void CleanupBuffers();
+  void Reset();
 
   void ConvertFrameToRGB();
 

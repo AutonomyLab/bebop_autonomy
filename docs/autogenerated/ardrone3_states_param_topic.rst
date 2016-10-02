@@ -1,70 +1,78 @@
- .. ARDrone3_states_param_topic.rst
- .. auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/7b5cf7a8009278cf634ee33d5c2ed5dd8e573eb4/Xml/ARDrone3_commands.xml
+ .. ardrone3_states_param_topic.rst
+ .. auto-generated from https://raw.githubusercontent.com/Parrot-Developers/arsdk-xml/d0c8b256a8592b25a551f3ba742c58ae3da2f93a/xml/ardrone3.xml
  .. Do not modify this file by hand. Check scripts/meta folder for generator files.
 
 *****************************************************************************************
-List of ARDrone3 States and Corresponding ROS Parameters and Topics
+List of ardrone3 States and Corresponding ROS Parameters and Topics
 *****************************************************************************************
 
 `Ardrone3MediaRecordStatePictureStateChanged`_
-  @deprecated State of picture recording
+  Picture state.
 `Ardrone3MediaRecordStateVideoStateChanged`_
-  @deprecated State of video recording
+  Picture record state.
 `Ardrone3MediaRecordStatePictureStateChangedV2`_
-  State of device picture recording changed
+  Picture state.
 `Ardrone3MediaRecordStateVideoStateChangedV2`_
-  State of device video recording changed
+  Video record state.
+`Ardrone3MediaRecordStateVideoResolutionState`_
+  Video resolution.\n Informs about streaming and recording video resolutions.\n Note that this is only an indication about what the resolution should be. To know the real resolution, you should get it from the frame.
 `Ardrone3PilotingStateFlatTrimChanged`_
-  Drone acknowledges that flat trim was correctly processed
+  Drone acknowledges that flat trim was correctly processed.
 `Ardrone3PilotingStateFlyingStateChanged`_
-  Drone flying state changed
+  Flying state.
 `Ardrone3PilotingStateAlertStateChanged`_
-  Drone alert state changed
+  Alert state.
 `Ardrone3PilotingStateNavigateHomeStateChanged`_
-  Navigating home state
+  Return home state.\n Availability is related to gps fix, magnetometer calibration.
 `Ardrone3PilotingStatePositionChanged`_
-  Drone position changed
+  Drones position changed.
 `Ardrone3PilotingStateSpeedChanged`_
-  Drone speed changed
+  Drones speed changed.\n Expressed in the drones referential.
 `Ardrone3PilotingStateAttitudeChanged`_
-  Drone attitude changed
+  Drones attitude changed.
 `Ardrone3PilotingStateAutoTakeOffModeChanged`_
-  @deprecated Status of the drone3 automatic take off mode
+  Auto takeoff mode
 `Ardrone3PilotingStateAltitudeChanged`_
-  Drone altitude changed
+  Drones altitude changed.\n The altitude reported is the altitude above the take off point.\n To get the altitude above sea level, see [PositionChanged](#1-4-4).
+`Ardrone3PilotingStateGpsLocationChanged`_
+  Drones location changed.\n This event is meant to replace [PositionChanged](#1-4-4).
+`Ardrone3PilotingStateLandingStateChanged`_
+  Landing state.\n Only available for fixed wings (which have two landing modes).
 `Ardrone3NetworkStateWifiScanListChanged`_
-  One scanning result found
+  Wifi scan results.\n Please note that the list is not complete until you receive the event [WifiScanEnded](#1-14-1).
 `Ardrone3NetworkStateAllWifiScanChanged`_
-  State sent when all scanning result sent
+  Wifi scan ended.\n When receiving this event, the list of [WifiScanResults](#1-14-0) is complete.
 `Ardrone3NetworkStateWifiAuthChannelListChanged`_
-  Notify of an Authorized Channel.
+  Available wifi channels.\n Please note that the list is not complete until you receive the event [AvailableWifiChannelsCompleted](#1-14-3).
 `Ardrone3NetworkStateAllWifiAuthChannelChanged`_
-  Notify the end of the list of Authorized wifi Channel.
+  Available wifi channels completed.\n When receiving this event, the list of [AvailableWifiChannels](#1-14-2) is complete.
 `Ardrone3MediaStreamingStateVideoEnableChanged`_
-  Return video streaming status.
+  Video stream state.
+`Ardrone3MediaStreamingStateVideoStreamModeChanged`_
+  
 `Ardrone3CameraStateOrientation`_
-  Camera orientation
+  Camera orientation.
 `Ardrone3CameraStatedefaultCameraOrientation`_
-  Orientation of the camera center. This is the value to send when we want to center the camera.
+  Orientation of the center of the camera.\n This is the value to send when you want to center the camera.
 `Ardrone3AntiflickeringStateelectricFrequencyChanged`_
-  Electric frequency of the country determined by the position of the controller
+  Electric frequency.\n This piece of information is used for the antiflickering when the [AntiflickeringMode](#1-30-1) is set to *auto*.
 `Ardrone3AntiflickeringStatemodeChanged`_
-  Anti flickering mode
+  Antiflickering mode.
 `Ardrone3GPSStateNumberOfSatelliteChanged`_
-  The number of satellite used to compute the gps position
+  Number of GPS satellites.
 `Ardrone3GPSStateHomeTypeAvailabilityChanged`_
-  Availability of the return home types in a map : for each type other args will be sent by the drone
+  Home type availability.
 `Ardrone3GPSStateHomeTypeChosenChanged`_
-  The return home type chosen
+  Home type.\n This choice is made by the drone, according to the [PreferredHomeType](#1-24-4) and the [HomeTypeAvailability](#1-31-1). The drone will choose the type matching with the user preference only if this type is available.
 `Ardrone3PROStateFeatures`_
-  Features enabled
+  Pro features.
 
 Ardrone3MediaRecordStatePictureStateChanged
 ####################################################################################
-@deprecated State of picture recording
+Picture state.
 
 - Parameter: ``~states/enable_mediarecordstate_picturestatechanged``
-- Topic: ``states/ARDrone3/MediaRecordState/PictureStateChanged``
+- Topic: ``states/ardrone3/MediaRecordState/PictureStateChanged``
 - Message type: ``bebop_msgs::Ardrone3MediaRecordStatePictureStateChanged``
 
 .. literalinclude::
@@ -76,10 +84,10 @@ Ardrone3MediaRecordStatePictureStateChanged
 
 Ardrone3MediaRecordStateVideoStateChanged
 ####################################################################################
-@deprecated State of video recording
+Picture record state.
 
 - Parameter: ``~states/enable_mediarecordstate_videostatechanged``
-- Topic: ``states/ARDrone3/MediaRecordState/VideoStateChanged``
+- Topic: ``states/ardrone3/MediaRecordState/VideoStateChanged``
 - Message type: ``bebop_msgs::Ardrone3MediaRecordStateVideoStateChanged``
 
 .. literalinclude::
@@ -91,10 +99,10 @@ Ardrone3MediaRecordStateVideoStateChanged
 
 Ardrone3MediaRecordStatePictureStateChangedV2
 ####################################################################################
-State of device picture recording changed
+Picture state.
 
 - Parameter: ``~states/enable_mediarecordstate_picturestatechangedv2``
-- Topic: ``states/ARDrone3/MediaRecordState/PictureStateChangedV2``
+- Topic: ``states/ardrone3/MediaRecordState/PictureStateChangedV2``
 - Message type: ``bebop_msgs::Ardrone3MediaRecordStatePictureStateChangedV2``
 
 .. literalinclude::
@@ -106,10 +114,10 @@ State of device picture recording changed
 
 Ardrone3MediaRecordStateVideoStateChangedV2
 ####################################################################################
-State of device video recording changed
+Video record state.
 
 - Parameter: ``~states/enable_mediarecordstate_videostatechangedv2``
-- Topic: ``states/ARDrone3/MediaRecordState/VideoStateChangedV2``
+- Topic: ``states/ardrone3/MediaRecordState/VideoStateChangedV2``
 - Message type: ``bebop_msgs::Ardrone3MediaRecordStateVideoStateChangedV2``
 
 .. literalinclude::
@@ -119,12 +127,27 @@ State of device video recording changed
   :caption: Ardrone3MediaRecordStateVideoStateChangedV2.msg
   :name: Ardrone3MediaRecordStateVideoStateChangedV2_msg
 
+Ardrone3MediaRecordStateVideoResolutionState
+####################################################################################
+Video resolution.\n Informs about streaming and recording video resolutions.\n Note that this is only an indication about what the resolution should be. To know the real resolution, you should get it from the frame.
+
+- Parameter: ``~states/enable_mediarecordstate_videoresolutionstate``
+- Topic: ``states/ardrone3/MediaRecordState/VideoResolutionState``
+- Message type: ``bebop_msgs::Ardrone3MediaRecordStateVideoResolutionState``
+
+.. literalinclude::
+  ../../bebop_msgs/msg/autogenerated/Ardrone3MediaRecordStateVideoResolutionState.msg
+  :lines: 8-
+  :language: python
+  :caption: Ardrone3MediaRecordStateVideoResolutionState.msg
+  :name: Ardrone3MediaRecordStateVideoResolutionState_msg
+
 Ardrone3PilotingStateFlatTrimChanged
 ####################################################################################
-Drone acknowledges that flat trim was correctly processed
+Drone acknowledges that flat trim was correctly processed.
 
 - Parameter: ``~states/enable_pilotingstate_flattrimchanged``
-- Topic: ``states/ARDrone3/PilotingState/FlatTrimChanged``
+- Topic: ``states/ardrone3/PilotingState/FlatTrimChanged``
 - Message type: ``bebop_msgs::Ardrone3PilotingStateFlatTrimChanged``
 
 .. literalinclude::
@@ -136,10 +159,10 @@ Drone acknowledges that flat trim was correctly processed
 
 Ardrone3PilotingStateFlyingStateChanged
 ####################################################################################
-Drone flying state changed
+Flying state.
 
 - Parameter: ``~states/enable_pilotingstate_flyingstatechanged``
-- Topic: ``states/ARDrone3/PilotingState/FlyingStateChanged``
+- Topic: ``states/ardrone3/PilotingState/FlyingStateChanged``
 - Message type: ``bebop_msgs::Ardrone3PilotingStateFlyingStateChanged``
 
 .. literalinclude::
@@ -151,10 +174,10 @@ Drone flying state changed
 
 Ardrone3PilotingStateAlertStateChanged
 ####################################################################################
-Drone alert state changed
+Alert state.
 
 - Parameter: ``~states/enable_pilotingstate_alertstatechanged``
-- Topic: ``states/ARDrone3/PilotingState/AlertStateChanged``
+- Topic: ``states/ardrone3/PilotingState/AlertStateChanged``
 - Message type: ``bebop_msgs::Ardrone3PilotingStateAlertStateChanged``
 
 .. literalinclude::
@@ -166,10 +189,10 @@ Drone alert state changed
 
 Ardrone3PilotingStateNavigateHomeStateChanged
 ####################################################################################
-Navigating home state
+Return home state.\n Availability is related to gps fix, magnetometer calibration.
 
 - Parameter: ``~states/enable_pilotingstate_navigatehomestatechanged``
-- Topic: ``states/ARDrone3/PilotingState/NavigateHomeStateChanged``
+- Topic: ``states/ardrone3/PilotingState/NavigateHomeStateChanged``
 - Message type: ``bebop_msgs::Ardrone3PilotingStateNavigateHomeStateChanged``
 
 .. literalinclude::
@@ -181,10 +204,10 @@ Navigating home state
 
 Ardrone3PilotingStatePositionChanged
 ####################################################################################
-Drone position changed
+Drones position changed.
 
 - Parameter: ``~states/enable_pilotingstate_positionchanged``
-- Topic: ``states/ARDrone3/PilotingState/PositionChanged``
+- Topic: ``states/ardrone3/PilotingState/PositionChanged``
 - Message type: ``bebop_msgs::Ardrone3PilotingStatePositionChanged``
 
 .. literalinclude::
@@ -196,10 +219,10 @@ Drone position changed
 
 Ardrone3PilotingStateSpeedChanged
 ####################################################################################
-Drone speed changed
+Drones speed changed.\n Expressed in the drones referential.
 
 - Parameter: ``~states/enable_pilotingstate_speedchanged``
-- Topic: ``states/ARDrone3/PilotingState/SpeedChanged``
+- Topic: ``states/ardrone3/PilotingState/SpeedChanged``
 - Message type: ``bebop_msgs::Ardrone3PilotingStateSpeedChanged``
 
 .. literalinclude::
@@ -211,10 +234,10 @@ Drone speed changed
 
 Ardrone3PilotingStateAttitudeChanged
 ####################################################################################
-Drone attitude changed
+Drones attitude changed.
 
 - Parameter: ``~states/enable_pilotingstate_attitudechanged``
-- Topic: ``states/ARDrone3/PilotingState/AttitudeChanged``
+- Topic: ``states/ardrone3/PilotingState/AttitudeChanged``
 - Message type: ``bebop_msgs::Ardrone3PilotingStateAttitudeChanged``
 
 .. literalinclude::
@@ -226,10 +249,10 @@ Drone attitude changed
 
 Ardrone3PilotingStateAutoTakeOffModeChanged
 ####################################################################################
-@deprecated Status of the drone3 automatic take off mode
+Auto takeoff mode
 
 - Parameter: ``~states/enable_pilotingstate_autotakeoffmodechanged``
-- Topic: ``states/ARDrone3/PilotingState/AutoTakeOffModeChanged``
+- Topic: ``states/ardrone3/PilotingState/AutoTakeOffModeChanged``
 - Message type: ``bebop_msgs::Ardrone3PilotingStateAutoTakeOffModeChanged``
 
 .. literalinclude::
@@ -241,10 +264,10 @@ Ardrone3PilotingStateAutoTakeOffModeChanged
 
 Ardrone3PilotingStateAltitudeChanged
 ####################################################################################
-Drone altitude changed
+Drones altitude changed.\n The altitude reported is the altitude above the take off point.\n To get the altitude above sea level, see [PositionChanged](#1-4-4).
 
 - Parameter: ``~states/enable_pilotingstate_altitudechanged``
-- Topic: ``states/ARDrone3/PilotingState/AltitudeChanged``
+- Topic: ``states/ardrone3/PilotingState/AltitudeChanged``
 - Message type: ``bebop_msgs::Ardrone3PilotingStateAltitudeChanged``
 
 .. literalinclude::
@@ -254,12 +277,42 @@ Drone altitude changed
   :caption: Ardrone3PilotingStateAltitudeChanged.msg
   :name: Ardrone3PilotingStateAltitudeChanged_msg
 
+Ardrone3PilotingStateGpsLocationChanged
+####################################################################################
+Drones location changed.\n This event is meant to replace [PositionChanged](#1-4-4).
+
+- Parameter: ``~states/enable_pilotingstate_gpslocationchanged``
+- Topic: ``states/ardrone3/PilotingState/GpsLocationChanged``
+- Message type: ``bebop_msgs::Ardrone3PilotingStateGpsLocationChanged``
+
+.. literalinclude::
+  ../../bebop_msgs/msg/autogenerated/Ardrone3PilotingStateGpsLocationChanged.msg
+  :lines: 8-
+  :language: python
+  :caption: Ardrone3PilotingStateGpsLocationChanged.msg
+  :name: Ardrone3PilotingStateGpsLocationChanged_msg
+
+Ardrone3PilotingStateLandingStateChanged
+####################################################################################
+Landing state.\n Only available for fixed wings (which have two landing modes).
+
+- Parameter: ``~states/enable_pilotingstate_landingstatechanged``
+- Topic: ``states/ardrone3/PilotingState/LandingStateChanged``
+- Message type: ``bebop_msgs::Ardrone3PilotingStateLandingStateChanged``
+
+.. literalinclude::
+  ../../bebop_msgs/msg/autogenerated/Ardrone3PilotingStateLandingStateChanged.msg
+  :lines: 8-
+  :language: python
+  :caption: Ardrone3PilotingStateLandingStateChanged.msg
+  :name: Ardrone3PilotingStateLandingStateChanged_msg
+
 Ardrone3NetworkStateWifiScanListChanged
 ####################################################################################
-One scanning result found
+Wifi scan results.\n Please note that the list is not complete until you receive the event [WifiScanEnded](#1-14-1).
 
 - Parameter: ``~states/enable_networkstate_wifiscanlistchanged``
-- Topic: ``states/ARDrone3/NetworkState/WifiScanListChanged``
+- Topic: ``states/ardrone3/NetworkState/WifiScanListChanged``
 - Message type: ``bebop_msgs::Ardrone3NetworkStateWifiScanListChanged``
 
 .. literalinclude::
@@ -271,10 +324,10 @@ One scanning result found
 
 Ardrone3NetworkStateAllWifiScanChanged
 ####################################################################################
-State sent when all scanning result sent
+Wifi scan ended.\n When receiving this event, the list of [WifiScanResults](#1-14-0) is complete.
 
 - Parameter: ``~states/enable_networkstate_allwifiscanchanged``
-- Topic: ``states/ARDrone3/NetworkState/AllWifiScanChanged``
+- Topic: ``states/ardrone3/NetworkState/AllWifiScanChanged``
 - Message type: ``bebop_msgs::Ardrone3NetworkStateAllWifiScanChanged``
 
 .. literalinclude::
@@ -286,10 +339,10 @@ State sent when all scanning result sent
 
 Ardrone3NetworkStateWifiAuthChannelListChanged
 ####################################################################################
-Notify of an Authorized Channel.
+Available wifi channels.\n Please note that the list is not complete until you receive the event [AvailableWifiChannelsCompleted](#1-14-3).
 
 - Parameter: ``~states/enable_networkstate_wifiauthchannellistchanged``
-- Topic: ``states/ARDrone3/NetworkState/WifiAuthChannelListChanged``
+- Topic: ``states/ardrone3/NetworkState/WifiAuthChannelListChanged``
 - Message type: ``bebop_msgs::Ardrone3NetworkStateWifiAuthChannelListChanged``
 
 .. literalinclude::
@@ -301,10 +354,10 @@ Notify of an Authorized Channel.
 
 Ardrone3NetworkStateAllWifiAuthChannelChanged
 ####################################################################################
-Notify the end of the list of Authorized wifi Channel.
+Available wifi channels completed.\n When receiving this event, the list of [AvailableWifiChannels](#1-14-2) is complete.
 
 - Parameter: ``~states/enable_networkstate_allwifiauthchannelchanged``
-- Topic: ``states/ARDrone3/NetworkState/AllWifiAuthChannelChanged``
+- Topic: ``states/ardrone3/NetworkState/AllWifiAuthChannelChanged``
 - Message type: ``bebop_msgs::Ardrone3NetworkStateAllWifiAuthChannelChanged``
 
 .. literalinclude::
@@ -316,10 +369,10 @@ Notify the end of the list of Authorized wifi Channel.
 
 Ardrone3MediaStreamingStateVideoEnableChanged
 ####################################################################################
-Return video streaming status.
+Video stream state.
 
 - Parameter: ``~states/enable_mediastreamingstate_videoenablechanged``
-- Topic: ``states/ARDrone3/MediaStreamingState/VideoEnableChanged``
+- Topic: ``states/ardrone3/MediaStreamingState/VideoEnableChanged``
 - Message type: ``bebop_msgs::Ardrone3MediaStreamingStateVideoEnableChanged``
 
 .. literalinclude::
@@ -329,12 +382,27 @@ Return video streaming status.
   :caption: Ardrone3MediaStreamingStateVideoEnableChanged.msg
   :name: Ardrone3MediaStreamingStateVideoEnableChanged_msg
 
+Ardrone3MediaStreamingStateVideoStreamModeChanged
+####################################################################################
+
+
+- Parameter: ``~states/enable_mediastreamingstate_videostreammodechanged``
+- Topic: ``states/ardrone3/MediaStreamingState/VideoStreamModeChanged``
+- Message type: ``bebop_msgs::Ardrone3MediaStreamingStateVideoStreamModeChanged``
+
+.. literalinclude::
+  ../../bebop_msgs/msg/autogenerated/Ardrone3MediaStreamingStateVideoStreamModeChanged.msg
+  :lines: 8-
+  :language: python
+  :caption: Ardrone3MediaStreamingStateVideoStreamModeChanged.msg
+  :name: Ardrone3MediaStreamingStateVideoStreamModeChanged_msg
+
 Ardrone3CameraStateOrientation
 ####################################################################################
-Camera orientation
+Camera orientation.
 
 - Parameter: ``~states/enable_camerastate_orientation``
-- Topic: ``states/ARDrone3/CameraState/Orientation``
+- Topic: ``states/ardrone3/CameraState/Orientation``
 - Message type: ``bebop_msgs::Ardrone3CameraStateOrientation``
 
 .. literalinclude::
@@ -346,10 +414,10 @@ Camera orientation
 
 Ardrone3CameraStatedefaultCameraOrientation
 ####################################################################################
-Orientation of the camera center. This is the value to send when we want to center the camera.
+Orientation of the center of the camera.\n This is the value to send when you want to center the camera.
 
 - Parameter: ``~states/enable_camerastate_defaultcameraorientation``
-- Topic: ``states/ARDrone3/CameraState/defaultCameraOrientation``
+- Topic: ``states/ardrone3/CameraState/defaultCameraOrientation``
 - Message type: ``bebop_msgs::Ardrone3CameraStatedefaultCameraOrientation``
 
 .. literalinclude::
@@ -361,10 +429,10 @@ Orientation of the camera center. This is the value to send when we want to cent
 
 Ardrone3AntiflickeringStateelectricFrequencyChanged
 ####################################################################################
-Electric frequency of the country determined by the position of the controller
+Electric frequency.\n This piece of information is used for the antiflickering when the [AntiflickeringMode](#1-30-1) is set to *auto*.
 
 - Parameter: ``~states/enable_antiflickeringstate_electricfrequencychanged``
-- Topic: ``states/ARDrone3/AntiflickeringState/electricFrequencyChanged``
+- Topic: ``states/ardrone3/AntiflickeringState/electricFrequencyChanged``
 - Message type: ``bebop_msgs::Ardrone3AntiflickeringStateelectricFrequencyChanged``
 
 .. literalinclude::
@@ -376,10 +444,10 @@ Electric frequency of the country determined by the position of the controller
 
 Ardrone3AntiflickeringStatemodeChanged
 ####################################################################################
-Anti flickering mode
+Antiflickering mode.
 
 - Parameter: ``~states/enable_antiflickeringstate_modechanged``
-- Topic: ``states/ARDrone3/AntiflickeringState/modeChanged``
+- Topic: ``states/ardrone3/AntiflickeringState/modeChanged``
 - Message type: ``bebop_msgs::Ardrone3AntiflickeringStatemodeChanged``
 
 .. literalinclude::
@@ -391,10 +459,10 @@ Anti flickering mode
 
 Ardrone3GPSStateNumberOfSatelliteChanged
 ####################################################################################
-The number of satellite used to compute the gps position
+Number of GPS satellites.
 
 - Parameter: ``~states/enable_gpsstate_numberofsatellitechanged``
-- Topic: ``states/ARDrone3/GPSState/NumberOfSatelliteChanged``
+- Topic: ``states/ardrone3/GPSState/NumberOfSatelliteChanged``
 - Message type: ``bebop_msgs::Ardrone3GPSStateNumberOfSatelliteChanged``
 
 .. literalinclude::
@@ -406,10 +474,10 @@ The number of satellite used to compute the gps position
 
 Ardrone3GPSStateHomeTypeAvailabilityChanged
 ####################################################################################
-Availability of the return home types in a map : for each type other args will be sent by the drone
+Home type availability.
 
 - Parameter: ``~states/enable_gpsstate_hometypeavailabilitychanged``
-- Topic: ``states/ARDrone3/GPSState/HomeTypeAvailabilityChanged``
+- Topic: ``states/ardrone3/GPSState/HomeTypeAvailabilityChanged``
 - Message type: ``bebop_msgs::Ardrone3GPSStateHomeTypeAvailabilityChanged``
 
 .. literalinclude::
@@ -421,10 +489,10 @@ Availability of the return home types in a map : for each type other args will b
 
 Ardrone3GPSStateHomeTypeChosenChanged
 ####################################################################################
-The return home type chosen
+Home type.\n This choice is made by the drone, according to the [PreferredHomeType](#1-24-4) and the [HomeTypeAvailability](#1-31-1). The drone will choose the type matching with the user preference only if this type is available.
 
 - Parameter: ``~states/enable_gpsstate_hometypechosenchanged``
-- Topic: ``states/ARDrone3/GPSState/HomeTypeChosenChanged``
+- Topic: ``states/ardrone3/GPSState/HomeTypeChosenChanged``
 - Message type: ``bebop_msgs::Ardrone3GPSStateHomeTypeChosenChanged``
 
 .. literalinclude::
@@ -436,10 +504,10 @@ The return home type chosen
 
 Ardrone3PROStateFeatures
 ####################################################################################
-Features enabled
+Pro features.
 
 - Parameter: ``~states/enable_prostate_features``
-- Topic: ``states/ARDrone3/PROState/Features``
+- Topic: ``states/ardrone3/PROState/Features``
 - Message type: ``bebop_msgs::Ardrone3PROStateFeatures``
 
 .. literalinclude::
