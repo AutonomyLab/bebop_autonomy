@@ -102,20 +102,19 @@ target_link_libraries(libbebop
 )
 add_dependencies(libbebop ARSDKBuildUtils)
 
+add_dependencies(libbebop ${PROJECT_NAME}_gencfg)
+
 add_library(bebop_driver_nodelet src/bebop_driver_nodelet.cpp)
 target_link_libraries(bebop_driver_nodelet
   ${catkin_LIBRARIES}
   libbebop
 )
-add_dependencies(bebop_driver_nodelet ${PROJECT_NAME}_gencfg)
 
 add_executable(bebop_driver_node src/bebop_driver_node.cpp)
 target_link_libraries(bebop_driver_node
   ${catkin_LIBRARIES}
   libbebop
 )
-add_dependencies(bebop_driver_node ${PROJECT_NAME}_gencfg)
-
 
 #############
 ## Install ##
