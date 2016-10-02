@@ -31,6 +31,7 @@ List of Contributers
 - `Jacob Perron <https://github.com/jacobperron>`_
 
   - `#26 Bebop now follows right-hand rule <https://github.com/AutonomyLab/bebop_autonomy/pull/26>`_
+  - `#57 Add autonomous flight plan capabilities to driver <https://github.com/AutonomyLab/bebop_autonomy/pull/57>`_
 
 - `Jake Bruce <http://www.sfu.ca/~jakeb/>`_
 
@@ -38,6 +39,9 @@ List of Contributers
 
   - `#30 Fixed breaking build due to legac macro usage <https://github.com/AutonomyLab/bebop_autonomy/pull/34>`_
 
+- `Thomas Bamford <https://github.com/thomas-bamford>`_
+
+  - `Added Xbox 360 config file <https://github.com/AutonomyLab/bebop_autonomy/pull/56>`_
 
 Acknowledgments
 ================
