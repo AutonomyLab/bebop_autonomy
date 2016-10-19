@@ -1,5 +1,5 @@
  .. common_states_param_topic.rst
- .. auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/7b5cf7a8009278cf634ee33d5c2ed5dd8e573eb4/Xml/common_commands.xml
+ .. auto-generated from https://raw.githubusercontent.com/Parrot-Developers/arsdk-xml/d0c8b256a8592b25a551f3ba742c58ae3da2f93a/xml/common.xml
  .. Do not modify this file by hand. Check scripts/meta folder for generator files.
 
 *****************************************************************************************
@@ -7,79 +7,89 @@ List of common States and Corresponding ROS Parameters and Topics
 *****************************************************************************************
 
 `CommonCommonStateAllStatesChanged`_
-  State sent when all product states has been sent.
+  All states have been sent.\n\n **Please note that you should not care about this event if you are using the libARController API as this library is handling the connection process for you.**
 `CommonCommonStateBatteryStateChanged`_
-  Battery state
+  Battery state.
 `CommonCommonStateMassStorageStateListChanged`_
-  Mass storage state list
+  Mass storage state list.
 `CommonCommonStateMassStorageInfoStateListChanged`_
-  Mass storage info state list
+  Mass storage info state list.
 `CommonCommonStateCurrentDateChanged`_
-  Current date state
+  Date changed.\n\n **Please note that you should not care about this event if you are using the libARController API as this library is handling the connection process for you.**
 `CommonCommonStateCurrentTimeChanged`_
-  Current time state
+  Time changed.\n\n **Please note that you should not care about this event if you are using the libARController API as this library is handling the connection process for you.**
 `CommonCommonStateMassStorageInfoRemainingListChanged`_
-  @deprecated Mass storage info remaining list
+  Mass storage remaining data list.
 `CommonCommonStateWifiSignalChanged`_
-  Wifi Signal between controller and product state
+  Rssi (Wifi Signal between controller and product) changed.
 `CommonCommonStateSensorsStatesListChanged`_
-  Sensors states list
+  Sensors state list.
 `CommonCommonStateProductModel`_
-  Inform of the product model. This is used to customize the UI depending on the connected product.
+  Product sub-model.\n This can be used to customize the UI depending on the product.
 `CommonCommonStateCountryListKnown`_
-  List of the countries known by the device
+  List of countries known by the drone.
+`CommonCommonStateDeprecatedMassStorageContentChanged`_
+  Mass storage content changed.
+`CommonCommonStateMassStorageContent`_
+  Mass storage content.
+`CommonCommonStateMassStorageContentForCurrentRun`_
+  Mass storage content for current run.\n Only counts the files related to the current run (see [RunId](#0-30-0))
 `CommonOverHeatStateOverHeatChanged`_
-  @deprecated Overheat temperature reached
+  Overheat temperature reached.
 `CommonOverHeatStateOverHeatRegulationChanged`_
-  @deprecated Overheat regulation state changed
+  Overheat regulation type.
 `CommonMavlinkStateMavlinkFilePlayingStateChanged`_
-  Playing state of a mavlink flight plan
+  Playing state of a FlightPlan.
 `CommonMavlinkStateMavlinkPlayErrorStateChanged`_
-  FlightPlan play state error
+  FlightPlan error.
 `CommonCalibrationStateMagnetoCalibrationStateChanged`_
-  Sent when the state of the magneto calibration has changed
+  Magneto calib process axis state.
 `CommonCalibrationStateMagnetoCalibrationRequiredState`_
-  Status of the calibration requirement
+  Calibration required.
 `CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged`_
-  Event sent by a product to inform about the axis to calibrate
+  Axis to calibrate during calibration process.
 `CommonCalibrationStateMagnetoCalibrationStartedChanged`_
-  Status of the calibration process
+  Calibration process state.
+`CommonCalibrationStatePitotCalibrationStateChanged`_
+  
 `CommonFlightPlanStateAvailabilityStateChanged`_
-  State of availability to run a flight plan file
+  FlightPlan availability.\n Availability is linked to GPS fix, magnetometer calibration, sensor states...
 `CommonFlightPlanStateComponentStateListChanged`_
-  List of state of drone flightPlan components
+  FlightPlan components state list.
+`CommonFlightPlanStateLockStateChanged`_
+  FlightPlan lock state.\n Represents the fact that the controller is able or not to stop or pause a playing FlightPlan
 `CommonARLibsVersionsStateControllerLibARCommandsVersion`_
-  Controller libARCommands version
+  
 `CommonARLibsVersionsStateSkyControllerLibARCommandsVersion`_
-  SkyController libARCommands version
+  
 `CommonARLibsVersionsStateDeviceLibARCommandsVersion`_
-  Device libARCommands version
+  
 `CommonAudioStateAudioStreamingRunning`_
-  Notify the controller whether the audio streaming is running.
+  Audio stream direction.
 `CommonHeadlightsStateintensityChanged`_
-  Notify the instensity values for headlight LEDs.
+  Lighting LEDs intensity.
 `CommonAnimationsStateList`_
-  List of animations state.
+  Paramaterless animations state list.
 `CommonAccessoryStateSupportedAccessoriesListChanged`_
-  List of supported accessories
+  Supported accessories list.
 `CommonAccessoryStateAccessoryConfigChanged`_
-  Accessory config response.
+  Accessory config.
 `CommonAccessoryStateAccessoryConfigModificationEnabled`_
-  Possibility to modify the accessory configuration.
+  Availability to declare or not an accessory.
 `CommonChargerStateMaxChargeRateChanged`_
-  @deprecated The maximum charge rate reported by the firmware.
+  Max charge rate.
 `CommonChargerStateCurrentChargeStateChanged`_
-  @deprecated The charge status of the battery changed.
+  Current charge state.
 `CommonChargerStateLastChargeRateChanged`_
-  @deprecated The charge rate of the last charge sent by the firmware.
+  Last charge rate.
 `CommonChargerStateChargingInfo`_
-  Information of the charge.
+  Charging information.
 `CommonRunStateRunIdChanged`_
-  Sent when a run id has changed Run ids are uniquely identifying a run or a flight
+  Current run id.\n A run id is uniquely identifying a run or a flight.\n For each run is generated on the drone a file which can be used by Academy to sum up the run.\n Also, each medias taken during a run has a filename containing the run id.
 
 CommonCommonStateAllStatesChanged
 ####################################################################################
-State sent when all product states has been sent.
+All states have been sent.\n\n **Please note that you should not care about this event if you are using the libARController API as this library is handling the connection process for you.**
 
 - Parameter: ``~states/enable_commonstate_allstateschanged``
 - Topic: ``states/common/CommonState/AllStatesChanged``
@@ -94,7 +104,7 @@ State sent when all product states has been sent.
 
 CommonCommonStateBatteryStateChanged
 ####################################################################################
-Battery state
+Battery state.
 
 - Parameter: ``~states/enable_commonstate_batterystatechanged``
 - Topic: ``states/common/CommonState/BatteryStateChanged``
@@ -109,7 +119,7 @@ Battery state
 
 CommonCommonStateMassStorageStateListChanged
 ####################################################################################
-Mass storage state list
+Mass storage state list.
 
 - Parameter: ``~states/enable_commonstate_massstoragestatelistchanged``
 - Topic: ``states/common/CommonState/MassStorageStateListChanged``
@@ -124,7 +134,7 @@ Mass storage state list
 
 CommonCommonStateMassStorageInfoStateListChanged
 ####################################################################################
-Mass storage info state list
+Mass storage info state list.
 
 - Parameter: ``~states/enable_commonstate_massstorageinfostatelistchanged``
 - Topic: ``states/common/CommonState/MassStorageInfoStateListChanged``
@@ -139,7 +149,7 @@ Mass storage info state list
 
 CommonCommonStateCurrentDateChanged
 ####################################################################################
-Current date state
+Date changed.\n\n **Please note that you should not care about this event if you are using the libARController API as this library is handling the connection process for you.**
 
 - Parameter: ``~states/enable_commonstate_currentdatechanged``
 - Topic: ``states/common/CommonState/CurrentDateChanged``
@@ -154,7 +164,7 @@ Current date state
 
 CommonCommonStateCurrentTimeChanged
 ####################################################################################
-Current time state
+Time changed.\n\n **Please note that you should not care about this event if you are using the libARController API as this library is handling the connection process for you.**
 
 - Parameter: ``~states/enable_commonstate_currenttimechanged``
 - Topic: ``states/common/CommonState/CurrentTimeChanged``
@@ -169,7 +179,7 @@ Current time state
 
 CommonCommonStateMassStorageInfoRemainingListChanged
 ####################################################################################
-@deprecated Mass storage info remaining list
+Mass storage remaining data list.
 
 - Parameter: ``~states/enable_commonstate_massstorageinforemaininglistchanged``
 - Topic: ``states/common/CommonState/MassStorageInfoRemainingListChanged``
@@ -184,7 +194,7 @@ CommonCommonStateMassStorageInfoRemainingListChanged
 
 CommonCommonStateWifiSignalChanged
 ####################################################################################
-Wifi Signal between controller and product state
+Rssi (Wifi Signal between controller and product) changed.
 
 - Parameter: ``~states/enable_commonstate_wifisignalchanged``
 - Topic: ``states/common/CommonState/WifiSignalChanged``
@@ -199,7 +209,7 @@ Wifi Signal between controller and product state
 
 CommonCommonStateSensorsStatesListChanged
 ####################################################################################
-Sensors states list
+Sensors state list.
 
 - Parameter: ``~states/enable_commonstate_sensorsstateslistchanged``
 - Topic: ``states/common/CommonState/SensorsStatesListChanged``
@@ -214,7 +224,7 @@ Sensors states list
 
 CommonCommonStateProductModel
 ####################################################################################
-Inform of the product model. This is used to customize the UI depending on the connected product.
+Product sub-model.\n This can be used to customize the UI depending on the product.
 
 - Parameter: ``~states/enable_commonstate_productmodel``
 - Topic: ``states/common/CommonState/ProductModel``
@@ -229,7 +239,7 @@ Inform of the product model. This is used to customize the UI depending on the c
 
 CommonCommonStateCountryListKnown
 ####################################################################################
-List of the countries known by the device
+List of countries known by the drone.
 
 - Parameter: ``~states/enable_commonstate_countrylistknown``
 - Topic: ``states/common/CommonState/CountryListKnown``
@@ -242,9 +252,54 @@ List of the countries known by the device
   :caption: CommonCommonStateCountryListKnown.msg
   :name: CommonCommonStateCountryListKnown_msg
 
+CommonCommonStateDeprecatedMassStorageContentChanged
+####################################################################################
+Mass storage content changed.
+
+- Parameter: ``~states/enable_commonstate_deprecatedmassstoragecontentchanged``
+- Topic: ``states/common/CommonState/DeprecatedMassStorageContentChanged``
+- Message type: ``bebop_msgs::CommonCommonStateDeprecatedMassStorageContentChanged``
+
+.. literalinclude::
+  ../../bebop_msgs/msg/autogenerated/CommonCommonStateDeprecatedMassStorageContentChanged.msg
+  :lines: 8-
+  :language: python
+  :caption: CommonCommonStateDeprecatedMassStorageContentChanged.msg
+  :name: CommonCommonStateDeprecatedMassStorageContentChanged_msg
+
+CommonCommonStateMassStorageContent
+####################################################################################
+Mass storage content.
+
+- Parameter: ``~states/enable_commonstate_massstoragecontent``
+- Topic: ``states/common/CommonState/MassStorageContent``
+- Message type: ``bebop_msgs::CommonCommonStateMassStorageContent``
+
+.. literalinclude::
+  ../../bebop_msgs/msg/autogenerated/CommonCommonStateMassStorageContent.msg
+  :lines: 8-
+  :language: python
+  :caption: CommonCommonStateMassStorageContent.msg
+  :name: CommonCommonStateMassStorageContent_msg
+
+CommonCommonStateMassStorageContentForCurrentRun
+####################################################################################
+Mass storage content for current run.\n Only counts the files related to the current run (see [RunId](#0-30-0))
+
+- Parameter: ``~states/enable_commonstate_massstoragecontentforcurrentrun``
+- Topic: ``states/common/CommonState/MassStorageContentForCurrentRun``
+- Message type: ``bebop_msgs::CommonCommonStateMassStorageContentForCurrentRun``
+
+.. literalinclude::
+  ../../bebop_msgs/msg/autogenerated/CommonCommonStateMassStorageContentForCurrentRun.msg
+  :lines: 8-
+  :language: python
+  :caption: CommonCommonStateMassStorageContentForCurrentRun.msg
+  :name: CommonCommonStateMassStorageContentForCurrentRun_msg
+
 CommonOverHeatStateOverHeatChanged
 ####################################################################################
-@deprecated Overheat temperature reached
+Overheat temperature reached.
 
 - Parameter: ``~states/enable_overheatstate_overheatchanged``
 - Topic: ``states/common/OverHeatState/OverHeatChanged``
@@ -259,7 +314,7 @@ CommonOverHeatStateOverHeatChanged
 
 CommonOverHeatStateOverHeatRegulationChanged
 ####################################################################################
-@deprecated Overheat regulation state changed
+Overheat regulation type.
 
 - Parameter: ``~states/enable_overheatstate_overheatregulationchanged``
 - Topic: ``states/common/OverHeatState/OverHeatRegulationChanged``
@@ -274,7 +329,7 @@ CommonOverHeatStateOverHeatRegulationChanged
 
 CommonMavlinkStateMavlinkFilePlayingStateChanged
 ####################################################################################
-Playing state of a mavlink flight plan
+Playing state of a FlightPlan.
 
 - Parameter: ``~states/enable_mavlinkstate_mavlinkfileplayingstatechanged``
 - Topic: ``states/common/MavlinkState/MavlinkFilePlayingStateChanged``
@@ -289,7 +344,7 @@ Playing state of a mavlink flight plan
 
 CommonMavlinkStateMavlinkPlayErrorStateChanged
 ####################################################################################
-FlightPlan play state error
+FlightPlan error.
 
 - Parameter: ``~states/enable_mavlinkstate_mavlinkplayerrorstatechanged``
 - Topic: ``states/common/MavlinkState/MavlinkPlayErrorStateChanged``
@@ -304,7 +359,7 @@ FlightPlan play state error
 
 CommonCalibrationStateMagnetoCalibrationStateChanged
 ####################################################################################
-Sent when the state of the magneto calibration has changed
+Magneto calib process axis state.
 
 - Parameter: ``~states/enable_calibrationstate_magnetocalibrationstatechanged``
 - Topic: ``states/common/CalibrationState/MagnetoCalibrationStateChanged``
@@ -319,7 +374,7 @@ Sent when the state of the magneto calibration has changed
 
 CommonCalibrationStateMagnetoCalibrationRequiredState
 ####################################################################################
-Status of the calibration requirement
+Calibration required.
 
 - Parameter: ``~states/enable_calibrationstate_magnetocalibrationrequiredstate``
 - Topic: ``states/common/CalibrationState/MagnetoCalibrationRequiredState``
@@ -334,7 +389,7 @@ Status of the calibration requirement
 
 CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged
 ####################################################################################
-Event sent by a product to inform about the axis to calibrate
+Axis to calibrate during calibration process.
 
 - Parameter: ``~states/enable_calibrationstate_magnetocalibrationaxistocalibratechanged``
 - Topic: ``states/common/CalibrationState/MagnetoCalibrationAxisToCalibrateChanged``
@@ -349,7 +404,7 @@ Event sent by a product to inform about the axis to calibrate
 
 CommonCalibrationStateMagnetoCalibrationStartedChanged
 ####################################################################################
-Status of the calibration process
+Calibration process state.
 
 - Parameter: ``~states/enable_calibrationstate_magnetocalibrationstartedchanged``
 - Topic: ``states/common/CalibrationState/MagnetoCalibrationStartedChanged``
@@ -362,9 +417,24 @@ Status of the calibration process
   :caption: CommonCalibrationStateMagnetoCalibrationStartedChanged.msg
   :name: CommonCalibrationStateMagnetoCalibrationStartedChanged_msg
 
+CommonCalibrationStatePitotCalibrationStateChanged
+####################################################################################
+
+
+- Parameter: ``~states/enable_calibrationstate_pitotcalibrationstatechanged``
+- Topic: ``states/common/CalibrationState/PitotCalibrationStateChanged``
+- Message type: ``bebop_msgs::CommonCalibrationStatePitotCalibrationStateChanged``
+
+.. literalinclude::
+  ../../bebop_msgs/msg/autogenerated/CommonCalibrationStatePitotCalibrationStateChanged.msg
+  :lines: 8-
+  :language: python
+  :caption: CommonCalibrationStatePitotCalibrationStateChanged.msg
+  :name: CommonCalibrationStatePitotCalibrationStateChanged_msg
+
 CommonFlightPlanStateAvailabilityStateChanged
 ####################################################################################
-State of availability to run a flight plan file
+FlightPlan availability.\n Availability is linked to GPS fix, magnetometer calibration, sensor states...
 
 - Parameter: ``~states/enable_flightplanstate_availabilitystatechanged``
 - Topic: ``states/common/FlightPlanState/AvailabilityStateChanged``
@@ -379,7 +449,7 @@ State of availability to run a flight plan file
 
 CommonFlightPlanStateComponentStateListChanged
 ####################################################################################
-List of state of drone flightPlan components
+FlightPlan components state list.
 
 - Parameter: ``~states/enable_flightplanstate_componentstatelistchanged``
 - Topic: ``states/common/FlightPlanState/ComponentStateListChanged``
@@ -392,9 +462,24 @@ List of state of drone flightPlan components
   :caption: CommonFlightPlanStateComponentStateListChanged.msg
   :name: CommonFlightPlanStateComponentStateListChanged_msg
 
+CommonFlightPlanStateLockStateChanged
+####################################################################################
+FlightPlan lock state.\n Represents the fact that the controller is able or not to stop or pause a playing FlightPlan
+
+- Parameter: ``~states/enable_flightplanstate_lockstatechanged``
+- Topic: ``states/common/FlightPlanState/LockStateChanged``
+- Message type: ``bebop_msgs::CommonFlightPlanStateLockStateChanged``
+
+.. literalinclude::
+  ../../bebop_msgs/msg/autogenerated/CommonFlightPlanStateLockStateChanged.msg
+  :lines: 8-
+  :language: python
+  :caption: CommonFlightPlanStateLockStateChanged.msg
+  :name: CommonFlightPlanStateLockStateChanged_msg
+
 CommonARLibsVersionsStateControllerLibARCommandsVersion
 ####################################################################################
-Controller libARCommands version
+
 
 - Parameter: ``~states/enable_arlibsversionsstate_controllerlibarcommandsversion``
 - Topic: ``states/common/ARLibsVersionsState/ControllerLibARCommandsVersion``
@@ -409,7 +494,7 @@ Controller libARCommands version
 
 CommonARLibsVersionsStateSkyControllerLibARCommandsVersion
 ####################################################################################
-SkyController libARCommands version
+
 
 - Parameter: ``~states/enable_arlibsversionsstate_skycontrollerlibarcommandsversion``
 - Topic: ``states/common/ARLibsVersionsState/SkyControllerLibARCommandsVersion``
@@ -424,7 +509,7 @@ SkyController libARCommands version
 
 CommonARLibsVersionsStateDeviceLibARCommandsVersion
 ####################################################################################
-Device libARCommands version
+
 
 - Parameter: ``~states/enable_arlibsversionsstate_devicelibarcommandsversion``
 - Topic: ``states/common/ARLibsVersionsState/DeviceLibARCommandsVersion``
@@ -439,7 +524,7 @@ Device libARCommands version
 
 CommonAudioStateAudioStreamingRunning
 ####################################################################################
-Notify the controller whether the audio streaming is running.
+Audio stream direction.
 
 - Parameter: ``~states/enable_audiostate_audiostreamingrunning``
 - Topic: ``states/common/AudioState/AudioStreamingRunning``
@@ -454,7 +539,7 @@ Notify the controller whether the audio streaming is running.
 
 CommonHeadlightsStateintensityChanged
 ####################################################################################
-Notify the instensity values for headlight LEDs.
+Lighting LEDs intensity.
 
 - Parameter: ``~states/enable_headlightsstate_intensitychanged``
 - Topic: ``states/common/HeadlightsState/intensityChanged``
@@ -469,7 +554,7 @@ Notify the instensity values for headlight LEDs.
 
 CommonAnimationsStateList
 ####################################################################################
-List of animations state.
+Paramaterless animations state list.
 
 - Parameter: ``~states/enable_animationsstate_list``
 - Topic: ``states/common/AnimationsState/List``
@@ -484,7 +569,7 @@ List of animations state.
 
 CommonAccessoryStateSupportedAccessoriesListChanged
 ####################################################################################
-List of supported accessories
+Supported accessories list.
 
 - Parameter: ``~states/enable_accessorystate_supportedaccessorieslistchanged``
 - Topic: ``states/common/AccessoryState/SupportedAccessoriesListChanged``
@@ -499,7 +584,7 @@ List of supported accessories
 
 CommonAccessoryStateAccessoryConfigChanged
 ####################################################################################
-Accessory config response.
+Accessory config.
 
 - Parameter: ``~states/enable_accessorystate_accessoryconfigchanged``
 - Topic: ``states/common/AccessoryState/AccessoryConfigChanged``
@@ -514,7 +599,7 @@ Accessory config response.
 
 CommonAccessoryStateAccessoryConfigModificationEnabled
 ####################################################################################
-Possibility to modify the accessory configuration.
+Availability to declare or not an accessory.
 
 - Parameter: ``~states/enable_accessorystate_accessoryconfigmodificationenabled``
 - Topic: ``states/common/AccessoryState/AccessoryConfigModificationEnabled``
@@ -529,7 +614,7 @@ Possibility to modify the accessory configuration.
 
 CommonChargerStateMaxChargeRateChanged
 ####################################################################################
-@deprecated The maximum charge rate reported by the firmware.
+Max charge rate.
 
 - Parameter: ``~states/enable_chargerstate_maxchargeratechanged``
 - Topic: ``states/common/ChargerState/MaxChargeRateChanged``
@@ -544,7 +629,7 @@ CommonChargerStateMaxChargeRateChanged
 
 CommonChargerStateCurrentChargeStateChanged
 ####################################################################################
-@deprecated The charge status of the battery changed.
+Current charge state.
 
 - Parameter: ``~states/enable_chargerstate_currentchargestatechanged``
 - Topic: ``states/common/ChargerState/CurrentChargeStateChanged``
@@ -559,7 +644,7 @@ CommonChargerStateCurrentChargeStateChanged
 
 CommonChargerStateLastChargeRateChanged
 ####################################################################################
-@deprecated The charge rate of the last charge sent by the firmware.
+Last charge rate.
 
 - Parameter: ``~states/enable_chargerstate_lastchargeratechanged``
 - Topic: ``states/common/ChargerState/LastChargeRateChanged``
@@ -574,7 +659,7 @@ CommonChargerStateLastChargeRateChanged
 
 CommonChargerStateChargingInfo
 ####################################################################################
-Information of the charge.
+Charging information.
 
 - Parameter: ``~states/enable_chargerstate_charginginfo``
 - Topic: ``states/common/ChargerState/ChargingInfo``
@@ -589,7 +674,7 @@ Information of the charge.
 
 CommonRunStateRunIdChanged
 ####################################################################################
-Sent when a run id has changed Run ids are uniquely identifying a run or a flight
+Current run id.\n A run id is uniquely identifying a run or a flight.\n For each run is generated on the drone a file which can be used by Academy to sum up the run.\n Also, each medias taken during a run has a filename containing the run id.
 
 - Parameter: ``~states/enable_runstate_runidchanged``
 - Topic: ``states/common/RunState/RunIdChanged``

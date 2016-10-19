@@ -4,7 +4,7 @@
 # To check upstream commit hash, refer to last_build_info file
 # Do not modify this file by hand. Check scripts/meta folder for generator files.
 #
-# SDK Comment: The number of satellite used to compute the gps position
+# SDK Comment: Number of GPS satellites.
 
 Header header
 

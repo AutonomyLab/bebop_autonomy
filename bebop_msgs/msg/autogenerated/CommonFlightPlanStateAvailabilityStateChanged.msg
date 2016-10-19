@@ -4,7 +4,7 @@
 # To check upstream commit hash, refer to last_build_info file
 # Do not modify this file by hand. Check scripts/meta folder for generator files.
 #
-# SDK Comment: State of availability to run a flight plan file
+# SDK Comment: FlightPlan availability.\n Availability is linked to GPS fix, magnetometer calibration, sensor states...
 
 Header header
 

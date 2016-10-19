@@ -56,8 +56,8 @@ roslint_cpp(
 ## Build ##
 ###########
 
-# 3.9.1
-set(ARSDK_MANIFEST_HASH 40d5d08ff37a43b0b2deb641cc899d5356163db7)
+# 3.10.1
+set(ARSDK_MANIFEST_HASH 149b0e0fe374c12db48c8beaed167a4a5555a370)
 
 add_custom_target(ARSDK_MKDIR
   COMMAND ${CMAKE_COMMAND} -E make_directory ${CATKIN_DEVEL_PREFIX}/arsdk)
@@ -102,20 +102,19 @@ target_link_libraries(libbebop
 )
 add_dependencies(libbebop ARSDKBuildUtils)
 
+add_dependencies(libbebop ${PROJECT_NAME}_gencfg)
+
 add_library(bebop_driver_nodelet src/bebop_driver_nodelet.cpp)
 target_link_libraries(bebop_driver_nodelet
   ${catkin_LIBRARIES}
   libbebop
 )
-add_dependencies(bebop_driver_nodelet ${PROJECT_NAME}_gencfg)
 
 add_executable(bebop_driver_node src/bebop_driver_node.cpp)
 target_link_libraries(bebop_driver_node
   ${catkin_LIBRARIES}
   libbebop
 )
-add_dependencies(bebop_driver_node ${PROJECT_NAME}_gencfg)
-
 
 #############
 ## Install ##

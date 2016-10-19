@@ -23,7 +23,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCL
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  * common_state_callback_includes.h
- * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/7b5cf7a8009278cf634ee33d5c2ed5dd8e573eb4/Xml/common_commands.xml
+ * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/arsdk-xml/d0c8b256a8592b25a551f3ba742c58ae3da2f93a/xml/common.xml
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
@@ -41,6 +41,9 @@ namespace cb
   class CommonCommonStateSensorsStatesListChanged;
   class CommonCommonStateProductModel;
   class CommonCommonStateCountryListKnown;
+  class CommonCommonStateDeprecatedMassStorageContentChanged;
+  class CommonCommonStateMassStorageContent;
+  class CommonCommonStateMassStorageContentForCurrentRun;
   class CommonOverHeatStateOverHeatChanged;
   class CommonOverHeatStateOverHeatRegulationChanged;
   class CommonMavlinkStateMavlinkFilePlayingStateChanged;
@@ -49,8 +52,10 @@ namespace cb
   class CommonCalibrationStateMagnetoCalibrationRequiredState;
   class CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged;
   class CommonCalibrationStateMagnetoCalibrationStartedChanged;
+  class CommonCalibrationStatePitotCalibrationStateChanged;
   class CommonFlightPlanStateAvailabilityStateChanged;
   class CommonFlightPlanStateComponentStateListChanged;
+  class CommonFlightPlanStateLockStateChanged;
   class CommonARLibsVersionsStateControllerLibARCommandsVersion;
   class CommonARLibsVersionsStateSkyControllerLibARCommandsVersion;
   class CommonARLibsVersionsStateDeviceLibARCommandsVersion;
@@ -92,6 +97,12 @@ boost::shared_ptr<cb::CommonCommonStateProductModel>
   common_commonstate_productmodel_ptr;
 boost::shared_ptr<cb::CommonCommonStateCountryListKnown>
   common_commonstate_countrylistknown_ptr;
+boost::shared_ptr<cb::CommonCommonStateDeprecatedMassStorageContentChanged>
+  common_commonstate_deprecatedmassstoragecontentchanged_ptr;
+boost::shared_ptr<cb::CommonCommonStateMassStorageContent>
+  common_commonstate_massstoragecontent_ptr;
+boost::shared_ptr<cb::CommonCommonStateMassStorageContentForCurrentRun>
+  common_commonstate_massstoragecontentforcurrentrun_ptr;
 boost::shared_ptr<cb::CommonOverHeatStateOverHeatChanged>
   common_overheatstate_overheatchanged_ptr;
 boost::shared_ptr<cb::CommonOverHeatStateOverHeatRegulationChanged>
@@ -108,10 +119,14 @@ boost::shared_ptr<cb::CommonCalibrationStateMagnetoCalibrationAxisToCalibrateCha
   common_calibrationstate_magnetocalibrationaxistocalibratechanged_ptr;
 boost::shared_ptr<cb::CommonCalibrationStateMagnetoCalibrationStartedChanged>
   common_calibrationstate_magnetocalibrationstartedchanged_ptr;
+boost::shared_ptr<cb::CommonCalibrationStatePitotCalibrationStateChanged>
+  common_calibrationstate_pitotcalibrationstatechanged_ptr;
 boost::shared_ptr<cb::CommonFlightPlanStateAvailabilityStateChanged>
   common_flightplanstate_availabilitystatechanged_ptr;
 boost::shared_ptr<cb::CommonFlightPlanStateComponentStateListChanged>
   common_flightplanstate_componentstatelistchanged_ptr;
+boost::shared_ptr<cb::CommonFlightPlanStateLockStateChanged>
+  common_flightplanstate_lockstatechanged_ptr;
 boost::shared_ptr<cb::CommonARLibsVersionsStateControllerLibARCommandsVersion>
   common_arlibsversionsstate_controllerlibarcommandsversion_ptr;
 boost::shared_ptr<cb::CommonARLibsVersionsStateSkyControllerLibARCommandsVersion>
@@ -177,6 +192,15 @@ common_commonstate_productmodel_ptr.reset(
 common_commonstate_countrylistknown_ptr.reset(
   new cb::CommonCommonStateCountryListKnown(
     nh, priv_nh, "states/common/CommonState/CountryListKnown"));
+common_commonstate_deprecatedmassstoragecontentchanged_ptr.reset(
+  new cb::CommonCommonStateDeprecatedMassStorageContentChanged(
+    nh, priv_nh, "states/common/CommonState/DeprecatedMassStorageContentChanged"));
+common_commonstate_massstoragecontent_ptr.reset(
+  new cb::CommonCommonStateMassStorageContent(
+    nh, priv_nh, "states/common/CommonState/MassStorageContent"));
+common_commonstate_massstoragecontentforcurrentrun_ptr.reset(
+  new cb::CommonCommonStateMassStorageContentForCurrentRun(
+    nh, priv_nh, "states/common/CommonState/MassStorageContentForCurrentRun"));
 common_overheatstate_overheatchanged_ptr.reset(
   new cb::CommonOverHeatStateOverHeatChanged(
     nh, priv_nh, "states/common/OverHeatState/OverHeatChanged"));
@@ -201,12 +225,18 @@ common_calibrationstate_magnetocalibrationaxistocalibratechanged_ptr.reset(
 common_calibrationstate_magnetocalibrationstartedchanged_ptr.reset(
   new cb::CommonCalibrationStateMagnetoCalibrationStartedChanged(
     nh, priv_nh, "states/common/CalibrationState/MagnetoCalibrationStartedChanged"));
+common_calibrationstate_pitotcalibrationstatechanged_ptr.reset(
+  new cb::CommonCalibrationStatePitotCalibrationStateChanged(
+    nh, priv_nh, "states/common/CalibrationState/PitotCalibrationStateChanged"));
 common_flightplanstate_availabilitystatechanged_ptr.reset(
   new cb::CommonFlightPlanStateAvailabilityStateChanged(
     nh, priv_nh, "states/common/FlightPlanState/AvailabilityStateChanged"));
 common_flightplanstate_componentstatelistchanged_ptr.reset(
   new cb::CommonFlightPlanStateComponentStateListChanged(
     nh, priv_nh, "states/common/FlightPlanState/ComponentStateListChanged"));
+common_flightplanstate_lockstatechanged_ptr.reset(
+  new cb::CommonFlightPlanStateLockStateChanged(
+    nh, priv_nh, "states/common/FlightPlanState/LockStateChanged"));
 common_arlibsversionsstate_controllerlibarcommandsversion_ptr.reset(
   new cb::CommonARLibsVersionsStateControllerLibARCommandsVersion(
     nh, priv_nh, "states/common/ARLibsVersionsState/ControllerLibARCommandsVersion"));
@@ -296,6 +326,18 @@ callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<c
                       common_commonstate_countrylistknown_ptr));
 // Add all wrappers to the callback map
 callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
+                      common_commonstate_deprecatedmassstoragecontentchanged_ptr->GetCommandKey(),
+                      common_commonstate_deprecatedmassstoragecontentchanged_ptr));
+// Add all wrappers to the callback map
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
+                      common_commonstate_massstoragecontent_ptr->GetCommandKey(),
+                      common_commonstate_massstoragecontent_ptr));
+// Add all wrappers to the callback map
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
+                      common_commonstate_massstoragecontentforcurrentrun_ptr->GetCommandKey(),
+                      common_commonstate_massstoragecontentforcurrentrun_ptr));
+// Add all wrappers to the callback map
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_overheatstate_overheatchanged_ptr->GetCommandKey(),
                       common_overheatstate_overheatchanged_ptr));
 // Add all wrappers to the callback map
@@ -328,12 +370,20 @@ callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<c
                       common_calibrationstate_magnetocalibrationstartedchanged_ptr));
 // Add all wrappers to the callback map
 callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
+                      common_calibrationstate_pitotcalibrationstatechanged_ptr->GetCommandKey(),
+                      common_calibrationstate_pitotcalibrationstatechanged_ptr));
+// Add all wrappers to the callback map
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_flightplanstate_availabilitystatechanged_ptr->GetCommandKey(),
                       common_flightplanstate_availabilitystatechanged_ptr));
 // Add all wrappers to the callback map
 callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_flightplanstate_componentstatelistchanged_ptr->GetCommandKey(),
                       common_flightplanstate_componentstatelistchanged_ptr));
+// Add all wrappers to the callback map
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
+                      common_flightplanstate_lockstatechanged_ptr->GetCommandKey(),
+                      common_flightplanstate_lockstatechanged_ptr));
 // Add all wrappers to the callback map
 callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_arlibsversionsstate_controllerlibarcommandsversion_ptr->GetCommandKey(),

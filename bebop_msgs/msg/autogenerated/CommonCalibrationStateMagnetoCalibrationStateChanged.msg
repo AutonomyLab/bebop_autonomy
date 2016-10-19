@@ -4,7 +4,7 @@
 # To check upstream commit hash, refer to last_build_info file
 # Do not modify this file by hand. Check scripts/meta folder for generator files.
 #
-# SDK Comment: Sent when the state of the magneto calibration has changed
+# SDK Comment: Magneto calib process axis state.
 
 Header header
 

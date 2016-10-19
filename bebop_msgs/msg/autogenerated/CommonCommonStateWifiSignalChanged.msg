@@ -4,7 +4,7 @@
 # To check upstream commit hash, refer to last_build_info file
 # Do not modify this file by hand. Check scripts/meta folder for generator files.
 #
-# SDK Comment: Wifi Signal between controller and product state
+# SDK Comment: Rssi (Wifi Signal between controller and product) changed.
 
 Header header
 

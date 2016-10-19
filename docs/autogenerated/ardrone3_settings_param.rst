@@ -1,5 +1,5 @@
  .. Ardrone3_settings_param.rst
- .. auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/7b5cf7a8009278cf634ee33d5c2ed5dd8e573eb4/Xml/ARDrone3_commands.xml
+ .. auto-generated from https://raw.githubusercontent.com/Parrot-Developers/arsdk-xml/d0c8b256a8592b25a551f3ba742c58ae3da2f93a/xml/ardrone3.xml
  .. Do not modify this file by hand. Check scripts/meta folder for generator files.
 
 *****************************************************************************************
@@ -31,8 +31,6 @@ List of Ardrone3 Settings and Corresponding ROS Parameter
    The circling altitude in meter
   `PilotingSettingsPitchModeValue`_
    The Pitch mode
-  `PilotingSettingsLandingModeValue`_
-   The Landing mode
 
 `speedsettings`_
   Speed Settings commands
@@ -63,6 +61,12 @@ List of Ardrone3 Settings and Corresponding ROS Parameter
 
   `PictureSettingsVideoStabilizationModeMode`_
    Video stabilization mode
+  `PictureSettingsVideoRecordingModeMode`_
+   Video recording mode
+  `PictureSettingsVideoFramerateFramerate`_
+   Video framerate
+  `PictureSettingsVideoResolutionsType`_
+   Video streaming and recording resolutions
 
 `gpssettings`_
   GPS settings
@@ -150,15 +154,6 @@ PilotingSettingsPitchModeValue
   * 0: Positive pitch values will make the drone lower its nose. Negative pitch values will make the drone raise its nose.
   * 1: Pitch commands are inverted. Positive pitch values will make the drone raise its nose. Negative pitch values will make the drone lower its nose.
 
-PilotingSettingsLandingModeValue
------------------------------------------------------------
-* Parameter: ``~PilotingSettingsLandingModeValue``
-* Details: The Landing mode
-* Type: ``int_t``
-
-  * 0: Linear landing.
-  * 1: Spirale landing.
-
 speedsettings
 ===========================================================
 SpeedSettingsMaxVerticalSpeedCurrent
@@ -232,6 +227,34 @@ PictureSettingsVideoStabilizationModeMode
   * 1: Video flat on pitch only
   * 2: Video flat on roll only
   * 3: Video follows drone angles
+
+PictureSettingsVideoRecordingModeMode
+-----------------------------------------------------------
+* Parameter: ``~PictureSettingsVideoRecordingModeMode``
+* Details: Video recording mode
+* Type: ``int_t``
+
+  * 0: Maximize recording quality.
+  * 1: Maximize recording time.
+
+PictureSettingsVideoFramerateFramerate
+-----------------------------------------------------------
+* Parameter: ``~PictureSettingsVideoFramerateFramerate``
+* Details: Video framerate
+* Type: ``int_t``
+
+  * 0: 23.976 frames per second.
+  * 1: 25 frames per second.
+  * 2: 29.97 frames per second.
+
+PictureSettingsVideoResolutionsType
+-----------------------------------------------------------
+* Parameter: ``~PictureSettingsVideoResolutionsType``
+* Details: Video streaming and recording resolutions
+* Type: ``int_t``
+
+  * 0: 1080p recording, 480p streaming.
+  * 1: 720p recording, 720p streaming.
 
 gpssettings
 ===========================================================
