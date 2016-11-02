@@ -54,6 +54,8 @@ Running Bebop In The Loop Tests
 Upgrading the Bebop SDK
 =======================
 
+.. warning:: Since version 0.6, `Parrot ARSDK <http://developer.parrot.com/docs/SDK3/>`_, the main underlying dependency of  *bebop_autonomy* is not build inline anymore. Instead, the slightly patched and catkinized version of it, called `parrot_arsdk <https://github.com/AutonomyLab/parrot_arsdk>`_, is fetched as a dependency. **The following documentation needs to be updated**.
+
 1. Update the ``GIT_TAG`` of ``ARDroneSDK3`` in ``bebop_driver/CMakeLists.txt::add_custom_target::./repo init ... -b GIT_TAG`` to your desired commit hash, branch or tag (release). The official upstream repository is hosted `here <https://github.com/Parrot-Developers/arsdk_manifests>`_.
 2. Checkout (or browse) the upstream repository at the same hash used in step (1) and open ``release.xml`` file. From this file, extract the commit hash of ``arsdk-xml`` from the ``revision`` property of this XML tag: ``<project name="arsdk-xml" ... revision="" />``.
 3. Open ``bebop_driver/scripts/meta/generate.py`` and update ``LIBARCOMMANDS_GIT_HASH`` variable to the hash obtained in step (2).

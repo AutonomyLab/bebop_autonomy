@@ -1,7 +1,8 @@
 *************************
 Sending Commands to Bebop
 *************************
-.. _sec-snapshot: sec-pilot-teleop
+
+.. _sec-pilot-teleop:
 
 .. note:: ``bebop_tools`` package comes with a launch file for tele-operating Bebop with a joystick using ROS `joy_teleop <http://wiki.ros.org/joy_teleop>`_ package. The configuration file (key-action map) is written for `Logitech F710 controller <http://gaming.logitech.com/en-ca/product/f710-wireless-gamepad>`_ and is located in ``bebop_tools/config`` folder. Adapting the file to your own controller is straightforward. To teleop Bebop while the driver is running execute ``roslaunch bebop_tools joy_teleop.launch``.
 
@@ -49,8 +50,6 @@ To move Bebop around, publish messages of type `geometry_msgs/Twist <http://docs
             (-)      Rotate clockwise
 
 Acceptable range for all fields are ``[-1..1]``. The drone executes the last received command as long as the driver is running. This command is reset to when Takeoff_, Land_ or Emergency_ command is received. To make Bebop hover and maintain its current position, you need to publish a message with all fields set to zero to ``cmd_vel``.
-
-.. note:: Since version 0.4, sign of ``angular.z`` has been negated to conform with :ref:`sec-coords` and `ardrone_autonomy <http://wiki.ros.org/ardrone_autonomy>`_.
 
 Moving the Virtual Camera
 =========================
