@@ -2,8 +2,8 @@
 Changelog for package bebop_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.6.0 (2016-11-02)
+------------------
 * Use Parrot ARSDK as a thirdparty dependency
   - Instead of building the SDK inline, bebop_driver now utilizes the
   catkin version of Parrot ARSDK available at
