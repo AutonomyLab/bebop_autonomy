@@ -2,6 +2,9 @@
 Changelog for package bebop_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.5.1 (2016-05-04)
 ------------------
 
