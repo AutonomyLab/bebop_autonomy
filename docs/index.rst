@@ -28,7 +28,7 @@ Features and Roadmap
   Nodelet implementation, Yes, ""
   Publish Bebop states as ROS topics, Yes, ""
   Dynamically reconfigurable Bebop settings, Yes, ":ref:`sec-dev-dyn`"
-  Inline build of ARDroneSDK3, Yes, "Enhancement: `#2 <https://github.com/AutonomyLab/bebop_autonomy/issues/2>`_"
+  Use `parrot_arsdk <https://github.com/AutonomyLab/parrot_arsdk>`_ instead of building ARSDK3 inline, Yes, "Since v0.6: `#75 <https://github.com/AutonomyLab/bebop_autonomy/issues/75>`_"
   Bebop In The Loop tests, Yes, ":ref:`sec-dev-test`"
   Joystick teleop demo, Yes, ":ref:`sec-pilot-teleop`"
   TF Publisher, Yes, "Since v0.5 (:ref:`sec-tf`)"

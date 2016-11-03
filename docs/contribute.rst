@@ -43,6 +43,8 @@ List of Contributers
 
   - `Added Xbox 360 config file <https://github.com/AutonomyLab/bebop_autonomy/pull/56>`_
 
+- `Sepehr Mohaimenianpour <http://sepehr.im/>`_
+
 Acknowledgments
 ================
 
