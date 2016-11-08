@@ -31,6 +31,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 #include <tf2_ros/transform_broadcaster.h>
 #include <sensor_msgs/NavSatFix.h>
+#include <std_msgs/Float64.h>
 
 #include <boost/bind.hpp>
 #include <boost/make_shared.hpp>
@@ -137,6 +138,7 @@ void BebopDriverNodelet::onInit()
   odom_pub_ = nh.advertise<nav_msgs::Odometry>("odom", 30);
   camera_joint_pub_ = nh.advertise<sensor_msgs::JointState>("joint_states", 10, true);
   gps_fix_pub_ = nh.advertise<sensor_msgs::NavSatFix>("fix", 10, true);
+  altitude_pub_ = nh.advertise<std_msgs::Float64>("altitude",10);
 
   cinfo_manager_ptr_.reset(new camera_info_manager::CameraInfoManager(nh, "bebop_front", param_camera_info_url));
   image_transport_ptr_.reset(new image_transport::ImageTransport(nh));
@@ -468,6 +470,9 @@ void BebopDriverNodelet::AuxThread()
   // GPS
   bebop_msgs::Ardrone3PilotingStatePositionChanged::ConstPtr gps_state_ptr;
 
+  //Altitude (Altitude above starting point)
+  bebop_msgs::Ardrone3PilotingStateAltitudeChanged::ConstPtr altitude_ptr;
+
   // REP-103
   double beb_roll_rad = 0.0;
   double beb_pitch_rad = 0.0;
@@ -475,6 +480,7 @@ void BebopDriverNodelet::AuxThread()
   double beb_vx_m = 0.0;
   double beb_vy_m = 0.0;
   double beb_vz_m = 0.0;
+  double beb_altitude=0.0;
 
   // TF2, Integerator
   ros::Time last_odom_time(ros::Time::now());
@@ -489,10 +495,12 @@ void BebopDriverNodelet::AuxThread()
   // TODO(mani-monaj): Wrap this functionality into a class to remove duplicate code
   ros::Time last_speed_time(0);
   ros::Time last_att_time(0);
+  ros::Time last_alt_time(0);
   ros::Time last_camerastate_time(0);
   ros::Time last_gps_time(0);
   bool new_speed_data = false;
   bool new_attitude_data = false;
+  bool new_altitude_data = false;
   bool new_camera_state = false;
   bool new_gps_state = false;
 
@@ -508,6 +516,8 @@ void BebopDriverNodelet::AuxThread()
   gps_msg.status.status = sensor_msgs::NavSatStatus::STATUS_NO_FIX;
   gps_msg.status.service = sensor_msgs::NavSatStatus::SERVICE_GPS | sensor_msgs::NavSatStatus::SERVICE_GLONASS;
   gps_msg.position_covariance_type = sensor_msgs::NavSatFix::COVARIANCE_TYPE_UNKNOWN;
+
+  std_msgs::Float64 alt_msg;
 
   while (!boost::this_thread::interruption_requested())
   {
@@ -581,6 +591,26 @@ void BebopDriverNodelet::AuxThread()
           odom_to_base_rot_q.setRPY(beb_roll_rad, beb_pitch_rad, beb_yaw_rad);
           new_attitude_data = true;
         }
+      }
+
+      if (bebop_ptr_->ardrone3_pilotingstate_altitudechanged_ptr)
+      {
+        altitude_ptr = bebop_ptr_->ardrone3_pilotingstate_altitudechanged_ptr->GetDataCstPtr();
+
+        // conside new data only
+        if ((altitude_ptr->header.stamp - last_alt_time).toSec() > util::eps)
+        {
+          last_alt_time = altitude_ptr->header.stamp;
+          beb_altitude = altitude_ptr->altitude;
+          new_altitude_data = true;
+        }
+      }
+
+      if (new_altitude_data==true && altitude_ptr)
+      {
+          alt_msg.data=altitude_ptr->altitude;
+          altitude_pub_.publish(alt_msg);
+          new_altitude_data = false;
       }
 
       const double sync_diff_s = fabs((last_att_time - last_speed_time).toSec());
