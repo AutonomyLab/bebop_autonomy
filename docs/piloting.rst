@@ -13,7 +13,7 @@ Publish a message of type ``std_msgs/Empty`` to ``takeoff`` topic.
 
 .. code-block:: bash
 
-  $ rostopic pub --once std_msgs/Empty [namespace]/takeoff
+  $ rostopic pub --once [namespace]/takeoff std_msgs/Empty
 
 Land
 ====
@@ -22,7 +22,7 @@ Publish a message of type ``std_msgs/Empty`` to ``land`` topic.
 
 .. code-block:: bash
 
-  $ rostopic pub --once std_msgs/Empty [namespace]/land
+  $ rostopic pub --once [namespace]/land std_msgs/Empty
 
 Emergency
 =========
@@ -31,7 +31,7 @@ Publish a message of type ``std_msgs/Empty`` to ``reset`` topic.
 
 .. code-block:: bash
 
-  $ rostopic pub --once std_msgs/Empty [namespace]/reset
+  $ rostopic pub --once [namespace]/reset std_msgs/Empty
 
 Piloting
 ========
@@ -107,7 +107,7 @@ An FTP client can also be used to view and copy flight plans on-board Bebop. `Fi
 
 Then open `Site Manager` (top left), click `New Site`:
 
-    * `Host`: 192.168.42.1
+    * `Host`: 192.168.42.11
     * `Protocol`: FTP
     * `Encrpytion`: Use plain FTP
     * `Logon Type`: Anonymous
@@ -142,7 +142,7 @@ Publish a message of type ``std_msgs/Empty`` to ``flattrim`` topic.
 
 .. code-block:: bash
 
-  $ rostopic pub --once std_msgs/Empty [namespace]/flattrim
+  $ rostopic pub --once [namespace]/flattrim std_msgs/Empty
 
 Flight Animations
 =================
