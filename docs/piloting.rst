@@ -13,7 +13,7 @@ Publish a message of type ``std_msgs/Empty`` to ``takeoff`` topic.
 
 .. code-block:: bash
 
-  $ rostopic pub --once std_msgs/Empty [namespace]/takeoff
+  $ rostopic pub --once [namespace]/takeoff std_msgs/Empty
 
 Land
 ====
@@ -22,7 +22,7 @@ Publish a message of type ``std_msgs/Empty`` to ``land`` topic.
 
 .. code-block:: bash
 
-  $ rostopic pub --once std_msgs/Empty [namespace]/land
+  $ rostopic pub --once [namespace]/land std_msgs/Empty
 
 Emergency
 =========
@@ -31,7 +31,7 @@ Publish a message of type ``std_msgs/Empty`` to ``reset`` topic.
 
 .. code-block:: bash
 
-  $ rostopic pub --once std_msgs/Empty [namespace]/reset
+  $ rostopic pub --once [namespace]/reset std_msgs/Empty
 
 Piloting
 ========
@@ -142,7 +142,7 @@ Publish a message of type ``std_msgs/Empty`` to ``flattrim`` topic.
 
 .. code-block:: bash
 
-  $ rostopic pub --once std_msgs/Empty [namespace]/flattrim
+  $ rostopic pub --once [namespace]/flattrim std_msgs/Empty
 
 Flight Animations
 =================
@@ -168,7 +168,7 @@ Take on-board Snapshot
 
 To take a high resolution on-board snapshot, publish a ``std_msgs/Empty`` message on ``snapshot`` topic. The resulting snapshot is stored on the internal storage of the Bebop. The quality and type of this image is not configurable using the ROS driver. You can use the official FreeFlight3 app to configure your Bebop prior to flying. To access the on-board media, either connect your Bebop over USB to a computer, or use a FTP client to connect to your Bebop using the following settings:
 
-* Default IP: ``192.168.42.11``
+* Default IP: ``192.168.42.1``
 * Port: ``21``
 * Path: ``internal_000/Bebop_Drone/media``
 * Username: ``anonymous``
