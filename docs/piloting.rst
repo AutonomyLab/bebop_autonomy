@@ -107,7 +107,7 @@ An FTP client can also be used to view and copy flight plans on-board Bebop. `Fi
 
 Then open `Site Manager` (top left), click `New Site`:
 
-    * `Host`: 192.168.42.11
+    * `Host`: 192.168.42.1
     * `Protocol`: FTP
     * `Encrpytion`: Use plain FTP
     * `Logon Type`: Anonymous
@@ -168,7 +168,7 @@ Take on-board Snapshot
 
 To take a high resolution on-board snapshot, publish a ``std_msgs/Empty`` message on ``snapshot`` topic. The resulting snapshot is stored on the internal storage of the Bebop. The quality and type of this image is not configurable using the ROS driver. You can use the official FreeFlight3 app to configure your Bebop prior to flying. To access the on-board media, either connect your Bebop over USB to a computer, or use a FTP client to connect to your Bebop using the following settings:
 
-* Default IP: ``192.168.42.11``
+* Default IP: ``192.168.42.1``
 * Port: ``21``
 * Path: ``internal_000/Bebop_Drone/media``
 * Username: ``anonymous``
