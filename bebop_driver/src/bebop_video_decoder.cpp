@@ -23,10 +23,15 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCL
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "bebop_driver/bebop_video_decoder.h"
+#include "bebop_driver/metadata_struct.h"
 
 #include <stdexcept>
 #include <algorithm>
 #include <string>
+#include <iostream>
+
+#include <inttypes.h>
+#include <bitset>
 
 #include <boost/lexical_cast.hpp>
 
@@ -37,6 +42,8 @@ extern "C"
 
 namespace bebop_driver
 {
+  StreamingMetadataV1Extended_t metadata;
+    void *meta;
 
 const char* VideoDecoder::LOG_TAG = "Decoder";
 
@@ -60,6 +67,7 @@ VideoDecoder::VideoDecoder()
     frame_rgb_raw_ptr_(NULL),
     update_codec_params_(false)
 {}
+
 
 bool VideoDecoder::InitCodec()
 {
@@ -286,6 +294,44 @@ bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *bebop_frame_ptr_)
   packet_.data = bebop_frame_ptr_->data;
   packet_.size = bebop_frame_ptr_->used;
 
+
+  printf("Check for NULL Pointer!!!!!\n");
+
+    if (bebop_frame_ptr_->metadata == NULL)
+    {printf("NULL Pointer!!!!!");}
+    //printf("Pointer Adress: %p\n",bebop_frame_ptr_->metadata);
+    printf("Metadata Size: %d \n",bebop_frame_ptr_->metadataSize);
+    //printf("Size of metadata: %ld\n",sizeof(metadata));
+
+     memcpy(&metadata,bebop_frame_ptr_->metadata,bebop_frame_ptr_->metadataSize);
+    //memcpy(&metadata,bebop_frame_ptr_->metadata,4);
+    printf("Size of Metadata: %ld\n",sizeof(metadata));
+    printf("memcpy successful!\n");
+    printf("Length of Metadata in 32 bit words: %d\n",VideoDecoder::uint16Swap(metadata.length));
+    // printf("cameraPan: %d\n",VideoDecoder::int16Swap(metadata.cameraPan));
+    printf("cameraPan: %d\n",metadata.cameraPan);
+    //std::bitset<16> int_bit(VideoDecoder::int16Swap(metadata.exposureTime));
+    std::bitset<8> int_bit(metadata.batteryPercentage);
+
+    std::cout << "Drone Yaw: "<< int_bit << "\n";
+
+
+    // int *test;
+    // *test==2;
+    // int test2;
+    // memcpy(&test2,test,sizeof(int));
+    // printf("test2: %d\n ",test2);
+  //Debug Print
+
+
+       //printf("Battery: %" PRIu16 "\n",metadata->batteryPercentage);
+    //printf("Battery Percentage: %d\n",metadata->length);
+
+    //printf("droneYaw: %d\n",metadata.droneYaw);
+    //printf("Metadata_size: %d\n",sizeof(metadata));
+    //printf("Timestamp: %ld\n",bebop_frame_ptr_->);
+
+
   const uint32_t width_prev = GetFrameWidth();
   const uint32_t height_prev = GetFrameHeight();
 
@@ -321,5 +367,23 @@ bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *bebop_frame_ptr_)
   }
   return true;
 }
+
+
+
+uint16_t VideoDecoder::uint16Swap(uint16_t s)
+  {
+  	unsigned char b1, b2;
+  	b1 = s & 255;
+  	b2 = (s >> 8) & 255;
+  	return (b1 << 8) + b2;
+  }
+
+int16_t VideoDecoder::int16Swap(int16_t s)
+  {
+  	unsigned char b1, b2;
+  	b1 = s & 255;
+  	b2 = (s >> 8) & 255;
+  	return (b1 << 8) + b2;
+  }
 
 }  // namespace bebop_driver
