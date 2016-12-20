@@ -43,9 +43,6 @@ extern "C"
 
 namespace bebop_driver
 {
-  StreamingMetadataV1Extended_t metadata;
-  StreamingMetadataV1Extended_t metadata_temp;
-
 const char* VideoDecoder::LOG_TAG = "Decoder";
 
 // TODO(mani-monaj): Move to util, inline
@@ -294,153 +291,7 @@ bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *bebop_frame_ptr_)
 
   packet_.data = bebop_frame_ptr_->data;
   packet_.size = bebop_frame_ptr_->used;
-
-
-  printf("Check for NULL Pointer!!!!!\n");
-
-    if (bebop_frame_ptr_->metadata == NULL)
-    {printf("NULL Pointer!!!!!");}
-
-    //metadata_temp = ntohl(metadata);
-    //metadata=metadata_temp;
-
-    //printf("Pointer Adress: %p\n",bebop_frame_ptr_->metadata);
-    printf("Metadata Size: %d \n",bebop_frame_ptr_->metadataSize);
-
-    memcpy(&metadata,bebop_frame_ptr_->metadata,bebop_frame_ptr_->metadataSize);
-
-    printf("\nStreamingMetadataV1Extended_t:\n");
-    printf("specific: \t\t0x%x\n",ntohs(metadata.specific));
-    printf("length: \t\t%d\n\n",ntohs(metadata.length));
-
-    // std::bitset<16> spec_bit(metadata.specific);
-    // std::bitset<16> len_bit(metadata.length);
-    //
-    // std::string s1=spec_bit.to_string();
-    // std::string s2=len_bit.to_string();
-    // std::bitset<32> firstbits(s2 + s1);
-    // int bits_int=(int)(firstbits.to_ulong());
-    // std::bitset<32> ntohled(ntohl(bits_int));
-    // std::cout << "First 32 Bits: " << spec_bit << len_bit << "\nconcatenated: " << firstbits <<  "\n" << ntohled << "\n";
-
-    // std::bitset<32> alt2_bit(ntohl(metadata.alt));
-    // std::string alt2_string(alt2_bit.to_string());
-    // std::string alt2_m=alt2_string.substr(0,15);
-    // std::string alt2_cm=alt2_string.substr(16,31);
-    // std::bitset<16> alt2_m_bit(alt2_m);
-    // std::bitset<16> alt2_cm_bit(alt2_cm);
-    //
-    // std::cout << "altitude: " << alt2_m_bit.to_ulong() << "." << alt2_cm_bit.to_ulong() << "m\n"<< alt2_m_bit << alt2_cm_bit << "\n";
-
-
-    printf("droneYaw: \t\t%d\t",ntohs(metadata.droneYaw));
-    std::bitset<16> droneyaw_bit(ntohs(metadata.droneYaw));
-    std::cout << droneyaw_bit << "\n";
-    printf("dronePitch: \t\t%d\t",ntohs(metadata.dronePitch));
-    std::bitset<16> dronepitch_bit(ntohs(metadata.dronePitch));
-    std::cout << dronepitch_bit << "\n";
-
-    //Reverse engineered height
-    // std::string yaw_string=droneyaw_bit.to_string();
-    // std::string pitch_string=dronepitch_bit.to_string();
-    // std::string meters=yaw_string;
-    // std::string cms=pitch_string;
-    // std::bitset mbit=
-    //std::cout << "altitude: " << droneyaw_bit.to_ulong() << "." << dronepitch_bit.to_ulong() << "m\n";
-
-
-    printf("droneRoll: \t\t%d\t",ntohs(metadata.droneRoll));
-    std::bitset<16> droneroll_bit(ntohs(metadata.droneRoll));
-    std::cout << droneroll_bit << "\n\n";
-
-    printf("cameraPan: \t\t%d\t",VideoDecoder::int16Swap(metadata.cameraPan));
-    std::bitset<16> camerapan_bit(VideoDecoder::int16Swap(metadata.cameraPan));
-    std::cout << camerapan_bit << "\n";
-    printf("cameraTilt: \t\t%d\t",VideoDecoder::int16Swap(metadata.cameraTilt));
-    std::bitset<16> cameratilt_bit(VideoDecoder::int16Swap(metadata.cameraTilt));
-    std::cout << cameratilt_bit << "\n\n";
-
-    printf("frameW: \t\t%d\t",VideoDecoder::int16Swap(metadata.frameW));
-    std::bitset<16> framew_bit(VideoDecoder::int16Swap(metadata.frameW));
-    std::cout << framew_bit << "\n";
-    printf("frameX: \t\t%d\t",VideoDecoder::int16Swap(metadata.frameX));
-    std::bitset<16> framex_bit(VideoDecoder::int16Swap(metadata.frameX));
-    std::cout << framex_bit << "\n";
-    printf("frameY: \t\t%d\t",VideoDecoder::int16Swap(metadata.frameY));
-    std::bitset<16> framey_bit(VideoDecoder::int16Swap(metadata.frameY));
-    std::cout << framey_bit << "\n";
-    printf("frameZ: \t\t%d\t",VideoDecoder::int16Swap(metadata.frameZ));
-    std::bitset<16> framez_bit(VideoDecoder::int16Swap(metadata.frameZ));
-    std::cout << framez_bit << "\n\n";
-
-    printf("exposureTime: \t\t%d\n",VideoDecoder::int16Swap(metadata.exposureTime));
-    printf("gain: \t\t\t%d\n",VideoDecoder::int16Swap(metadata.gain));
-
-    std::bitset<8> wifi_bit(metadata.wifiRssi);
-    std::cout << "wifiRssi (bits): \t\t" << wifi_bit << "\n";
-    std::bitset<8> bat_bit(metadata.batteryPercentage);
-    std::cout << "batteryPercentage (bits):\t"<< bat_bit << "\n\n";
-
-    std::bitset<32> lat_bit(metadata.gpsLatitude);
-    std::cout << "gpsLatitude (bits): \t\t" << lat_bit << "\n";
-    std::bitset<32> long_bit(metadata.gpsLongitude);
-    std::cout << "gpsLongitude (bits): \t\t" << long_bit << "\n";
-    std::bitset<32> gpsalt_bit(metadata.gpsAltitudeAndSv);
-    std::cout << "gpsAltitudeAndSv (bits): \t" << gpsalt_bit << "\n";
-    std::bitset<32> alt_bit(metadata.altitude);
-    std::cout << "altitude (bits): \t\t" << alt_bit << "\n";
-    std::bitset<32> home_bit(metadata.distanceFromHome);
-    std::cout << "distanceFromHome (bits): \t" << home_bit << "\n\n";
-
-
-    //printf("\n. . .\n\n");
-
-    printf("xSpeed: \t\t%d\t",VideoDecoder::int16Swap(metadata.xSpeed));
-    std::bitset<16> xspeed_bit(VideoDecoder::int16Swap(metadata.xSpeed));
-    std::cout << xspeed_bit << "\n";
-    printf("ySpeed: \t\t%d\t",VideoDecoder::int16Swap(metadata.ySpeed));
-    std::bitset<16> yspeed_bit(VideoDecoder::int16Swap(metadata.ySpeed));
-    std::cout << yspeed_bit << "\n";
-    printf("zSpeed: \t\t%d\t",VideoDecoder::int16Swap(metadata.zSpeed));
-    std::bitset<16> zspeed_bit(VideoDecoder::int16Swap(metadata.zSpeed));
-    std::cout << zspeed_bit << "\n\n";
-
-    std::bitset<8> state_bit(metadata.state);
-    std::cout << "State (bits): \t\t\t" << state_bit << "\n";
-    std::bitset<8> mode_bit(metadata.state);
-    std::cout << "Mode (bits): \t\t\t" << mode_bit << "\n\n";
-  //  int deadbeef = 0xDEADBEEF;
-  //printf("TESTING DEADBEEF %x %x\n", deadbeef, ntohl(deadbeef));
-
-
-    //printf("\t\t\t.\n\t\t\t.\n\t\t\t.\n");
-
-
-
-
-    // printf("cameraPan: %d\n",VideoDecoder::int16Swap(metadata.cameraPan));
-    //printf("cameraPan: %d\n",metadata.cameraPan);
-    //std::bitset<16> int_bit(VideoDecoder::int16Swap(metadata.exposureTime));
-    //std::bitset<8> int_bit(metadata.batteryPercentage);
-
-    //std::cout << "Drone Yaw: "<< int_bit << "\n";
-
-
-    // int *test;
-    // *test==2;
-    // int test2;
-    // memcpy(&test2,test,sizeof(int));
-    // printf("test2: %d\n ",test2);
-  //Debug Print
-
-
-       //printf("Battery: %" PRIu16 "\n",metadata->batteryPercentage);
-    //printf("Battery Percentage: %d\n",metadata->length);
-
-    //printf("droneYaw: %d\n",metadata.droneYaw);
-    //printf("Metadata_size: %d\n",sizeof(metadata));
-    //printf("Timestamp: %ld\n",bebop_frame_ptr_->);
-
+  metadata_ptr_= bebop_frame_ptr_->metadata;
 
   const uint32_t width_prev = GetFrameWidth();
   const uint32_t height_prev = GetFrameHeight();
@@ -478,22 +329,5 @@ bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *bebop_frame_ptr_)
   return true;
 }
 
-
-
-uint16_t VideoDecoder::uint16Swap(uint16_t s)
-  {
-  	unsigned char b1, b2;
-  	b1 = s & 255;
-  	b2 = (s >> 8) & 255;
-  	return (b1 << 8) + b2;
-  }
-
-int16_t VideoDecoder::int16Swap(int16_t s)
-  {
-  	unsigned char b1, b2;
-  	b1 = s & 255;
-  	b2 = (s >> 8) & 255;
-  	return (b1 << 8) + b2;
-  }
 
 }  // namespace bebop_driver

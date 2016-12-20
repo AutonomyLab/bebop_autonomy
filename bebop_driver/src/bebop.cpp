@@ -561,7 +561,7 @@ uint32_t Bebop::GetFrontCameraFrameHeight() const
   return video_decoder_ptr_->GetFrameHeight();
 }
 
-bool Bebop::GetFrontCameraFrame(std::vector<uint8_t> &buffer, uint32_t& width, uint32_t& height) const
+bool Bebop::GetFrontCameraFrame(std::vector<uint8_t> &buffer, uint32_t& width, uint32_t& height,MetadataV2Base_t& metadata_)
 {
   boost::unique_lock<boost::mutex> lock(frame_avail_mutex_);
 
@@ -586,6 +586,16 @@ bool Bebop::GetFrontCameraFrame(std::vector<uint8_t> &buffer, uint32_t& width, u
 
   width = video_decoder_ptr_->GetFrameWidth();
   height = video_decoder_ptr_->GetFrameHeight();
+  metadata_ptr_=video_decoder_ptr_->GetFrameMetadataPtr();
+
+  if(metadata_ptr_==NULL)
+    {
+      printf("metadata_ptr_ is NULL!!\n");
+    }
+  else
+    {
+    memcpy(&metadata_,metadata_ptr_,sizeof(metadata_));
+    }
   is_frame_avail_ = false;
 //  ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "COPY ENDED");
   return true;
