@@ -56,6 +56,8 @@ Enables the publishing of ``odom`` to ``base_link`` TF transform (see :ref:`sec-
 
 Sets the ``frame_id`` of camera and image messages. The default value is ``camera_optical``.
 
+.. _sec-dyn-params:
+
 Dynamically Reconfigurable Parameters for Bebop
 ===============================================
 

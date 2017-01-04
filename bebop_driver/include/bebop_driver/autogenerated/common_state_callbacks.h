@@ -23,7 +23,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCL
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  * common_state_callbacks.h
- * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/libARCommands/7b5cf7a8009278cf634ee33d5c2ed5dd8e573eb4/Xml/common_commands.xml
+ * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/arsdk-xml/d0c8b256a8592b25a551f3ba742c58ae3da2f93a/xml/common.xml
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
@@ -50,6 +50,9 @@ extern "C"
 #include "bebop_msgs/CommonCommonStateSensorsStatesListChanged.h"
 #include "bebop_msgs/CommonCommonStateProductModel.h"
 #include "bebop_msgs/CommonCommonStateCountryListKnown.h"
+#include "bebop_msgs/CommonCommonStateDeprecatedMassStorageContentChanged.h"
+#include "bebop_msgs/CommonCommonStateMassStorageContent.h"
+#include "bebop_msgs/CommonCommonStateMassStorageContentForCurrentRun.h"
 #include "bebop_msgs/CommonOverHeatStateOverHeatChanged.h"
 #include "bebop_msgs/CommonOverHeatStateOverHeatRegulationChanged.h"
 #include "bebop_msgs/CommonMavlinkStateMavlinkFilePlayingStateChanged.h"
@@ -58,8 +61,10 @@ extern "C"
 #include "bebop_msgs/CommonCalibrationStateMagnetoCalibrationRequiredState.h"
 #include "bebop_msgs/CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged.h"
 #include "bebop_msgs/CommonCalibrationStateMagnetoCalibrationStartedChanged.h"
+#include "bebop_msgs/CommonCalibrationStatePitotCalibrationStateChanged.h"
 #include "bebop_msgs/CommonFlightPlanStateAvailabilityStateChanged.h"
 #include "bebop_msgs/CommonFlightPlanStateComponentStateListChanged.h"
+#include "bebop_msgs/CommonFlightPlanStateLockStateChanged.h"
 #include "bebop_msgs/CommonARLibsVersionsStateControllerLibARCommandsVersion.h"
 #include "bebop_msgs/CommonARLibsVersionsStateSkyControllerLibARCommandsVersion.h"
 #include "bebop_msgs/CommonARLibsVersionsStateDeviceLibARCommandsVersion.h"
@@ -81,7 +86,7 @@ namespace cb
 {
 
 
-// State sent when all product states has been sent.
+// All states have been sent.\n\n **Please note that you should not care about this event if you are using the libARController API as this library is handling the connection process for you.**
 class CommonCommonStateAllStatesChanged : public AbstractState
 {
 private:
@@ -125,7 +130,7 @@ public:
 };  // CommonCommonStateAllStatesChanged
 
 
-// Battery state
+// Battery state.
 class CommonCommonStateBatteryStateChanged : public AbstractState
 {
 private:
@@ -176,7 +181,7 @@ public:
 };  // CommonCommonStateBatteryStateChanged
 
 
-// Mass storage state list
+// Mass storage state list.
 class CommonCommonStateMassStorageStateListChanged : public AbstractState
 {
 private:
@@ -234,7 +239,7 @@ public:
 };  // CommonCommonStateMassStorageStateListChanged
 
 
-// Mass storage info state list
+// Mass storage info state list.
 class CommonCommonStateMassStorageInfoStateListChanged : public AbstractState
 {
 private:
@@ -320,7 +325,7 @@ public:
 };  // CommonCommonStateMassStorageInfoStateListChanged
 
 
-// Current date state
+// Date changed.\n\n **Please note that you should not care about this event if you are using the libARController API as this library is handling the connection process for you.**
 class CommonCommonStateCurrentDateChanged : public AbstractState
 {
 private:
@@ -371,7 +376,7 @@ public:
 };  // CommonCommonStateCurrentDateChanged
 
 
-// Current time state
+// Time changed.\n\n **Please note that you should not care about this event if you are using the libARController API as this library is handling the connection process for you.**
 class CommonCommonStateCurrentTimeChanged : public AbstractState
 {
 private:
@@ -422,7 +427,7 @@ public:
 };  // CommonCommonStateCurrentTimeChanged
 
 
-// @deprecated Mass storage info remaining list
+// Mass storage remaining data list.
 class CommonCommonStateMassStorageInfoRemainingListChanged : public AbstractState
 {
 private:
@@ -487,7 +492,7 @@ public:
 };  // CommonCommonStateMassStorageInfoRemainingListChanged
 
 
-// Wifi Signal between controller and product state
+// Rssi (Wifi Signal between controller and product) changed.
 class CommonCommonStateWifiSignalChanged : public AbstractState
 {
 private:
@@ -538,7 +543,7 @@ public:
 };  // CommonCommonStateWifiSignalChanged
 
 
-// Sensors states list
+// Sensors state list.
 class CommonCommonStateSensorsStatesListChanged : public AbstractState
 {
 private:
@@ -596,7 +601,7 @@ public:
 };  // CommonCommonStateSensorsStatesListChanged
 
 
-// Inform of the product model. This is used to customize the UI depending on the connected product.
+// Product sub-model.\n This can be used to customize the UI depending on the product.
 class CommonCommonStateProductModel : public AbstractState
 {
 private:
@@ -647,7 +652,7 @@ public:
 };  // CommonCommonStateProductModel
 
 
-// List of the countries known by the device
+// List of countries known by the drone.
 class CommonCommonStateCountryListKnown : public AbstractState
 {
 private:
@@ -705,7 +710,244 @@ public:
 };  // CommonCommonStateCountryListKnown
 
 
-// @deprecated Overheat temperature reached
+// Mass storage content changed.
+class CommonCommonStateDeprecatedMassStorageContentChanged : public AbstractState
+{
+private:
+  ::bebop_msgs::CommonCommonStateDeprecatedMassStorageContentChanged::Ptr msg_ptr;
+
+public:
+
+  CommonCommonStateDeprecatedMassStorageContentChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
+    : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_DEPRECATEDMASSSTORAGECONTENTCHANGED)
+  {
+    if (priv_nh.getParam("states/enable_commonstate_deprecatedmassstoragecontentchanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_msgs::CommonCommonStateDeprecatedMassStorageContentChanged>(topic, 10, true);
+    } // pub_enabled_ is false
+  }
+
+  ::bebop_msgs::CommonCommonStateDeprecatedMassStorageContentChanged::ConstPtr GetDataCstPtr() const
+  {
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    return msg_ptr;
+  }
+
+  void Update(const ARCONTROLLER_DICTIONARY_ARG_t *arguments, const ::ros::Time& t)
+  {
+    if (arguments == NULL)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonCommonStateDeprecatedMassStorageContentChanged::Update() arguments is NULL");
+      return;
+    }
+
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    msg_ptr.reset(new ::bebop_msgs::CommonCommonStateDeprecatedMassStorageContentChanged());
+    msg_ptr->header.stamp = t;
+    msg_ptr->header.frame_id = "base_link";
+
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_DEPRECATEDMASSSTORAGECONTENTCHANGED_MASS_STORAGE_ID, arg);
+    if (arg)
+    {
+      msg_ptr->mass_storage_id = arg->value.U8;
+    }
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_DEPRECATEDMASSSTORAGECONTENTCHANGED_NBPHOTOS, arg);
+    if (arg)
+    {
+      msg_ptr->nbPhotos = arg->value.U16;
+    }
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_DEPRECATEDMASSSTORAGECONTENTCHANGED_NBVIDEOS, arg);
+    if (arg)
+    {
+      msg_ptr->nbVideos = arg->value.U16;
+    }
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_DEPRECATEDMASSSTORAGECONTENTCHANGED_NBPUDS, arg);
+    if (arg)
+    {
+      msg_ptr->nbPuds = arg->value.U16;
+    }
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_DEPRECATEDMASSSTORAGECONTENTCHANGED_NBCRASHLOGS, arg);
+    if (arg)
+    {
+      msg_ptr->nbCrashLogs = arg->value.U16;
+    }
+
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+  }
+
+};  // CommonCommonStateDeprecatedMassStorageContentChanged
+
+
+// Mass storage content.
+class CommonCommonStateMassStorageContent : public AbstractState
+{
+private:
+  ::bebop_msgs::CommonCommonStateMassStorageContent::Ptr msg_ptr;
+
+public:
+
+  CommonCommonStateMassStorageContent(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
+    : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENT)
+  {
+    if (priv_nh.getParam("states/enable_commonstate_massstoragecontent", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_msgs::CommonCommonStateMassStorageContent>(topic, 10, true);
+    } // pub_enabled_ is false
+  }
+
+  ::bebop_msgs::CommonCommonStateMassStorageContent::ConstPtr GetDataCstPtr() const
+  {
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    return msg_ptr;
+  }
+
+  void Update(const ARCONTROLLER_DICTIONARY_ARG_t *arguments, const ::ros::Time& t)
+  {
+    if (arguments == NULL)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonCommonStateMassStorageContent::Update() arguments is NULL");
+      return;
+    }
+
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    msg_ptr.reset(new ::bebop_msgs::CommonCommonStateMassStorageContent());
+    msg_ptr->header.stamp = t;
+    msg_ptr->header.frame_id = "base_link";
+
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENT_MASS_STORAGE_ID, arg);
+    if (arg)
+    {
+      msg_ptr->mass_storage_id = arg->value.U8;
+    }
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENT_NBPHOTOS, arg);
+    if (arg)
+    {
+      msg_ptr->nbPhotos = arg->value.U16;
+    }
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENT_NBVIDEOS, arg);
+    if (arg)
+    {
+      msg_ptr->nbVideos = arg->value.U16;
+    }
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENT_NBPUDS, arg);
+    if (arg)
+    {
+      msg_ptr->nbPuds = arg->value.U16;
+    }
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENT_NBCRASHLOGS, arg);
+    if (arg)
+    {
+      msg_ptr->nbCrashLogs = arg->value.U16;
+    }
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENT_NBRAWPHOTOS, arg);
+    if (arg)
+    {
+      msg_ptr->nbRawPhotos = arg->value.U16;
+    }
+
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+  }
+
+};  // CommonCommonStateMassStorageContent
+
+
+// Mass storage content for current run.\n Only counts the files related to the current run (see [RunId](#0-30-0))
+class CommonCommonStateMassStorageContentForCurrentRun : public AbstractState
+{
+private:
+  ::bebop_msgs::CommonCommonStateMassStorageContentForCurrentRun::Ptr msg_ptr;
+
+public:
+
+  CommonCommonStateMassStorageContentForCurrentRun(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
+    : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENTFORCURRENTRUN)
+  {
+    if (priv_nh.getParam("states/enable_commonstate_massstoragecontentforcurrentrun", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_msgs::CommonCommonStateMassStorageContentForCurrentRun>(topic, 10, true);
+    } // pub_enabled_ is false
+  }
+
+  ::bebop_msgs::CommonCommonStateMassStorageContentForCurrentRun::ConstPtr GetDataCstPtr() const
+  {
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    return msg_ptr;
+  }
+
+  void Update(const ARCONTROLLER_DICTIONARY_ARG_t *arguments, const ::ros::Time& t)
+  {
+    if (arguments == NULL)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonCommonStateMassStorageContentForCurrentRun::Update() arguments is NULL");
+      return;
+    }
+
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    msg_ptr.reset(new ::bebop_msgs::CommonCommonStateMassStorageContentForCurrentRun());
+    msg_ptr->header.stamp = t;
+    msg_ptr->header.frame_id = "base_link";
+
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENTFORCURRENTRUN_MASS_STORAGE_ID, arg);
+    if (arg)
+    {
+      msg_ptr->mass_storage_id = arg->value.U8;
+    }
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENTFORCURRENTRUN_NBPHOTOS, arg);
+    if (arg)
+    {
+      msg_ptr->nbPhotos = arg->value.U16;
+    }
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENTFORCURRENTRUN_NBVIDEOS, arg);
+    if (arg)
+    {
+      msg_ptr->nbVideos = arg->value.U16;
+    }
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_MASSSTORAGECONTENTFORCURRENTRUN_NBRAWPHOTOS, arg);
+    if (arg)
+    {
+      msg_ptr->nbRawPhotos = arg->value.U16;
+    }
+
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+  }
+
+};  // CommonCommonStateMassStorageContentForCurrentRun
+
+
+// Overheat temperature reached.
 class CommonOverHeatStateOverHeatChanged : public AbstractState
 {
 private:
@@ -749,7 +991,7 @@ public:
 };  // CommonOverHeatStateOverHeatChanged
 
 
-// @deprecated Overheat regulation state changed
+// Overheat regulation type.
 class CommonOverHeatStateOverHeatRegulationChanged : public AbstractState
 {
 private:
@@ -800,7 +1042,7 @@ public:
 };  // CommonOverHeatStateOverHeatRegulationChanged
 
 
-// Playing state of a mavlink flight plan
+// Playing state of a FlightPlan.
 class CommonMavlinkStateMavlinkFilePlayingStateChanged : public AbstractState
 {
 private:
@@ -865,7 +1107,7 @@ public:
 };  // CommonMavlinkStateMavlinkFilePlayingStateChanged
 
 
-// FlightPlan play state error
+// FlightPlan error.
 class CommonMavlinkStateMavlinkPlayErrorStateChanged : public AbstractState
 {
 private:
@@ -916,7 +1158,7 @@ public:
 };  // CommonMavlinkStateMavlinkPlayErrorStateChanged
 
 
-// Sent when the state of the magneto calibration has changed
+// Magneto calib process axis state.
 class CommonCalibrationStateMagnetoCalibrationStateChanged : public AbstractState
 {
 private:
@@ -988,7 +1230,7 @@ public:
 };  // CommonCalibrationStateMagnetoCalibrationStateChanged
 
 
-// Status of the calibration requirement
+// Calibration required.
 class CommonCalibrationStateMagnetoCalibrationRequiredState : public AbstractState
 {
 private:
@@ -1039,7 +1281,7 @@ public:
 };  // CommonCalibrationStateMagnetoCalibrationRequiredState
 
 
-// Event sent by a product to inform about the axis to calibrate
+// Axis to calibrate during calibration process.
 class CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged : public AbstractState
 {
 private:
@@ -1090,7 +1332,7 @@ public:
 };  // CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged
 
 
-// Status of the calibration process
+// Calibration process state.
 class CommonCalibrationStateMagnetoCalibrationStartedChanged : public AbstractState
 {
 private:
@@ -1141,7 +1383,65 @@ public:
 };  // CommonCalibrationStateMagnetoCalibrationStartedChanged
 
 
-// State of availability to run a flight plan file
+// 
+class CommonCalibrationStatePitotCalibrationStateChanged : public AbstractState
+{
+private:
+  ::bebop_msgs::CommonCalibrationStatePitotCalibrationStateChanged::Ptr msg_ptr;
+
+public:
+
+  CommonCalibrationStatePitotCalibrationStateChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
+    : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_PITOTCALIBRATIONSTATECHANGED)
+  {
+    if (priv_nh.getParam("states/enable_calibrationstate_pitotcalibrationstatechanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_msgs::CommonCalibrationStatePitotCalibrationStateChanged>(topic, 10, true);
+    } // pub_enabled_ is false
+  }
+
+  ::bebop_msgs::CommonCalibrationStatePitotCalibrationStateChanged::ConstPtr GetDataCstPtr() const
+  {
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    return msg_ptr;
+  }
+
+  void Update(const ARCONTROLLER_DICTIONARY_ARG_t *arguments, const ::ros::Time& t)
+  {
+    if (arguments == NULL)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonCalibrationStatePitotCalibrationStateChanged::Update() arguments is NULL");
+      return;
+    }
+
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    msg_ptr.reset(new ::bebop_msgs::CommonCalibrationStatePitotCalibrationStateChanged());
+    msg_ptr->header.stamp = t;
+    msg_ptr->header.frame_id = "base_link";
+
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_PITOTCALIBRATIONSTATECHANGED_STATE, arg);
+    if (arg)
+    {
+      msg_ptr->state = arg->value.I32;
+    }
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_CALIBRATIONSTATE_PITOTCALIBRATIONSTATECHANGED_LASTERROR, arg);
+    if (arg)
+    {
+      msg_ptr->lastError = arg->value.U8;
+    }
+
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+  }
+
+};  // CommonCalibrationStatePitotCalibrationStateChanged
+
+
+// FlightPlan availability.\n Availability is linked to GPS fix, magnetometer calibration, sensor states...
 class CommonFlightPlanStateAvailabilityStateChanged : public AbstractState
 {
 private:
@@ -1192,7 +1492,7 @@ public:
 };  // CommonFlightPlanStateAvailabilityStateChanged
 
 
-// List of state of drone flightPlan components
+// FlightPlan components state list.
 class CommonFlightPlanStateComponentStateListChanged : public AbstractState
 {
 private:
@@ -1250,7 +1550,58 @@ public:
 };  // CommonFlightPlanStateComponentStateListChanged
 
 
-// Controller libARCommands version
+// FlightPlan lock state.\n Represents the fact that the controller is able or not to stop or pause a playing FlightPlan
+class CommonFlightPlanStateLockStateChanged : public AbstractState
+{
+private:
+  ::bebop_msgs::CommonFlightPlanStateLockStateChanged::Ptr msg_ptr;
+
+public:
+
+  CommonFlightPlanStateLockStateChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
+    : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_FLIGHTPLANSTATE_LOCKSTATECHANGED)
+  {
+    if (priv_nh.getParam("states/enable_flightplanstate_lockstatechanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_msgs::CommonFlightPlanStateLockStateChanged>(topic, 10, true);
+    } // pub_enabled_ is false
+  }
+
+  ::bebop_msgs::CommonFlightPlanStateLockStateChanged::ConstPtr GetDataCstPtr() const
+  {
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    return msg_ptr;
+  }
+
+  void Update(const ARCONTROLLER_DICTIONARY_ARG_t *arguments, const ::ros::Time& t)
+  {
+    if (arguments == NULL)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonFlightPlanStateLockStateChanged::Update() arguments is NULL");
+      return;
+    }
+
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    msg_ptr.reset(new ::bebop_msgs::CommonFlightPlanStateLockStateChanged());
+    msg_ptr->header.stamp = t;
+    msg_ptr->header.frame_id = "base_link";
+
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_FLIGHTPLANSTATE_LOCKSTATECHANGED_LOCKSTATE, arg);
+    if (arg)
+    {
+      msg_ptr->LockState = arg->value.U8;
+    }
+
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+  }
+
+};  // CommonFlightPlanStateLockStateChanged
+
+
+// 
 class CommonARLibsVersionsStateControllerLibARCommandsVersion : public AbstractState
 {
 private:
@@ -1301,7 +1652,7 @@ public:
 };  // CommonARLibsVersionsStateControllerLibARCommandsVersion
 
 
-// SkyController libARCommands version
+// 
 class CommonARLibsVersionsStateSkyControllerLibARCommandsVersion : public AbstractState
 {
 private:
@@ -1352,7 +1703,7 @@ public:
 };  // CommonARLibsVersionsStateSkyControllerLibARCommandsVersion
 
 
-// Device libARCommands version
+// 
 class CommonARLibsVersionsStateDeviceLibARCommandsVersion : public AbstractState
 {
 private:
@@ -1403,7 +1754,7 @@ public:
 };  // CommonARLibsVersionsStateDeviceLibARCommandsVersion
 
 
-// Notify the controller whether the audio streaming is running.
+// Audio stream direction.
 class CommonAudioStateAudioStreamingRunning : public AbstractState
 {
 private:
@@ -1454,7 +1805,7 @@ public:
 };  // CommonAudioStateAudioStreamingRunning
 
 
-// Notify the instensity values for headlight LEDs.
+// Lighting LEDs intensity.
 class CommonHeadlightsStateintensityChanged : public AbstractState
 {
 private:
@@ -1512,7 +1863,7 @@ public:
 };  // CommonHeadlightsStateintensityChanged
 
 
-// List of animations state.
+// Paramaterless animations state list.
 class CommonAnimationsStateList : public AbstractState
 {
 private:
@@ -1577,7 +1928,7 @@ public:
 };  // CommonAnimationsStateList
 
 
-// List of supported accessories
+// Supported accessories list.
 class CommonAccessoryStateSupportedAccessoriesListChanged : public AbstractState
 {
 private:
@@ -1628,7 +1979,7 @@ public:
 };  // CommonAccessoryStateSupportedAccessoriesListChanged
 
 
-// Accessory config response.
+// Accessory config.
 class CommonAccessoryStateAccessoryConfigChanged : public AbstractState
 {
 private:
@@ -1686,7 +2037,7 @@ public:
 };  // CommonAccessoryStateAccessoryConfigChanged
 
 
-// Possibility to modify the accessory configuration.
+// Availability to declare or not an accessory.
 class CommonAccessoryStateAccessoryConfigModificationEnabled : public AbstractState
 {
 private:
@@ -1737,7 +2088,7 @@ public:
 };  // CommonAccessoryStateAccessoryConfigModificationEnabled
 
 
-// @deprecated The maximum charge rate reported by the firmware.
+// Max charge rate.
 class CommonChargerStateMaxChargeRateChanged : public AbstractState
 {
 private:
@@ -1788,7 +2139,7 @@ public:
 };  // CommonChargerStateMaxChargeRateChanged
 
 
-// @deprecated The charge status of the battery changed.
+// Current charge state.
 class CommonChargerStateCurrentChargeStateChanged : public AbstractState
 {
 private:
@@ -1846,7 +2197,7 @@ public:
 };  // CommonChargerStateCurrentChargeStateChanged
 
 
-// @deprecated The charge rate of the last charge sent by the firmware.
+// Last charge rate.
 class CommonChargerStateLastChargeRateChanged : public AbstractState
 {
 private:
@@ -1897,7 +2248,7 @@ public:
 };  // CommonChargerStateLastChargeRateChanged
 
 
-// Information of the charge.
+// Charging information.
 class CommonChargerStateChargingInfo : public AbstractState
 {
 private:
@@ -1969,7 +2320,7 @@ public:
 };  // CommonChargerStateChargingInfo
 
 
-// Sent when a run id has changed Run ids are uniquely identifying a run or a flight
+// Current run id.\n A run id is uniquely identifying a run or a flight.\n For each run is generated on the drone a file which can be used by Academy to sum up the run.\n Also, each medias taken during a run has a filename containing the run id.
 class CommonRunStateRunIdChanged : public AbstractState
 {
 private:

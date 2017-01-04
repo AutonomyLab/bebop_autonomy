@@ -4,7 +4,7 @@
 # To check upstream commit hash, refer to last_build_info file
 # Do not modify this file by hand. Check scripts/meta folder for generator files.
 #
-# SDK Comment: Event sent by a product to inform about the axis to calibrate
+# SDK Comment: Axis to calibrate during calibration process.
 
 Header header
 

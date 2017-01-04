@@ -2,7 +2,7 @@
 bebop_autonomy - ROS Driver for Parrot Bebop Drone (quadrocopter) 1.0 & 2.0
 ****************************************************************************
 
-*bebop_autonomy* is a :abbr:`ROS (Robot Operating System)` driver for `Parrot Bebop 1.0 <http://www.parrot.com/ca/products/bebop-drone/>`_ and 2.0 drones (quadrocopters), based on Parrot's official `ARDroneSDK3 <https://github.com/Parrot-Developers/arsdk_manifests>`_. This driver has been developed in `Autonomy Lab <http://autonomylab.org/>`_ of `Simon Fraser University <http://www.sfu.ca/>`_ by `Mani Monajjemi <http://mani.im>`_ and other contributers (:ref:`sec-contribs`).
+*bebop_autonomy* is a :abbr:`ROS (Robot Operating System)` driver for `Parrot Bebop 1.0 <http://www.parrot.com/ca/products/bebop-drone/>`_ and `2.0 <https://www.parrot.com/ca/drones/parrot-bebop-2>`_ drones (quadrocopters), based on Parrot's official `ARDroneSDK3 <http://developer.parrot.com/docs/SDK3/>`_. This driver has been developed in `Autonomy Lab <http://autonomylab.org/>`_ of `Simon Fraser University <http://www.sfu.ca/>`_ by `Mani Monajjemi <http://mani.im>`_ and other contributers (:ref:`sec-contribs`).
 
 [`Source Code <https://github.com/AutonomyLab/bebop_autonomy>`_] 
 [`ROS wiki page <http://wiki.ros.org/bebop_autonomy>`_] 
@@ -18,19 +18,24 @@ Features and Roadmap
 .. csv-table::
   :header: "Feature", "Status", "Notes"
 
+  SDK Version,"3.10.1", "Since v0.6"
+  Support for Parrot Bebop 1, Yes, "Tested up to Firmware 3.3"
+  Support for Parrot Bebop 2, Yes, "Tested up to Firmware 3.9"
+  Support for Parrot Disco FPV, No, "Not tested (help wanted)"
   Core piloting, Yes, ""
   H264 video decoding, Yes, "Enhancement: `#1 <https://github.com/AutonomyLab/bebop_autonomy/issues/1>`_"
   ROS Camera Interface, Yes, ""
   Nodelet implementation, Yes, ""
   Publish Bebop states as ROS topics, Yes, ""
   Dynamically reconfigurable Bebop settings, Yes, ":ref:`sec-dev-dyn`"
-  Inline build of ARDroneSDK3, Yes, "Enhancement: `#2 <https://github.com/AutonomyLab/bebop_autonomy/issues/2>`_"
+  Use `parrot_arsdk <https://github.com/AutonomyLab/parrot_arsdk>`_ instead of building ARSDK3 inline, Yes, "Since v0.6: `#75 <https://github.com/AutonomyLab/bebop_autonomy/issues/75>`_"
   Bebop In The Loop tests, Yes, ":ref:`sec-dev-test`"
-  Joystick teleop demo, Yes, ""
+  Joystick teleop demo, Yes, ":ref:`sec-pilot-teleop`"
   TF Publisher, Yes, "Since v0.5 (:ref:`sec-tf`)"
   Odometry Publisher, Yes, "Since v0.5 (:ref:`sec-odom`)"
   Provide ROS API for on-board picture/video recording, Yes, "Since v0.4.1 (:ref:`sec-snapshot`)"
-  GPS Support, Yes, "Since v0.5 (:ref:`sec-gps`)"
+  GPS Support, Yes, "Since v0.6 (:ref:`sec-gps`)"
+  Support for 720p streaming, Yes, "Since v0.6"
   Mavlink Support, No, ""
   Binary Release, No, ""
   Support for Parrot Sky Controller, No, ""

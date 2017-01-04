@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>bebop_driver</name>
-  <version>0.5.1</version>
+  <version>0.6.0</version>
   <description>ROS driver for Parrot Bebop drone, based on Parrot’s official ARDroneSDK3</description>
 
   <maintainer email="mmonajje@sfu.ca">Mani Monajjemi</maintainer>
@@ -14,29 +14,13 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <!-- ARDroneSDK3 deps -->
-  <!-- We need java since the SDK requires jar binary -->
-  <build_depend>git</build_depend>
-  <build_depend>wget</build_depend>
-  <build_depend>automake</build_depend>
-  <build_depend>autoconf</build_depend>
-  <build_depend>libtool</build_depend>
-  <build_depend>yasm</build_depend>
-  <build_depend>nasm</build_depend>
-  <build_depend>zlib</build_depend>
-  <build_depend>unzip</build_depend>
-  <build_depend>curl</build_depend>
-  <build_depend>ffmpeg</build_depend>
-  <build_depend>libncurses-dev</build_depend>
-  <build_depend>libavahi-client-dev</build_depend>
-  <build_depend>libavahi-core-dev</build_depend>
-
-  <!-- ROS dependencies -->
+  <build_depend>parrot_arsdk</build_depend>
   <build_depend>bebop_msgs</build_depend>
   <build_depend>bebop_description</build_depend>
   <build_depend>pkg-config</build_depend>
   <build_depend>nodelet</build_depend>
   <build_depend>camera_info_manager</build_depend>
+  <build_depend>ffmpeg</build_depend>
   <build_depend>image_transport</build_depend>
   <build_depend>nav_msgs</build_depend>
   <build_depend>roscpp</build_depend>
@@ -48,10 +32,12 @@
   <build_depend>roslint</build_depend>
   <build_depend>rostest</build_depend>
 
+  <run_depend>parrot_arsdk</run_depend>
   <run_depend>bebop_msgs</run_depend>
   <run_depend>bebop_description</run_depend>
   <run_depend>nodelet</run_depend>
   <run_depend>camera_info_manager</run_depend>
+  <run_depend>ffmpeg</run_depend>
   <run_depend>image_transport</run_depend>
   <run_depend>nav_msgs</run_depend>
   <run_depend>roscpp</run_depend>

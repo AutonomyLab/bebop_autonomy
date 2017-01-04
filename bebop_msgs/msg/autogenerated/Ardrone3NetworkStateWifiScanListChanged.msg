@@ -4,7 +4,7 @@
 # To check upstream commit hash, refer to last_build_info file
 # Do not modify this file by hand. Check scripts/meta folder for generator files.
 #
-# SDK Comment: One scanning result found
+# SDK Comment: Wifi scan results.\n Please note that the list is not complete until you receive the event [WifiScanEnded](#1-14-1).
 
 Header header
 

@@ -23,10 +23,16 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCL
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "bebop_driver/bebop_video_decoder.h"
+#include "bebop_driver/metadata_struct.h"
+#include <netinet/in.h>
 
 #include <stdexcept>
 #include <algorithm>
 #include <string>
+#include <iostream>
+
+#include <inttypes.h>
+#include <bitset>
 
 #include <boost/lexical_cast.hpp>
 
@@ -37,10 +43,9 @@ extern "C"
 
 namespace bebop_driver
 {
-
 const char* VideoDecoder::LOG_TAG = "Decoder";
 
-// TODO(mani-monaj): Move to util
+// TODO(mani-monaj): Move to util, inline
 void VideoDecoder::ThrowOnCondition(const bool cond, const std::string &message)
 {
   if (!cond) return;
@@ -61,19 +66,16 @@ VideoDecoder::VideoDecoder()
     update_codec_params_(false)
 {}
 
-bool VideoDecoder::InitCodec(const uint32_t width, const uint32_t height)
+
+bool VideoDecoder::InitCodec()
 {
   if (codec_initialized_)
   {
-    // TODO(mani-monaj): Maybe re-initialize
     return true;
   }
 
   try
   {
-    ThrowOnCondition(width == 0 || height == 0, std::string("Invalid frame size:") +
-                     boost::lexical_cast<std::string>(width) + " x " + boost::lexical_cast<std::string>(height));
-
     // Very first init
     avcodec_register_all();
     av_register_all();
@@ -90,8 +92,9 @@ bool VideoDecoder::InitCodec(const uint32_t width, const uint32_t height)
     codec_ctx_ptr_->workaround_bugs = AVMEDIA_TYPE_VIDEO;
     codec_ctx_ptr_->codec_id = AV_CODEC_ID_H264;
     codec_ctx_ptr_->skip_idct = AVDISCARD_DEFAULT;
-    codec_ctx_ptr_->width = width;
-    codec_ctx_ptr_->height = height;
+    // At the beginning we have no idea about the frame size
+    codec_ctx_ptr_->width = 0;
+    codec_ctx_ptr_->height = 0;
 
     if (codec_ptr_->capabilities & CODEC_CAP_TRUNCATED)
     {
@@ -99,53 +102,73 @@ bool VideoDecoder::InitCodec(const uint32_t width, const uint32_t height)
     }
     codec_ctx_ptr_->flags2 |= CODEC_FLAG2_CHUNKS;
 
+    frame_ptr_ = av_frame_alloc();
+    ThrowOnCondition(!frame_ptr_ , "Can not allocate memory for frames!");
+
     ThrowOnCondition(
           avcodec_open2(codec_ctx_ptr_, codec_ptr_, NULL) < 0,
           "Can not open the decoder!");
 
-    const uint32_t num_bytes = avpicture_get_size(PIX_FMT_RGB24, codec_ctx_ptr_->width, codec_ctx_ptr_->height);
-    {
-       frame_ptr_ = avcodec_alloc_frame();
-       frame_rgb_ptr_ = avcodec_alloc_frame();
-
-       ThrowOnCondition(!frame_ptr_ || !frame_rgb_ptr_, "Can not allocate memory for frames!");
-
-       frame_rgb_raw_ptr_ = reinterpret_cast<uint8_t*>(av_malloc(num_bytes * sizeof(uint8_t)));
-       ThrowOnCondition(frame_rgb_raw_ptr_ == NULL,
-                        std::string("Can not allocate memory for the buffer: ") +
-                        boost::lexical_cast<std::string>(num_bytes));
-       ThrowOnCondition(0 == avpicture_fill(
-                          reinterpret_cast<AVPicture*>(frame_rgb_ptr_), frame_rgb_raw_ptr_, PIX_FMT_RGB24,
-                          codec_ctx_ptr_->width, codec_ctx_ptr_->height),
-                        "Failed to initialize the picture data structure.");
-    }
     av_init_packet(&packet_);
   }
   catch (const std::runtime_error& e)
   {
     ARSAL_PRINT(ARSAL_PRINT_ERROR, LOG_TAG, "%s", e.what());
-    Cleanup();
+    Reset();
     return false;
   }
 
   codec_initialized_ = true;
   first_iframe_recv_ = false;
-  ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "H264 Codec is initialized!");
+  ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "H264 Codec is partially initialized!");
   return true;
 }
 
-void VideoDecoder::Cleanup()
+bool VideoDecoder::ReallocateBuffers()
 {
-  if (codec_ctx_ptr_)
+  ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "Buffer reallocation request");
+  if (!codec_initialized_)
   {
-    avcodec_close(codec_ctx_ptr_);
+    return false;
   }
 
-  if (frame_ptr_)
+  try
   {
-    av_free(frame_ptr_);
+    ThrowOnCondition(codec_ctx_ptr_->width == 0 || codec_ctx_ptr_->width == 0,
+                     std::string("Invalid frame size:") +
+                     boost::lexical_cast<std::string>(codec_ctx_ptr_->width) +
+                     " x " + boost::lexical_cast<std::string>(codec_ctx_ptr_->width));
+
+    const uint32_t num_bytes = avpicture_get_size(PIX_FMT_RGB24, codec_ctx_ptr_->width, codec_ctx_ptr_->width);
+    frame_rgb_ptr_ = av_frame_alloc();
+
+    ThrowOnCondition(!frame_rgb_ptr_, "Can not allocate memory for frames!");
+
+    frame_rgb_raw_ptr_ = reinterpret_cast<uint8_t*>(av_malloc(num_bytes * sizeof(uint8_t)));
+    ThrowOnCondition(frame_rgb_raw_ptr_ == NULL,
+                     std::string("Can not allocate memory for the buffer: ") +
+                     boost::lexical_cast<std::string>(num_bytes));
+    ThrowOnCondition(0 == avpicture_fill(
+                       reinterpret_cast<AVPicture*>(frame_rgb_ptr_), frame_rgb_raw_ptr_, PIX_FMT_RGB24,
+                       codec_ctx_ptr_->width, codec_ctx_ptr_->height),
+                     "Failed to initialize the picture data structure.");
+
+    img_convert_ctx_ptr_ = sws_getContext(codec_ctx_ptr_->width, codec_ctx_ptr_->height, codec_ctx_ptr_->pix_fmt,
+                                          codec_ctx_ptr_->width, codec_ctx_ptr_->height, PIX_FMT_RGB24,
+                                          SWS_FAST_BILINEAR, NULL, NULL, NULL);
+  }
+  catch (const std::runtime_error& e)
+  {
+    ARSAL_PRINT(ARSAL_PRINT_ERROR, LOG_TAG, "%s", e.what());
+    Reset();  // reset() is intentional
+    return false;
   }
 
+  return true;
+}
+
+void VideoDecoder::CleanupBuffers()
+{
   if (frame_rgb_ptr_)
   {
     av_free(frame_rgb_ptr_);
@@ -161,26 +184,37 @@ void VideoDecoder::Cleanup()
     sws_freeContext(img_convert_ctx_ptr_);
   }
 
+  ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "Buffer cleanup!");
+}
+
+void VideoDecoder::Reset()
+{
+  if (codec_ctx_ptr_)
+  {
+    avcodec_close(codec_ctx_ptr_);
+  }
+
+  if (frame_ptr_)
+  {
+    av_free(frame_ptr_);
+  }
+
+  CleanupBuffers();
+
   codec_initialized_ = false;
   first_iframe_recv_ = false;
-  ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "Cleaned up!");
+  ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "Reset!");
 }
 
 VideoDecoder::~VideoDecoder()
 {
-  Cleanup();
+  Reset();
   ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "Dstr!");
 }
 
 void VideoDecoder::ConvertFrameToRGB()
 {
-  if (!img_convert_ctx_ptr_)
-  {
-    img_convert_ctx_ptr_ = sws_getContext(codec_ctx_ptr_->width, codec_ctx_ptr_->height, codec_ctx_ptr_->pix_fmt,
-                                          codec_ctx_ptr_->width, codec_ctx_ptr_->height, PIX_FMT_RGB24,
-                                          SWS_FAST_BILINEAR, NULL, NULL, NULL);
-  }
-
+  if (!codec_ctx_ptr_->width || !codec_ctx_ptr_->height) return;
   sws_scale(img_convert_ctx_ptr_, frame_ptr_->data, frame_ptr_->linesize, 0,
             codec_ctx_ptr_->height, frame_rgb_ptr_->data, frame_rgb_ptr_->linesize);
 }
@@ -213,7 +247,7 @@ bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *bebop_frame_ptr_)
 {
   if (!codec_initialized_)
   {
-    if (!InitCodec(bebop_frame_ptr_->width, bebop_frame_ptr_->height))
+    if (!InitCodec())
     {
       ARSAL_PRINT(ARSAL_PRINT_WARNING, LOG_TAG, "Codec initialization failed!");
       return false;
@@ -257,6 +291,10 @@ bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *bebop_frame_ptr_)
 
   packet_.data = bebop_frame_ptr_->data;
   packet_.size = bebop_frame_ptr_->used;
+  metadata_ptr_= bebop_frame_ptr_->metadata;
+
+  const uint32_t width_prev = GetFrameWidth();
+  const uint32_t height_prev = GetFrameHeight();
 
   int32_t frame_finished = 0;
   while (packet_.size > 0)
@@ -266,6 +304,14 @@ bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *bebop_frame_ptr_)
     {
       if (frame_finished)
       {
+        if ((GetFrameWidth() != width_prev) || (GetFrameHeight() != height_prev))
+        {
+          ARSAL_PRINT(ARSAL_PRINT_ERROR, LOG_TAG, "Frame size changed to %u x %u", GetFrameWidth(), GetFrameHeight());
+          if (!ReallocateBuffers())
+          {
+            ARSAL_PRINT(ARSAL_PRINT_ERROR, LOG_TAG, "Buffer reallocation failed!");
+          }
+        }
         ConvertFrameToRGB();
       }
 
@@ -282,5 +328,6 @@ bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *bebop_frame_ptr_)
   }
   return true;
 }
+
 
 }  // namespace bebop_driver

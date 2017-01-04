@@ -139,7 +139,7 @@ void Bebop::CommandReceivedCallback(eARCONTROLLER_DICTIONARY_KEY cmd_key,
 eARCONTROLLER_ERROR Bebop::DecoderConfigCallback(ARCONTROLLER_Stream_Codec_t codec, void *bebop_void_ptr)
 {
   Bebop* bebop_ptr = static_cast<Bebop*>(bebop_void_ptr);
-  if (codec.type = ARCONTROLLER_STREAM_CODEC_TYPE_H264)
+  if (codec.type == ARCONTROLLER_STREAM_CODEC_TYPE_H264)
   {
     ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "H264 configuration packet received: #SPS: %d #PPS: %d (MP4? %d)",
                 codec.parameters.h264parameters.spsSize,
@@ -184,11 +184,6 @@ eARCONTROLLER_ERROR Bebop::FrameReceivedCallback(ARCONTROLLER_Frame_t *frame, vo
   Bebop* bebop_ptr = static_cast<Bebop*>(bebop_void_ptr);
   if (!bebop_ptr->IsConnected()) return ARCONTROLLER_ERROR;
 
-  // TODO(mani-monaj): Param? Fetch from Drone?
-  frame->width = 640;
-  frame->height = 368;
-
-  // ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "In RECV FRAME");
   {
     boost::unique_lock<boost::mutex> lock(bebop_ptr->frame_avail_mutex_);
     if (bebop_ptr->is_frame_avail_)
@@ -550,7 +545,7 @@ void Bebop::Move(const double &roll, const double &pitch, const double &gaz_spee
 void Bebop::MoveCamera(const double &tilt, const double &pan)
 {
   ThrowOnInternalError("Camera Move Failure");
-  ThrowOnCtrlError(device_controller_ptr_->aRDrone3->sendCameraOrientation(
+  ThrowOnCtrlError(device_controller_ptr_->aRDrone3->setCameraOrientation(
                      device_controller_ptr_->aRDrone3,
                      static_cast<int8_t>(tilt),
                      static_cast<int8_t>(pan)));
@@ -566,7 +561,7 @@ uint32_t Bebop::GetFrontCameraFrameHeight() const
   return video_decoder_ptr_->GetFrameHeight();
 }
 
-bool Bebop::GetFrontCameraFrame(std::vector<uint8_t> &buffer, uint32_t& width, uint32_t& height) const
+bool Bebop::GetFrontCameraFrame(std::vector<uint8_t> &buffer, uint32_t& width, uint32_t& height,MetadataV2Base_t& metadata_)
 {
   boost::unique_lock<boost::mutex> lock(frame_avail_mutex_);
 
@@ -578,7 +573,11 @@ bool Bebop::GetFrontCameraFrame(std::vector<uint8_t> &buffer, uint32_t& width, u
 
 //  ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "COPY STARTED");
   const uint32_t num_bytes = video_decoder_ptr_->GetFrameWidth() * video_decoder_ptr_->GetFrameHeight() * 3;
-
+  if (num_bytes == 0)
+  {
+    ARSAL_PRINT(ARSAL_PRINT_WARNING, LOG_TAG, "No picture size");
+    return false;
+  }
   buffer.resize(num_bytes);
   // New frame is ready
   std::copy(video_decoder_ptr_->GetFrameRGBRawCstPtr(),
@@ -587,6 +586,16 @@ bool Bebop::GetFrontCameraFrame(std::vector<uint8_t> &buffer, uint32_t& width, u
 
   width = video_decoder_ptr_->GetFrameWidth();
   height = video_decoder_ptr_->GetFrameHeight();
+  metadata_ptr_=video_decoder_ptr_->GetFrameMetadataPtr();
+
+  if(metadata_ptr_==NULL)
+    {
+      printf("metadata_ptr_ is NULL!!\n");
+    }
+  else
+    {
+    memcpy(&metadata_,metadata_ptr_,sizeof(metadata_));
+    }
   is_frame_avail_ = false;
 //  ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "COPY ENDED");
   return true;

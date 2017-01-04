@@ -250,19 +250,19 @@ TEST_F(BebopInTheLoopTest, Piloting)
 {
   boost::shared_ptr<util::ASyncSub<bebop_msgs::Ardrone3PilotingStateFlyingStateChanged> >
       flying_state(new util::ASyncSub<bebop_msgs::Ardrone3PilotingStateFlyingStateChanged>(
-                      nh_, "states/ARDrone3/PilotingState/FlyingStateChanged", 10));
+                      nh_, "states/ardrone3/PilotingState/FlyingStateChanged", 10));
 
   boost::shared_ptr<util::ASyncSub<bebop_msgs::Ardrone3PilotingStateSpeedChanged> >
       speed_state(new util::ASyncSub<bebop_msgs::Ardrone3PilotingStateSpeedChanged>(
-                      nh_, "states/ARDrone3/PilotingState/SpeedChanged", 10));
+                      nh_, "states/ardrone3/PilotingState/SpeedChanged", 10));
 
   boost::shared_ptr<util::ASyncSub<bebop_msgs::Ardrone3PilotingStateAltitudeChanged> >
       alt_state(new util::ASyncSub<bebop_msgs::Ardrone3PilotingStateAltitudeChanged>(
-                      nh_, "states/ARDrone3/PilotingState/AltitudeChanged", 10));
+                      nh_, "states/ardrone3/PilotingState/AltitudeChanged", 10));
 
   boost::shared_ptr<util::ASyncSub<bebop_msgs::Ardrone3PilotingStateAttitudeChanged> >
       att_state(new util::ASyncSub<bebop_msgs::Ardrone3PilotingStateAttitudeChanged>(
-                      nh_, "states/ARDrone3/PilotingState/AttitudeChanged", 10));
+                      nh_, "states/ardrone3/PilotingState/AttitudeChanged", 10));
 
   // The problem with the battery state is that it is only updated when its values changes,
   // this is more likely to happen when flying than sitting on the ground
@@ -579,7 +579,7 @@ TEST_F(BebopInTheLoopTest, CameraMoveTest)
 {
   boost::shared_ptr<util::ASyncSub<bebop_msgs::Ardrone3CameraStateOrientation> >
       camera_state(new util::ASyncSub<bebop_msgs::Ardrone3CameraStateOrientation>(
-                      nh_, "states/ARDrone3/CameraState/Orientation", 10));
+                      nh_, "states/ardrone3/CameraState/Orientation", 10));
 
   ros::Publisher twist_pub =  nh_.advertise<geometry_msgs::Twist>("camera_control", 1);
   TIMED_ASSERT(5.0, twist_pub.getNumSubscribers() > 0, "Waiting for camera control subscription ...");
@@ -605,7 +605,7 @@ TEST_F(BebopInTheLoopTest, DISABLED_FlatTrimTest)
 {
   boost::shared_ptr<util::ASyncSub<bebop_msgs::Ardrone3PilotingStateFlyingStateChanged> >
       flattrim_state(new util::ASyncSub<bebop_msgs::Ardrone3PilotingStateFlyingStateChanged>(
-                      nh_, "states/ARDrone3/PilotingState/FlyingStateChanged", 10));
+                      nh_, "states/ardrone3/PilotingState/FlyingStateChanged", 10));
     ros::Publisher flattrim_pub =  nh_.advertise<std_msgs::Empty>("flattrim", 1);
 
     // Wait 5s time for connection to establish

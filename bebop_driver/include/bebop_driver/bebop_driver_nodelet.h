@@ -44,6 +44,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 #include <boost/shared_ptr.hpp>
 
 #include "bebop_driver/bebop.h"
+#include "geometry_msgs/QuaternionStamped.h"
 
 #define CLAMP(x, l, h) (((x) > (h)) ? (h) : (((x) < (l)) ? (l) : (x)))
 
@@ -98,6 +99,20 @@ class Bebop;
 class BebopDriverNodelet : public nodelet::Nodelet
 {
 private:
+  float frameX_;
+  float frameY_;
+  float frameZ_;
+  float frameW_;
+
+  float droneX_;
+  float droneY_;
+  float droneZ_;
+  float droneW_;
+
+  float northSpeed_;
+  float eastSpeed_;
+  float downSpeed_;
+
   boost::shared_ptr<bebop_driver::Bebop> bebop_ptr_;
   boost::shared_ptr<boost::thread> camera_pub_thread_ptr_;
   boost::shared_ptr<boost::thread> aux_thread_ptr_;
@@ -105,6 +120,9 @@ private:
   geometry_msgs::Twist prev_bebop_twist_;
   ros::Time prev_twist_stamp_;
   boost::mutex twist_mutex_;
+
+  geometry_msgs::QuaternionStamped drone_quat_msg_;
+  geometry_msgs::QuaternionStamped camera_quat_msg_;
 
   geometry_msgs::Twist camera_twist_;
   geometry_msgs::Twist prev_camera_twist_;
@@ -126,12 +144,19 @@ private:
   ros::Publisher odom_pub_;
   ros::Publisher camera_joint_pub_;
   ros::Publisher gps_fix_pub_;
+  ros::Publisher altitude_pub_;
+  ros::Publisher meta_camera_frame_pub_;
+  ros::Publisher meta_drone_frame_pub_;
+
+
 
   boost::shared_ptr<camera_info_manager::CameraInfoManager> cinfo_manager_ptr_;
   boost::shared_ptr<image_transport::ImageTransport> image_transport_ptr_;
   image_transport::CameraPublisher image_transport_pub_;
 
   sensor_msgs::CameraInfoPtr camera_info_msg_ptr_;
+  uint8_t *metadata_ptr_;
+  MetadataV2Base_t metadata_;
 
   // Dynamic Reconfigure
   boost::shared_ptr<dynamic_reconfigure::Server<bebop_driver::BebopArdrone3Config> > dynr_serv_ptr_;

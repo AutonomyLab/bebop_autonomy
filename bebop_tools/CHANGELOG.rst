@@ -2,6 +2,12 @@
 Changelog for package bebop_tools
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.6.0 (2016-11-02)
+------------------
+* Added Xbox 360 config file
+* Make flattrim joystick command match comment
+* Contributors: Jacob Perron, Thomas Bamford
+
 0.5.1 (2016-05-04)
 ------------------
 

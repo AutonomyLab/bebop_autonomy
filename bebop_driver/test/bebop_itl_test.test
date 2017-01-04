@@ -11,12 +11,15 @@
         </node>
 
         <test test-name="bebop_in_the_loop_test" pkg="bebop_driver" type="bebop_itl_test"/>
+
+        <!-- Reconnecting to Bebop after a shutdown request, requires a ~5s delay
         <test test-name="image_hztest" pkg="rostest" type="hztest" name="hztest">
             <param name="topic" value="image_raw" />
-            <param name="hz" value="25.0" />
-            <param name="hzerror" value="5.0" />
+            <param name="hz" value="30.0" />
+            <param name="hzerror" value="6.0" />
             <param name="wait_time" value="20.0" />
             <param name="test_duration" value="5.0" />
         </test>
+        -->
     </group>
 </launch>

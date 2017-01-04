@@ -4,7 +4,7 @@
 # To check upstream commit hash, refer to last_build_info file
 # Do not modify this file by hand. Check scripts/meta folder for generator files.
 #
-# SDK Comment: Accessory config response.
+# SDK Comment: Accessory config.
 
 Header header
 
@@ -15,6 +15,7 @@ uint8 newAccessory_STD_WHEELS=2  # Standard wheels
 uint8 newAccessory_TRUCK_WHEELS=3  # Truck wheels
 uint8 newAccessory_HULL=4  # Hull
 uint8 newAccessory_HYDROFOIL=5  # Hydrofoil
+uint8 newAccessory_IN_PROGRESS=6  # Configuration in progress.
 uint8 newAccessory
 # Error code.
 uint8 error_OK=0  # No error. Accessory config change successful.
