@@ -95,7 +95,10 @@ public:
   inline uint32_t GetFrameWidth() const {return codec_initialized_ ? codec_ctx_ptr_->width : 0;}
   inline uint32_t GetFrameHeight() const {return codec_initialized_ ? codec_ctx_ptr_->height : 0;}
 
+  inline const uint8_t*  GetFrameMetadataPtr() const {return metadata_ptr_;}
   inline const uint8_t* GetFrameRGBRawCstPtr() const {return frame_rgb_raw_ptr_;}
+  uint8_t *metadata_ptr_;
+
 };
 
 }  // namespace bebop_driver

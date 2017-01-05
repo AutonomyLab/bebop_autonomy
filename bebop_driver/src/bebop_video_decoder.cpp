@@ -23,10 +23,16 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCL
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "bebop_driver/bebop_video_decoder.h"
+#include "bebop_driver/metadata_struct.h"
+#include <netinet/in.h>
 
 #include <stdexcept>
 #include <algorithm>
 #include <string>
+#include <iostream>
+
+#include <inttypes.h>
+#include <bitset>
 
 #include <boost/lexical_cast.hpp>
 
@@ -37,7 +43,6 @@ extern "C"
 
 namespace bebop_driver
 {
-
 const char* VideoDecoder::LOG_TAG = "Decoder";
 
 // TODO(mani-monaj): Move to util, inline
@@ -60,6 +65,7 @@ VideoDecoder::VideoDecoder()
     frame_rgb_raw_ptr_(NULL),
     update_codec_params_(false)
 {}
+
 
 bool VideoDecoder::InitCodec()
 {
@@ -285,6 +291,7 @@ bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *bebop_frame_ptr_)
 
   packet_.data = bebop_frame_ptr_->data;
   packet_.size = bebop_frame_ptr_->used;
+  metadata_ptr_= bebop_frame_ptr_->metadata;
 
   const uint32_t width_prev = GetFrameWidth();
   const uint32_t height_prev = GetFrameHeight();
@@ -321,5 +328,6 @@ bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *bebop_frame_ptr_)
   }
   return true;
 }
+
 
 }  // namespace bebop_driver

@@ -39,6 +39,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 #include <boost/atomic.hpp>
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/condition_variable.hpp>
+#include "bebop_driver/metadata_struct.h"
 
 extern "C"
 {
@@ -94,6 +95,8 @@ private:
   ARSAL_Sem_t state_sem_;
   boost::shared_ptr<VideoDecoder> video_decoder_ptr_;
   std::string bebop_ip_;
+  const uint8_t *metadata_ptr_;
+  MetadataV2Base_t metadata_;
 
 //  boost::mutex callback_map_mutex_;
   typedef std::map<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> > callback_map_t;
@@ -177,7 +180,7 @@ public:
 
   // This function is blocking and runs in the caller's thread's context
   // which is different from FrameReceivedCallback's context
-  bool GetFrontCameraFrame(std::vector<uint8_t>& buffer, uint32_t &width, uint32_t &height) const;
+  bool GetFrontCameraFrame(std::vector<uint8_t>& buffer, uint32_t &width, uint32_t &height, MetadataV2Base_t &metadata_);
   uint32_t GetFrontCameraFrameWidth() const;
   uint32_t GetFrontCameraFrameHeight() const;
 };
