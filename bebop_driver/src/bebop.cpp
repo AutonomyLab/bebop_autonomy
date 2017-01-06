@@ -546,10 +546,10 @@ void Bebop::MoveCamera(const double &tilt, const double &pan)
 {
   ThrowOnInternalError("Camera Move Failure");
   //Send camera command for old sdk as int8_t
-  ThrowOnCtrlError(device_controller_ptr_->aRDrone3->setCameraOrientation(
-                     device_controller_ptr_->aRDrone3,
-                     static_cast<int8_t>(tilt),
-                     static_cast<int8_t>(pan)));
+//  ThrowOnCtrlError(device_controller_ptr_->aRDrone3->setCameraOrientation(
+//                     device_controller_ptr_->aRDrone3,
+//                     static_cast<int8_t>(tilt),
+//                     static_cast<int8_t>(pan)));
 
   //Send camera command for new sdk as float
   ThrowOnCtrlError(device_controller_ptr_->aRDrone3->sendCameraOrientationV2(
