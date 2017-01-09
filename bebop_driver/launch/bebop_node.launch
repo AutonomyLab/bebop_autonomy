@@ -10,6 +10,6 @@
             <param name="bebop_ip" value="$(arg ip)" />
             <rosparam command="load" file="$(arg config_file)" />
         </node>
-        <include file="$(find bebop_description)/launch/description.launch">
+        <include file="$(find bebop_description)/launch/description.launch" />
     </group>
 </launch>
