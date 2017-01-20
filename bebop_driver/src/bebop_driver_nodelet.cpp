@@ -93,6 +93,7 @@ void BebopDriverNodelet::onInit()
 
   param_camera_frame_id_ = private_nh.param<std::string>("camera_frame_id", "camera_optical");
   param_odom_frame_id_ = private_nh.param<std::string>("odom_frame_id", "odom");
+  param_base_link_frame_id_ = private_nh.param<std::string>("base_link_frame_id", "base_link");
   param_publish_odom_tf_ = private_nh.param<bool>("publish_odom_tf", true);
   param_cmd_vel_timeout_ = private_nh.param<double>("cmd_vel_timeout", 0.2);
 
@@ -253,7 +254,7 @@ void BebopDriverNodelet::CameraMoveCallback(const geometry_msgs::TwistConstPtr& 
     if (is_camera_twist_changed)
     {
       // TODO(mani-monaj): Set |90| limit to appropriate value (|45|??)
-      bebop_ptr_->MoveCamera(CLAMP(camera_twist_.angular.y, -90.0, 90.0),
+      bebop_ptr_->MoveCamera(CLAMP(camera_twist_.angular.y, -35.0, 35.0),
                              CLAMP(camera_twist_.angular.z, -35.0, 35.0));
       prev_camera_twist_ = camera_twist_;
     }
@@ -480,7 +481,7 @@ void BebopDriverNodelet::AuxThread()
   ros::Time last_odom_time(ros::Time::now());
   geometry_msgs::TransformStamped odom_to_base_tf;
   odom_to_base_tf.header.frame_id = param_odom_frame_id_;
-  odom_to_base_tf.child_frame_id = "base_link";
+  odom_to_base_tf.child_frame_id = param_base_link_frame_id_;
   tf2_ros::TransformBroadcaster tf_broad;
   tf2::Vector3 odom_to_base_trans_v3(0.0, 0.0, 0.0);
   tf2::Quaternion odom_to_base_rot_q;
@@ -604,7 +605,7 @@ void BebopDriverNodelet::AuxThread()
         nav_msgs::OdometryPtr odom_msg_ptr(new nav_msgs::Odometry());
         odom_msg_ptr->header.stamp = stamp;
         odom_msg_ptr->header.frame_id = param_odom_frame_id_;
-        odom_msg_ptr->child_frame_id = "base_link";
+        odom_msg_ptr->child_frame_id = param_base_link_frame_id_;
         odom_msg_ptr->twist.twist.linear.x = beb_vx_m;
         odom_msg_ptr->twist.twist.linear.y = beb_vy_m;
         odom_msg_ptr->twist.twist.linear.z = beb_vz_m;

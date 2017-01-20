@@ -1,6 +1,10 @@
 <?xml version="1.0"?>
 <launch>
+  <arg name="bebop_name" default="bebop" />
   <!-- this file is included by bebop_driver launch files by default in their own namespaces -->
   <param name="robot_description" command="$(find xacro)/xacro $(find bebop_description)/urdf/bebop_base.urdf.xacro" />
-  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" >
+  	<param name="tf_prefix" value="bebop" />
+  </node>
+
 </launch>
