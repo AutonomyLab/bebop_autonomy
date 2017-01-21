@@ -4,11 +4,12 @@
   <xacro:property name="PI" value="3.1415926535897931" />
   <xacro:property name="camera_offset_len" value="0.1" />
   <xacro:property name="camera_offset_ver" value="0.0" />
-  <!-- +- 35 degrees -->
+  <!-- -35 .. +35 degrees -->
   <xacro:property name="pan_range" value="0.6108652381980153" />
   <xacro:property name="pan_vel" value="2.0" />
-  <!-- +- 35 degrees -->
-  <xacro:property name="tilt_range" value="0.6108652381980153" />
+  <!-- -90 .. +17 degrees -->
+  <xacro:property name="max_tilt" value="0.6108652381980153" />
+  <xacro:property name="min_tilt" value="-1.570796327" />  
   <xacro:property name="tilt_vel" value="2.0" />
   <xacro:property name="joint_effort" value="50" />
 
@@ -38,7 +39,7 @@
     <parent link="camera_pan_link" />
     <child link="camera_tilt_link" />
     <axis xyz="0 1 0" />
-    <limit lower="${-tilt_range}" upper="${tilt_range}"
+    <limit lower="${min_tilt}" upper="${max_tilt}"
       effort="${joint_effort}" velocity="${tilt_vel}" />
   </joint>
 

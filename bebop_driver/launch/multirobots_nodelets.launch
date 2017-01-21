@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- 
+    Use this launch file in order to launch multiple bebops or a single bebop with other robots.
+    This uses the nodelet launch file.
+    Each bebop will be launched in the specified namespace and with a TF prefix (identical to the namespace)
+    -->
+
+    <include file="$(find bebop_driver)/launch/bebop_nodelet.launch" >
+        <arg name="namespace" value="bebop1" />
+        <arg name="ip" value="192.168.42.1" />
+        <arg name="add_tf_prefix" value="true" />
+    </include>
+
+    <!-- If you want to launch another robot instead of the second bebop, replace this code with yours -->
+    <include file="$(find bebop_driver)/launch/bebop_nodelet.launch" >       
+        <arg name="namespace" value="bebop2" />
+        <arg name="ip" value="192.168.42.2" />
+        <arg name="add_tf_prefix" value="true" />
+    </include>
+
+</launch>

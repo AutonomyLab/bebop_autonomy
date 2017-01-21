@@ -254,7 +254,7 @@ void BebopDriverNodelet::CameraMoveCallback(const geometry_msgs::TwistConstPtr& 
     if (is_camera_twist_changed)
     {
       // TODO(mani-monaj): Set |90| limit to appropriate value (|45|??)
-      bebop_ptr_->MoveCamera(CLAMP(camera_twist_.angular.y, -35.0, 35.0),
+      bebop_ptr_->MoveCamera(CLAMP(camera_twist_.angular.y, -90.0, 17.0),
                              CLAMP(camera_twist_.angular.z, -35.0, 35.0));
       prev_camera_twist_ = camera_twist_;
     }
@@ -649,6 +649,7 @@ void BebopDriverNodelet::AuxThread()
       if (new_camera_state && camera_state_ptr)
       {
         js_msg.header.stamp = camera_state_ptr->header.stamp;
+        js_msg.header.frame_id = "/camera_base_link";
         js_msg.position[0] = -camera_state_ptr->pan * util::deg2rad;
         js_msg.position[1] = -camera_state_ptr->tilt * util::deg2rad;
         camera_joint_pub_.publish(js_msg);
