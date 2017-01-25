@@ -391,6 +391,14 @@ void Bebop::Disconnect()
   ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "Disconnected from Bebop ...");
 }
 
+void Bebop::SetDate(const std::string &date)
+{
+  ThrowOnInternalError("Setting Date Failed");
+  ThrowOnCtrlError(
+        device_controller_ptr_->common->sendCommonCurrentDate(device_controller_ptr_->common, const_cast<char*>(date.c_str())),
+        "Setting Date Failed");
+}
+
 void Bebop::RequestAllSettings()
 {
   ThrowOnInternalError("Request Settings Failed");

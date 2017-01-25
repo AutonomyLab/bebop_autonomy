@@ -152,6 +152,7 @@ public:
   // nothrow
   void Disconnect();
 
+  void SetDate(const std::string &date);
   void RequestAllSettings();
   void ResetAllSettings();
   void UpdateSettings(const bebop_driver::BebopArdrone3Config& config);
