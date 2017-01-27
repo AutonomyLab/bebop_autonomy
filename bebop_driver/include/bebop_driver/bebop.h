@@ -173,6 +173,8 @@ public:
   void MoveCamera(const double& tilt, const double& pan);
 
   void TakeSnapshot();
+  // exposure should be between -3.0 and +3.0
+  void SetExposure(const float& exposure);
   // true: start, false: stop
   void ToggleVideoRecording(const bool start);
 

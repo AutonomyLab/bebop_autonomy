@@ -599,6 +599,15 @@ bool Bebop::GetFrontCameraFrame(std::vector<uint8_t> &buffer, uint32_t& width, u
   return true;
 }
 
+void Bebop::SetExposure(const float& exposure)
+{
+  ThrowOnInternalError("Failed to set exposure");
+  // TODO fairf4x: Check bounds ?
+  ThrowOnCtrlError(
+    device_controller_ptr_->aRDrone3->sendPictureSettingsExpositionSelection(
+          device_controller_ptr_->aRDrone3, exposure));
+}
+
 void Bebop::TakeSnapshot()
 {
   ThrowOnInternalError("Snapshot Failure");

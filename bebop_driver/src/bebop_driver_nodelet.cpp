@@ -143,6 +143,7 @@ void BebopDriverNodelet::onInit()
   pause_autoflight_sub_ = nh.subscribe("autoflight/pause", 1, &BebopDriverNodelet::PauseAutonomousFlightCallback, this);
   stop_autoflight_sub_ = nh.subscribe("autoflight/stop", 1, &BebopDriverNodelet::StopAutonomousFlightCallback, this);
   animation_sub_ = nh.subscribe("flip", 1, &BebopDriverNodelet::FlipAnimationCallback, this);
+  exposure_sub_ = nh.subscribe("set_exposure", 10, &BebopDriverNodelet::SetExposureCallback, this);
   snapshot_sub_ = nh.subscribe("snapshot", 10, &BebopDriverNodelet::TakeSnapshotCallback, this);
   toggle_recording_sub_ = nh.subscribe("record", 10, &BebopDriverNodelet::ToggleRecordingCallback, this);
 
@@ -372,6 +373,18 @@ void BebopDriverNodelet::FlipAnimationCallback(const std_msgs::UInt8ConstPtr &an
     // TODO(mani-monaj): Check if flying
     ROS_INFO("Performing flip animation %d ...", animid_ptr->data);
     bebop_ptr_->AnimationFlip(animid_ptr->data);
+  }
+  catch (const std::runtime_error& e)
+  {
+    ROS_ERROR_STREAM(e.what());
+  }
+}
+void BebopDriverNodelet::SetExposureCallback(const std_msgs::Float32ConstPtr& exposure_ptr)
+{
+  try
+  {
+    ROS_INFO("Setting exposure to %f", exposure_ptr->data);
+    bebop_ptr_->SetExposure(exposure_ptr->data);
   }
   catch (const std::runtime_error& e)
   {

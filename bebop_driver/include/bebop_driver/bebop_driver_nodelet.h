@@ -34,6 +34,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 #include <geometry_msgs/Twist.h>
 #include <std_msgs/Empty.h>
 #include <std_msgs/UInt8.h>
+#include <std_msgs/Float32.h>
 #include <std_msgs/Bool.h>
 #include <std_msgs/String.h>
 #include <camera_info_manager/camera_info_manager.h>
@@ -120,6 +121,7 @@ private:
   ros::Subscriber pause_autoflight_sub_;
   ros::Subscriber stop_autoflight_sub_;
   ros::Subscriber animation_sub_;
+  ros::Subscriber exposure_sub_;
   ros::Subscriber snapshot_sub_;
   ros::Subscriber toggle_recording_sub_;
 
@@ -159,6 +161,7 @@ private:
   void PauseAutonomousFlightCallback(const std_msgs::EmptyConstPtr& empty_ptr);
   void StopAutonomousFlightCallback(const std_msgs::EmptyConstPtr& empty_ptr);
   void FlipAnimationCallback(const std_msgs::UInt8ConstPtr& animid_ptr);
+  void SetExposureCallback(const std_msgs::Float32ConstPtr& exposure_ptr);
   void TakeSnapshotCallback(const std_msgs::EmptyConstPtr& empty_ptr);
   void ToggleRecordingCallback(const std_msgs::BoolConstPtr& toggle_ptr);
 
