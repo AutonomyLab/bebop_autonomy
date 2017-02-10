@@ -22,4 +22,6 @@ uint8 model_JS_BUZZ=9  # Buzz (JS space) model
 uint8 model_JS_MAX=10  # Max (JS F1) model
 uint8 model_JS_JETT=11  # Jett (JS flames) model
 uint8 model_JS_TUKTUK=12  # Tuk-Tuk (JS taxi) model
+uint8 model_SW_BLACK=13  # Swing black model
+uint8 model_SW_WHITE=14  # Swing white model
 uint8 model

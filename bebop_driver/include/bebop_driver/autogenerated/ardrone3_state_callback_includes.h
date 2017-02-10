@@ -23,7 +23,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCL
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  * ardrone3_state_callback_includes.h
- * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/arsdk-xml/d0c8b256a8592b25a551f3ba742c58ae3da2f93a/xml/ardrone3.xml
+ * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/arsdk-xml/e73425074471c58561d04c85da4a6400b638779d/xml/ardrone3.xml
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
@@ -46,6 +46,7 @@ namespace cb
   class Ardrone3PilotingStateAltitudeChanged;
   class Ardrone3PilotingStateGpsLocationChanged;
   class Ardrone3PilotingStateLandingStateChanged;
+  class Ardrone3PilotingStateAirSpeedChanged;
   class Ardrone3NetworkStateWifiScanListChanged;
   class Ardrone3NetworkStateAllWifiScanChanged;
   class Ardrone3NetworkStateWifiAuthChannelListChanged;
@@ -54,6 +55,9 @@ namespace cb
   class Ardrone3MediaStreamingStateVideoStreamModeChanged;
   class Ardrone3CameraStateOrientation;
   class Ardrone3CameraStatedefaultCameraOrientation;
+  class Ardrone3CameraStateOrientationV2;
+  class Ardrone3CameraStatedefaultCameraOrientationV2;
+  class Ardrone3CameraStateVelocityRange;
   class Ardrone3AntiflickeringStateelectricFrequencyChanged;
   class Ardrone3AntiflickeringStatemodeChanged;
   class Ardrone3GPSStateNumberOfSatelliteChanged;
@@ -97,6 +101,8 @@ boost::shared_ptr<cb::Ardrone3PilotingStateGpsLocationChanged>
   ardrone3_pilotingstate_gpslocationchanged_ptr;
 boost::shared_ptr<cb::Ardrone3PilotingStateLandingStateChanged>
   ardrone3_pilotingstate_landingstatechanged_ptr;
+boost::shared_ptr<cb::Ardrone3PilotingStateAirSpeedChanged>
+  ardrone3_pilotingstate_airspeedchanged_ptr;
 boost::shared_ptr<cb::Ardrone3NetworkStateWifiScanListChanged>
   ardrone3_networkstate_wifiscanlistchanged_ptr;
 boost::shared_ptr<cb::Ardrone3NetworkStateAllWifiScanChanged>
@@ -113,6 +119,12 @@ boost::shared_ptr<cb::Ardrone3CameraStateOrientation>
   ardrone3_camerastate_orientation_ptr;
 boost::shared_ptr<cb::Ardrone3CameraStatedefaultCameraOrientation>
   ardrone3_camerastate_defaultcameraorientation_ptr;
+boost::shared_ptr<cb::Ardrone3CameraStateOrientationV2>
+  ardrone3_camerastate_orientationv2_ptr;
+boost::shared_ptr<cb::Ardrone3CameraStatedefaultCameraOrientationV2>
+  ardrone3_camerastate_defaultcameraorientationv2_ptr;
+boost::shared_ptr<cb::Ardrone3CameraStateVelocityRange>
+  ardrone3_camerastate_velocityrange_ptr;
 boost::shared_ptr<cb::Ardrone3AntiflickeringStateelectricFrequencyChanged>
   ardrone3_antiflickeringstate_electricfrequencychanged_ptr;
 boost::shared_ptr<cb::Ardrone3AntiflickeringStatemodeChanged>
@@ -177,6 +189,9 @@ ardrone3_pilotingstate_gpslocationchanged_ptr.reset(
 ardrone3_pilotingstate_landingstatechanged_ptr.reset(
   new cb::Ardrone3PilotingStateLandingStateChanged(
     nh, priv_nh, "states/ardrone3/PilotingState/LandingStateChanged"));
+ardrone3_pilotingstate_airspeedchanged_ptr.reset(
+  new cb::Ardrone3PilotingStateAirSpeedChanged(
+    nh, priv_nh, "states/ardrone3/PilotingState/AirSpeedChanged"));
 ardrone3_networkstate_wifiscanlistchanged_ptr.reset(
   new cb::Ardrone3NetworkStateWifiScanListChanged(
     nh, priv_nh, "states/ardrone3/NetworkState/WifiScanListChanged"));
@@ -201,6 +216,15 @@ ardrone3_camerastate_orientation_ptr.reset(
 ardrone3_camerastate_defaultcameraorientation_ptr.reset(
   new cb::Ardrone3CameraStatedefaultCameraOrientation(
     nh, priv_nh, "states/ardrone3/CameraState/defaultCameraOrientation"));
+ardrone3_camerastate_orientationv2_ptr.reset(
+  new cb::Ardrone3CameraStateOrientationV2(
+    nh, priv_nh, "states/ardrone3/CameraState/OrientationV2"));
+ardrone3_camerastate_defaultcameraorientationv2_ptr.reset(
+  new cb::Ardrone3CameraStatedefaultCameraOrientationV2(
+    nh, priv_nh, "states/ardrone3/CameraState/defaultCameraOrientationV2"));
+ardrone3_camerastate_velocityrange_ptr.reset(
+  new cb::Ardrone3CameraStateVelocityRange(
+    nh, priv_nh, "states/ardrone3/CameraState/VelocityRange"));
 ardrone3_antiflickeringstate_electricfrequencychanged_ptr.reset(
   new cb::Ardrone3AntiflickeringStateelectricFrequencyChanged(
     nh, priv_nh, "states/ardrone3/AntiflickeringState/electricFrequencyChanged"));
@@ -286,6 +310,10 @@ callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<c
                       ardrone3_pilotingstate_landingstatechanged_ptr));
 // Add all wrappers to the callback map
 callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
+                      ardrone3_pilotingstate_airspeedchanged_ptr->GetCommandKey(),
+                      ardrone3_pilotingstate_airspeedchanged_ptr));
+// Add all wrappers to the callback map
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       ardrone3_networkstate_wifiscanlistchanged_ptr->GetCommandKey(),
                       ardrone3_networkstate_wifiscanlistchanged_ptr));
 // Add all wrappers to the callback map
@@ -316,6 +344,18 @@ callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<c
 callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       ardrone3_camerastate_defaultcameraorientation_ptr->GetCommandKey(),
                       ardrone3_camerastate_defaultcameraorientation_ptr));
+// Add all wrappers to the callback map
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
+                      ardrone3_camerastate_orientationv2_ptr->GetCommandKey(),
+                      ardrone3_camerastate_orientationv2_ptr));
+// Add all wrappers to the callback map
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
+                      ardrone3_camerastate_defaultcameraorientationv2_ptr->GetCommandKey(),
+                      ardrone3_camerastate_defaultcameraorientationv2_ptr));
+// Add all wrappers to the callback map
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
+                      ardrone3_camerastate_velocityrange_ptr->GetCommandKey(),
+                      ardrone3_camerastate_velocityrange_ptr));
 // Add all wrappers to the callback map
 callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       ardrone3_antiflickeringstate_electricfrequencychanged_ptr->GetCommandKey(),

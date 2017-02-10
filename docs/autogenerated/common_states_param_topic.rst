@@ -1,5 +1,5 @@
  .. common_states_param_topic.rst
- .. auto-generated from https://raw.githubusercontent.com/Parrot-Developers/arsdk-xml/d0c8b256a8592b25a551f3ba742c58ae3da2f93a/xml/common.xml
+ .. auto-generated from https://raw.githubusercontent.com/Parrot-Developers/arsdk-xml/e73425074471c58561d04c85da4a6400b638779d/xml/common.xml
  .. Do not modify this file by hand. Check scripts/meta folder for generator files.
 
 *****************************************************************************************
@@ -15,9 +15,9 @@ List of common States and Corresponding ROS Parameters and Topics
 `CommonCommonStateMassStorageInfoStateListChanged`_
   Mass storage info state list.
 `CommonCommonStateCurrentDateChanged`_
-  Date changed.\n\n **Please note that you should not care about this event if you are using the libARController API as this library is handling the connection process for you.**
+  Date changed.\n Corresponds to the latest date set on the drone.\n\n **Please note that you should not care about this event if you are using the libARController API as this library is handling the connection process for you.**
 `CommonCommonStateCurrentTimeChanged`_
-  Time changed.\n\n **Please note that you should not care about this event if you are using the libARController API as this library is handling the connection process for you.**
+  Time changed.\n Corresponds to the latest time set on the drone.\n\n **Please note that you should not care about this event if you are using the libARController API as this library is handling the connection process for you.**
 `CommonCommonStateMassStorageInfoRemainingListChanged`_
   Mass storage remaining data list.
 `CommonCommonStateWifiSignalChanged`_
@@ -34,6 +34,8 @@ List of common States and Corresponding ROS Parameters and Topics
   Mass storage content.
 `CommonCommonStateMassStorageContentForCurrentRun`_
   Mass storage content for current run.\n Only counts the files related to the current run (see [RunId](#0-30-0))
+`CommonCommonStateVideoRecordingTimestamp`_
+  Current or last video recording timestamp.\n Timestamp in milliseconds since 00:00:00 UTC on 1 January 1970.\n **Please note that values dont persist after drone reboot**
 `CommonOverHeatStateOverHeatChanged`_
   Overheat temperature reached.
 `CommonOverHeatStateOverHeatRegulationChanged`_
@@ -42,6 +44,8 @@ List of common States and Corresponding ROS Parameters and Topics
   Playing state of a FlightPlan.
 `CommonMavlinkStateMavlinkPlayErrorStateChanged`_
   FlightPlan error.
+`CommonMavlinkStateMissonItemExecuted`_
+  Mission item has been executed.
 `CommonCalibrationStateMagnetoCalibrationStateChanged`_
   Magneto calib process axis state.
 `CommonCalibrationStateMagnetoCalibrationRequiredState`_
@@ -149,7 +153,7 @@ Mass storage info state list.
 
 CommonCommonStateCurrentDateChanged
 ####################################################################################
-Date changed.\n\n **Please note that you should not care about this event if you are using the libARController API as this library is handling the connection process for you.**
+Date changed.\n Corresponds to the latest date set on the drone.\n\n **Please note that you should not care about this event if you are using the libARController API as this library is handling the connection process for you.**
 
 - Parameter: ``~states/enable_commonstate_currentdatechanged``
 - Topic: ``states/common/CommonState/CurrentDateChanged``
@@ -164,7 +168,7 @@ Date changed.\n\n **Please note that you should not care about this event if you
 
 CommonCommonStateCurrentTimeChanged
 ####################################################################################
-Time changed.\n\n **Please note that you should not care about this event if you are using the libARController API as this library is handling the connection process for you.**
+Time changed.\n Corresponds to the latest time set on the drone.\n\n **Please note that you should not care about this event if you are using the libARController API as this library is handling the connection process for you.**
 
 - Parameter: ``~states/enable_commonstate_currenttimechanged``
 - Topic: ``states/common/CommonState/CurrentTimeChanged``
@@ -297,6 +301,21 @@ Mass storage content for current run.\n Only counts the files related to the cur
   :caption: CommonCommonStateMassStorageContentForCurrentRun.msg
   :name: CommonCommonStateMassStorageContentForCurrentRun_msg
 
+CommonCommonStateVideoRecordingTimestamp
+####################################################################################
+Current or last video recording timestamp.\n Timestamp in milliseconds since 00:00:00 UTC on 1 January 1970.\n **Please note that values dont persist after drone reboot**
+
+- Parameter: ``~states/enable_commonstate_videorecordingtimestamp``
+- Topic: ``states/common/CommonState/VideoRecordingTimestamp``
+- Message type: ``bebop_msgs::CommonCommonStateVideoRecordingTimestamp``
+
+.. literalinclude::
+  ../../bebop_msgs/msg/autogenerated/CommonCommonStateVideoRecordingTimestamp.msg
+  :lines: 8-
+  :language: python
+  :caption: CommonCommonStateVideoRecordingTimestamp.msg
+  :name: CommonCommonStateVideoRecordingTimestamp_msg
+
 CommonOverHeatStateOverHeatChanged
 ####################################################################################
 Overheat temperature reached.
@@ -356,6 +375,21 @@ FlightPlan error.
   :language: python
   :caption: CommonMavlinkStateMavlinkPlayErrorStateChanged.msg
   :name: CommonMavlinkStateMavlinkPlayErrorStateChanged_msg
+
+CommonMavlinkStateMissonItemExecuted
+####################################################################################
+Mission item has been executed.
+
+- Parameter: ``~states/enable_mavlinkstate_missonitemexecuted``
+- Topic: ``states/common/MavlinkState/MissonItemExecuted``
+- Message type: ``bebop_msgs::CommonMavlinkStateMissonItemExecuted``
+
+.. literalinclude::
+  ../../bebop_msgs/msg/autogenerated/CommonMavlinkStateMissonItemExecuted.msg
+  :lines: 8-
+  :language: python
+  :caption: CommonMavlinkStateMissonItemExecuted.msg
+  :name: CommonMavlinkStateMissonItemExecuted_msg
 
 CommonCalibrationStateMagnetoCalibrationStateChanged
 ####################################################################################

@@ -23,7 +23,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCL
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  * common_state_callback_includes.h
- * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/arsdk-xml/d0c8b256a8592b25a551f3ba742c58ae3da2f93a/xml/common.xml
+ * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/arsdk-xml/e73425074471c58561d04c85da4a6400b638779d/xml/common.xml
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
@@ -44,10 +44,12 @@ namespace cb
   class CommonCommonStateDeprecatedMassStorageContentChanged;
   class CommonCommonStateMassStorageContent;
   class CommonCommonStateMassStorageContentForCurrentRun;
+  class CommonCommonStateVideoRecordingTimestamp;
   class CommonOverHeatStateOverHeatChanged;
   class CommonOverHeatStateOverHeatRegulationChanged;
   class CommonMavlinkStateMavlinkFilePlayingStateChanged;
   class CommonMavlinkStateMavlinkPlayErrorStateChanged;
+  class CommonMavlinkStateMissonItemExecuted;
   class CommonCalibrationStateMagnetoCalibrationStateChanged;
   class CommonCalibrationStateMagnetoCalibrationRequiredState;
   class CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged;
@@ -103,6 +105,8 @@ boost::shared_ptr<cb::CommonCommonStateMassStorageContent>
   common_commonstate_massstoragecontent_ptr;
 boost::shared_ptr<cb::CommonCommonStateMassStorageContentForCurrentRun>
   common_commonstate_massstoragecontentforcurrentrun_ptr;
+boost::shared_ptr<cb::CommonCommonStateVideoRecordingTimestamp>
+  common_commonstate_videorecordingtimestamp_ptr;
 boost::shared_ptr<cb::CommonOverHeatStateOverHeatChanged>
   common_overheatstate_overheatchanged_ptr;
 boost::shared_ptr<cb::CommonOverHeatStateOverHeatRegulationChanged>
@@ -111,6 +115,8 @@ boost::shared_ptr<cb::CommonMavlinkStateMavlinkFilePlayingStateChanged>
   common_mavlinkstate_mavlinkfileplayingstatechanged_ptr;
 boost::shared_ptr<cb::CommonMavlinkStateMavlinkPlayErrorStateChanged>
   common_mavlinkstate_mavlinkplayerrorstatechanged_ptr;
+boost::shared_ptr<cb::CommonMavlinkStateMissonItemExecuted>
+  common_mavlinkstate_missonitemexecuted_ptr;
 boost::shared_ptr<cb::CommonCalibrationStateMagnetoCalibrationStateChanged>
   common_calibrationstate_magnetocalibrationstatechanged_ptr;
 boost::shared_ptr<cb::CommonCalibrationStateMagnetoCalibrationRequiredState>
@@ -201,6 +207,9 @@ common_commonstate_massstoragecontent_ptr.reset(
 common_commonstate_massstoragecontentforcurrentrun_ptr.reset(
   new cb::CommonCommonStateMassStorageContentForCurrentRun(
     nh, priv_nh, "states/common/CommonState/MassStorageContentForCurrentRun"));
+common_commonstate_videorecordingtimestamp_ptr.reset(
+  new cb::CommonCommonStateVideoRecordingTimestamp(
+    nh, priv_nh, "states/common/CommonState/VideoRecordingTimestamp"));
 common_overheatstate_overheatchanged_ptr.reset(
   new cb::CommonOverHeatStateOverHeatChanged(
     nh, priv_nh, "states/common/OverHeatState/OverHeatChanged"));
@@ -213,6 +222,9 @@ common_mavlinkstate_mavlinkfileplayingstatechanged_ptr.reset(
 common_mavlinkstate_mavlinkplayerrorstatechanged_ptr.reset(
   new cb::CommonMavlinkStateMavlinkPlayErrorStateChanged(
     nh, priv_nh, "states/common/MavlinkState/MavlinkPlayErrorStateChanged"));
+common_mavlinkstate_missonitemexecuted_ptr.reset(
+  new cb::CommonMavlinkStateMissonItemExecuted(
+    nh, priv_nh, "states/common/MavlinkState/MissonItemExecuted"));
 common_calibrationstate_magnetocalibrationstatechanged_ptr.reset(
   new cb::CommonCalibrationStateMagnetoCalibrationStateChanged(
     nh, priv_nh, "states/common/CalibrationState/MagnetoCalibrationStateChanged"));
@@ -338,6 +350,10 @@ callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<c
                       common_commonstate_massstoragecontentforcurrentrun_ptr));
 // Add all wrappers to the callback map
 callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
+                      common_commonstate_videorecordingtimestamp_ptr->GetCommandKey(),
+                      common_commonstate_videorecordingtimestamp_ptr));
+// Add all wrappers to the callback map
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_overheatstate_overheatchanged_ptr->GetCommandKey(),
                       common_overheatstate_overheatchanged_ptr));
 // Add all wrappers to the callback map
@@ -352,6 +368,10 @@ callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<c
 callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_mavlinkstate_mavlinkplayerrorstatechanged_ptr->GetCommandKey(),
                       common_mavlinkstate_mavlinkplayerrorstatechanged_ptr));
+// Add all wrappers to the callback map
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
+                      common_mavlinkstate_missonitemexecuted_ptr->GetCommandKey(),
+                      common_mavlinkstate_missonitemexecuted_ptr));
 // Add all wrappers to the callback map
 callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_calibrationstate_magnetocalibrationstatechanged_ptr->GetCommandKey(),
