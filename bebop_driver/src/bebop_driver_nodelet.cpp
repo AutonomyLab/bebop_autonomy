@@ -26,6 +26,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 #include <pluginlib/class_list_macros.h>
 #include <nodelet/nodelet.h>
 #include <nav_msgs/Odometry.h>
+#include <sensor_msgs/Imu.h>
 #include <sensor_msgs/JointState.h>
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
@@ -136,6 +137,7 @@ void BebopDriverNodelet::onInit()
   toggle_recording_sub_ = nh.subscribe("record", 10, &BebopDriverNodelet::ToggleRecordingCallback, this);
 
   odom_pub_ = nh.advertise<nav_msgs::Odometry>("odom", 30);
+  imu_pub_ = nh.advertise<sensor_msgs::Imu>("imu", 30);
   camera_joint_pub_ = nh.advertise<sensor_msgs::JointState>("joint_states", 10, true);
   gps_fix_pub_ = nh.advertise<sensor_msgs::NavSatFix>("fix", 10, true);
 
@@ -575,11 +577,13 @@ void BebopDriverNodelet::AuxThread()
         if ((attitude_ptr->header.stamp - last_att_time).toSec() > util::eps)
         {
           last_att_time = attitude_ptr->header.stamp;
+
           beb_roll_rad = attitude_ptr->roll;
           beb_pitch_rad = -attitude_ptr->pitch;
-          beb_yaw_rad = -attitude_ptr->yaw;
+          beb_yaw_rad = -attitude_ptr->yaw + M_PI/2;
 
           odom_to_base_rot_q.setRPY(beb_roll_rad, beb_pitch_rad, beb_yaw_rad);
+
           new_attitude_data = true;
         }
       }
@@ -592,8 +596,8 @@ void BebopDriverNodelet::AuxThread()
       {
         ros::Time stamp = std::max(speed_esd_ptr->header.stamp, attitude_ptr->header.stamp);
 
-        const double beb_vx_enu = speed_esd_ptr->speedX;
-        const double beb_vy_enu = -speed_esd_ptr->speedY;
+        const double beb_vx_enu = speed_esd_ptr->speedY;
+        const double beb_vy_enu = speed_esd_ptr->speedX;
         const double beb_vz_enu = -speed_esd_ptr->speedZ;
         beb_vx_m = cos(beb_yaw_rad) * beb_vx_enu + sin(beb_yaw_rad) * beb_vy_enu;
         beb_vy_m = -sin(beb_yaw_rad) * beb_vx_enu + cos(beb_yaw_rad) * beb_vy_enu;
@@ -616,6 +620,11 @@ void BebopDriverNodelet::AuxThread()
         odom_msg_ptr->pose.pose.position.z = odom_to_base_trans_v3.z();
         tf2::convert(odom_to_base_rot_q, odom_msg_ptr->pose.pose.orientation);
         odom_pub_.publish(odom_msg_ptr);
+
+        sensor_msgs::ImuPtr imu_msg_ptr(new sensor_msgs::Imu());
+        imu_msg_ptr->header.stamp = stamp;
+        tf2::convert(odom_to_base_rot_q, imu_msg_ptr->orientation);
+        imu_pub_.publish(imu_msg_ptr);
 
         if (param_publish_odom_tf_)
         {
