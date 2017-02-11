@@ -16,6 +16,7 @@
             <param name="camera_frame_id" value="$(arg namespace)/camera_optical" if="$(arg add_tf_prefix)"/>
             <param name="odom_frame_id" value="$(arg namespace)/odom" if="$(arg add_tf_prefix)"/>
             <param name="base_link_frame_id" value="$(arg namespace)/base_link" if="$(arg add_tf_prefix)" />
+            <param name="publish_odom_tf" value="$(arg publish_odom_tf)" />
             <rosparam command="load" file="$(arg config_file)" />
         </node>
 
@@ -24,7 +25,7 @@
         </include>
 
         <include file="$(find bebop_localization)/launch/localization.launch">
-            <!-- <arg name="tf_prefix" value="$(arg namespace)" if="$(arg add_tf_prefix)" /> -->
+            <arg name="tf_prefix" value="$(arg namespace)" if="$(arg add_tf_prefix)" />
         </include>
 
     </group>
