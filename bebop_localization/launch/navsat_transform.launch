@@ -1,10 +1,8 @@
 <launch>
   <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform_node" clear_params="true" respawn="true">
     <rosparam command="load" file="$(find bebop_localization)/config/navsat_transform.yaml" />
-
-      <remap from="imu/data" to="imu"/>
-      <!-- <remap from="odometry/filtered" to=""/> -->
-      <remap from="gps/fix" to="fix"/>
-
+    <remap from="imu/data" to="imu"/>
+    <remap from="gps/fix" to="fix"/>
+    <remap from="odometry/filtered" to="odometry/filtered/continuous"/>
   </node>
 </launch>

@@ -1,0 +1,33 @@
+frequency: 30
+sensor_timeout: 0.1
+two_d_mode: false
+print_diagnostics: true
+publish_tf: true
+publish_acceleration: false
+
+map_frame: map
+odom_frame: odom
+base_link_frame: base_link
+world_frame: map
+
+odom0: odometry/gps
+odom0_config: [true , true , true,
+               TODO , TODO , TODO,
+               TODO , TODO , TODO,
+               TODO , TODO , TODO,
+               TODO , TODO , TODO]
+odom0_queue_size: 2
+odom0_nodelay: false
+odom0_differential: false
+odom0_relative: false
+
+odom1: odometry/filtered/continuous
+odom1_config: [true , true , true,
+               TODO , TODO , TODO,
+               TODO , TODO , TODO,
+               TODO , TODO , TODO,
+               TODO , TODO , TODO]
+odom1_queue_size: 2
+odom1_nodelay: false
+odom1_differential: false
+odom1_relative: false
