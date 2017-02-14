@@ -125,6 +125,7 @@ private:
 
   ros::Publisher odom_pub_;
   ros::Publisher imu_pub_;
+  ros::Publisher speed_pub_;
   ros::Publisher camera_joint_pub_;
   ros::Publisher gps_fix_pub_;
 
