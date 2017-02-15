@@ -143,8 +143,9 @@ void BebopDriverNodelet::onInit()
   pause_autoflight_sub_ = nh.subscribe("autoflight/pause", 1, &BebopDriverNodelet::PauseAutonomousFlightCallback, this);
   stop_autoflight_sub_ = nh.subscribe("autoflight/stop", 1, &BebopDriverNodelet::StopAutonomousFlightCallback, this);
   animation_sub_ = nh.subscribe("flip", 1, &BebopDriverNodelet::FlipAnimationCallback, this);
-  exposure_sub_ = nh.subscribe("set_exposure", 10, &BebopDriverNodelet::SetExposureCallback, this);
   snapshot_sub_ = nh.subscribe("snapshot", 10, &BebopDriverNodelet::TakeSnapshotCallback, this);
+  exposure_sub_ = nh.subscribe("set_exposure", 10, &BebopDriverNodelet::SetExposureCallback, this);
+  video_stabilization_sub_ = nh.subscribe("set_video_stabilization", 10, &BebopDriverNodelet::SetVideoStabilizationModeCallback, this);
   toggle_recording_sub_ = nh.subscribe("record", 10, &BebopDriverNodelet::ToggleRecordingCallback, this);
 
   odom_pub_ = nh.advertise<nav_msgs::Odometry>("odom", 30);
@@ -379,6 +380,20 @@ void BebopDriverNodelet::FlipAnimationCallback(const std_msgs::UInt8ConstPtr &an
     ROS_ERROR_STREAM(e.what());
   }
 }
+
+void BebopDriverNodelet::TakeSnapshotCallback(const std_msgs::EmptyConstPtr &empty_ptr)
+{
+  try
+  {
+    ROS_INFO("Taking a high-res snapshot on-board");
+    bebop_ptr_->TakeSnapshot();
+  }
+  catch (const std::runtime_error& e)
+  {
+    ROS_ERROR_STREAM(e.what());
+  }
+}
+
 void BebopDriverNodelet::SetExposureCallback(const std_msgs::Float32ConstPtr& exposure_ptr)
 {
   try
@@ -392,12 +407,12 @@ void BebopDriverNodelet::SetExposureCallback(const std_msgs::Float32ConstPtr& ex
   }
 }
 
-void BebopDriverNodelet::TakeSnapshotCallback(const std_msgs::EmptyConstPtr &empty_ptr)
+void BebopDriverNodelet::SetVideoStabilizationModeCallback(const std_msgs::UInt8ConstPtr& mode_ptr)
 {
   try
   {
-    ROS_INFO("Taking a high-res snapshot on-board");
-    bebop_ptr_->TakeSnapshot();
+    ROS_INFO("Setting video stabilization mode to %d",mode_ptr->data);
+    bebop_ptr_->SetVideoStabilizationMode(mode_ptr->data);
   }
   catch (const std::runtime_error& e)
   {

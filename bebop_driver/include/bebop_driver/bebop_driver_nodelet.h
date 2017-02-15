@@ -121,8 +121,9 @@ private:
   ros::Subscriber pause_autoflight_sub_;
   ros::Subscriber stop_autoflight_sub_;
   ros::Subscriber animation_sub_;
-  ros::Subscriber exposure_sub_;
   ros::Subscriber snapshot_sub_;
+  ros::Subscriber exposure_sub_;
+  ros::Subscriber video_stabilization_sub_;
   ros::Subscriber toggle_recording_sub_;
 
   ros::Publisher odom_pub_;
@@ -161,8 +162,9 @@ private:
   void PauseAutonomousFlightCallback(const std_msgs::EmptyConstPtr& empty_ptr);
   void StopAutonomousFlightCallback(const std_msgs::EmptyConstPtr& empty_ptr);
   void FlipAnimationCallback(const std_msgs::UInt8ConstPtr& animid_ptr);
-  void SetExposureCallback(const std_msgs::Float32ConstPtr& exposure_ptr);
   void TakeSnapshotCallback(const std_msgs::EmptyConstPtr& empty_ptr);
+  void SetExposureCallback(const std_msgs::Float32ConstPtr& exposure_ptr);
+  void SetVideoStabilizationModeCallback(const std_msgs::UInt8ConstPtr& mode_ptr);
   void ToggleRecordingCallback(const std_msgs::BoolConstPtr& toggle_ptr);
 
   void ParamCallback(bebop_driver::BebopArdrone3Config &config, uint32_t level);

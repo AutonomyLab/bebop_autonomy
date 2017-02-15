@@ -1,0 +1,20 @@
+image_width: 640
+image_height: 368
+camera_name: bebop2_front
+camera_matrix:
+  rows: 3
+  cols: 3
+  data: [395.006308, 0.000000, 314.697857, 0.000000, 404.392711, 174.704342, 0.000000, 0.000000, 1.000000]
+distortion_model: plumb_bob
+distortion_coefficients:
+  rows: 1
+  cols: 5
+  data: [0.009430, -0.001107, -0.011436, -0.002274, 0.000000]
+rectification_matrix:
+  rows: 3
+  cols: 3
+  data: [1.000000, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000, 0.000000, 0.000000, 1.000000]
+projection_matrix:
+  rows: 3
+  cols: 4
+  data: [400.769714, 0.000000, 312.419488, 0.000000, 0.000000, 407.883575, 169.238191, 0.000000, 0.000000, 0.000000, 1.000000, 0.000000]

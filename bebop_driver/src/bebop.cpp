@@ -599,21 +599,29 @@ bool Bebop::GetFrontCameraFrame(std::vector<uint8_t> &buffer, uint32_t& width, u
   return true;
 }
 
-void Bebop::SetExposure(const float& exposure)
-{
-  ThrowOnInternalError("Failed to set exposure");
-  // TODO fairf4x: Check bounds ?
-  ThrowOnCtrlError(
-    device_controller_ptr_->aRDrone3->sendPictureSettingsExpositionSelection(
-          device_controller_ptr_->aRDrone3, exposure));
-}
-
 void Bebop::TakeSnapshot()
 {
   ThrowOnInternalError("Snapshot Failure");
   ThrowOnCtrlError(
     device_controller_ptr_->aRDrone3->sendMediaRecordPictureV2(
           device_controller_ptr_->aRDrone3));
+}
+
+void Bebop::SetExposure(const float& exposure)
+{
+  ThrowOnInternalError("Failed to set exposure");
+  // TODO fairf4x: Check bounds ?
+  ThrowOnCtrlError(
+    device_controller_ptr_->aRDrone3->sendPictureSettingsExpositionSelection(device_controller_ptr_->aRDrone3, (float)exposure)
+  );
+}
+
+void Bebop::SetVideoStabilizationMode(const uint8_t& mode)
+{
+  ThrowOnInternalError("Failed to set video stabilization mode");
+  ThrowOnCtrlError(
+    device_controller_ptr_->aRDrone3->sendPictureSettingsVideoStabilizationMode(device_controller_ptr_->aRDrone3, (eARCOMMANDS_ARDRONE3_PICTURESETTINGS_VIDEOSTABILIZATIONMODE_MODE)mode)
+  );
 }
 
 void Bebop::ToggleVideoRecording(const bool start)
