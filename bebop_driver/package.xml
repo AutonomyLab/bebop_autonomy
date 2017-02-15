@@ -14,7 +14,7 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <build_depend>parrot_arsdk</build_depend>
+  <build_depend version_eq="3.11.0">parrot_arsdk</build_depend>
   <build_depend>bebop_msgs</build_depend>
   <build_depend>bebop_description</build_depend>
   <build_depend>pkg-config</build_depend>
