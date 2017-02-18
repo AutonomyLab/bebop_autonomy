@@ -175,7 +175,6 @@ public:
   void TakeSnapshot();
   // exposure should be between -3.0 and +3.0
   void SetExposure(const float& exposure);
-  void SetVideoStabilizationMode(const uint8_t& mode);
   // true: start, false: stop
   void ToggleVideoRecording(const bool start);
 

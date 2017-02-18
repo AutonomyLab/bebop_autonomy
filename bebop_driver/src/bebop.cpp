@@ -616,14 +616,6 @@ void Bebop::SetExposure(const float& exposure)
   );
 }
 
-void Bebop::SetVideoStabilizationMode(const uint8_t& mode)
-{
-  ThrowOnInternalError("Failed to set video stabilization mode");
-  ThrowOnCtrlError(
-    device_controller_ptr_->aRDrone3->sendPictureSettingsVideoStabilizationMode(device_controller_ptr_->aRDrone3, (eARCOMMANDS_ARDRONE3_PICTURESETTINGS_VIDEOSTABILIZATIONMODE_MODE)mode)
-  );
-}
-
 void Bebop::ToggleVideoRecording(const bool start)
 {
   ThrowOnInternalError("Video Toggle Failure");
