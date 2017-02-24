@@ -1,6 +1,7 @@
 frequency: 30
 
-magnetic_declination_radians: 0
+# Fill in the magnteric declination in your area
+magnetic_declination_radians: 0.06981317
 
 yaw_offset: 0.0
 

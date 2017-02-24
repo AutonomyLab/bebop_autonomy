@@ -509,7 +509,7 @@ void BebopDriverNodelet::AuxThread()
   js_msg.position.resize(2);
 
   sensor_msgs::NavSatFix gps_msg;
-  gps_msg.header.frame_id = "/gps";
+  gps_msg.header.frame_id = param_base_link_frame_id_;
   gps_msg.status.status = sensor_msgs::NavSatStatus::STATUS_NO_FIX;
   gps_msg.status.service = sensor_msgs::NavSatStatus::SERVICE_GPS | sensor_msgs::NavSatStatus::SERVICE_GLONASS;
   gps_msg.position_covariance_type = sensor_msgs::NavSatFix::COVARIANCE_TYPE_UNKNOWN;
@@ -627,15 +627,15 @@ void BebopDriverNodelet::AuxThread()
         imu_msg_ptr->header.stamp = stamp;
         imu_msg_ptr->header.frame_id = param_base_link_frame_id_;
         tf2::convert(odom_to_base_rot_q, imu_msg_ptr->orientation);
-        imu_msg_ptr->orientation_covariance[0] = 1e-7;
+        imu_msg_ptr->orientation_covariance[0] = 1e-3;
         imu_msg_ptr->orientation_covariance[1] = 0;
         imu_msg_ptr->orientation_covariance[2] = 0;
         imu_msg_ptr->orientation_covariance[3] = 0;
-        imu_msg_ptr->orientation_covariance[4] = 1e-7;
+        imu_msg_ptr->orientation_covariance[4] = 1e-3;
         imu_msg_ptr->orientation_covariance[5] = 0;
         imu_msg_ptr->orientation_covariance[6] = 0;
         imu_msg_ptr->orientation_covariance[7] = 0;
-        imu_msg_ptr->orientation_covariance[8] = 1e-7;
+        imu_msg_ptr->orientation_covariance[8] = 1e-5;
         imu_pub_.publish(imu_msg_ptr);
 
         geometry_msgs::TwistWithCovarianceStampedPtr speed_msg_ptr(new geometry_msgs::TwistWithCovarianceStamped());
