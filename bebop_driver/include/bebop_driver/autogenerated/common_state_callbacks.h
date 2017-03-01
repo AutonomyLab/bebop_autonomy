@@ -23,7 +23,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCL
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  * common_state_callbacks.h
- * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/arsdk-xml/d0c8b256a8592b25a551f3ba742c58ae3da2f93a/xml/common.xml
+ * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/arsdk-xml/e73425074471c58561d04c85da4a6400b638779d/xml/common.xml
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
@@ -53,10 +53,12 @@ extern "C"
 #include "bebop_msgs/CommonCommonStateDeprecatedMassStorageContentChanged.h"
 #include "bebop_msgs/CommonCommonStateMassStorageContent.h"
 #include "bebop_msgs/CommonCommonStateMassStorageContentForCurrentRun.h"
+#include "bebop_msgs/CommonCommonStateVideoRecordingTimestamp.h"
 #include "bebop_msgs/CommonOverHeatStateOverHeatChanged.h"
 #include "bebop_msgs/CommonOverHeatStateOverHeatRegulationChanged.h"
 #include "bebop_msgs/CommonMavlinkStateMavlinkFilePlayingStateChanged.h"
 #include "bebop_msgs/CommonMavlinkStateMavlinkPlayErrorStateChanged.h"
+#include "bebop_msgs/CommonMavlinkStateMissonItemExecuted.h"
 #include "bebop_msgs/CommonCalibrationStateMagnetoCalibrationStateChanged.h"
 #include "bebop_msgs/CommonCalibrationStateMagnetoCalibrationRequiredState.h"
 #include "bebop_msgs/CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged.h"
@@ -325,7 +327,7 @@ public:
 };  // CommonCommonStateMassStorageInfoStateListChanged
 
 
-// Date changed.\n\n **Please note that you should not care about this event if you are using the libARController API as this library is handling the connection process for you.**
+// Date changed.\n Corresponds to the latest date set on the drone.\n\n **Please note that you should not care about this event if you are using the libARController API as this library is handling the connection process for you.**
 class CommonCommonStateCurrentDateChanged : public AbstractState
 {
 private:
@@ -376,7 +378,7 @@ public:
 };  // CommonCommonStateCurrentDateChanged
 
 
-// Time changed.\n\n **Please note that you should not care about this event if you are using the libARController API as this library is handling the connection process for you.**
+// Time changed.\n Corresponds to the latest time set on the drone.\n\n **Please note that you should not care about this event if you are using the libARController API as this library is handling the connection process for you.**
 class CommonCommonStateCurrentTimeChanged : public AbstractState
 {
 private:
@@ -947,6 +949,64 @@ public:
 };  // CommonCommonStateMassStorageContentForCurrentRun
 
 
+// Current or last video recording timestamp.\n Timestamp in milliseconds since 00:00:00 UTC on 1 January 1970.\n **Please note that values dont persist after drone reboot**
+class CommonCommonStateVideoRecordingTimestamp : public AbstractState
+{
+private:
+  ::bebop_msgs::CommonCommonStateVideoRecordingTimestamp::Ptr msg_ptr;
+
+public:
+
+  CommonCommonStateVideoRecordingTimestamp(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
+    : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_VIDEORECORDINGTIMESTAMP)
+  {
+    if (priv_nh.getParam("states/enable_commonstate_videorecordingtimestamp", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_msgs::CommonCommonStateVideoRecordingTimestamp>(topic, 10, true);
+    } // pub_enabled_ is false
+  }
+
+  ::bebop_msgs::CommonCommonStateVideoRecordingTimestamp::ConstPtr GetDataCstPtr() const
+  {
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    return msg_ptr;
+  }
+
+  void Update(const ARCONTROLLER_DICTIONARY_ARG_t *arguments, const ::ros::Time& t)
+  {
+    if (arguments == NULL)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonCommonStateVideoRecordingTimestamp::Update() arguments is NULL");
+      return;
+    }
+
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    msg_ptr.reset(new ::bebop_msgs::CommonCommonStateVideoRecordingTimestamp());
+    msg_ptr->header.stamp = t;
+    msg_ptr->header.frame_id = "base_link";
+
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_VIDEORECORDINGTIMESTAMP_STARTTIMESTAMP, arg);
+    if (arg)
+    {
+      msg_ptr->startTimestamp = arg->value.U64;
+    }
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_COMMONSTATE_VIDEORECORDINGTIMESTAMP_STOPTIMESTAMP, arg);
+    if (arg)
+    {
+      msg_ptr->stopTimestamp = arg->value.U64;
+    }
+
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+  }
+
+};  // CommonCommonStateVideoRecordingTimestamp
+
+
 // Overheat temperature reached.
 class CommonOverHeatStateOverHeatChanged : public AbstractState
 {
@@ -1156,6 +1216,57 @@ public:
   }
 
 };  // CommonMavlinkStateMavlinkPlayErrorStateChanged
+
+
+// Mission item has been executed.
+class CommonMavlinkStateMissonItemExecuted : public AbstractState
+{
+private:
+  ::bebop_msgs::CommonMavlinkStateMissonItemExecuted::Ptr msg_ptr;
+
+public:
+
+  CommonMavlinkStateMissonItemExecuted(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
+    : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MISSONITEMEXECUTED)
+  {
+    if (priv_nh.getParam("states/enable_mavlinkstate_missonitemexecuted", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_msgs::CommonMavlinkStateMissonItemExecuted>(topic, 10, true);
+    } // pub_enabled_ is false
+  }
+
+  ::bebop_msgs::CommonMavlinkStateMissonItemExecuted::ConstPtr GetDataCstPtr() const
+  {
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    return msg_ptr;
+  }
+
+  void Update(const ARCONTROLLER_DICTIONARY_ARG_t *arguments, const ::ros::Time& t)
+  {
+    if (arguments == NULL)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonMavlinkStateMissonItemExecuted::Update() arguments is NULL");
+      return;
+    }
+
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    msg_ptr.reset(new ::bebop_msgs::CommonMavlinkStateMissonItemExecuted());
+    msg_ptr->header.stamp = t;
+    msg_ptr->header.frame_id = "base_link";
+
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MISSONITEMEXECUTED_IDX, arg);
+    if (arg)
+    {
+      msg_ptr->idx = arg->value.U32;
+    }
+
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+  }
+
+};  // CommonMavlinkStateMissonItemExecuted
 
 
 // Magneto calib process axis state.

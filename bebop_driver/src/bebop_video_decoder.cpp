@@ -260,7 +260,7 @@ bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *bebop_frame_ptr_)
    * */
   if (update_codec_params_ && codec_data_.size())
   {
-    ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "Updating H264 codec parameters (Buffer Size: %u) ...", codec_data_.size());
+    ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "Updating H264 codec parameters (Buffer Size: %lu) ...", codec_data_.size());
     packet_.data = &codec_data_[0];
     packet_.size = codec_data_.size();
     int32_t frame_finished = 0;

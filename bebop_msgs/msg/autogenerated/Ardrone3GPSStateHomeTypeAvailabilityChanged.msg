@@ -9,9 +9,10 @@
 Header header
 
 # The type of the return home
-uint8 type_TAKEOFF=0  # The drone will try to return to the take off position
-uint8 type_PILOT=1  # The drone will try to return to the pilot position
-uint8 type_FIRST_FIX=2  # The drone has not enough information, it will try to return to the first GPS fix
+uint8 type_TAKEOFF=0  # The drone has enough information to return to the take off position
+uint8 type_PILOT=1  # The drone has enough information to return to the pilot position
+uint8 type_FIRST_FIX=2  # The drone has not enough information, it will return to the first GPS fix
+uint8 type_FOLLOWEE=3  # The drone has enough information to return to the target of the current (or last) follow me
 uint8 type
 # 1 if this type is available, 0 otherwise
 uint8 available

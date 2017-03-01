@@ -1,5 +1,5 @@
  .. Ardrone3_settings_param.rst
- .. auto-generated from https://raw.githubusercontent.com/Parrot-Developers/arsdk-xml/d0c8b256a8592b25a551f3ba742c58ae3da2f93a/xml/ardrone3.xml
+ .. auto-generated from https://raw.githubusercontent.com/Parrot-Developers/arsdk-xml/e73425074471c58561d04c85da4a6400b638779d/xml/ardrone3.xml
  .. Do not modify this file by hand. Check scripts/meta folder for generator files.
 
 *****************************************************************************************
@@ -266,6 +266,7 @@ GPSSettingsHomeTypeType
 
   * 0: The drone will try to return to the take off position
   * 1: The drone will try to return to the pilot position
+  * 2: The drone will try to return to the target of the current (or last) follow me
 
 GPSSettingsReturnHomeDelayDelay
 -----------------------------------------------------------

@@ -23,7 +23,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCL
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  * ardrone3_state_callbacks.h
- * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/arsdk-xml/d0c8b256a8592b25a551f3ba742c58ae3da2f93a/xml/ardrone3.xml
+ * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/arsdk-xml/e73425074471c58561d04c85da4a6400b638779d/xml/ardrone3.xml
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
@@ -55,6 +55,7 @@ extern "C"
 #include "bebop_msgs/Ardrone3PilotingStateAltitudeChanged.h"
 #include "bebop_msgs/Ardrone3PilotingStateGpsLocationChanged.h"
 #include "bebop_msgs/Ardrone3PilotingStateLandingStateChanged.h"
+#include "bebop_msgs/Ardrone3PilotingStateAirSpeedChanged.h"
 #include "bebop_msgs/Ardrone3NetworkStateWifiScanListChanged.h"
 #include "bebop_msgs/Ardrone3NetworkStateAllWifiScanChanged.h"
 #include "bebop_msgs/Ardrone3NetworkStateWifiAuthChannelListChanged.h"
@@ -63,6 +64,9 @@ extern "C"
 #include "bebop_msgs/Ardrone3MediaStreamingStateVideoStreamModeChanged.h"
 #include "bebop_msgs/Ardrone3CameraStateOrientation.h"
 #include "bebop_msgs/Ardrone3CameraStatedefaultCameraOrientation.h"
+#include "bebop_msgs/Ardrone3CameraStateOrientationV2.h"
+#include "bebop_msgs/Ardrone3CameraStatedefaultCameraOrientationV2.h"
+#include "bebop_msgs/Ardrone3CameraStateVelocityRange.h"
 #include "bebop_msgs/Ardrone3AntiflickeringStateelectricFrequencyChanged.h"
 #include "bebop_msgs/Ardrone3AntiflickeringStatemodeChanged.h"
 #include "bebop_msgs/Ardrone3GPSStateNumberOfSatelliteChanged.h"
@@ -635,7 +639,7 @@ public:
 };  // Ardrone3PilotingStatePositionChanged
 
 
-// Drones speed changed.\n Expressed in the drones referential.
+// Drones speed changed.\n Expressed in the NED referential (North-East-Down).
 class Ardrone3PilotingStateSpeedChanged : public AbstractState
 {
 private:
@@ -1002,6 +1006,57 @@ public:
   }
 
 };  // Ardrone3PilotingStateLandingStateChanged
+
+
+// Drones air speed changed\n Expressed in the drones referential.
+class Ardrone3PilotingStateAirSpeedChanged : public AbstractState
+{
+private:
+  ::bebop_msgs::Ardrone3PilotingStateAirSpeedChanged::Ptr msg_ptr;
+
+public:
+
+  Ardrone3PilotingStateAirSpeedChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
+    : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_AIRSPEEDCHANGED)
+  {
+    if (priv_nh.getParam("states/enable_pilotingstate_airspeedchanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_msgs::Ardrone3PilotingStateAirSpeedChanged>(topic, 10, true);
+    } // pub_enabled_ is false
+  }
+
+  ::bebop_msgs::Ardrone3PilotingStateAirSpeedChanged::ConstPtr GetDataCstPtr() const
+  {
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    return msg_ptr;
+  }
+
+  void Update(const ARCONTROLLER_DICTIONARY_ARG_t *arguments, const ::ros::Time& t)
+  {
+    if (arguments == NULL)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3PilotingStateAirSpeedChanged::Update() arguments is NULL");
+      return;
+    }
+
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    msg_ptr.reset(new ::bebop_msgs::Ardrone3PilotingStateAirSpeedChanged());
+    msg_ptr->header.stamp = t;
+    msg_ptr->header.frame_id = "base_link";
+
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_AIRSPEEDCHANGED_AIRSPEED, arg);
+    if (arg)
+    {
+      msg_ptr->airSpeed = arg->value.Float;
+    }
+
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+  }
+
+};  // Ardrone3PilotingStateAirSpeedChanged
 
 
 // Wifi scan results.\n Please note that the list is not complete until you receive the event [WifiScanEnded](#1-14-1).
@@ -1447,6 +1502,180 @@ public:
 };  // Ardrone3CameraStatedefaultCameraOrientation
 
 
+// Camera orientation with float arguments.
+class Ardrone3CameraStateOrientationV2 : public AbstractState
+{
+private:
+  ::bebop_msgs::Ardrone3CameraStateOrientationV2::Ptr msg_ptr;
+
+public:
+
+  Ardrone3CameraStateOrientationV2(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
+    : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_ORIENTATIONV2)
+  {
+    if (priv_nh.getParam("states/enable_camerastate_orientationv2", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_msgs::Ardrone3CameraStateOrientationV2>(topic, 10, true);
+    } // pub_enabled_ is false
+  }
+
+  ::bebop_msgs::Ardrone3CameraStateOrientationV2::ConstPtr GetDataCstPtr() const
+  {
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    return msg_ptr;
+  }
+
+  void Update(const ARCONTROLLER_DICTIONARY_ARG_t *arguments, const ::ros::Time& t)
+  {
+    if (arguments == NULL)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3CameraStateOrientationV2::Update() arguments is NULL");
+      return;
+    }
+
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    msg_ptr.reset(new ::bebop_msgs::Ardrone3CameraStateOrientationV2());
+    msg_ptr->header.stamp = t;
+    msg_ptr->header.frame_id = "base_link";
+
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_ORIENTATIONV2_TILT, arg);
+    if (arg)
+    {
+      msg_ptr->tilt = arg->value.Float;
+    }
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_ORIENTATIONV2_PAN, arg);
+    if (arg)
+    {
+      msg_ptr->pan = arg->value.Float;
+    }
+
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+  }
+
+};  // Ardrone3CameraStateOrientationV2
+
+
+// Orientation of the center of the camera.\n This is the value to send when you want to center the camera.
+class Ardrone3CameraStatedefaultCameraOrientationV2 : public AbstractState
+{
+private:
+  ::bebop_msgs::Ardrone3CameraStatedefaultCameraOrientationV2::Ptr msg_ptr;
+
+public:
+
+  Ardrone3CameraStatedefaultCameraOrientationV2(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
+    : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_DEFAULTCAMERAORIENTATIONV2)
+  {
+    if (priv_nh.getParam("states/enable_camerastate_defaultcameraorientationv2", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_msgs::Ardrone3CameraStatedefaultCameraOrientationV2>(topic, 10, true);
+    } // pub_enabled_ is false
+  }
+
+  ::bebop_msgs::Ardrone3CameraStatedefaultCameraOrientationV2::ConstPtr GetDataCstPtr() const
+  {
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    return msg_ptr;
+  }
+
+  void Update(const ARCONTROLLER_DICTIONARY_ARG_t *arguments, const ::ros::Time& t)
+  {
+    if (arguments == NULL)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3CameraStatedefaultCameraOrientationV2::Update() arguments is NULL");
+      return;
+    }
+
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    msg_ptr.reset(new ::bebop_msgs::Ardrone3CameraStatedefaultCameraOrientationV2());
+    msg_ptr->header.stamp = t;
+    msg_ptr->header.frame_id = "base_link";
+
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_DEFAULTCAMERAORIENTATIONV2_TILT, arg);
+    if (arg)
+    {
+      msg_ptr->tilt = arg->value.Float;
+    }
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_DEFAULTCAMERAORIENTATIONV2_PAN, arg);
+    if (arg)
+    {
+      msg_ptr->pan = arg->value.Float;
+    }
+
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+  }
+
+};  // Ardrone3CameraStatedefaultCameraOrientationV2
+
+
+// Camera Orientation velocity limits.
+class Ardrone3CameraStateVelocityRange : public AbstractState
+{
+private:
+  ::bebop_msgs::Ardrone3CameraStateVelocityRange::Ptr msg_ptr;
+
+public:
+
+  Ardrone3CameraStateVelocityRange(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
+    : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_VELOCITYRANGE)
+  {
+    if (priv_nh.getParam("states/enable_camerastate_velocityrange", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_msgs::Ardrone3CameraStateVelocityRange>(topic, 10, true);
+    } // pub_enabled_ is false
+  }
+
+  ::bebop_msgs::Ardrone3CameraStateVelocityRange::ConstPtr GetDataCstPtr() const
+  {
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    return msg_ptr;
+  }
+
+  void Update(const ARCONTROLLER_DICTIONARY_ARG_t *arguments, const ::ros::Time& t)
+  {
+    if (arguments == NULL)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3CameraStateVelocityRange::Update() arguments is NULL");
+      return;
+    }
+
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    msg_ptr.reset(new ::bebop_msgs::Ardrone3CameraStateVelocityRange());
+    msg_ptr->header.stamp = t;
+    msg_ptr->header.frame_id = "base_link";
+
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_VELOCITYRANGE_MAX_TILT, arg);
+    if (arg)
+    {
+      msg_ptr->max_tilt = arg->value.Float;
+    }
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_CAMERASTATE_VELOCITYRANGE_MAX_PAN, arg);
+    if (arg)
+    {
+      msg_ptr->max_pan = arg->value.Float;
+    }
+
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+  }
+
+};  // Ardrone3CameraStateVelocityRange
+
+
 // Electric frequency.\n This piece of information is used for the antiflickering when the [AntiflickeringMode](#1-30-1) is set to *auto*.
 class Ardrone3AntiflickeringStateelectricFrequencyChanged : public AbstractState
 {
@@ -1658,7 +1887,7 @@ public:
 };  // Ardrone3GPSStateHomeTypeAvailabilityChanged
 
 
-// Home type.\n This choice is made by the drone, according to the [PreferredHomeType](#1-24-4) and the [HomeTypeAvailability](#1-31-1). The drone will choose the type matching with the user preference only if this type is available.
+// Home type.\n This choice is made by the drone, according to the [PreferredHomeType](#1-24-4) and the [HomeTypeAvailability](#1-31-1). The drone will choose the type matching with the user preference only if this type is available. If not, it will chose a type in this order:\n FOLLOWEE ; TAKEOFF ; PILOT ; FIRST_FIX
 class Ardrone3GPSStateHomeTypeChosenChanged : public AbstractState
 {
 private:

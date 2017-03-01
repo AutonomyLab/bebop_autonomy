@@ -17,4 +17,5 @@ uint8 state_landing=4  # Landing state
 uint8 state_emergency=5  # Emergency state
 uint8 state_usertakeoff=6  # User take off state. Waiting for user action to take off.
 uint8 state_motor_ramping=7  # Motor ramping state (for fixed wings).
+uint8 state_emergency_landing=8  # Emergency landing state. Drone autopilot has detected defective sensor(s). Only Yaw argument in PCMD is taken into account. All others flying commands are ignored.
 uint8 state
