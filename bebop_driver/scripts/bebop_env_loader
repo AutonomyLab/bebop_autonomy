@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+# This script prepend the path to parrot_arsdk's libraries to 
+# LD_LIBRARY_PATH if it is set.
+# 
+# Example usage with rusrun
+# $ rosrun --prefix "rosrun bebop_driver bebop_env_loader" bebop_driver bebop_driver_node
+#
+# Example usage within roslaunch
+
+if [ $# -eq 0 ]; then
+  echo "Usage: bebop_env_loader /path/to/binary [args]"
+  exit 1
+fi
+
+# If LD_LIBRARY_PATH is empty, do not attempt to do anything.
+# Sourcing ROS setup.* files sets this variable
+if [ -z $LD_LIBRARY_PATH ]; then
+  exit 2
+fi
+
+# Convert LD_LIBRARY_PATH to an array and return the head element
+LDP_ARR=(${LD_LIBRARY_PATH//:/ })
+LDP_HEAD=${LDP_ARR[0]}
+
+# Add the path to parrot_arsdk's lib folder to the head of LD_LIBRARY_PATH
+# then executes the specified binary with all the provided arguments
+env LD_LIBRARY_PATH=$LDP_HEAD/parrot_arsdk:$LD_LIBRARY_PATH $@

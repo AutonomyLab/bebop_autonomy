@@ -6,7 +6,7 @@
     <arg name="camera_info_url" default="package://bebop_driver/data/bebop_camera_calib.yaml" />
     <group ns="$(arg namespace)">
         <!-- nodelet manager -->
-        <node pkg="nodelet" type="nodelet" name="bebop_nodelet_manager" args="manager" output="screen"/>
+        <node pkg="nodelet" type="nodelet" name="bebop_nodelet_manager" args="manager" output="screen" launch-prefix="$(find bebop_driver)/scripts/bebop_env_loader" />
         <!-- bebop_nodelet -->
         <node pkg="nodelet" type="nodelet" name="bebop_nodelet"
           args="load bebop_driver/BebopDriverNodelet bebop_nodelet_manager">
