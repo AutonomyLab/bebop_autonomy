@@ -7,6 +7,9 @@
 # $ rosrun --prefix "rosrun bebop_driver bebop_env_loader" bebop_driver bebop_driver_node
 #
 # Example usage within roslaunch
+# <node pkg="bebop_driver" name="bebop_driver" type="bebop_driver_node" launch-prefix="$(find bebop_driver)/scripts/bebop_env_loader">
+#
+# More information: https://discourse.ros.org/t/is-it-a-good-practice-to-force-rpath-to-be-embedded-in-the-installed-targets/1335
 
 if [ $# -eq 0 ]; then
   echo "Usage: bebop_env_loader /path/to/binary [args]"
