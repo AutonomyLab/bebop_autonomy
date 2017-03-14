@@ -1,6 +1,6 @@
 image_width: 640
 image_height: 368
-camera_name: bebop2_front
+camera_name: bebop_front
 camera_matrix:
   rows: 3
   cols: 3
