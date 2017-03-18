@@ -139,7 +139,6 @@ void BebopDriverNodelet::onInit()
 
   odom_pub_ = nh.advertise<nav_msgs::Odometry>("odom", 30);
   imu_pub_ = nh.advertise<sensor_msgs::Imu>("imu", 30);
-  speed_pub_ = nh.advertise<geometry_msgs::TwistWithCovarianceStamped>("speed", 30);
   camera_joint_pub_ = nh.advertise<sensor_msgs::JointState>("joint_states", 10, true);
   gps_fix_pub_ = nh.advertise<sensor_msgs::NavSatFix>("fix", 10, true);
 
@@ -621,35 +620,25 @@ void BebopDriverNodelet::AuxThread()
         odom_msg_ptr->pose.pose.position.y = odom_to_base_trans_v3.y();
         odom_msg_ptr->pose.pose.position.z = odom_to_base_trans_v3.z();
         tf2::convert(odom_to_base_rot_q, odom_msg_ptr->pose.pose.orientation);
+        odom_msg_ptr->pose.covariance[0] = 1e-1;
+        odom_msg_ptr->pose.covariance[7] = 1e-1;
+        odom_msg_ptr->pose.covariance[14] = 1e-1;
+        odom_msg_ptr->pose.covariance[21] = 1e-2;
+        odom_msg_ptr->pose.covariance[28] = 1e-2;
+        odom_msg_ptr->pose.covariance[35] = 1e-3;
+        odom_msg_ptr->twist.covariance[0] = 1e-1;
+        odom_msg_ptr->twist.covariance[7] = 1e-1;
+        odom_msg_ptr->twist.covariance[14] = 1e-1;
         odom_pub_.publish(odom_msg_ptr);
 
         sensor_msgs::ImuPtr imu_msg_ptr(new sensor_msgs::Imu());
         imu_msg_ptr->header.stamp = stamp;
         imu_msg_ptr->header.frame_id = param_base_link_frame_id_;
         tf2::convert(odom_to_base_rot_q, imu_msg_ptr->orientation);
-        imu_msg_ptr->orientation_covariance[0] = 1e-3;
-        imu_msg_ptr->orientation_covariance[1] = 0;
-        imu_msg_ptr->orientation_covariance[2] = 0;
-        imu_msg_ptr->orientation_covariance[3] = 0;
-        imu_msg_ptr->orientation_covariance[4] = 1e-3;
-        imu_msg_ptr->orientation_covariance[5] = 0;
-        imu_msg_ptr->orientation_covariance[6] = 0;
-        imu_msg_ptr->orientation_covariance[7] = 0;
-        imu_msg_ptr->orientation_covariance[8] = 1e-5;
+        imu_msg_ptr->orientation_covariance[0] = 1e-2;
+        imu_msg_ptr->orientation_covariance[4] = 1e-2;
+        imu_msg_ptr->orientation_covariance[8] = 1e-3;
         imu_pub_.publish(imu_msg_ptr);
-
-        geometry_msgs::TwistWithCovarianceStampedPtr speed_msg_ptr(new geometry_msgs::TwistWithCovarianceStamped());
-        speed_msg_ptr->header.stamp = stamp;
-        speed_msg_ptr->header.frame_id = param_base_link_frame_id_;
-        speed_msg_ptr->twist.twist.linear.x = beb_vx_enu;
-        speed_msg_ptr->twist.twist.linear.y = beb_vy_enu;
-        speed_msg_ptr->twist.twist.linear.z = beb_vz_enu;
-        for(int i=0; i<36; i++)
-          speed_msg_ptr->twist.covariance[i] = 0.0;
-        speed_msg_ptr->twist.covariance[0] = 1e-3;
-        speed_msg_ptr->twist.covariance[7] = 1e-3;
-        speed_msg_ptr->twist.covariance[14] = 1e-3;
-        speed_pub_.publish(speed_msg_ptr);
 
         if (param_publish_odom_tf_)
         {
@@ -676,13 +665,7 @@ void BebopDriverNodelet::AuxThread()
         gps_msg.longitude = gps_state_ptr->longitude;
         gps_msg.altitude = gps_state_ptr->altitude;
         gps_msg.position_covariance[0] = 1;
-        gps_msg.position_covariance[1] = 0;
-        gps_msg.position_covariance[2] = 0;
-        gps_msg.position_covariance[3] = 0;
         gps_msg.position_covariance[4] = 1;
-        gps_msg.position_covariance[5] = 0;
-        gps_msg.position_covariance[6] = 0;
-        gps_msg.position_covariance[7] = 0;
         gps_msg.position_covariance[8] = 1;
         gps_msg.position_covariance_type = 1;
         gps_fix_pub_.publish(gps_msg);
