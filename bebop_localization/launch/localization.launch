@@ -1,14 +1,8 @@
 <launch>
   <arg name="tf_prefix" default="" />
-  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization_continuous">
-    <rosparam command="load" file="$(find bebop_localization)/config/robot_localization_continuous.yaml" />
-    <param name="tf_prefix" value="$(arg tf_prefix)" />
-    <remap from="odometry/filtered" to="odometry/filtered/continuous"/>
-  </node>
   <include file="$(find bebop_localization)/launch/navsat_transform.launch" />
-  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization_global">
-    <rosparam command="load" file="$(find bebop_localization)/config/robot_localization_global.yaml" />
+  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization">
+    <rosparam command="load" file="$(find bebop_localization)/config/robot_localization.yaml" />
     <param name="tf_prefix" value="$(arg tf_prefix)" />
-    <remap from="odometry/filtered" to="odometry/filtered/global"/>
   </node>
 </launch>

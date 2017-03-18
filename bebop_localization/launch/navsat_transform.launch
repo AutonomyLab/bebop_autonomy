@@ -3,6 +3,6 @@
     <rosparam command="load" file="$(find bebop_localization)/config/navsat_transform.yaml" />
     <remap from="imu/data" to="imu"/>
     <remap from="gps/fix" to="fix"/>
-    <remap from="odometry/filtered" to="odometry/filtered/continuous"/>
+    <remap from="odometry/filtered" to="odom"/>
   </node>
 </launch>
