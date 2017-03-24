@@ -391,6 +391,14 @@ void Bebop::Disconnect()
   ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "Disconnected from Bebop ...");
 }
 
+void Bebop::SetDate(const std::string &date)
+{
+  ThrowOnInternalError("Setting Date Failed");
+  ThrowOnCtrlError(
+        device_controller_ptr_->common->sendCommonCurrentDate(device_controller_ptr_->common, const_cast<char*>(date.c_str())),
+        "Setting Date Failed");
+}
+
 void Bebop::RequestAllSettings()
 {
   ThrowOnInternalError("Request Settings Failed");
@@ -597,6 +605,15 @@ void Bebop::TakeSnapshot()
   ThrowOnCtrlError(
     device_controller_ptr_->aRDrone3->sendMediaRecordPictureV2(
           device_controller_ptr_->aRDrone3));
+}
+
+void Bebop::SetExposure(const float& exposure)
+{
+  ThrowOnInternalError("Failed to set exposure");
+  // TODO fairf4x: Check bounds ?
+  ThrowOnCtrlError(
+    device_controller_ptr_->aRDrone3->sendPictureSettingsExpositionSelection(device_controller_ptr_->aRDrone3, (float)exposure)
+  );
 }
 
 void Bebop::ToggleVideoRecording(const bool start)

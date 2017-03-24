@@ -19,6 +19,11 @@ Sets the IP addres of the Bebop. The default value is ``192.168.42.1``.
 
 Setting this parameter to ``true`` will reset all Bebop configurations to factory defaults. Default value is ``false``.
 
+~sync_time
+----------
+
+Setting this parameter to ``true`` will synchronize drone time with your ROS system time. Default value is ``false``. 
+
 ~camera_info_url
 ----------------
 

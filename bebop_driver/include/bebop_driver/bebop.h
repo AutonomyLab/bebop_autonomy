@@ -152,6 +152,7 @@ public:
   // nothrow
   void Disconnect();
 
+  void SetDate(const std::string &date);
   void RequestAllSettings();
   void ResetAllSettings();
   void UpdateSettings(const bebop_driver::BebopArdrone3Config& config);
@@ -172,6 +173,8 @@ public:
   void MoveCamera(const double& tilt, const double& pan);
 
   void TakeSnapshot();
+  // exposure should be between -3.0 and +3.0
+  void SetExposure(const float& exposure);
   // true: start, false: stop
   void ToggleVideoRecording(const bool start);
 
