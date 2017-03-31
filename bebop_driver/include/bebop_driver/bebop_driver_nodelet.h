@@ -110,6 +110,7 @@ private:
   geometry_msgs::Twist prev_camera_twist_;
 
   ros::Subscriber cmd_vel_sub_;
+  ros::Subscriber cmd_move_by;
   ros::Subscriber camera_move_sub_;
   ros::Subscriber takeoff_sub_;
   ros::Subscriber land_sub_;
@@ -149,6 +150,7 @@ private:
   void AuxThread();
 
   void CmdVelCallback(const geometry_msgs::TwistConstPtr& twist_ptr);
+  void CmdMoveByCallback(const geometry_msgs::TwistConstPtr& twist_ptr);
   void CameraMoveCallback(const geometry_msgs::TwistConstPtr& twist_ptr);
   void TakeoffCallback(const std_msgs::EmptyConstPtr& empty_ptr);
   void LandCallback(const std_msgs::EmptyConstPtr& empty_ptr);

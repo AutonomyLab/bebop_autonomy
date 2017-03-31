@@ -169,6 +169,7 @@ public:
 
   // -1..1
   void Move(const double& roll, const double& pitch, const double& gaz_speed, const double& yaw_speed);
+  void MoveBy(const float& dX, const float& dY, const float& dZ, const float& dPsi);
   void MoveCamera(const double& tilt, const double& pan);
 
   void TakeSnapshot();

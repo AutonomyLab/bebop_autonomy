@@ -541,6 +541,20 @@ void Bebop::Move(const double &roll, const double &pitch, const double &gaz_spee
   }
 }
 
+
+void Bebop::MoveBy(const float& dX, const float& dY, const float& dZ, const float& dPsi)
+{
+  ThrowOnInternalError("MoveBy failure");
+
+  ThrowOnCtrlError(
+        device_controller_ptr_->aRDrone3->sendPilotingMoveBy(
+          device_controller_ptr_->aRDrone3,
+          static_cast<float>(dX),
+          static_cast<float>(dY),
+          static_cast<float>(dZ),
+          static_cast<float>(dPsi)));
+}
+
 // in degrees
 void Bebop::MoveCamera(const double &tilt, const double &pan)
 {

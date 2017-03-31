@@ -121,6 +121,7 @@ void BebopDriverNodelet::onInit()
   }
 
   cmd_vel_sub_ = nh.subscribe("cmd_vel", 1, &BebopDriverNodelet::CmdVelCallback, this);
+  cmd_move_by = nh.subscribe("cmd_move_by", 1, &BebopDriverNodelet::CmdMoveByCallback, this);
   camera_move_sub_ = nh.subscribe("camera_control", 1, &BebopDriverNodelet::CameraMoveCallback, this);
   takeoff_sub_ = nh.subscribe("takeoff", 1, &BebopDriverNodelet::TakeoffCallback, this);
   land_sub_ = nh.subscribe("land", 1, &BebopDriverNodelet::LandCallback, this);
@@ -217,6 +218,23 @@ void BebopDriverNodelet::CmdVelCallback(const geometry_msgs::TwistConstPtr& twis
   {
     ROS_ERROR_STREAM(e.what());
   }
+}
+
+void BebopDriverNodelet::CmdMoveByCallback(const geometry_msgs::TwistConstPtr& twist_ptr)
+{
+	try
+	{
+		const geometry_msgs::Twist& bebop_twist_ = *twist_ptr;
+
+		bebop_ptr_->MoveBy(bebop_twist_.linear.x,
+											 bebop_twist_.linear.y,
+											 bebop_twist_.linear.z,
+											 bebop_twist_.angular.z);
+	}
+	catch (const std::runtime_error& e)
+	{
+		ROS_ERROR_STREAM(e.what());
+	}
 }
 
 void BebopDriverNodelet::TakeoffCallback(const std_msgs::EmptyConstPtr& empty_ptr)
