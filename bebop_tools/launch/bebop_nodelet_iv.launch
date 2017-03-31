@@ -2,8 +2,10 @@
 <launch>
     <!-- include the nodelet launch file from bebop_driver -->
     <arg name="namespace" default="bebop" />
+    <arg name="ip" default="192.168.42.1" />
     <include file="$(find bebop_driver)/launch/bebop_nodelet.launch">
       <arg name="namespace" value="$(arg namespace)" />
+      <arg name="ip" value="$(arg ip)" />
     </include>
     <!-- use the same nodelet manager and namespace, then load image_view nodelet -->
     <group ns="$(arg namespace)">

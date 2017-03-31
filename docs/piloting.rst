@@ -174,6 +174,13 @@ To take a high resolution on-board snapshot, publish a ``std_msgs/Empty`` messag
 * Username: ``anonymous``
 * Password: *<no password>*
 
+Set camera exposure
+===================
+
+It is possible to set camera exposure by publishing ``std_msgs/Float32`` message on ``set_exposure`` topic. Note that this functionality is not supported in Bebop1 Fw 3.3.0.  
+
+* Exposure value range: ``-3.0 .. +3.0``
+
 Toggle on-board Video Recording
 ===============================
 

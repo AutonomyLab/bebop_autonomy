@@ -34,6 +34,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 
 #include <boost/bind.hpp>
 #include <boost/make_shared.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include <cmath>
 #include <algorithm>
 #include <string>
@@ -88,6 +89,7 @@ void BebopDriverNodelet::onInit()
   // Params (not dynamically reconfigurable, local)
   // TODO(mani-monaj): Wrap all calls to .param() in a function call to enable logging
   const bool param_reset_settings = private_nh.param("reset_settings", false);
+  const bool param_sync_time = private_nh.param("sync_time", false);
   const std::string& param_camera_info_url = private_nh.param<std::string>("camera_info_url", "");
   const std::string& param_bebop_ip = private_nh.param<std::string>("bebop_ip", "192.168.42.1");
 
@@ -105,7 +107,17 @@ void BebopDriverNodelet::onInit()
     {
       NODELET_WARN("Resetting all settings ...");
       bebop_ptr_->ResetAllSettings();
-      // Wait for 5 seconds
+      // Wait for 3 seconds
+      ros::Rate(ros::Duration(3.0)).sleep();
+    }
+
+    if (param_sync_time)
+    {
+      NODELET_WARN("Syncing system and bebop time ...");
+      boost::posix_time::ptime system_time = ros::Time::now().toBoost();
+      std::string iso_time_str = boost::posix_time::to_iso_extended_string(system_time);
+      bebop_ptr_->SetDate(iso_time_str);
+      NODELET_INFO_STREAM("Current time: " << iso_time_str);
       ros::Rate(ros::Duration(3.0)).sleep();
     }
 
@@ -133,6 +145,7 @@ void BebopDriverNodelet::onInit()
   stop_autoflight_sub_ = nh.subscribe("autoflight/stop", 1, &BebopDriverNodelet::StopAutonomousFlightCallback, this);
   animation_sub_ = nh.subscribe("flip", 1, &BebopDriverNodelet::FlipAnimationCallback, this);
   snapshot_sub_ = nh.subscribe("snapshot", 10, &BebopDriverNodelet::TakeSnapshotCallback, this);
+  exposure_sub_ = nh.subscribe("set_exposure", 10, &BebopDriverNodelet::SetExposureCallback, this);
   toggle_recording_sub_ = nh.subscribe("record", 10, &BebopDriverNodelet::ToggleRecordingCallback, this);
 
   odom_pub_ = nh.advertise<nav_msgs::Odometry>("odom", 30);
@@ -270,8 +283,7 @@ void BebopDriverNodelet::CameraMoveCallback(const geometry_msgs::TwistConstPtr& 
     const bool is_camera_twist_changed = !util::CompareTwists(camera_twist_, prev_camera_twist_);
     if (is_camera_twist_changed)
     {
-      // TODO(mani-monaj): Set |90| limit to appropriate value (|45|??)
-      bebop_ptr_->MoveCamera(CLAMP(camera_twist_.angular.y, -35.0, 35.0),
+      bebop_ptr_->MoveCamera(CLAMP(camera_twist_.angular.y, -83.0, 17.0),
                              CLAMP(camera_twist_.angular.z, -35.0, 35.0));
       prev_camera_twist_ = camera_twist_;
     }
@@ -391,6 +403,19 @@ void BebopDriverNodelet::TakeSnapshotCallback(const std_msgs::EmptyConstPtr &emp
   {
     ROS_INFO("Taking a high-res snapshot on-board");
     bebop_ptr_->TakeSnapshot();
+  }
+  catch (const std::runtime_error& e)
+  {
+    ROS_ERROR_STREAM(e.what());
+  }
+}
+
+void BebopDriverNodelet::SetExposureCallback(const std_msgs::Float32ConstPtr& exposure_ptr)
+{
+  try
+  {
+    ROS_INFO("Setting exposure to %f", exposure_ptr->data);
+    bebop_ptr_->SetExposure(exposure_ptr->data);
   }
   catch (const std::runtime_error& e)
   {
