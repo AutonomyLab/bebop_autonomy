@@ -123,6 +123,7 @@ private:
   ros::Subscriber stop_autoflight_sub_;
   ros::Subscriber animation_sub_;
   ros::Subscriber snapshot_sub_;
+  ros::Subscriber setpictureformat_sub;
   ros::Subscriber exposure_sub_;
   ros::Subscriber toggle_recording_sub_;
 
@@ -164,6 +165,7 @@ private:
   void StopAutonomousFlightCallback(const std_msgs::EmptyConstPtr& empty_ptr);
   void FlipAnimationCallback(const std_msgs::UInt8ConstPtr& animid_ptr);
   void TakeSnapshotCallback(const std_msgs::EmptyConstPtr& empty_ptr);
+  void SetPictureFormatCallback(const std_msgs::UInt8ConstPtr &format_ptr);
   void SetExposureCallback(const std_msgs::Float32ConstPtr& exposure_ptr);
   void ToggleRecordingCallback(const std_msgs::BoolConstPtr& toggle_ptr);
 

@@ -621,6 +621,18 @@ void Bebop::TakeSnapshot()
           device_controller_ptr_->aRDrone3));
 }
 
+/**
+ * @brief Set the format of the taken pictures
+ * @param format 0: Raw image, 1: 4:3 jpeg photo, 2: 16:9 snapshot from camera, 3: jpeg fisheye image only
+ */
+void Bebop::SetPictureFormat(const int& format)
+{
+  ThrowOnInternalError("Failed to set picture format");
+  ThrowOnCtrlError(
+    device_controller_ptr_->aRDrone3->sendPictureSettingsPictureFormatSelection(
+          device_controller_ptr_->aRDrone3, (eARCOMMANDS_ARDRONE3_PICTURESETTINGS_PICTUREFORMATSELECTION_TYPE)format));
+}
+
 void Bebop::SetExposure(const float& exposure)
 {
   ThrowOnInternalError("Failed to set exposure");
