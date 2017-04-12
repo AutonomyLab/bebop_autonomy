@@ -1,10 +1,14 @@
 <?xml version="1.0"?>
 <launch>
+
     <arg name="namespace" default="bebop" />
     <arg name="ip" default="192.168.42.1" />
     <arg name="config_file" default="$(find bebop_driver)/config/defaults.yaml" />
     <arg name="camera_info_url" default="package://bebop_driver/data/bebop_camera_calib.yaml" />
     <arg name="add_tf_prefix" default="false" />
+    <arg name="publish_odom_tf" default="true" />    
+    <arg name="magnetic_declination_radians" default="0" />
+
     <group ns="$(arg namespace)">
         <!-- nodelet manager -->
         <node pkg="nodelet" type="nodelet" name="bebop_nodelet_manager" args="manager" output="screen"/>
@@ -16,10 +20,18 @@
             <param name="camera_frame_id" value="$(arg namespace)/camera_optical" if="$(arg add_tf_prefix)"/>
             <param name="odom_frame_id" value="$(arg namespace)/odom" if="$(arg add_tf_prefix)"/>
             <param name="base_link_frame_id" value="$(arg namespace)/base_link" if="$(arg add_tf_prefix)" />            
+            <param name="publish_odom_tf" value="$(arg publish_odom_tf)" />
             <rosparam command="load" file="$(arg config_file)" />
         </node>
+        
         <include file="$(find bebop_description)/launch/description.launch" >
             <arg name="robot_name" value="$(arg namespace)" if="$(arg add_tf_prefix)" />
         </include>
+
+        <include file="$(find bebop_localization)/launch/localization.launch">
+            <arg name="tf_prefix" value="$(arg namespace)" if="$(arg add_tf_prefix)" />
+            <arg name="magnetic_declination_radians" value="$(arg magnetic_declination_radians)" />
+        </include>
+
     </group>
 </launch>

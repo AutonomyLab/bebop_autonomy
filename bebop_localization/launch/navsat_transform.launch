@@ -1,6 +1,8 @@
 <launch>
+  <arg name="magnetic_declination_radians" default="0" />
   <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform_node" clear_params="true" respawn="true">
     <rosparam command="load" file="$(find bebop_localization)/config/navsat_transform.yaml" />
+    <param name="magnetic_declination_radians" value="$(arg magnetic_declination_radians)" />
     <remap from="imu/data" to="imu"/>
     <remap from="gps/fix" to="fix"/>
     <remap from="odometry/filtered" to="odom"/>

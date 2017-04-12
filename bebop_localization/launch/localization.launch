@@ -1,6 +1,9 @@
 <launch>
   <arg name="tf_prefix" default="" />
-  <include file="$(find bebop_localization)/launch/navsat_transform.launch" />
+  <arg name="magnetic_declination_radians" default="0" />
+  <include file="$(find bebop_localization)/launch/navsat_transform.launch">
+    <arg name="magnetic_declination_radians" value="$(arg magnetic_declination_radians)" />
+  </include>
   <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization">
     <rosparam command="load" file="$(find bebop_localization)/config/robot_localization.yaml" />
     <param name="tf_prefix" value="$(arg tf_prefix)" />
