@@ -94,6 +94,8 @@ private:
   ARSAL_Sem_t state_sem_;
   boost::shared_ptr<VideoDecoder> video_decoder_ptr_;
   std::string bebop_ip_;
+  int bebop_discovery_port_;
+  int bebop_d2c_port_;
 
 //  boost::mutex callback_map_mutex_;
   typedef std::map<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> > callback_map_t;
@@ -144,7 +146,7 @@ public:
   explicit Bebop(ARSAL_Print_Callback_t custom_print_callback = 0);
   ~Bebop();
 
-  void Connect(ros::NodeHandle& nh, ros::NodeHandle& priv_nh, const std::string& bebop_ip = "192.168.42.1");
+  void Connect(ros::NodeHandle& nh, ros::NodeHandle& priv_nh, const std::string& bebop_ip = "192.168.42.1", const int bebop_discovery_port = 44444 , const int bebop_d2cport = 43210);
   void StartStreaming();
 
   // Disable all data callback and streaming (nothrow)
