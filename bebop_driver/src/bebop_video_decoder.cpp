@@ -128,7 +128,7 @@ bool VideoDecoder::ReallocateBuffers()
 
   try
   {
-    ThrowOnCondition(codec_ctx_ptr_->width == 0 || codec_ctx_ptr_->width == 0,
+    ThrowOnCondition(codec_ctx_ptr_->width == 0 || codec_ctx_ptr_->height == 0,
                      std::string("Invalid frame size:") +
                      boost::lexical_cast<std::string>(codec_ctx_ptr_->width) +
                      " x " + boost::lexical_cast<std::string>(codec_ctx_ptr_->width));
