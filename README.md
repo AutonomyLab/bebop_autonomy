@@ -5,9 +5,15 @@
 * Documentation: http://bebop-autonomy.readthedocs.io/
 * ROS wiki page: http://wiki.ros.org/bebop_autonomy
 * Support: [ROS Q&A (tag: bebop_autonomy)](http://answers.ros.org/questions/scope:all/sort:activity-desc/tags:bebop_autonomy/page:1/)
-* Developer Forum: https://trello.com/b/C6rNl8Ux
 * Code API: http://docs.ros.org/indigo/api/bebop_autonomy/html
+
+## Development Team
+
 * Author: [Mani Monajjemi](http://mani.im) ([Autonomy Lab](http://autonomylab.org), [Simon Fraser University](http://www.sfu.ca)) + [other contributers](http://bebop-autonomy.readthedocs.io/en/latest/contribute.html#list-of-contributers)
+* Maintainers:
+    * [Sepehr MohaimenianPour](http://sepehr.im/) ([Autonomy Lab](http://autonomylab.org), [Simon Fraser University](http://www.sfu.ca))
+    * Thomas Bamford ([Dynamic Systems Lab](http://www.dynsyslab.org), [University of Toronto](https://www.utoronto.ca/))
+    * [Tobias Naegeli](https://ait.ethz.ch/people/naegelit/) ([Advanced Interactive Technologies Lab](http://www.ait.ethz.ch/), [ETH Zürich](http://www.ethz.ch/))
 
 ## Build Status
 

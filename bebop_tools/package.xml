@@ -5,6 +5,10 @@
   <description>Miscellaneous tools for bebop_autonomy metapackage</description>
 
   <maintainer email="mmonajje@sfu.ca">Mani Monajjemi</maintainer>
+  <maintainer email="smohaime@sfu.ca">Sepehr MohaimenianPour</maintainer>
+  <maintainer email="thomas.bamford@mail.utoronto.ca">Thomas Bamford</maintainer>
+  <maintainer email="naegelit@student.ethz.ch">Tobias Naegeli</maintainer>
+
   <license>BSD</license>
 
   <url type="website">http://wiki.ros.org/bebop_tools</url>
