@@ -2,13 +2,12 @@
 bebop_autonomy - ROS Driver for Parrot Bebop Drone (quadrocopter) 1.0 & 2.0
 ****************************************************************************
 
-*bebop_autonomy* is a :abbr:`ROS (Robot Operating System)` driver for `Parrot Bebop 1.0 <http://www.parrot.com/ca/products/bebop-drone/>`_ and `2.0 <https://www.parrot.com/ca/drones/parrot-bebop-2>`_ drones (quadrocopters), based on Parrot's official `ARDroneSDK3 <http://developer.parrot.com/docs/SDK3/>`_. This driver has been developed in `Autonomy Lab <http://autonomylab.org/>`_ of `Simon Fraser University <http://www.sfu.ca/>`_ by `Mani Monajjemi <http://mani.im>`_ and other contributers (:ref:`sec-contribs`).
+*bebop_autonomy* is a :abbr:`ROS (Robot Operating System)` driver for `Parrot Bebop 1.0 <http://www.parrot.com/ca/products/bebop-drone/>`_ and `2.0 <https://www.parrot.com/ca/drones/parrot-bebop-2>`_ drones (quadrocopters), based on Parrot's official `ARDroneSDK3 <http://developer.parrot.com/docs/SDK3/>`_. This driver has been developed in `Autonomy Lab <http://autonomylab.org/>`_ of `Simon Fraser University <http://www.sfu.ca/>`_ by `Mani Monajjemi <http://mani.im>`_ and other contributers (:ref:`sec-contribs`). This software is maintained by `Sepehr MohaimenianPour <http://sepehr.im/>`_ (AutonomyLab, Simon Fraser University), `Thomas Bamford <#>`_ (Dynamic Systems Lab, University of Toronto) and `Tobias Naegeli <https://ait.ethz.ch/people/naegelit/>`_ (Advanced Interactive Technologies Lab, ETH Zürich).
 
 [`Source Code <https://github.com/AutonomyLab/bebop_autonomy>`_] 
 [`ROS wiki page <http://wiki.ros.org/bebop_autonomy>`_] 
 [`Support <http://answers.ros.org/questions/scope:all/sort:activity-desc/tags:bebop_autonomy/page:1/>`_] 
 [`Bug Tracker <https://github.com/AutonomyLab/bebop_autonomy/issues>`_] 
-[`Developer Forum <https://trello.com/b/C6rNl8Ux>`_]
 
 .. _sec-roadmap:
 

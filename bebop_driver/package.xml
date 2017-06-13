@@ -5,6 +5,10 @@
   <description>ROS driver for Parrot Bebop drone, based on Parrot’s official ARDroneSDK3</description>
 
   <maintainer email="mmonajje@sfu.ca">Mani Monajjemi</maintainer>
+  <maintainer email="smohaime@sfu.ca">Sepehr MohaimenianPour</maintainer>
+  <maintainer email="thomas.bamford@mail.utoronto.ca">Thomas Bamford</maintainer>
+  <maintainer email="naegelit@student.ethz.ch">Tobias Naegeli</maintainer>
+
   <license>BSD</license>
 
   <url type="website">http://wiki.ros.org/bebop_driver</url>
