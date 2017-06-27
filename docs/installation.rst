@@ -29,6 +29,5 @@ To compile from source, you need to clone the source code in a new or existing `
   $ rosdep update
   $ rosdep install --from-paths src -i
   # Build the workspace
-  $ catkin build -DCMAKE_BUILD_TYPE=RelWithDebInfo
-
+  $ catkin build 
 
