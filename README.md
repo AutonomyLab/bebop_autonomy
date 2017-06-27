@@ -19,4 +19,4 @@
 
 [![Build Status (ROS I,J,K) - TravisCI](https://travis-ci.org/AutonomyLab/bebop_autonomy.svg?branch=indigo-devel)](https://travis-ci.org/AutonomyLab/bebop_autonomy) [![Build Status (ROS I,J) - Semaphore](https://semaphoreci.com/api/v1/projects/11786233-d505-4d79-b27c-80c2742243a4/537552/badge.svg)](https://semaphoreci.com/mani_monaj/bebop_autonomy)
 
-Built against [parrot_arsdk](https://github.com/AutonomyLab/parrot_arsdk) 3.11.0
+Built against [parrot_arsdk](https://github.com/AutonomyLab/parrot_arsdk) 3.12.6

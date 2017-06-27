@@ -1,4 +1,4 @@
-# CommonMavlinkStateMissonItemExecuted
+# CommonMavlinkStateMissionItemExecuted
 # auto-generated from up stream XML files at
 #   github.com/Parrot-Developers/libARCommands/tree/master/Xml
 # To check upstream commit hash, refer to last_build_info file
