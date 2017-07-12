@@ -45,6 +45,9 @@ List of Contributers
 
 - `Sepehr Mohaimenianpour <http://sepehr.im/>`_
 
+- `Andreas Ziegler <https://github.com/AndreasAZiegler>`_
+  - `Added wrapper to the move by command <https://github.com/AutonomyLab/bebop_autonomy/pull/103>`_
+
 Acknowledgments
 ================
 
