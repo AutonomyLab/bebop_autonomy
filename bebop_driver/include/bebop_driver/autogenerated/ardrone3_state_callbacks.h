@@ -870,12 +870,6 @@ public:
 
 };  // Ardrone3PilotingStateAltitudeChanged
 
-// Relative move ended.\n Informs about the move that the drone managed to do and why it stopped.
-class Ardrone3RelativeMoveEnded : public AbstractState
-{
-
-};  // Ardrone3RelativeMoveEnded
-
 
 // Drones location changed.\n This event is meant to replace [PositionChanged](#1-4-4).
 class Ardrone3PilotingStateGpsLocationChanged : public AbstractState
