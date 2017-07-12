@@ -187,6 +187,18 @@ To take a high resolution on-board snapshot, publish a ``std_msgs/Empty`` messag
 * Username: ``anonymous``
 * Password: *<no password>*
 
+Set picture format
+==================
+
+To change the format of the snapshots, publish a ``std_msgs/UInt8`` message on ``set_picture_format`` topic. The format will then be changed according to the following settings:
+
+.. code-block:: text
+
+  0       Raw image
+  1       4:3 jpeg image
+  2       16:9 Snapshot from camera
+  3       jpeg fisheye image only
+
 Set camera exposure
 ===================
 
