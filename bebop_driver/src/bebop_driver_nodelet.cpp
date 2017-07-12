@@ -415,7 +415,7 @@ void BebopDriverNodelet::SetPictureFormatCallback(const std_msgs::UInt8ConstPtr&
 {
   try
   {
-    ROS_INFO("Setting picture format to %f", format_ptr->data);
+    ROS_INFO("Setting picture format to %u", format_ptr->data);
     bebop_ptr_->SetPictureFormat(format_ptr->data);
   }
   catch (const std::runtime_error& e)
