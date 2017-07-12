@@ -62,6 +62,19 @@ The ``linear.z`` part of this message controls the **vertical velocity** of the 
   ver_vel_m_per_s   = linear.z  * max_vert_speed
   rot_vel_deg_per_s = angular.z * max_rot_speed
 
+A second possibility to pilot the Bebop is by publishing messages of type to `geometry_msgs/Twist <http://docs.ros.org/api/geometry_msgs/html/msg/Twist.html>`_ to `cmd_move_by` topic while Bebop is flying.  The effect of each field of the message on Bebop's movement is listed below:
+
+.. code-block:: text
+
+  linear.x  (+)      Distance (in meters) to translate forward 
+            (-)      Distance (in meters) to translate backward
+  linear.y  (+)      Distance (in meters) to translate to left
+            (-)      Distance (in meters) to translate to right
+  linear.z  (+)      Distance (in meters) to ascend
+            (-)      Distance (in meters) to descend
+  angular.z (+)      Angle (in rad) to rotate counter clockwise
+            (-)      Angle (in rad) to rotate clockwise
+
 Moving the Virtual Camera
 =========================
 
