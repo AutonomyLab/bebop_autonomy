@@ -240,7 +240,6 @@ void BebopDriverNodelet::CmdMoveByCallback(const geometry_msgs::TwistConstPtr& t
 	try
 	{
 		const geometry_msgs::Twist& bebop_twist_ = *twist_ptr;
-
 		bebop_ptr_->MoveBy(bebop_twist_.linear.x,
 											 bebop_twist_.linear.y,
 											 bebop_twist_.linear.z,
