@@ -550,7 +550,7 @@ void Bebop::Move(const double &roll, const double &pitch, const double &gaz_spee
 }
 
 
-void Bebop::MoveBy(const float& dX, const float& dY, const float& dZ, const float& dPsi)
+void Bebop::MoveBy(const double& dX, const double& dY, const double& dZ, const double& dPsi)
 {
   ThrowOnInternalError("MoveBy failure");
 
