@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 import datetime
 from copy import deepcopy
@@ -12,9 +12,9 @@ import sys
 import subprocess
 import urllib2
 
-# SDK 3.11.0: https://github.com/Parrot-Developers/arsdk_manifests/blob/a6acc778f9d4d852985cccba91b854630921768e/release.xml
+# SDK 3.12.6: https://github.com/Parrot-Developers/arsdk_manifests/blob/ARSDK3_version_3_12_6/release.xml
 LIBARCOMMANDS_GIT_OWNER = "Parrot-Developers"
-LIBARCOMMANDS_GIT_HASH = "e73425074471c58561d04c85da4a6400b638779d"
+LIBARCOMMANDS_GIT_HASH = "ab28dab91845cd36c4d7002b55f70805deaff3c8"
 
 # From XML types to ROS primitive types
 ROS_TYPE_MAP = {
