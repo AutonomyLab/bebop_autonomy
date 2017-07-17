@@ -1227,7 +1227,7 @@ private:
 public:
 
   CommonMavlinkStateMissonItemExecuted(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
-    : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MISSONITEMEXECUTED)
+    : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MISSIONITEMEXECUTED)
   {
     if (priv_nh.getParam("states/enable_mavlinkstate_missonitemexecuted", pub_enabled_) && pub_enabled_)
     {
@@ -1257,7 +1257,7 @@ public:
 
 
     arg = NULL;
-    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MISSONITEMEXECUTED_IDX, arg);
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MISSIONITEMEXECUTED_IDX, arg);
     if (arg)
     {
       msg_ptr->idx = arg->value.U32;
