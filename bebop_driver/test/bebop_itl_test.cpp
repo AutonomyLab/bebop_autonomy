@@ -293,7 +293,6 @@ protected:
  *
  * odom on the other hand is REP-103 compatible
  */
-/*
 TEST_F(BebopInTheLoopTest, Piloting)
 {
   ros::Publisher takeoff_pub =  nh_.advertise<std_msgs::Empty>("takeoff", 1);
@@ -456,7 +455,6 @@ TEST_F(BebopInTheLoopTest, Piloting)
   StopBebop();
 
   /* By this time, battery state must have been changed (even on Bebop 2) */
-/*
   TIMED_ASSERT(20.0, bat_state_->IsActive(), "Measuring battery ...");
   const uint8_t bat_percent = bat_state_->GetMsgCopy().percent;
 
@@ -488,7 +486,6 @@ TEST_F(BebopInTheLoopTest, Piloting)
 
   ASSERT_GE(bat_percent - bat_state_->GetMsgCopy().percent, 0);
 }
-*/
 
 
 TEST_F(BebopInTheLoopTest, PilotingWithMoveBy)
@@ -623,8 +620,8 @@ TEST_F(BebopInTheLoopTest, PilotingWithMoveBy)
   ROS_WARN("Ascending for 0.5m ...");
   cmdmoveby_pub_.publish(tw);
   TIMED_ASSERT(10.0,
-               ((alt_state_->GetMsgCopy().altitude - alt_start) >= 0.3) &&
-               ((odom_->GetMsgCopy().pose.pose.position.z - alt_start_odom) >= 0.3) &&
+               ((alt_state_->GetMsgCopy().altitude - alt_start) >= 0.35) &&
+               ((odom_->GetMsgCopy().pose.pose.position.z - alt_start_odom) >= 0.35) &&
                (speed_state_->GetMsgCopy().speedZ < -0.05) &&
                (odom_->GetMsgCopy().twist.twist.linear.z > 0.05),
                "Measuring altitude, speed.z and vertical velocity from odom ...");
@@ -641,8 +638,8 @@ TEST_F(BebopInTheLoopTest, PilotingWithMoveBy)
   ROS_WARN("Descending for 0.5m ...");
   cmdmoveby_pub_.publish(tw);
   TIMED_ASSERT(10.0,
-               ((alt_state_->GetMsgCopy().altitude - alt_start) <= -0.3) &&
-               ((odom_->GetMsgCopy().pose.pose.position.z - alt_start_odom) <= -0.3) &&
+               ((alt_state_->GetMsgCopy().altitude - alt_start) <= -0.35) &&
+               ((odom_->GetMsgCopy().pose.pose.position.z - alt_start_odom) <= -0.35) &&
                (speed_state_->GetMsgCopy().speedZ > 0.05) &&
                (odom_->GetMsgCopy().twist.twist.linear.z < -0.05),
                "Measuring altitude, speed.z and vertical velocity from odom ...");
@@ -660,7 +657,7 @@ TEST_F(BebopInTheLoopTest, PilotingWithMoveBy)
 
   // TODO(mani-monaj): Add yaw
   TIMED_ASSERT(10.0,
-               angles::normalize_angle(att_state_->GetMsgCopy().yaw - yaw_start) >= 0.5 * 3.141596,
+               angles::normalize_angle(att_state_->GetMsgCopy().yaw - yaw_start) >= 0.45 * 3.141596,
                "Measuring Yaw");
 
 
@@ -674,7 +671,7 @@ TEST_F(BebopInTheLoopTest, PilotingWithMoveBy)
   ROS_WARN("Rotating CCW for 90 degrees ...");
   cmdmoveby_pub_.publish(tw);
   TIMED_ASSERT(10.0,
-               angles::normalize_angle(att_state_->GetMsgCopy().yaw - yaw_start) <= -0.5 * 3.141596,
+               angles::normalize_angle(att_state_->GetMsgCopy().yaw - yaw_start) <= -0.45 * 3.141596,
                "Measuring Yaw");
 
   /* By this time, battery state must have been changed (even on Bebop 2) */
@@ -696,16 +693,6 @@ TEST_F(BebopInTheLoopTest, PilotingWithMoveBy)
                  bebop_msgs::Ardrone3PilotingStateFlyingStateChanged::state_landed,
                "Waiting for land to finish..."
                );
-
-  // emergency state is transient (unlike ardrone), we may miss the signal
-//  ROS_WARN("Emergency ...");
-//  reset_pub.publish(em);
-
-//  TIMED_ASSERT(5.0,
-//               flying_state->IsActive() && flying_state->GetMsgCopy().state ==
-//                 bebop_msgs::Ardrone3PilotingStateFlyingStateChanged::state_emergency,
-//               "Waiting for reset to happen..."
-//               );
 
   ASSERT_GE(bat_percent - bat_state_->GetMsgCopy().percent, 0);
 }
