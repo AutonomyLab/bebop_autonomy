@@ -40,6 +40,8 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/condition_variable.hpp>
 
+#include "bebop_driver/bebop_video_decoder.h"
+
 extern "C"
 {
   #include "libARSAL/ARSAL.h"
@@ -180,7 +182,7 @@ public:
 
   // This function is blocking and runs in the caller's thread's context
   // which is different from FrameReceivedCallback's context
-  bool GetFrontCameraFrame(std::vector<uint8_t>& buffer, uint32_t &width, uint32_t &height) const;
+  bool GetFrontCameraFrame(std::vector<uint8_t>& buffer, uint32_t &width, uint32_t &height, MetadataV2Base_t& meta_data) const;
   uint32_t GetFrontCameraFrameWidth() const;
   uint32_t GetFrontCameraFrameHeight() const;
 };

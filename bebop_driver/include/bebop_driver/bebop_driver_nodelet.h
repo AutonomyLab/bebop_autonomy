@@ -32,6 +32,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 #include <ros/timer.h>
 #include <nodelet/nodelet.h>
 #include <geometry_msgs/Twist.h>
+#include <geometry_msgs/Vector3.h>
 #include <std_msgs/Empty.h>
 #include <std_msgs/UInt8.h>
 #include <std_msgs/Float32.h>
@@ -126,6 +127,7 @@ private:
   ros::Subscriber toggle_recording_sub_;
 
   ros::Publisher odom_pub_;
+  ros::Publisher velocities_pub_;
   ros::Publisher camera_joint_pub_;
   ros::Publisher gps_fix_pub_;
 

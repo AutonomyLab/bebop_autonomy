@@ -35,12 +35,17 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 #include <boost/bind.hpp>
 #include <boost/make_shared.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/qvm/mat.hpp>
+#include <boost/qvm/vec.hpp>
+#include <boost/qvm/vec_access.hpp>
+#include <boost/qvm/vec_mat_operations.hpp>
 #include <cmath>
 #include <algorithm>
 #include <string>
 #include <cstdio>
 
 #include <bebop_driver/bebop_driver_nodelet.h>
+#include "bebop_driver/bebop_video_decoder.h"
 #include <bebop_driver/BebopArdrone3Config.h>
 
 // For AuxThread() - without the following, callback wrapper types are incomplete to the compiler
@@ -148,6 +153,7 @@ void BebopDriverNodelet::onInit()
   toggle_recording_sub_ = nh.subscribe("record", 10, &BebopDriverNodelet::ToggleRecordingCallback, this);
 
   odom_pub_ = nh.advertise<nav_msgs::Odometry>("odom", 30);
+  velocities_pub_ = nh.advertise<geometry_msgs::Vector3>("velocities", 10, true);
   camera_joint_pub_ = nh.advertise<sensor_msgs::JointState>("joint_states", 10, true);
   gps_fix_pub_ = nh.advertise<sensor_msgs::NavSatFix>("fix", 10, true);
 
@@ -438,11 +444,13 @@ void BebopDriverNodelet::CameraPublisherThread()
     try
     {
       sensor_msgs::ImagePtr image_msg_ptr_(new sensor_msgs::Image());
+      bebop_driver::MetadataV2Base_t meta_data;
+      geometry_msgs::Vector3 velocity_msg_;
       const ros::Time t_now = ros::Time::now();
 
       NODELET_DEBUG_STREAM("Grabbing a frame from Bebop");
       // This is blocking
-      bebop_ptr_->GetFrontCameraFrame(image_msg_ptr_->data, frame_w, frame_h);
+      bebop_ptr_->GetFrontCameraFrame(image_msg_ptr_->data, frame_w, frame_h, meta_data);
 
       NODELET_DEBUG_STREAM("Frame grabbed: " << frame_w << " , " << frame_h);
       camera_info_msg_ptr_.reset(new sensor_msgs::CameraInfo(cinfo_manager_ptr_->getCameraInfo()));
@@ -450,6 +458,47 @@ void BebopDriverNodelet::CameraPublisherThread()
       camera_info_msg_ptr_->header.frame_id = param_camera_frame_id_;
       camera_info_msg_ptr_->width = frame_w;
       camera_info_msg_ptr_->height = frame_h;
+
+			// Converting Parrot Q8.8 to normal doubles
+			double north_speed = (meta_data.northSpeed & 0x00ff);
+			north_speed += (meta_data.northSpeed & 0xff00) >> 8;
+			double east_speed = (meta_data.eastSpeed & 0x00ff);
+			east_speed += (meta_data.eastSpeed & 0xff00) >> 8;
+			double down_speed = (meta_data.downSpeed & 0x00ff);
+			down_speed += (meta_data.downSpeed & 0xff00) >> 8;
+
+			// Creating boost vector for the velocities
+			boost::qvm::vec<double, 3> velocity = {north_speed, east_speed, down_speed};
+
+			// Converting Parrot Q2.14 to normal doubles
+			double q_w = (meta_data.droneW & 0x0fff) / 10;
+			q_w += (meta_data.droneW & 0xc000) >> 14;
+			double q_x = (meta_data.droneX & 0x0fff) / 10;
+			q_x += (meta_data.droneX & 0xc000) >> 14;
+			double q_y = (meta_data.droneY & 0x0fff) / 10;
+			q_y += (meta_data.droneY & 0xc000) >> 14;
+			double q_z = (meta_data.droneZ & 0x0fff) / 10;
+			q_z += (meta_data.droneZ & 0xc000) >> 14;
+
+			// Compute elements of the rotation matrix from the quaternions
+			double c11 = q_w*q_w + q_x*q_x - q_y*q_y - q_z*q_z;
+			double c12 = 2*q_x*q_y - 2*q_w*q_z;
+			double c13 = 2*q_w*q_y + 2*q_x*q_z;
+			double c21 = 2*q_w*q_z + 2*q_x*q_y;
+			double c22 = q_w*q_w - q_x*q_x + q_y*q_y - q_z*q_z;
+			double c23 = 2*q_y*q_z - 2*q_w*q_x;
+			double c31 = 2*q_x*q_z - 2*q_w*q_y;
+			double c32 = 2*q_w*q_x + 2*q_y*q_z;
+			double c33 = q_w*q_w - q_x*q_x - q_y*q_y + q_z*q_z;
+			// Creating boost rotation matrix
+			boost::qvm::mat<double, 3, 3> rotation = {c11, c12, c13, c21, c22, c23, c31, c32, c33};
+
+			// Transform velocities from north, east, down to x, y, z
+			velocity = rotation * velocity;
+
+			velocity_msg_.x = boost::qvm::A<0>(velocity);
+			velocity_msg_.y = boost::qvm::A<1>(velocity);
+			velocity_msg_.z = boost::qvm::A<2>(velocity);
 
       if (image_transport_pub_.getNumSubscribers() > 0)
       {
@@ -462,6 +511,11 @@ void BebopDriverNodelet::CameraPublisherThread()
         image_msg_ptr_->step = image_msg_ptr_->width * 3;
 
         image_transport_pub_.publish(image_msg_ptr_, camera_info_msg_ptr_);
+      }
+
+      if (velocities_pub_.getNumSubscribers() > 0)
+      {
+        velocities_pub_.publish(velocity_msg_);
       }
     }
     catch (const std::runtime_error& e)
