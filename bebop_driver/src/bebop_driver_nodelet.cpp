@@ -460,25 +460,18 @@ void BebopDriverNodelet::CameraPublisherThread()
       camera_info_msg_ptr_->height = frame_h;
 
 			// Converting Parrot Q8.8 to normal doubles
-			double north_speed = (meta_data.northSpeed & 0x00ff);
-			north_speed += (meta_data.northSpeed & 0xff00) >> 8;
-			double east_speed = (meta_data.eastSpeed & 0x00ff);
-			east_speed += (meta_data.eastSpeed & 0xff00) >> 8;
-			double down_speed = (meta_data.downSpeed & 0x00ff);
-			down_speed += (meta_data.downSpeed & 0xff00) >> 8;
+			double north_speed = meta_data.northSpeed >> 8;
+			double east_speed = meta_data.eastSpeed >> 8;
+			double down_speed = meta_data.downSpeed >> 8;
 
 			// Creating boost vector for the velocities
 			boost::qvm::vec<double, 3> velocity = {north_speed, east_speed, down_speed};
 
 			// Converting Parrot Q2.14 to normal doubles
-			double q_w = (meta_data.droneW & 0x0fff) / 10;
-			q_w += (meta_data.droneW & 0xc000) >> 14;
-			double q_x = (meta_data.droneX & 0x0fff) / 10;
-			q_x += (meta_data.droneX & 0xc000) >> 14;
-			double q_y = (meta_data.droneY & 0x0fff) / 10;
-			q_y += (meta_data.droneY & 0xc000) >> 14;
-			double q_z = (meta_data.droneZ & 0x0fff) / 10;
-			q_z += (meta_data.droneZ & 0xc000) >> 14;
+			double q_w = meta_data.droneW >> 14;
+			double q_x = meta_data.droneX >> 14;
+			double q_y = meta_data.droneY >> 14;
+			double q_z = meta_data.droneZ >> 14;
 
 			// Compute elements of the rotation matrix from the quaternions
 			double c11 = q_w*q_w + q_x*q_x - q_y*q_y - q_z*q_z;

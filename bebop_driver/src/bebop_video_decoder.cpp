@@ -291,7 +291,6 @@ bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *bebop_frame_ptr_)
   if(NULL != meta_data_ptr_)
   {
     meta_data_ = *meta_data_ptr_;
-    ROS_INFO("North speed: %i", meta_data_.northSpeed);
   }
 
   const uint32_t width_prev = GetFrameWidth();
