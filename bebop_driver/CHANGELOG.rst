@@ -2,6 +2,13 @@
 Changelog for package bebop_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.7.0 (2017-07-29)
+------------------
+* SDK 3.12.6 support (except 64bit Ubuntu Xenial, working on fix)
+  - ROS API change: states/common/MavlinkState/MissonItemExecuted topic renamed
+  to states/common/MavlinkState/MissionItemExecuted
+* Contributors: Thomas Bamford, Mani Monajjemi
+
 0.6.0 (2016-11-02)
 ------------------
 * Use Parrot ARSDK as a thirdparty dependency
