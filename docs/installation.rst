@@ -25,8 +25,6 @@ To compile from source, you need to clone the source code in a new or existing `
   $ mkdir -p ~/bebop_ws/src && cd ~/bebop_ws
   $ catkin init
   $ git clone https://github.com/AutonomyLab/bebop_autonomy.git src/bebop_autonomy
-  # Extra step for 64bit Ubuntu Xenial until parrot_arsdk debian package build fixed
-  $ git clone https://github.com/AutonomyLab/parrot_arsdk.git src/parrot_arsdk
   # Update rosdep database and install dependencies (including parrot_arsdk)
   $ rosdep update
   $ rosdep install --from-paths src -i
