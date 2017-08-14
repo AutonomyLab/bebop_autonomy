@@ -213,10 +213,12 @@ void BebopDriverNodelet::CmdVelCallback(const geometry_msgs::TwistConstPtr& twis
     // TODO: Always apply zero after non-zero values
     if (is_bebop_twist_changed)
     {
-      bebop_ptr_->Move(CLAMP(-bebop_twist_.linear.y, -1.0, 1.0),
+	for(int i=0;i<10;i++){
+      		bebop_ptr_->Move(CLAMP(-bebop_twist_.linear.y, -1.0, 1.0),
                        CLAMP(bebop_twist_.linear.x, -1.0, 1.0),
                        CLAMP(bebop_twist_.linear.z, -1.0, 1.0),
                        CLAMP(-bebop_twist_.angular.z, -1.0, 1.0));
+	}
     }
   }
   catch (const std::runtime_error& e)
@@ -256,12 +258,14 @@ void BebopDriverNodelet::CameraMoveCallback(const geometry_msgs::TwistConstPtr& 
   {
     camera_twist_ = *twist_ptr;
     const bool is_camera_twist_changed = !util::CompareTwists(camera_twist_, prev_camera_twist_);
-    if (is_camera_twist_changed)
+    if (1)
     {
       // TODO(mani-monaj): Set |90| limit to appropriate value (|45|??)
+	//for(int i=0;i<20;i++){
       bebop_ptr_->MoveCamera(CLAMP(camera_twist_.angular.y, -35.0, 35.0),
                              CLAMP(camera_twist_.angular.z, -35.0, 35.0));
       prev_camera_twist_ = camera_twist_;
+//}
     }
   }
   catch (const std::runtime_error& e)
