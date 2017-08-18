@@ -23,7 +23,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCL
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  * common_state_callbacks.h
- * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/arsdk-xml/e73425074471c58561d04c85da4a6400b638779d/xml/common.xml
+ * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/arsdk-xml/ab28dab91845cd36c4d7002b55f70805deaff3c8/xml/common.xml
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
@@ -58,7 +58,7 @@ extern "C"
 #include "bebop_msgs/CommonOverHeatStateOverHeatRegulationChanged.h"
 #include "bebop_msgs/CommonMavlinkStateMavlinkFilePlayingStateChanged.h"
 #include "bebop_msgs/CommonMavlinkStateMavlinkPlayErrorStateChanged.h"
-#include "bebop_msgs/CommonMavlinkStateMissonItemExecuted.h"
+#include "bebop_msgs/CommonMavlinkStateMissionItemExecuted.h"
 #include "bebop_msgs/CommonCalibrationStateMagnetoCalibrationStateChanged.h"
 #include "bebop_msgs/CommonCalibrationStateMagnetoCalibrationRequiredState.h"
 #include "bebop_msgs/CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged.h"
@@ -1219,24 +1219,24 @@ public:
 
 
 // Mission item has been executed.
-class CommonMavlinkStateMissonItemExecuted : public AbstractState
+class CommonMavlinkStateMissionItemExecuted : public AbstractState
 {
 private:
-  ::bebop_msgs::CommonMavlinkStateMissonItemExecuted::Ptr msg_ptr;
+  ::bebop_msgs::CommonMavlinkStateMissionItemExecuted::Ptr msg_ptr;
 
 public:
 
-  CommonMavlinkStateMissonItemExecuted(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
-    : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MISSONITEMEXECUTED)
+  CommonMavlinkStateMissionItemExecuted(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
+    : AbstractState(ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MISSIONITEMEXECUTED)
   {
-    if (priv_nh.getParam("states/enable_mavlinkstate_missonitemexecuted", pub_enabled_) && pub_enabled_)
+    if (priv_nh.getParam("states/enable_mavlinkstate_missionitemexecuted", pub_enabled_) && pub_enabled_)
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
-      ros_pub_ = nh.advertise<bebop_msgs::CommonMavlinkStateMissonItemExecuted>(topic, 10, true);
+      ros_pub_ = nh.advertise<bebop_msgs::CommonMavlinkStateMissionItemExecuted>(topic, 10, true);
     } // pub_enabled_ is false
   }
 
-  ::bebop_msgs::CommonMavlinkStateMissonItemExecuted::ConstPtr GetDataCstPtr() const
+  ::bebop_msgs::CommonMavlinkStateMissionItemExecuted::ConstPtr GetDataCstPtr() const
   {
     ::boost::lock_guard<boost::mutex> lock(mutex_);
     return msg_ptr;
@@ -1246,18 +1246,18 @@ public:
   {
     if (arguments == NULL)
     {
-      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonMavlinkStateMissonItemExecuted::Update() arguments is NULL");
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "CommonMavlinkStateMissionItemExecuted::Update() arguments is NULL");
       return;
     }
 
     ::boost::lock_guard<boost::mutex> lock(mutex_);
-    msg_ptr.reset(new ::bebop_msgs::CommonMavlinkStateMissonItemExecuted());
+    msg_ptr.reset(new ::bebop_msgs::CommonMavlinkStateMissionItemExecuted());
     msg_ptr->header.stamp = t;
     msg_ptr->header.frame_id = "base_link";
 
 
     arg = NULL;
-    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MISSONITEMEXECUTED_IDX, arg);
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_COMMON_MAVLINKSTATE_MISSIONITEMEXECUTED_IDX, arg);
     if (arg)
     {
       msg_ptr->idx = arg->value.U32;
@@ -1266,7 +1266,7 @@ public:
     if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
-};  // CommonMavlinkStateMissonItemExecuted
+};  // CommonMavlinkStateMissionItemExecuted
 
 
 // Magneto calib process axis state.

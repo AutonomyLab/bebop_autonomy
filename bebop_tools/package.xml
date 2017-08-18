@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>bebop_tools</name>
-  <version>0.6.0</version>
+  <version>0.7.0</version>
   <description>Miscellaneous tools for bebop_autonomy metapackage</description>
 
   <maintainer email="mmonajje@sfu.ca">Mani Monajjemi</maintainer>
