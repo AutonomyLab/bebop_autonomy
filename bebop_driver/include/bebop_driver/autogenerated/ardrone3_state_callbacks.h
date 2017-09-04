@@ -23,7 +23,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCL
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  * ardrone3_state_callbacks.h
- * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/arsdk-xml/e73425074471c58561d04c85da4a6400b638779d/xml/ardrone3.xml
+ * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/arsdk-xml/ab28dab91845cd36c4d7002b55f70805deaff3c8/xml/ardrone3.xml
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
@@ -56,6 +56,7 @@ extern "C"
 #include "bebop_msgs/Ardrone3PilotingStateGpsLocationChanged.h"
 #include "bebop_msgs/Ardrone3PilotingStateLandingStateChanged.h"
 #include "bebop_msgs/Ardrone3PilotingStateAirSpeedChanged.h"
+#include "bebop_msgs/Ardrone3PilotingStatemoveToChanged.h"
 #include "bebop_msgs/Ardrone3NetworkStateWifiScanListChanged.h"
 #include "bebop_msgs/Ardrone3NetworkStateAllWifiScanChanged.h"
 #include "bebop_msgs/Ardrone3NetworkStateWifiAuthChannelListChanged.h"
@@ -73,6 +74,7 @@ extern "C"
 #include "bebop_msgs/Ardrone3GPSStateHomeTypeAvailabilityChanged.h"
 #include "bebop_msgs/Ardrone3GPSStateHomeTypeChosenChanged.h"
 #include "bebop_msgs/Ardrone3PROStateFeatures.h"
+#include "bebop_msgs/Ardrone3AccessoryStateConnectedAccessories.h"
 
 namespace bebop_driver
 {
@@ -1059,6 +1061,92 @@ public:
 };  // Ardrone3PilotingStateAirSpeedChanged
 
 
+// The drone moves or moved to a given location.
+class Ardrone3PilotingStatemoveToChanged : public AbstractState
+{
+private:
+  ::bebop_msgs::Ardrone3PilotingStatemoveToChanged::Ptr msg_ptr;
+
+public:
+
+  Ardrone3PilotingStatemoveToChanged(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
+    : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_MOVETOCHANGED)
+  {
+    if (priv_nh.getParam("states/enable_pilotingstate_movetochanged", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_msgs::Ardrone3PilotingStatemoveToChanged>(topic, 10, true);
+    } // pub_enabled_ is false
+  }
+
+  ::bebop_msgs::Ardrone3PilotingStatemoveToChanged::ConstPtr GetDataCstPtr() const
+  {
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    return msg_ptr;
+  }
+
+  void Update(const ARCONTROLLER_DICTIONARY_ARG_t *arguments, const ::ros::Time& t)
+  {
+    if (arguments == NULL)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3PilotingStatemoveToChanged::Update() arguments is NULL");
+      return;
+    }
+
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    msg_ptr.reset(new ::bebop_msgs::Ardrone3PilotingStatemoveToChanged());
+    msg_ptr->header.stamp = t;
+    msg_ptr->header.frame_id = "base_link";
+
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_MOVETOCHANGED_LATITUDE, arg);
+    if (arg)
+    {
+      msg_ptr->latitude = arg->value.Double;
+    }
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_MOVETOCHANGED_LONGITUDE, arg);
+    if (arg)
+    {
+      msg_ptr->longitude = arg->value.Double;
+    }
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_MOVETOCHANGED_ALTITUDE, arg);
+    if (arg)
+    {
+      msg_ptr->altitude = arg->value.Double;
+    }
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_MOVETOCHANGED_ORIENTATION_MODE, arg);
+    if (arg)
+    {
+      msg_ptr->orientation_mode = arg->value.I32;
+    }
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_MOVETOCHANGED_HEADING, arg);
+    if (arg)
+    {
+      msg_ptr->heading = arg->value.Float;
+    }
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_MOVETOCHANGED_STATUS, arg);
+    if (arg)
+    {
+      msg_ptr->status = arg->value.I32;
+    }
+
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+  }
+
+};  // Ardrone3PilotingStatemoveToChanged
+
+
 // Wifi scan results.\n Please note that the list is not complete until you receive the event [WifiScanEnded](#1-14-1).
 class Ardrone3NetworkStateWifiScanListChanged : public AbstractState
 {
@@ -1987,6 +2075,78 @@ public:
   }
 
 };  // Ardrone3PROStateFeatures
+
+
+// List of all connected accessories. This event presents the list of all connected accessories. To actually use the component, use the component dedicated feature.
+class Ardrone3AccessoryStateConnectedAccessories : public AbstractState
+{
+private:
+  ::bebop_msgs::Ardrone3AccessoryStateConnectedAccessories::Ptr msg_ptr;
+
+public:
+
+  Ardrone3AccessoryStateConnectedAccessories(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
+    : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_ACCESSORYSTATE_CONNECTEDACCESSORIES)
+  {
+    if (priv_nh.getParam("states/enable_accessorystate_connectedaccessories", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_msgs::Ardrone3AccessoryStateConnectedAccessories>(topic, 10, true);
+    } // pub_enabled_ is false
+  }
+
+  ::bebop_msgs::Ardrone3AccessoryStateConnectedAccessories::ConstPtr GetDataCstPtr() const
+  {
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    return msg_ptr;
+  }
+
+  void Update(const ARCONTROLLER_DICTIONARY_ARG_t *arguments, const ::ros::Time& t)
+  {
+    if (arguments == NULL)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3AccessoryStateConnectedAccessories::Update() arguments is NULL");
+      return;
+    }
+
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    msg_ptr.reset(new ::bebop_msgs::Ardrone3AccessoryStateConnectedAccessories());
+    msg_ptr->header.stamp = t;
+    msg_ptr->header.frame_id = "base_link";
+
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_ACCESSORYSTATE_CONNECTEDACCESSORIES_ID, arg);
+    if (arg)
+    {
+      msg_ptr->id = arg->value.U8;
+    }
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_ACCESSORYSTATE_CONNECTEDACCESSORIES_ACCESSORY_TYPE, arg);
+    if (arg)
+    {
+      msg_ptr->accessory_type = arg->value.I32;
+    }
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_ACCESSORYSTATE_CONNECTEDACCESSORIES_UID, arg);
+    if (arg)
+    {
+      msg_ptr->uid = arg->value.String;
+    }
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_ACCESSORYSTATE_CONNECTEDACCESSORIES_SWVERSION, arg);
+    if (arg)
+    {
+      msg_ptr->swVersion = arg->value.String;
+    }
+
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+  }
+
+};  // Ardrone3AccessoryStateConnectedAccessories
 
 
 }  // namespace cb

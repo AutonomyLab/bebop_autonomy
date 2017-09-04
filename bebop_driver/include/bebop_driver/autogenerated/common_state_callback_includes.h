@@ -23,7 +23,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCL
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  * common_state_callback_includes.h
- * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/arsdk-xml/e73425074471c58561d04c85da4a6400b638779d/xml/common.xml
+ * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/arsdk-xml/ab28dab91845cd36c4d7002b55f70805deaff3c8/xml/common.xml
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
@@ -49,7 +49,7 @@ namespace cb
   class CommonOverHeatStateOverHeatRegulationChanged;
   class CommonMavlinkStateMavlinkFilePlayingStateChanged;
   class CommonMavlinkStateMavlinkPlayErrorStateChanged;
-  class CommonMavlinkStateMissonItemExecuted;
+  class CommonMavlinkStateMissionItemExecuted;
   class CommonCalibrationStateMagnetoCalibrationStateChanged;
   class CommonCalibrationStateMagnetoCalibrationRequiredState;
   class CommonCalibrationStateMagnetoCalibrationAxisToCalibrateChanged;
@@ -115,8 +115,8 @@ boost::shared_ptr<cb::CommonMavlinkStateMavlinkFilePlayingStateChanged>
   common_mavlinkstate_mavlinkfileplayingstatechanged_ptr;
 boost::shared_ptr<cb::CommonMavlinkStateMavlinkPlayErrorStateChanged>
   common_mavlinkstate_mavlinkplayerrorstatechanged_ptr;
-boost::shared_ptr<cb::CommonMavlinkStateMissonItemExecuted>
-  common_mavlinkstate_missonitemexecuted_ptr;
+boost::shared_ptr<cb::CommonMavlinkStateMissionItemExecuted>
+  common_mavlinkstate_missionitemexecuted_ptr;
 boost::shared_ptr<cb::CommonCalibrationStateMagnetoCalibrationStateChanged>
   common_calibrationstate_magnetocalibrationstatechanged_ptr;
 boost::shared_ptr<cb::CommonCalibrationStateMagnetoCalibrationRequiredState>
@@ -222,9 +222,9 @@ common_mavlinkstate_mavlinkfileplayingstatechanged_ptr.reset(
 common_mavlinkstate_mavlinkplayerrorstatechanged_ptr.reset(
   new cb::CommonMavlinkStateMavlinkPlayErrorStateChanged(
     nh, priv_nh, "states/common/MavlinkState/MavlinkPlayErrorStateChanged"));
-common_mavlinkstate_missonitemexecuted_ptr.reset(
-  new cb::CommonMavlinkStateMissonItemExecuted(
-    nh, priv_nh, "states/common/MavlinkState/MissonItemExecuted"));
+common_mavlinkstate_missionitemexecuted_ptr.reset(
+  new cb::CommonMavlinkStateMissionItemExecuted(
+    nh, priv_nh, "states/common/MavlinkState/MissionItemExecuted"));
 common_calibrationstate_magnetocalibrationstatechanged_ptr.reset(
   new cb::CommonCalibrationStateMagnetoCalibrationStateChanged(
     nh, priv_nh, "states/common/CalibrationState/MagnetoCalibrationStateChanged"));
@@ -370,8 +370,8 @@ callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<c
                       common_mavlinkstate_mavlinkplayerrorstatechanged_ptr));
 // Add all wrappers to the callback map
 callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
-                      common_mavlinkstate_missonitemexecuted_ptr->GetCommandKey(),
-                      common_mavlinkstate_missonitemexecuted_ptr));
+                      common_mavlinkstate_missionitemexecuted_ptr->GetCommandKey(),
+                      common_mavlinkstate_missionitemexecuted_ptr));
 // Add all wrappers to the callback map
 callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       common_calibrationstate_magnetocalibrationstatechanged_ptr->GetCommandKey(),
