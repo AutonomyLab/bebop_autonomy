@@ -552,7 +552,7 @@ void Bebop::MoveCamera(const double &tilt, const double &pan)
 //                     static_cast<int8_t>(pan)));
 
   //Send camera command for new sdk as float
-  ThrowOnCtrlError(device_controller_ptr_->aRDrone3->sendCameraOrientationV2(
+  ThrowOnCtrlError(device_controller_ptr_->aRDrone3->setCameraOrientationV2(
                      device_controller_ptr_->aRDrone3,
                      static_cast<float>(tilt),
                      static_cast<float>(pan)));

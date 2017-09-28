@@ -124,6 +124,8 @@ private:
   geometry_msgs::QuaternionStamped drone_quat_msg_;
   geometry_msgs::QuaternionStamped camera_quat_msg_;
 
+  std_msgs::Float64 above_ground_msg_;
+
   geometry_msgs::Twist camera_twist_;
   geometry_msgs::Twist prev_camera_twist_;
 
@@ -147,7 +149,7 @@ private:
   ros::Publisher altitude_pub_;
   ros::Publisher meta_camera_frame_pub_;
   ros::Publisher meta_drone_frame_pub_;
-
+  ros::Publisher meta_aboveground_pub_;
 
 
   boost::shared_ptr<camera_info_manager::CameraInfoManager> cinfo_manager_ptr_;

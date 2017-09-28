@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
     <arg name="namespace" default="q1/real" />
-    <arg name="ip" default="192.168.1.104" />
+    <arg name="ip" default="192.168.101.1" />
     <arg name="config_file" default="$(find bebop_driver)/config/defaults.yaml" />
     <arg name="camera_info_url" default="package://bebop_driver/data/bebop_camera_calib.yaml" />
    <!--Start Joy node-->

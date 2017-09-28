@@ -142,7 +142,7 @@ void BebopDriverNodelet::onInit()
   altitude_pub_ = nh.advertise<std_msgs::Float64>("altitude",10);
   meta_camera_frame_pub_=nh.advertise<geometry_msgs::QuaternionStamped>("metadata/camera_quat",10);
   meta_drone_frame_pub_ =nh.advertise<geometry_msgs::QuaternionStamped>("metadata/drone_quat",10);
-
+  meta_aboveground_pub_ = nh.advertise<std_msgs::Float64>("metadata/above_ground",10);
 
   cinfo_manager_ptr_.reset(new camera_info_manager::CameraInfoManager(nh, "bebop_front", param_camera_info_url));
   image_transport_ptr_.reset(new image_transport::ImageTransport(nh));
@@ -213,12 +213,10 @@ void BebopDriverNodelet::CmdVelCallback(const geometry_msgs::TwistConstPtr& twis
     // TODO: Always apply zero after non-zero values
     if (is_bebop_twist_changed)
     {
-	for(int i=0;i<10;i++){
-      		bebop_ptr_->Move(CLAMP(-bebop_twist_.linear.y, -1.0, 1.0),
+      bebop_ptr_->Move(CLAMP(-bebop_twist_.linear.y, -1.0, 1.0),
                        CLAMP(bebop_twist_.linear.x, -1.0, 1.0),
                        CLAMP(bebop_twist_.linear.z, -1.0, 1.0),
                        CLAMP(-bebop_twist_.angular.z, -1.0, 1.0));
-	}
     }
   }
   catch (const std::runtime_error& e)
@@ -261,8 +259,8 @@ void BebopDriverNodelet::CameraMoveCallback(const geometry_msgs::TwistConstPtr& 
     if (1)
     {
       // TODO(mani-monaj): Set |90| limit to appropriate value (|45|??)
-	//for(int i=0;i<20;i++){
-      bebop_ptr_->MoveCamera(CLAMP(camera_twist_.angular.y, -35.0, 35.0),
+//	for(int i=0;i<20;i++){
+      bebop_ptr_->MoveCamera(CLAMP(camera_twist_.angular.y, -83.0, 17.0),
                              CLAMP(camera_twist_.angular.z, -35.0, 35.0));
       prev_camera_twist_ = camera_twist_;
 //}
@@ -480,6 +478,10 @@ void BebopDriverNodelet::CameraPublisherThread()
         // float northSpeed_ = ((float) ((short) ntohs(metadata_.northSpeed)))/(256.0);
         // float eastSpeed_ = ((float) ((short) ntohs(metadata_.eastSpeed)))/(256.0);
         // float downSpeed_ = ((float) ((short) ntohs(metadata_.downSpeed)))/(256.0);
+	
+	float aboveground_ = ((float)(ntohl(metadata_.groundDistance)))/(65536.0);
+	above_ground_msg_.data = aboveground_;
+	meta_aboveground_pub_.publish(above_ground_msg_);
     }
 
     catch (const std::runtime_error& e)
