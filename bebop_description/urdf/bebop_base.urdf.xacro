@@ -15,7 +15,7 @@
   <link name="base_link">
    <visual>
       <geometry>
-        <mesh scale=".001 .001 .001" filename="package://bebop_description/meshes/bebop_model.stl"/>
+        <mesh scale="1.0 1.0 1.0" filename="package://bebop_description/meshes/bebop_model.stl"/>
       </geometry>
    </visual>
   </link>
