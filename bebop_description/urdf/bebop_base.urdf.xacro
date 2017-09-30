@@ -17,6 +17,9 @@
       <geometry>
         <mesh scale="1.0 1.0 1.0" filename="package://bebop_description/meshes/bebop_model.stl"/>
       </geometry>
+        <material name="blue">
+          <color rgba="0 0.4 0.6 1"/>
+        </material>
    </visual>
   </link>
   <link name="camera_base_link"></link>
