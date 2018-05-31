@@ -133,7 +133,7 @@ bool VideoDecoder::ReallocateBuffers()
                      boost::lexical_cast<std::string>(codec_ctx_ptr_->width) +
                      " x " + boost::lexical_cast<std::string>(codec_ctx_ptr_->width));
 
-    const uint32_t num_bytes = avpicture_get_size(PIX_FMT_RGB24, codec_ctx_ptr_->width, codec_ctx_ptr_->width);
+    const uint32_t num_bytes = avpicture_get_size(AV_PIX_FMT_RGB24, codec_ctx_ptr_->width, codec_ctx_ptr_->width);
     frame_rgb_ptr_ = av_frame_alloc();
 
     ThrowOnCondition(!frame_rgb_ptr_, "Can not allocate memory for frames!");
@@ -143,12 +143,12 @@ bool VideoDecoder::ReallocateBuffers()
                      std::string("Can not allocate memory for the buffer: ") +
                      boost::lexical_cast<std::string>(num_bytes));
     ThrowOnCondition(0 == avpicture_fill(
-                       reinterpret_cast<AVPicture*>(frame_rgb_ptr_), frame_rgb_raw_ptr_, PIX_FMT_RGB24,
+                       reinterpret_cast<AVPicture*>(frame_rgb_ptr_), frame_rgb_raw_ptr_, AV_PIX_FMT_RGB24,
                        codec_ctx_ptr_->width, codec_ctx_ptr_->height),
                      "Failed to initialize the picture data structure.");
 
     img_convert_ctx_ptr_ = sws_getContext(codec_ctx_ptr_->width, codec_ctx_ptr_->height, codec_ctx_ptr_->pix_fmt,
-                                          codec_ctx_ptr_->width, codec_ctx_ptr_->height, PIX_FMT_RGB24,
+                                          codec_ctx_ptr_->width, codec_ctx_ptr_->height, AV_PIX_FMT_RGB24,
                                           SWS_FAST_BILINEAR, NULL, NULL, NULL);
   }
   catch (const std::runtime_error& e)
