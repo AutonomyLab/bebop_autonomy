@@ -2,6 +2,11 @@
 Changelog for package bebop_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.7.1 (2018-05-31)
+------------------
+* Fixed the bug appearing when you run the catkin build command
+* Contributors: Giuseppe Silano
+
 0.7.0 (2017-07-29)
 ------------------
 * SDK 3.12.6 support (except 64bit Ubuntu Xenial, working on fix)
