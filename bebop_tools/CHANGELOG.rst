@@ -5,6 +5,7 @@ Changelog for package bebop_tools
 0.8.0 (2018-07-03)
 ------------------
 * Added Xbox 360 config file for Disco
+* Added support for joy control of autoflight commands
 * Contributors: Thomas Bamford
 
 0.7.0 (2017-07-29)

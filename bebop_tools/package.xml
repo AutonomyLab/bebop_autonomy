@@ -17,11 +17,13 @@
 
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>bebop_msgs</build_depend>
+  <build_depend>rospy</build_depend>
   <run_depend>bebop_driver</run_depend>
   <run_depend>bebop_msgs</run_depend>
   <run_depend>joy</run_depend>
   <run_depend>joy_teleop</run_depend>
   <run_depend>image_view</run_depend>
+  <run_depend>rospy</run_depend>
 
   <export>
     <!-- Other tools can request additional information be placed here -->
