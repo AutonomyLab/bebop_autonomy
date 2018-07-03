@@ -23,7 +23,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCL
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  * ardrone3_state_callback_includes.h
- * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/arsdk-xml/ab28dab91845cd36c4d7002b55f70805deaff3c8/xml/ardrone3.xml
+ * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/arsdk-xml/6faa46898d94fa207fd1b039643d356d14b7db42/xml/ardrone3.xml
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
@@ -48,6 +48,9 @@ namespace cb
   class Ardrone3PilotingStateLandingStateChanged;
   class Ardrone3PilotingStateAirSpeedChanged;
   class Ardrone3PilotingStatemoveToChanged;
+  class Ardrone3PilotingStateMotionState;
+  class Ardrone3PilotingStatePilotedPOI;
+  class Ardrone3PilotingStateReturnHomeBatteryCapacity;
   class Ardrone3NetworkStateWifiScanListChanged;
   class Ardrone3NetworkStateAllWifiScanChanged;
   class Ardrone3NetworkStateWifiAuthChannelListChanged;
@@ -66,6 +69,8 @@ namespace cb
   class Ardrone3GPSStateHomeTypeChosenChanged;
   class Ardrone3PROStateFeatures;
   class Ardrone3AccessoryStateConnectedAccessories;
+  class Ardrone3AccessoryStateBattery;
+  class Ardrone3SoundStateAlertSound;
 }  // namespace cb
 #endif  // FORWARD_DECLARATIONS
 
@@ -107,6 +112,12 @@ boost::shared_ptr<cb::Ardrone3PilotingStateAirSpeedChanged>
   ardrone3_pilotingstate_airspeedchanged_ptr;
 boost::shared_ptr<cb::Ardrone3PilotingStatemoveToChanged>
   ardrone3_pilotingstate_movetochanged_ptr;
+boost::shared_ptr<cb::Ardrone3PilotingStateMotionState>
+  ardrone3_pilotingstate_motionstate_ptr;
+boost::shared_ptr<cb::Ardrone3PilotingStatePilotedPOI>
+  ardrone3_pilotingstate_pilotedpoi_ptr;
+boost::shared_ptr<cb::Ardrone3PilotingStateReturnHomeBatteryCapacity>
+  ardrone3_pilotingstate_returnhomebatterycapacity_ptr;
 boost::shared_ptr<cb::Ardrone3NetworkStateWifiScanListChanged>
   ardrone3_networkstate_wifiscanlistchanged_ptr;
 boost::shared_ptr<cb::Ardrone3NetworkStateAllWifiScanChanged>
@@ -143,6 +154,10 @@ boost::shared_ptr<cb::Ardrone3PROStateFeatures>
   ardrone3_prostate_features_ptr;
 boost::shared_ptr<cb::Ardrone3AccessoryStateConnectedAccessories>
   ardrone3_accessorystate_connectedaccessories_ptr;
+boost::shared_ptr<cb::Ardrone3AccessoryStateBattery>
+  ardrone3_accessorystate_battery_ptr;
+boost::shared_ptr<cb::Ardrone3SoundStateAlertSound>
+  ardrone3_soundstate_alertsound_ptr;
 #endif  // DEFINE_SHARED_PTRS
 
 #ifdef UPDTAE_CALLBACK_MAP
@@ -201,6 +216,15 @@ ardrone3_pilotingstate_airspeedchanged_ptr.reset(
 ardrone3_pilotingstate_movetochanged_ptr.reset(
   new cb::Ardrone3PilotingStatemoveToChanged(
     nh, priv_nh, "states/ardrone3/PilotingState/moveToChanged"));
+ardrone3_pilotingstate_motionstate_ptr.reset(
+  new cb::Ardrone3PilotingStateMotionState(
+    nh, priv_nh, "states/ardrone3/PilotingState/MotionState"));
+ardrone3_pilotingstate_pilotedpoi_ptr.reset(
+  new cb::Ardrone3PilotingStatePilotedPOI(
+    nh, priv_nh, "states/ardrone3/PilotingState/PilotedPOI"));
+ardrone3_pilotingstate_returnhomebatterycapacity_ptr.reset(
+  new cb::Ardrone3PilotingStateReturnHomeBatteryCapacity(
+    nh, priv_nh, "states/ardrone3/PilotingState/ReturnHomeBatteryCapacity"));
 ardrone3_networkstate_wifiscanlistchanged_ptr.reset(
   new cb::Ardrone3NetworkStateWifiScanListChanged(
     nh, priv_nh, "states/ardrone3/NetworkState/WifiScanListChanged"));
@@ -255,6 +279,12 @@ ardrone3_prostate_features_ptr.reset(
 ardrone3_accessorystate_connectedaccessories_ptr.reset(
   new cb::Ardrone3AccessoryStateConnectedAccessories(
     nh, priv_nh, "states/ardrone3/AccessoryState/ConnectedAccessories"));
+ardrone3_accessorystate_battery_ptr.reset(
+  new cb::Ardrone3AccessoryStateBattery(
+    nh, priv_nh, "states/ardrone3/AccessoryState/Battery"));
+ardrone3_soundstate_alertsound_ptr.reset(
+  new cb::Ardrone3SoundStateAlertSound(
+    nh, priv_nh, "states/ardrone3/SoundState/AlertSound"));
 
 // Add all wrappers to the callback map
 callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
@@ -330,6 +360,18 @@ callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<c
                       ardrone3_pilotingstate_movetochanged_ptr));
 // Add all wrappers to the callback map
 callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
+                      ardrone3_pilotingstate_motionstate_ptr->GetCommandKey(),
+                      ardrone3_pilotingstate_motionstate_ptr));
+// Add all wrappers to the callback map
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
+                      ardrone3_pilotingstate_pilotedpoi_ptr->GetCommandKey(),
+                      ardrone3_pilotingstate_pilotedpoi_ptr));
+// Add all wrappers to the callback map
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
+                      ardrone3_pilotingstate_returnhomebatterycapacity_ptr->GetCommandKey(),
+                      ardrone3_pilotingstate_returnhomebatterycapacity_ptr));
+// Add all wrappers to the callback map
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       ardrone3_networkstate_wifiscanlistchanged_ptr->GetCommandKey(),
                       ardrone3_networkstate_wifiscanlistchanged_ptr));
 // Add all wrappers to the callback map
@@ -400,4 +442,12 @@ callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<c
 callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
                       ardrone3_accessorystate_connectedaccessories_ptr->GetCommandKey(),
                       ardrone3_accessorystate_connectedaccessories_ptr));
+// Add all wrappers to the callback map
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
+                      ardrone3_accessorystate_battery_ptr->GetCommandKey(),
+                      ardrone3_accessorystate_battery_ptr));
+// Add all wrappers to the callback map
+callback_map_.insert(std::pair<eARCONTROLLER_DICTIONARY_KEY, boost::shared_ptr<cb::AbstractCommand> >(
+                      ardrone3_soundstate_alertsound_ptr->GetCommandKey(),
+                      ardrone3_soundstate_alertsound_ptr));
 #endif  // UPDTAE_CALLBACK_MAP
