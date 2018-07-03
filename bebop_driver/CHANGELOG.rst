@@ -5,6 +5,8 @@ Changelog for package bebop_driver
 0.8.0 (2018-07-03)
 ------------------
 * SDK 3.14.0 support
+* Add support for Disco
+* Add a new ROS topic for entering and exiting user takeoff mode: `user_takeoff`
 * Contributors: Thomas Bamford
 
 0.7.0 (2017-07-29)

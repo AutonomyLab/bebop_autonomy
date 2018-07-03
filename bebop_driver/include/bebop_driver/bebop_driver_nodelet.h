@@ -117,6 +117,7 @@ private:
   ros::Subscriber reset_sub_;
   ros::Subscriber flattrim_sub_;
   ros::Subscriber navigatehome_sub_;
+  ros::Subscriber usertakeoff_sub_;
   ros::Subscriber start_autoflight_sub_;
   ros::Subscriber pause_autoflight_sub_;
   ros::Subscriber stop_autoflight_sub_;
@@ -157,6 +158,7 @@ private:
   void EmergencyCallback(const std_msgs::EmptyConstPtr& empty_ptr);
   void FlatTrimCallback(const std_msgs::EmptyConstPtr& empty_ptr);
   void NavigateHomeCallback(const std_msgs::BoolConstPtr& start_stop_ptr);
+  void UserTakeoffCallback(const std_msgs::BoolConstPtr& start_stop_ptr);
   void StartAutonomousFlightCallback(const std_msgs::StringConstPtr& file_path_ptr);
   void PauseAutonomousFlightCallback(const std_msgs::EmptyConstPtr& empty_ptr);
   void StopAutonomousFlightCallback(const std_msgs::EmptyConstPtr& empty_ptr);

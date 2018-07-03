@@ -163,6 +163,8 @@ public:
   void FlatTrim();
   // false: Stop, true: Start
   void NavigateHome(const bool& start_stop);
+  // false: Exit from user take off, true: Enter in user take off
+  void UserTakeoff(const bool& start_stop);
   void StartAutonomousFlight(const std::string &filepath);
   void PauseAutonomousFlight();
   void StopAutonomousFlight();
