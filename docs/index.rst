@@ -17,9 +17,9 @@ Features and Roadmap
 .. csv-table::
   :header: "Feature", "Status", "Notes"
 
-  SDK Version,"3.12.6", "Since v0.7"
+  SDK Version,"3.14.0", "Since v0.8"
   Support for Parrot Bebop 1, Yes, "Tested up to Firmware 3.3"
-  Support for Parrot Bebop 2, Yes, "Tested up to Firmware 4.0.6"
+  Support for Parrot Bebop 2, Yes, "Tested up to Firmware 4.7.1"
   Support for Parrot Disco FPV, No, "Not tested (help wanted)"
   Core piloting, Yes, ""
   H264 video decoding, Yes, "Enhancement: `#1 <https://github.com/AutonomyLab/bebop_autonomy/issues/1>`_"

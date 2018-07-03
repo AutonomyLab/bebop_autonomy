@@ -2,6 +2,11 @@
 Changelog for package bebop_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.8.0 (2018-07-03)
+------------------
+* Update to Parrot SDK 3.14.0 (from 3.12.6)
+* Contributors: Thomas Bamford
+
 0.7.0 (2017-07-29)
 ------------------
 * Update to Parrot SDK 3.12.6 (from 3.10.1)
