@@ -1,0 +1,81 @@
+# Xbox 360 wireless controller
+# Deadman (enable) button: Right Bumper
+teleop:
+  piloting:
+    type: topic
+    message_type: "geometry_msgs/Twist"
+    topic_name: cmd_vel
+    deadman_buttons: [5]
+    axis_mappings:
+      -
+        axis: 4  # Right thumb stick (pitch down/up)
+        target: linear.x
+        scale: 1.0
+        offset: 0.0
+      -
+        axis: 3  # Right thumb stick (roll left/right)
+        target: linear.y
+        scale: 1.0
+        offset: 0.0
+      -
+        axis: 1  # Left thumb stick (faster/slower)
+        target: linear.z
+        scale: 1.0
+        offset: 0.0
+      -
+        axis: 0  # Left thumb stick (circle left/right)
+        target: angular.z
+        scale: 1.0
+        offset: 0.0
+  camera:
+    type: topic
+    message_type: "geometry_msgs/Twist"
+    topic_name: camera_control
+    deadman_buttons: [7] # Start
+    axis_mappings:
+      -
+        axis: 1  # Left D-Pad (up/down)
+        target: angular.y
+        scale: 83.0
+        offset: 0.0
+      -
+        axis: 0  # Left D-Pad (left/right)
+        target: angular.z
+        scale: -35.0
+        offset: 0.0
+  takeoff:
+    type: topic
+    message_type: "std_msgs/Empty"
+    topic_name: takeoff
+    deadman_buttons: [5, 3]  # RB + Y
+    axis_mappings: []
+  land:
+    type: topic
+    message_type: "std_msgs/Empty"
+    topic_name: land
+    deadman_buttons: [5, 0]  # RB + A
+    axis_mappings: []
+  emergency:
+    type: topic
+    message_type: "std_msgs/Empty"
+    topic_name: reset
+    deadman_buttons: [5, 1] # RB + B
+    axis_mappings: []
+  flattrim:
+    type: topic
+    message_type: "std_msgs/Empty"
+    topic_name: flattrim
+    deadman_buttons: [5, 2] # RB + X
+    axis_mappings: []
+  flip:
+    type: topic
+    message_type: "std_msgs/UInt8"
+    topic_name: flip
+    deadman_buttons: [5, 4, 2] # RB + LB + X
+    axis_mappings: []
+  snapshot:
+    type: topic
+    message_type: "std_msgs/Empty"
+    topic_name: snapshot
+    deadman_buttons: [5, 8] # RB + XBox
+    axis_mappings: []

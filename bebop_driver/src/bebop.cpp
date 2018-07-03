@@ -478,6 +478,15 @@ void Bebop::NavigateHome(const bool &start_stop)
         "Navigate home failed");
 }
 
+void Bebop::UserTakeoff(const bool &start_stop)
+{
+  ThrowOnInternalError("User takeoff failed");
+  ThrowOnCtrlError(
+        device_controller_ptr_->aRDrone3->sendPilotingUserTakeOff(
+          device_controller_ptr_->aRDrone3, start_stop ? 1 : 0),
+        "User takeoff failed");
+}
+
 void Bebop::StartAutonomousFlight(const std::string &filepath)
 {
   ThrowOnInternalError("Start autonomous flight failed");

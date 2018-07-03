@@ -139,6 +139,7 @@ void BebopDriverNodelet::onInit()
   reset_sub_ = nh.subscribe("reset", 1, &BebopDriverNodelet::EmergencyCallback, this);
   flattrim_sub_ = nh.subscribe("flattrim", 1, &BebopDriverNodelet::FlatTrimCallback, this);
   navigatehome_sub_ = nh.subscribe("autoflight/navigate_home", 1, &BebopDriverNodelet::NavigateHomeCallback, this);
+  usertakeoff_sub_ = nh.subscribe("user_takeoff", 1, &BebopDriverNodelet::UserTakeoffCallback, this);
   start_autoflight_sub_ = nh.subscribe("autoflight/start", 1, &BebopDriverNodelet::StartAutonomousFlightCallback, this);
   pause_autoflight_sub_ = nh.subscribe("autoflight/pause", 1, &BebopDriverNodelet::PauseAutonomousFlightCallback, this);
   stop_autoflight_sub_ = nh.subscribe("autoflight/stop", 1, &BebopDriverNodelet::StopAutonomousFlightCallback, this);
@@ -308,6 +309,19 @@ void BebopDriverNodelet::NavigateHomeCallback(const std_msgs::BoolConstPtr &star
   {
     ROS_INFO("%sing navigate home behavior ...", start_stop_ptr->data ? "Start" : "Stopp");
     bebop_ptr_->NavigateHome(start_stop_ptr->data);
+  }
+  catch (const std::runtime_error& e)
+  {
+    ROS_ERROR_STREAM(e.what());
+  }
+}
+
+void BebopDriverNodelet::UserTakeoffCallback(const std_msgs::BoolConstPtr &start_stop_ptr)
+{
+  try
+  {
+    ROS_INFO("%sing user takeoff behavior ...", start_stop_ptr->data ? "Enter" : "Exit");
+    bebop_ptr_->UserTakeoff(start_stop_ptr->data);
   }
   catch (const std::runtime_error& e)
   {
