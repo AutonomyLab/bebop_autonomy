@@ -73,9 +73,39 @@ teleop:
     topic_name: flip
     deadman_buttons: [5, 4, 2] # RB + LB + X
     axis_mappings: []
+  start:
+    type: topic
+    message_type: "std_msgs/Empty"
+    topic_name: autoflight/start/joy
+    deadman_buttons: [5, 7] # RB + start
+    axis_mappings: []
+  stop:
+    type: topic
+    message_type: "std_msgs/Empty"
+    topic_name: autoflight/stop
+    deadman_buttons: [5, 6] # RB + back
+    axis_mappings: []
+  navigatehome:
+    type: topic
+    message_type: "std_msgs/Empty"
+    topic_name: autoflight/navigate_home/joy
+    deadman_buttons: [5, 8] # RB + XBox
+    axis_mappings: []
   snapshot:
     type: topic
     message_type: "std_msgs/Empty"
     topic_name: snapshot
-    deadman_buttons: [5, 8] # RB + XBox
+    deadman_buttons: [4, 8] # LB + XBox
+    axis_mappings: []
+  recordstart:
+    type: topic
+    message_type: "std_msgs/Empty"
+    topic_name: record/joy/start
+    deadman_buttons: [4, 7] # LB + start
+    axis_mappings: []
+  recordstop:
+    type: topic
+    message_type: "std_msgs/Empty"
+    topic_name: record/joy/stop
+    deadman_buttons: [4, 6] # LB + back
     axis_mappings: []

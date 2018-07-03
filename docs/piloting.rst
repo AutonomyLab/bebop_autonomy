@@ -6,6 +6,9 @@ Sending Commands to Bebop
 
 .. note:: ``bebop_tools`` package comes with a launch file for tele-operating Bebop with a joystick using ROS `joy_teleop <http://wiki.ros.org/joy_teleop>`_ package. The configuration file (key-action map) is written for `Logitech F710 controller <http://gaming.logitech.com/en-ca/product/f710-wireless-gamepad>`_ and is located in ``bebop_tools/config`` folder. Adapting the file to your own controller is straightforward. To teleop Bebop while the driver is running execute ``roslaunch bebop_tools joy_teleop.launch``.
 
+.. note:: To control the autoflight functions using the joystick while the driver is running execute ``roslaunch bebop_tools joy_teleop_autoflight.launch``. The autoflight configuration is written for the XBox 360 controller. Adapting the file to your own controller is straightforward.
+
+
 Takeoff
 =======
 
