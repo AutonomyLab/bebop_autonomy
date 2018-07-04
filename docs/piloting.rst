@@ -119,7 +119,9 @@ Requirements that must be met before an autonomous flight can start:
 
 To start an autonomous flight plan, publish a message of type `std_msgs/String <http://docs.ros.org/api/std_msgs/html/msg/String.html>`_ to `autoflight/start` topic. The ``data`` field should contain the name of the flight plan to execute, which is already stored on-board the vehicle.
 
-.. note:: If an empty string is published, then the default 'flightplan.mavlink' is used.
+.. note:: If an empty string is published, then the default 'flightPlan.mavlink' is used.
+
+.. note:: If using the autoflight functions while using the joystick (see above), the default string sent to start the flight plan is 'flightPlan.mavlink.' This string can be changed while the node is running through updating the [namespace]/autoflight/start/fname parameter.
 
 .. warning:: If not already flying, Bebop will attempt to take off upon starting a flight plan.
 
