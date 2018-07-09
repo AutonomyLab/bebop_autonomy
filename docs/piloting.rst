@@ -71,10 +71,10 @@ To move Bebop's virtual camera, publish a message of type `geometry_msgs/Twist <
 
 .. code-block:: text
 
-  angular.y (+)      tilt down
-            (-)      tilt up
-  angular.z (+)      pan left
-            (-)      pan right
+  angular.y (+)      tilt up
+            (-)      tilt down
+  angular.z (+)      pan right
+            (-)      pan left
 
 GPS Navigation
 ==============
