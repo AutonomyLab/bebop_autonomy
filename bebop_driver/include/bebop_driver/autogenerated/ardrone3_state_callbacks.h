@@ -23,7 +23,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCL
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  * ardrone3_state_callbacks.h
- * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/arsdk-xml/ab28dab91845cd36c4d7002b55f70805deaff3c8/xml/ardrone3.xml
+ * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/arsdk-xml/6faa46898d94fa207fd1b039643d356d14b7db42/xml/ardrone3.xml
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
@@ -57,6 +57,9 @@ extern "C"
 #include "bebop_msgs/Ardrone3PilotingStateLandingStateChanged.h"
 #include "bebop_msgs/Ardrone3PilotingStateAirSpeedChanged.h"
 #include "bebop_msgs/Ardrone3PilotingStatemoveToChanged.h"
+#include "bebop_msgs/Ardrone3PilotingStateMotionState.h"
+#include "bebop_msgs/Ardrone3PilotingStatePilotedPOI.h"
+#include "bebop_msgs/Ardrone3PilotingStateReturnHomeBatteryCapacity.h"
 #include "bebop_msgs/Ardrone3NetworkStateWifiScanListChanged.h"
 #include "bebop_msgs/Ardrone3NetworkStateAllWifiScanChanged.h"
 #include "bebop_msgs/Ardrone3NetworkStateWifiAuthChannelListChanged.h"
@@ -75,6 +78,8 @@ extern "C"
 #include "bebop_msgs/Ardrone3GPSStateHomeTypeChosenChanged.h"
 #include "bebop_msgs/Ardrone3PROStateFeatures.h"
 #include "bebop_msgs/Ardrone3AccessoryStateConnectedAccessories.h"
+#include "bebop_msgs/Ardrone3AccessoryStateBattery.h"
+#include "bebop_msgs/Ardrone3SoundStateAlertSound.h"
 
 namespace bebop_driver
 {
@@ -1147,6 +1152,180 @@ public:
 };  // Ardrone3PilotingStatemoveToChanged
 
 
+// Motion state.\n If [MotionDetection](#1-6-16) is disabled, motion is steady.\n This information is only valid when the drone is not flying.
+class Ardrone3PilotingStateMotionState : public AbstractState
+{
+private:
+  ::bebop_msgs::Ardrone3PilotingStateMotionState::Ptr msg_ptr;
+
+public:
+
+  Ardrone3PilotingStateMotionState(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
+    : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_MOTIONSTATE)
+  {
+    if (priv_nh.getParam("states/enable_pilotingstate_motionstate", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_msgs::Ardrone3PilotingStateMotionState>(topic, 10, true);
+    } // pub_enabled_ is false
+  }
+
+  ::bebop_msgs::Ardrone3PilotingStateMotionState::ConstPtr GetDataCstPtr() const
+  {
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    return msg_ptr;
+  }
+
+  void Update(const ARCONTROLLER_DICTIONARY_ARG_t *arguments, const ::ros::Time& t)
+  {
+    if (arguments == NULL)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3PilotingStateMotionState::Update() arguments is NULL");
+      return;
+    }
+
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    msg_ptr.reset(new ::bebop_msgs::Ardrone3PilotingStateMotionState());
+    msg_ptr->header.stamp = t;
+    msg_ptr->header.frame_id = "base_link";
+
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_MOTIONSTATE_STATE, arg);
+    if (arg)
+    {
+      msg_ptr->state = arg->value.I32;
+    }
+
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+  }
+
+};  // Ardrone3PilotingStateMotionState
+
+
+// Piloted POI state.
+class Ardrone3PilotingStatePilotedPOI : public AbstractState
+{
+private:
+  ::bebop_msgs::Ardrone3PilotingStatePilotedPOI::Ptr msg_ptr;
+
+public:
+
+  Ardrone3PilotingStatePilotedPOI(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
+    : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_PILOTEDPOI)
+  {
+    if (priv_nh.getParam("states/enable_pilotingstate_pilotedpoi", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_msgs::Ardrone3PilotingStatePilotedPOI>(topic, 10, true);
+    } // pub_enabled_ is false
+  }
+
+  ::bebop_msgs::Ardrone3PilotingStatePilotedPOI::ConstPtr GetDataCstPtr() const
+  {
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    return msg_ptr;
+  }
+
+  void Update(const ARCONTROLLER_DICTIONARY_ARG_t *arguments, const ::ros::Time& t)
+  {
+    if (arguments == NULL)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3PilotingStatePilotedPOI::Update() arguments is NULL");
+      return;
+    }
+
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    msg_ptr.reset(new ::bebop_msgs::Ardrone3PilotingStatePilotedPOI());
+    msg_ptr->header.stamp = t;
+    msg_ptr->header.frame_id = "base_link";
+
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_PILOTEDPOI_LATITUDE, arg);
+    if (arg)
+    {
+      msg_ptr->latitude = arg->value.Double;
+    }
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_PILOTEDPOI_LONGITUDE, arg);
+    if (arg)
+    {
+      msg_ptr->longitude = arg->value.Double;
+    }
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_PILOTEDPOI_ALTITUDE, arg);
+    if (arg)
+    {
+      msg_ptr->altitude = arg->value.Double;
+    }
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_PILOTEDPOI_STATUS, arg);
+    if (arg)
+    {
+      msg_ptr->status = arg->value.I32;
+    }
+
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+  }
+
+};  // Ardrone3PilotingStatePilotedPOI
+
+
+// Battery capacity status to return home.
+class Ardrone3PilotingStateReturnHomeBatteryCapacity : public AbstractState
+{
+private:
+  ::bebop_msgs::Ardrone3PilotingStateReturnHomeBatteryCapacity::Ptr msg_ptr;
+
+public:
+
+  Ardrone3PilotingStateReturnHomeBatteryCapacity(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
+    : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_RETURNHOMEBATTERYCAPACITY)
+  {
+    if (priv_nh.getParam("states/enable_pilotingstate_returnhomebatterycapacity", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_msgs::Ardrone3PilotingStateReturnHomeBatteryCapacity>(topic, 10, true);
+    } // pub_enabled_ is false
+  }
+
+  ::bebop_msgs::Ardrone3PilotingStateReturnHomeBatteryCapacity::ConstPtr GetDataCstPtr() const
+  {
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    return msg_ptr;
+  }
+
+  void Update(const ARCONTROLLER_DICTIONARY_ARG_t *arguments, const ::ros::Time& t)
+  {
+    if (arguments == NULL)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3PilotingStateReturnHomeBatteryCapacity::Update() arguments is NULL");
+      return;
+    }
+
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    msg_ptr.reset(new ::bebop_msgs::Ardrone3PilotingStateReturnHomeBatteryCapacity());
+    msg_ptr->header.stamp = t;
+    msg_ptr->header.frame_id = "base_link";
+
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PILOTINGSTATE_RETURNHOMEBATTERYCAPACITY_STATUS, arg);
+    if (arg)
+    {
+      msg_ptr->status = arg->value.I32;
+    }
+
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+  }
+
+};  // Ardrone3PilotingStateReturnHomeBatteryCapacity
+
+
 // Wifi scan results.\n Please note that the list is not complete until you receive the event [WifiScanEnded](#1-14-1).
 class Ardrone3NetworkStateWifiScanListChanged : public AbstractState
 {
@@ -2143,10 +2322,133 @@ public:
       msg_ptr->swVersion = arg->value.String;
     }
 
+/**    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_ACCESSORYSTATE_CONNECTEDACCESSORIES_LIST_FLAGS, arg);
+    if (arg)
+    {
+      msg_ptr->list_flags = arg->value.U8;
+    }
+**/
     if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // Ardrone3AccessoryStateConnectedAccessories
+
+
+// Connected accessories battery.
+class Ardrone3AccessoryStateBattery : public AbstractState
+{
+private:
+  ::bebop_msgs::Ardrone3AccessoryStateBattery::Ptr msg_ptr;
+
+public:
+
+  Ardrone3AccessoryStateBattery(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
+    : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_ACCESSORYSTATE_BATTERY)
+  {
+    if (priv_nh.getParam("states/enable_accessorystate_battery", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_msgs::Ardrone3AccessoryStateBattery>(topic, 10, true);
+    } // pub_enabled_ is false
+  }
+
+  ::bebop_msgs::Ardrone3AccessoryStateBattery::ConstPtr GetDataCstPtr() const
+  {
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    return msg_ptr;
+  }
+
+  void Update(const ARCONTROLLER_DICTIONARY_ARG_t *arguments, const ::ros::Time& t)
+  {
+    if (arguments == NULL)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3AccessoryStateBattery::Update() arguments is NULL");
+      return;
+    }
+
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    msg_ptr.reset(new ::bebop_msgs::Ardrone3AccessoryStateBattery());
+    msg_ptr->header.stamp = t;
+    msg_ptr->header.frame_id = "base_link";
+
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_ACCESSORYSTATE_BATTERY_ID, arg);
+    if (arg)
+    {
+      msg_ptr->id = arg->value.U8;
+    }
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_ACCESSORYSTATE_BATTERY_BATTERYLEVEL, arg);
+    if (arg)
+    {
+      msg_ptr->batteryLevel = arg->value.U8;
+    }
+/**
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_ACCESSORYSTATE_BATTERY_LIST_FLAGS, arg);
+    if (arg)
+    {
+      msg_ptr->list_flags = arg->value.U8;
+    }
+**/
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+  }
+
+};  // Ardrone3AccessoryStateBattery
+
+
+// Alert sound state.
+class Ardrone3SoundStateAlertSound : public AbstractState
+{
+private:
+  ::bebop_msgs::Ardrone3SoundStateAlertSound::Ptr msg_ptr;
+
+public:
+
+  Ardrone3SoundStateAlertSound(::ros::NodeHandle& nh, ::ros::NodeHandle& priv_nh, const ::std::string& topic)
+    : AbstractState(ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SOUNDSTATE_ALERTSOUND)
+  {
+    if (priv_nh.getParam("states/enable_soundstate_alertsound", pub_enabled_) && pub_enabled_)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
+      ros_pub_ = nh.advertise<bebop_msgs::Ardrone3SoundStateAlertSound>(topic, 10, true);
+    } // pub_enabled_ is false
+  }
+
+  ::bebop_msgs::Ardrone3SoundStateAlertSound::ConstPtr GetDataCstPtr() const
+  {
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    return msg_ptr;
+  }
+
+  void Update(const ARCONTROLLER_DICTIONARY_ARG_t *arguments, const ::ros::Time& t)
+  {
+    if (arguments == NULL)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, "CB", "Ardrone3SoundStateAlertSound::Update() arguments is NULL");
+      return;
+    }
+
+    ::boost::lock_guard<boost::mutex> lock(mutex_);
+    msg_ptr.reset(new ::bebop_msgs::Ardrone3SoundStateAlertSound());
+    msg_ptr->header.stamp = t;
+    msg_ptr->header.frame_id = "base_link";
+
+
+    arg = NULL;
+    HASH_FIND_STR (arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_SOUNDSTATE_ALERTSOUND_STATE, arg);
+    if (arg)
+    {
+      msg_ptr->state = arg->value.I32;
+    }
+
+    if (pub_enabled_) ros_pub_.publish(msg_ptr);
+  }
+
+};  // Ardrone3SoundStateAlertSound
 
 
 }  // namespace cb

@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<!-- based on example launch files from joy_teleop and teleop_twist_joy packages -->
+<launch>
+  <arg name="joy_dev" default="/dev/input/js0" />
+  <arg name="joy_config" default="xbox360" />
+  <arg name="teleop_config" default="$(find bebop_tools)/config/$(arg joy_config).yaml" />
+  <arg name="namespace" default="bebop" />
+
+  <group ns="$(arg namespace)">
+    <rosparam file="$(arg teleop_config)" command="load" />
+
+    <node pkg="joy" type="joy_node" name="joy_node">
+      <param name="dev" value="$(arg joy_dev)" />
+      <param name="deadzone" value="0.2" />
+      <param name="autorepeat_rate" value="20" />
+    </node>
+
+    <node pkg="joy_teleop" type="joy_teleop.py" name="joy_teleop">
+    </node>
+
+    <node name="autoflight_joy" pkg="bebop_tools" type="autoflight_joy.py" output="screen">
+    </node>
+  </group>
+
+</launch>

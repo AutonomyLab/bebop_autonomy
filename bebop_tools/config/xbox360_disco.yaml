@@ -8,22 +8,22 @@ teleop:
     deadman_buttons: [5]
     axis_mappings:
       -
-        axis: 4  # Right thumb stick (up/down)
+        axis: 4  # Right thumb stick (pitch down/up)
         target: linear.x
         scale: 1.0
         offset: 0.0
       -
-        axis: 3  # Right thumb stick (left/right)
+        axis: 3  # Right thumb stick (roll left/right)
         target: linear.y
         scale: 1.0
         offset: 0.0
       -
-        axis: 1  # Left thumb stick (up/down)
+        axis: 1  # Left thumb stick (faster/slower)
         target: linear.z
         scale: 1.0
         offset: 0.0
       -
-        axis: 0  # Left thumb stick (left/right)
+        axis: 0  # Left thumb stick (circle left/right)
         target: angular.z
         scale: 1.0
         offset: 0.0
@@ -61,10 +61,10 @@ teleop:
     topic_name: reset
     deadman_buttons: [5, 1] # RB + B
     axis_mappings: []
-  flattrim:
+  usertakeoff:
     type: topic
     message_type: "std_msgs/Empty"
-    topic_name: flattrim
+    topic_name: usertakeoff/joy
     deadman_buttons: [5, 2] # RB + X
     axis_mappings: []
   flip:

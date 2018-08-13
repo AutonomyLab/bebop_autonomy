@@ -25,6 +25,6 @@ float32 heading
 # Status of the move to
 uint8 status_RUNNING=0  # The drone is actually flying to the given position
 uint8 status_DONE=1  # The drone has reached the target
-uint8 status_CANCELED=2  # The move to has been canceled, either by a new moveTo command or by a CancelMoveTo command.
+uint8 status_CANCELED=2  # The move to has been canceled, either by a CancelMoveTo command or when a disconnection appears.
 uint8 status_ERROR=3  # The move to has not been finished or started because of an error.
 uint8 status

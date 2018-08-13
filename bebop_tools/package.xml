@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>bebop_tools</name>
-  <version>0.7.0</version>
+  <version>0.8.0</version>
   <description>Miscellaneous tools for bebop_autonomy metapackage</description>
 
   <maintainer email="mmonajje@sfu.ca">Mani Monajjemi</maintainer>
@@ -17,11 +17,13 @@
 
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>bebop_msgs</build_depend>
+  <build_depend>rospy</build_depend>
   <run_depend>bebop_driver</run_depend>
   <run_depend>bebop_msgs</run_depend>
   <run_depend>joy</run_depend>
   <run_depend>joy_teleop</run_depend>
   <run_depend>image_view</run_depend>
+  <run_depend>rospy</run_depend>
 
   <export>
     <!-- Other tools can request additional information be placed here -->
