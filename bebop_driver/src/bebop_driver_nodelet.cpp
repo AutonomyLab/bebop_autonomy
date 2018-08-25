@@ -561,7 +561,8 @@ void BebopDriverNodelet::AuxThread()
       if (bebop_ptr_->ardrone3_pilotingstate_positionchanged_ptr)
       {
         gps_state_ptr = bebop_ptr_->ardrone3_pilotingstate_positionchanged_ptr->GetDataCstPtr();
-        if ((gps_state_ptr->header.stamp - last_gps_time).toSec() > util::eps)
+        //if ((gps_state_ptr->header.stamp - last_gps_time).toSec() > util::eps)
+        if (gps_state_ptr && ((gps_state_ptr->header.stamp - last_gps_time).toSec() > util::eps))
         {
           last_gps_time = gps_state_ptr->header.stamp;
           new_gps_state = true;
@@ -584,7 +585,7 @@ void BebopDriverNodelet::AuxThread()
         speed_esd_ptr = bebop_ptr_->ardrone3_pilotingstate_speedchanged_ptr->GetDataCstPtr();
 
         // conside new data only
-        if ((speed_esd_ptr->header.stamp - last_speed_time).toSec() > util::eps)
+        if (speed_esd_ptr && ((speed_esd_ptr->header.stamp - last_speed_time).toSec() > util::eps))
         {
           last_speed_time = speed_esd_ptr->header.stamp;
           new_speed_data = true;
