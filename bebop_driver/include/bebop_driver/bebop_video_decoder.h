@@ -57,6 +57,37 @@ extern "C"
 namespace bebop_driver
 {
 
+struct MetadataV2Base_t
+{
+	uint16_t id;                /**< Identifier = 0x5032 */
+	uint16_t length;            /**< Structure size in 32 bits words excluding the id and length
+																	 fields and including extensions */
+	int32_t groundDistance;     /**< Best ground distance estimation (m), Q16.16 */
+	int32_t latitude;           /**< Absolute latitude (deg), Q10.22 */
+	int32_t longitude;          /**< Absolute longitude (deg), Q10.22 */
+	int32_t altitudeAndSv;      /**< Absolute longitude (deg), Q10.22 */
+	int16_t northSpeed;         /**< North speed (m/s), Q8.8 */
+	int16_t eastSpeed;          /**< East speed (m/s), Q8.8 */
+	int16_t downSpeed;          /**< Down speed (m/s), Q8.8 */
+	int16_t airSpeed;           /**< Speed relative to air (m/s), negative means no data, Q8.8 */
+	int16_t droneW;             /**< Drone quaternion W, Q2.14 */
+	int16_t droneX;             /**< Drone quaternion X, Q2.14 */
+	int16_t droneY;             /**< Drone quaternion Y, Q2.14 */
+	int16_t droneZ;             /**< Drone quaternion Z, Q2.14 */
+	int16_t frameW;             /**< Frame view quaternion W, Q2.14 */
+	int16_t frameX;             /**< Frame view quaternion X, Q2.14 */
+	int16_t frameY;             /**< Frame view quaternion Y, Q2.14 */
+	int16_t frameZ;             /**< Frame view quaternion Z, Q2.14 */
+	int16_t cameraPan;          /**< Camera pan (rad), Q4.12 */
+	int16_t cameraTilt;         /**< Camera tilt (rad), Q4.12 */
+	uint16_t exposureTime;      /**< Frame exposure time (ms), Q8.8 */
+	uint16_t gain;              /**< Frame ISO gain */
+	uint8_t state;              /**< Bit 7 = binning, bits 6..0 = flyingState */
+	uint8_t mode;               /**< Bit 7 = animation, bits 6..0 = pilotingMode */
+	int8_t wifiRssi;            /**< Wifi RSSI (dBm) */
+	uint8_t batteryPercentage;  /**< Battery charge percentage */
+};
+
 class VideoDecoder
 {
 private:
@@ -70,6 +101,7 @@ private:
   AVFrame* frame_ptr_;
   AVFrame* frame_rgb_ptr_;
   AVPacket packet_;
+  MetadataV2Base_t meta_data_;
   SwsContext* img_convert_ctx_ptr_;
   AVInputFormat* input_format_ptr_;
   uint8_t *frame_rgb_raw_ptr_;
@@ -96,6 +128,7 @@ public:
   inline uint32_t GetFrameHeight() const {return codec_initialized_ ? codec_ctx_ptr_->height : 0;}
 
   inline const uint8_t* GetFrameRGBRawCstPtr() const {return frame_rgb_raw_ptr_;}
+  inline MetadataV2Base_t GetMetaData() const {return meta_data_;}
 };
 
 }  // namespace bebop_driver

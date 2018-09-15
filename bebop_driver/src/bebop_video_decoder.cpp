@@ -30,6 +30,8 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 
 #include <boost/lexical_cast.hpp>
 
+#include <nodelet/nodelet.h>
+
 extern "C"
 {
   #include "libARSAL/ARSAL_Print.h"
@@ -285,6 +287,11 @@ bool VideoDecoder::Decode(const ARCONTROLLER_Frame_t *bebop_frame_ptr_)
 
   packet_.data = bebop_frame_ptr_->data;
   packet_.size = bebop_frame_ptr_->used;
+  MetadataV2Base_t* meta_data_ptr_ = reinterpret_cast<MetadataV2Base_t*>(bebop_frame_ptr_->metadata);
+  if(NULL != meta_data_ptr_)
+  {
+    meta_data_ = *meta_data_ptr_;
+  }
 
   const uint32_t width_prev = GetFrameWidth();
   const uint32_t height_prev = GetFrameHeight();
