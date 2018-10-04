@@ -257,10 +257,19 @@ void Bebop::Connect(ros::NodeHandle& nh, ros::NodeHandle& priv_nh, const std::st
     error_discovery = ARDISCOVERY_Device_InitWifi(device_ptr_,
                                                   ARDISCOVERY_PRODUCT_ARDRONE, "Bebop",
                                                   bebop_ip_.c_str(), 44444);
-
     if (error_discovery != ARDISCOVERY_OK)
     {
       throw std::runtime_error("Discovery failed: " + std::string(ARDISCOVERY_Error_ToString(error_discovery)));
+    }
+
+    error_discovery = ARDISCOVERY_Device_WifiSetDeviceToControllerPort(device_ptr_, 43210);
+    if (error_discovery == ARDISCOVERY_OK)
+    {
+      ARSAL_PRINT(ARSAL_PRINT_WARNING, LOG_TAG, "Set receiving port on host machine to 43210");
+    }
+    else
+    {
+      throw std::runtime_error("ARDISCOVERY_Device_WifiSetDeviceToControllerPort failed: " + std::string(ARDISCOVERY_Error_ToString(error_discovery)));
     }
 
     device_controller_ptr_ = ARCONTROLLER_Device_New(device_ptr_, &error_);
