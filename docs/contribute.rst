@@ -45,6 +45,10 @@ List of Contributers
 
 - `Sepehr Mohaimenianpour <http://sepehr.im/>`_
 
+- `Giuseppe Silano <https://github.com/gsilano>`_
+
+  - `Bug fixing <https://github.com/AutonomyLab/bebop_autonomy/pull/164>`_
+
 Acknowledgments
 ================
 
