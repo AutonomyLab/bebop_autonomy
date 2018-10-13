@@ -111,6 +111,7 @@ private:
   geometry_msgs::Twist prev_camera_twist_;
 
   ros::Subscriber cmd_vel_sub_;
+  ros::Subscriber cmd_move_by;
   ros::Subscriber camera_move_sub_;
   ros::Subscriber takeoff_sub_;
   ros::Subscriber land_sub_;
@@ -122,6 +123,7 @@ private:
   ros::Subscriber stop_autoflight_sub_;
   ros::Subscriber animation_sub_;
   ros::Subscriber snapshot_sub_;
+  ros::Subscriber setpictureformat_sub;
   ros::Subscriber exposure_sub_;
   ros::Subscriber toggle_recording_sub_;
 
@@ -151,6 +153,7 @@ private:
   void AuxThread();
 
   void CmdVelCallback(const geometry_msgs::TwistConstPtr& twist_ptr);
+  void CmdMoveByCallback(const geometry_msgs::TwistConstPtr& twist_ptr);
   void CameraMoveCallback(const geometry_msgs::TwistConstPtr& twist_ptr);
   void TakeoffCallback(const std_msgs::EmptyConstPtr& empty_ptr);
   void LandCallback(const std_msgs::EmptyConstPtr& empty_ptr);
@@ -162,6 +165,7 @@ private:
   void StopAutonomousFlightCallback(const std_msgs::EmptyConstPtr& empty_ptr);
   void FlipAnimationCallback(const std_msgs::UInt8ConstPtr& animid_ptr);
   void TakeSnapshotCallback(const std_msgs::EmptyConstPtr& empty_ptr);
+  void SetPictureFormatCallback(const std_msgs::UInt8ConstPtr &format_ptr);
   void SetExposureCallback(const std_msgs::Float32ConstPtr& exposure_ptr);
   void ToggleRecordingCallback(const std_msgs::BoolConstPtr& toggle_ptr);
 

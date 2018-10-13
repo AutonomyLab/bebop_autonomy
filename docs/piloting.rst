@@ -62,6 +62,19 @@ The ``linear.z`` part of this message controls the **vertical velocity** of the 
   ver_vel_m_per_s   = linear.z  * max_vert_speed
   rot_vel_deg_per_s = angular.z * max_rot_speed
 
+A second possibility to pilot the Bebop is by publishing messages of type to `geometry_msgs/Twist <http://docs.ros.org/api/geometry_msgs/html/msg/Twist.html>`_ to `cmd_move_by` topic while Bebop is flying.  The effect of each field of the message on Bebop's movement is listed below:
+
+.. code-block:: text
+
+  linear.x  (+)      Distance (in meters) to translate forward 
+            (-)      Distance (in meters) to translate backward
+  linear.y  (+)      Distance (in meters) to translate to left
+            (-)      Distance (in meters) to translate to right
+  linear.z  (+)      Distance (in meters) to ascend
+            (-)      Distance (in meters) to descend
+  angular.z (+)      Angle (in rad) to rotate counter clockwise
+            (-)      Angle (in rad) to rotate clockwise
+
 Moving the Virtual Camera
 =========================
 
@@ -173,6 +186,18 @@ To take a high resolution on-board snapshot, publish a ``std_msgs/Empty`` messag
 * Path: ``internal_000/Bebop_Drone/media``
 * Username: ``anonymous``
 * Password: *<no password>*
+
+Set picture format
+==================
+
+To change the format of the snapshots, publish a ``std_msgs/UInt8`` message on ``set_picture_format`` topic. The format will then be changed according to the following settings:
+
+.. code-block:: text
+
+  0       Raw image
+  1       4:3 jpeg image
+  2       16:9 Snapshot from camera
+  3       jpeg fisheye image only
 
 Set camera exposure
 ===================

@@ -549,6 +549,20 @@ void Bebop::Move(const double &roll, const double &pitch, const double &gaz_spee
   }
 }
 
+
+void Bebop::MoveBy(const double& dX, const double& dY, const double& dZ, const double& dPsi)
+{
+  ThrowOnInternalError("MoveBy failure");
+
+  ThrowOnCtrlError(
+        device_controller_ptr_->aRDrone3->sendPilotingMoveBy(
+          device_controller_ptr_->aRDrone3,
+          static_cast<float>(dX),
+          static_cast<float>(dY),
+          static_cast<float>(dZ),
+          static_cast<float>(dPsi)));
+}
+
 // in degrees
 void Bebop::MoveCamera(const double &tilt, const double &pan)
 {
@@ -605,6 +619,18 @@ void Bebop::TakeSnapshot()
   ThrowOnCtrlError(
     device_controller_ptr_->aRDrone3->sendMediaRecordPictureV2(
           device_controller_ptr_->aRDrone3));
+}
+
+/**
+ * @brief Set the format of the taken pictures
+ * @param format 0: Raw image, 1: 4:3 jpeg photo, 2: 16:9 snapshot from camera, 3: jpeg fisheye image only
+ */
+void Bebop::SetPictureFormat(const int& format)
+{
+  ThrowOnInternalError("Failed to set picture format");
+  ThrowOnCtrlError(
+    device_controller_ptr_->aRDrone3->sendPictureSettingsPictureFormatSelection(
+          device_controller_ptr_->aRDrone3, (eARCOMMANDS_ARDRONE3_PICTURESETTINGS_PICTUREFORMATSELECTION_TYPE)format));
 }
 
 void Bebop::SetExposure(const float& exposure)

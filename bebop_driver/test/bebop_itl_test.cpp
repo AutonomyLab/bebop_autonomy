@@ -178,11 +178,35 @@ protected:
 
   ros::Publisher land_pub_;
   ros::Publisher cmdvel_pub_;
+  ros::Publisher cmdmoveby_pub_;
 
   std_msgs::Empty em;
   geometry_msgs::Twist tw;
 
   boost::shared_ptr<util::ASyncSub<sensor_msgs::Image> > image_;
+
+  boost::shared_ptr<util::ASyncSub<bebop_msgs::Ardrone3PilotingStateFlyingStateChanged> >
+      flying_state_;
+
+  boost::shared_ptr<util::ASyncSub<bebop_msgs::Ardrone3PilotingStateSpeedChanged> >
+      speed_state_;
+
+  boost::shared_ptr<util::ASyncSub<bebop_msgs::Ardrone3PilotingStateAltitudeChanged> >
+      alt_state_;
+
+  boost::shared_ptr<util::ASyncSub<bebop_msgs::Ardrone3PilotingStateAttitudeChanged> >
+      att_state_;
+
+  // The problem with the battery state is that it is only updated when its values changes,
+  // this is more likely to happen when flying than sitting on the ground
+  boost::shared_ptr<util::ASyncSub<bebop_msgs::CommonCommonStateBatteryStateChanged> >
+      bat_state_;
+
+  boost::shared_ptr<util::ASyncSub<nav_msgs::Odometry> >
+      odom_;
+
+  boost::shared_ptr<util::ASyncSub<sensor_msgs::NavSatFix> >
+      gps_;
 
 //  boost::shared_ptr<util::ASyncSub<bebop_msgs::Ardrone3PilotingStateAttitudeChanged> > attitude_state_;
 
@@ -195,10 +219,33 @@ protected:
     // Common Publishers
     land_pub_= nh_.advertise<std_msgs::Empty>("land", 1);
     cmdvel_pub_ = nh_.advertise<geometry_msgs::Twist>("cmd_vel", 1);
+    cmdmoveby_pub_ = nh_.advertise<geometry_msgs::Twist>("cmd_move_by", 1);
 
     // Common Subs
     image_.reset(new util::ASyncSub<sensor_msgs::Image>(
                    nh_, "image_raw", 10));
+
+		flying_state_.reset(new util::ASyncSub<bebop_msgs::Ardrone3PilotingStateFlyingStateChanged>(
+										nh_, "states/ardrone3/PilotingState/FlyingStateChanged", 10));
+
+		speed_state_.reset(new util::ASyncSub<bebop_msgs::Ardrone3PilotingStateSpeedChanged>(
+										nh_, "states/ardrone3/PilotingState/SpeedChanged", 10));
+
+		alt_state_.reset(new util::ASyncSub<bebop_msgs::Ardrone3PilotingStateAltitudeChanged>(
+										nh_, "states/ardrone3/PilotingState/AltitudeChanged", 10));
+
+		att_state_.reset(new util::ASyncSub<bebop_msgs::Ardrone3PilotingStateAttitudeChanged>(
+										nh_, "states/ardrone3/PilotingState/AttitudeChanged", 10));
+
+		bat_state_.reset(new util::ASyncSub<bebop_msgs::CommonCommonStateBatteryStateChanged>(
+										nh_, "states/common/CommonState/BatteryStateChanged", 10));
+
+		odom_.reset(new util::ASyncSub<nav_msgs::Odometry>(
+					 nh_, "odom", 10));
+
+		gps_.reset(new util::ASyncSub<sensor_msgs::NavSatFix>(
+					nh_, "fix", 10));
+
 
     spinner_ptr_.reset(new ros::AsyncSpinner(4));
     spinner_ptr_->start();
@@ -248,36 +295,6 @@ protected:
  */
 TEST_F(BebopInTheLoopTest, Piloting)
 {
-  boost::shared_ptr<util::ASyncSub<bebop_msgs::Ardrone3PilotingStateFlyingStateChanged> >
-      flying_state(new util::ASyncSub<bebop_msgs::Ardrone3PilotingStateFlyingStateChanged>(
-                      nh_, "states/ardrone3/PilotingState/FlyingStateChanged", 10));
-
-  boost::shared_ptr<util::ASyncSub<bebop_msgs::Ardrone3PilotingStateSpeedChanged> >
-      speed_state(new util::ASyncSub<bebop_msgs::Ardrone3PilotingStateSpeedChanged>(
-                      nh_, "states/ardrone3/PilotingState/SpeedChanged", 10));
-
-  boost::shared_ptr<util::ASyncSub<bebop_msgs::Ardrone3PilotingStateAltitudeChanged> >
-      alt_state(new util::ASyncSub<bebop_msgs::Ardrone3PilotingStateAltitudeChanged>(
-                      nh_, "states/ardrone3/PilotingState/AltitudeChanged", 10));
-
-  boost::shared_ptr<util::ASyncSub<bebop_msgs::Ardrone3PilotingStateAttitudeChanged> >
-      att_state(new util::ASyncSub<bebop_msgs::Ardrone3PilotingStateAttitudeChanged>(
-                      nh_, "states/ardrone3/PilotingState/AttitudeChanged", 10));
-
-  // The problem with the battery state is that it is only updated when its values changes,
-  // this is more likely to happen when flying than sitting on the ground
-  boost::shared_ptr<util::ASyncSub<bebop_msgs::CommonCommonStateBatteryStateChanged> >
-      bat_state(new util::ASyncSub<bebop_msgs::CommonCommonStateBatteryStateChanged>(
-                      nh_, "states/common/CommonState/BatteryStateChanged", 10));
-
-  boost::shared_ptr<util::ASyncSub<nav_msgs::Odometry> >
-      odom(new util::ASyncSub<nav_msgs::Odometry>(
-             nh_, "odom", 10));
-
-  boost::shared_ptr<util::ASyncSub<sensor_msgs::NavSatFix> >
-      gps(new util::ASyncSub<sensor_msgs::NavSatFix>(
-            nh_, "fix", 10));
-
   ros::Publisher takeoff_pub =  nh_.advertise<std_msgs::Empty>("takeoff", 1);
   ros::Publisher reset_pub = nh_.advertise<std_msgs::Empty>("reset", 1);
 
@@ -289,16 +306,16 @@ TEST_F(BebopInTheLoopTest, Piloting)
   ROS_WARN("Taking off ...");
   takeoff_pub.publish(em);
   TIMED_ASSERT(10.0,
-               flying_state->IsActive() && flying_state->GetMsgCopy().state ==
+               flying_state_->IsActive() && flying_state_->GetMsgCopy().state ==
                  bebop_msgs::Ardrone3PilotingStateFlyingStateChanged::state_hovering,
                "Waiting for takeoff to finish ..."
                );
 
-  TIMED_ASSERT(5.0, speed_state->IsActive(), "Waiting for Speed measurements ...");
-  TIMED_ASSERT(5.0, alt_state->IsActive(), "Waiting for alt measurements ...");
-  TIMED_ASSERT(5.0, att_state->IsActive(), "Waiting for attitude measurements ...");
-  TIMED_ASSERT(5.0, odom->IsActive(), "Waiting for odom ...");
-  TIMED_ASSERT(5.0, gps->IsActive(), "Waiting for GPS ...");
+  TIMED_ASSERT(5.0, speed_state_->IsActive(), "Waiting for Speed measurements ...");
+  TIMED_ASSERT(5.0, alt_state_->IsActive(), "Waiting for alt measurements ...");
+  TIMED_ASSERT(5.0, att_state_->IsActive(), "Waiting for attitude measurements ...");
+  TIMED_ASSERT(5.0, odom_->IsActive(), "Waiting for odom ...");
+  TIMED_ASSERT(5.0, gps_->IsActive(), "Waiting for GPS ...");
 
   // TODO(mani-monaj): Use proper values for pitch/roll test thresholds based on cmd_vel
 
@@ -309,21 +326,21 @@ TEST_F(BebopInTheLoopTest, Piloting)
   ROS_WARN("Moving forwared ...");
   cmdvel_pub_.publish(tw);
 
-  TIMED_ASSERT(3.0, angles::to_degrees(att_state->GetMsgCopy().pitch) < -2.5 , "Measuring pitch ...");
-  TIMED_ASSERT(3.0, (odom->GetMsgCopy().twist.twist.linear.x > 0.2),
+  TIMED_ASSERT(3.0, angles::to_degrees(att_state_->GetMsgCopy().pitch) < -2.5 , "Measuring pitch ...");
+  TIMED_ASSERT(3.0, (odom_->GetMsgCopy().twist.twist.linear.x > 0.2),
                "Measuring the forward and lateral velocities from odom ...");
 
   StopBebop();
   TIMED_ASSERT(5.0,
-               (fabs(speed_state->GetMsgCopy().speedX) < 0.05) &&
-               (fabs(speed_state->GetMsgCopy().speedY) < 0.05) &&
-               (fabs(speed_state->GetMsgCopy().speedZ) < 0.05)
+               (fabs(speed_state_->GetMsgCopy().speedX) < 0.05) &&
+               (fabs(speed_state_->GetMsgCopy().speedY) < 0.05) &&
+               (fabs(speed_state_->GetMsgCopy().speedZ) < 0.05)
                , "Measuring the speed vector ...");
 
   TIMED_ASSERT(5.0,
-               (fabs(odom->GetMsgCopy().twist.twist.linear.x) < 0.05) &&
-               (fabs(odom->GetMsgCopy().twist.twist.linear.y) < 0.05) &&
-               (fabs(odom->GetMsgCopy().twist.twist.linear.z) < 0.05)
+               (fabs(odom_->GetMsgCopy().twist.twist.linear.x) < 0.05) &&
+               (fabs(odom_->GetMsgCopy().twist.twist.linear.y) < 0.05) &&
+               (fabs(odom_->GetMsgCopy().twist.twist.linear.z) < 0.05)
                , "Measuring the speed vector from odom...");
 
 
@@ -334,8 +351,8 @@ TEST_F(BebopInTheLoopTest, Piloting)
   ROS_WARN("Moving Backward ...");
   cmdvel_pub_.publish(tw);
 
-  TIMED_ASSERT(3.0, angles::to_degrees(att_state->GetMsgCopy().pitch) > 2.5, "Measuring pitch ...");
-  TIMED_ASSERT(3.0, (odom->GetMsgCopy().twist.twist.linear.x < -0.2),
+  TIMED_ASSERT(3.0, angles::to_degrees(att_state_->GetMsgCopy().pitch) > 2.5, "Measuring pitch ...");
+  TIMED_ASSERT(3.0, (odom_->GetMsgCopy().twist.twist.linear.x < -0.2),
                "Measuring the forward and lateral velocities from odom ...");
   StopBebop();
 
@@ -345,8 +362,8 @@ TEST_F(BebopInTheLoopTest, Piloting)
   tw.angular.z = 0.0;
   ROS_WARN("Moving left ...");
   cmdvel_pub_.publish(tw);
-  TIMED_ASSERT(3.0, angles::to_degrees(att_state->GetMsgCopy().roll) < -2.5, "Measuring roll ...");
-  TIMED_ASSERT(3.0, (odom->GetMsgCopy().twist.twist.linear.y > 0.1),
+  TIMED_ASSERT(3.0, angles::to_degrees(att_state_->GetMsgCopy().roll) < -2.5, "Measuring roll ...");
+  TIMED_ASSERT(3.0, (odom_->GetMsgCopy().twist.twist.linear.y > 0.1),
                "Measuring the forward and lateral velocities from odom ...");
 
   StopBebop();
@@ -357,18 +374,18 @@ TEST_F(BebopInTheLoopTest, Piloting)
   tw.angular.z = 0.0;
   ROS_WARN("Moving right ...");
   cmdvel_pub_.publish(tw);
-  TIMED_ASSERT(3.0, angles::to_degrees(att_state->GetMsgCopy().roll) > 2.5, "Measuring roll ...");
-  TIMED_ASSERT(3.0, (odom->GetMsgCopy().twist.twist.linear.y < -0.1),
+  TIMED_ASSERT(3.0, angles::to_degrees(att_state_->GetMsgCopy().roll) > 2.5, "Measuring roll ...");
+  TIMED_ASSERT(3.0, (odom_->GetMsgCopy().twist.twist.linear.y < -0.1),
                "Measuring the forward and lateral velocities from odom ...");
   StopBebop();
 
   double alt_start, yaw_start, alt_start_odom, yaw_start_odom;
   // Make sure altitude is fresh
-  ASSERT_LT(alt_state->GetFreshness().toSec(), 0.5);
-  ASSERT_LT(odom->GetFreshness().toSec(), 0.5);
+  ASSERT_LT(alt_state_->GetFreshness().toSec(), 0.5);
+  ASSERT_LT(odom_->GetFreshness().toSec(), 0.5);
 
-  alt_start = alt_state->GetMsgCopy().altitude;
-  alt_start_odom = odom->GetMsgCopy().pose.pose.position.z;
+  alt_start = alt_state_->GetMsgCopy().altitude;
+  alt_start_odom = odom_->GetMsgCopy().pose.pose.position.z;
   tw.linear.x = 0.0;
   tw.linear.y = 0.0;
   tw.linear.z = 0.2;
@@ -376,19 +393,19 @@ TEST_F(BebopInTheLoopTest, Piloting)
   ROS_WARN("Ascending for 0.5m ...");
   cmdvel_pub_.publish(tw);
   TIMED_ASSERT(10.0,
-               ((alt_state->GetMsgCopy().altitude - alt_start) >= 0.5) &&
-               ((odom->GetMsgCopy().pose.pose.position.z - alt_start_odom) >= 0.5) &&
-               (speed_state->GetMsgCopy().speedZ < -0.05) &&
-               (odom->GetMsgCopy().twist.twist.linear.z > 0.05),
+               ((alt_state_->GetMsgCopy().altitude - alt_start) >= 0.5) &&
+               ((odom_->GetMsgCopy().pose.pose.position.z - alt_start_odom) >= 0.5) &&
+               (speed_state_->GetMsgCopy().speedZ < -0.05) &&
+               (odom_->GetMsgCopy().twist.twist.linear.z > 0.05),
                "Measuring altitude, speed.z and vertical velocity from odom ...");
 
   StopBebop();
 
   // Make sure altitude is fresh
-  ASSERT_LT(alt_state->GetFreshness().toSec(), 0.5);
-  ASSERT_LT(odom->GetFreshness().toSec(), 0.5);
-  alt_start = alt_state->GetMsgCopy().altitude;
-  alt_start_odom = odom->GetMsgCopy().pose.pose.position.z;
+  ASSERT_LT(alt_state_->GetFreshness().toSec(), 0.5);
+  ASSERT_LT(odom_->GetFreshness().toSec(), 0.5);
+  alt_start = alt_state_->GetMsgCopy().altitude;
+  alt_start_odom = odom_->GetMsgCopy().pose.pose.position.z;
   tw.linear.x = 0.0;
   tw.linear.y = 0.0;
   tw.linear.z = -0.2;
@@ -396,18 +413,18 @@ TEST_F(BebopInTheLoopTest, Piloting)
   ROS_WARN("Descending for 0.5m ...");
   cmdvel_pub_.publish(tw);
   TIMED_ASSERT(10.0,
-               ((alt_state->GetMsgCopy().altitude - alt_start) <= -0.5) &&
-               ((odom->GetMsgCopy().pose.pose.position.z - alt_start_odom) <= -0.5) &&
-               (speed_state->GetMsgCopy().speedZ > 0.05) &&
-               (odom->GetMsgCopy().twist.twist.linear.z < -0.05),
+               ((alt_state_->GetMsgCopy().altitude - alt_start) <= -0.5) &&
+               ((odom_->GetMsgCopy().pose.pose.position.z - alt_start_odom) <= -0.5) &&
+               (speed_state_->GetMsgCopy().speedZ > 0.05) &&
+               (odom_->GetMsgCopy().twist.twist.linear.z < -0.05),
                "Measuring altitude, speed.z and vertical velocity from odom ...");
 
   StopBebop();
 
   // Make sure the attitude is fresh
-  ASSERT_LT(att_state->GetFreshness().toSec(), 0.5);
-  ASSERT_LT(odom->GetFreshness().toSec(), 0.5);
-  yaw_start = att_state->GetMsgCopy().yaw;
+  ASSERT_LT(att_state_->GetFreshness().toSec(), 0.5);
+  ASSERT_LT(odom_->GetFreshness().toSec(), 0.5);
+  yaw_start = att_state_->GetMsgCopy().yaw;
   tw.linear.x = 0.0;
   tw.linear.y = 0.0;
   tw.linear.z = 0.0;
@@ -417,14 +434,14 @@ TEST_F(BebopInTheLoopTest, Piloting)
 
   // TODO(mani-monaj): Add yaw
   TIMED_ASSERT(10.0,
-               angles::normalize_angle(att_state->GetMsgCopy().yaw - yaw_start) >= 0.5 * 3.141596,
+               angles::normalize_angle(att_state_->GetMsgCopy().yaw - yaw_start) >= 0.5 * 3.141596,
                "Measuring Yaw");
 
   StopBebop();
 
   // Make sure the attitude is fresh
-  ASSERT_LT(att_state->GetFreshness().toSec(), 0.5);
-  yaw_start = att_state->GetMsgCopy().yaw;
+  ASSERT_LT(att_state_->GetFreshness().toSec(), 0.5);
+  yaw_start = att_state_->GetMsgCopy().yaw;
   tw.linear.x = 0.0;
   tw.linear.y = 0.0;
   tw.linear.z = 0.0;
@@ -432,14 +449,14 @@ TEST_F(BebopInTheLoopTest, Piloting)
   ROS_WARN("Rotating CCW for 90 degrees ...");
   cmdvel_pub_.publish(tw);
   TIMED_ASSERT(10.0,
-               angles::normalize_angle(att_state->GetMsgCopy().yaw - yaw_start) <= -0.5 * 3.141596,
+               angles::normalize_angle(att_state_->GetMsgCopy().yaw - yaw_start) <= -0.5 * 3.141596,
                "Measuring Yaw");
 
   StopBebop();
 
   /* By this time, battery state must have been changed (even on Bebop 2) */
-  TIMED_ASSERT(20.0, bat_state->IsActive(), "Measuring battery ...");
-  const uint8_t bat_percent = bat_state->GetMsgCopy().percent;
+  TIMED_ASSERT(20.0, bat_state_->IsActive(), "Measuring battery ...");
+  const uint8_t bat_percent = bat_state_->GetMsgCopy().percent;
 
   tw.linear.x = 0.0;
   tw.linear.y = 0.0;
@@ -452,7 +469,7 @@ TEST_F(BebopInTheLoopTest, Piloting)
   land_pub_.publish(em);
 
   TIMED_ASSERT(10.0,
-               flying_state->IsActive() && flying_state->GetMsgCopy().state ==
+               flying_state_->IsActive() && flying_state_->GetMsgCopy().state ==
                  bebop_msgs::Ardrone3PilotingStateFlyingStateChanged::state_landed,
                "Waiting for land to finish..."
                );
@@ -467,7 +484,217 @@ TEST_F(BebopInTheLoopTest, Piloting)
 //               "Waiting for reset to happen..."
 //               );
 
-  ASSERT_GE(bat_percent - bat_state->GetMsgCopy().percent, 0);
+  ASSERT_GE(bat_percent - bat_state_->GetMsgCopy().percent, 0);
+}
+
+
+TEST_F(BebopInTheLoopTest, PilotingWithMoveBy)
+{
+  ros::Publisher takeoff_pub =  nh_.advertise<std_msgs::Empty>("takeoff", 1);
+  ros::Publisher reset_pub = nh_.advertise<std_msgs::Empty>("reset", 1);
+
+  // Wait 5s time for connections to establish
+  TIMED_ASSERT(5.0, takeoff_pub.getNumSubscribers() > 0, "Waiting for takeoff subscription ...");
+  TIMED_ASSERT(5.0, cmdvel_pub_.getNumSubscribers() > 0, "Waiting for cmd_vel subscription ...");
+  TIMED_ASSERT(5.0, reset_pub.getNumSubscribers() > 0, "Waiting for reset subscription ...");
+
+  ROS_WARN("Taking off ...");
+  takeoff_pub.publish(em);
+  TIMED_ASSERT(10.0,
+               flying_state_->IsActive() && flying_state_->GetMsgCopy().state ==
+                 bebop_msgs::Ardrone3PilotingStateFlyingStateChanged::state_hovering,
+               "Waiting for takeoff to finish ..."
+               );
+
+  TIMED_ASSERT(5.0, speed_state_->IsActive(), "Waiting for Speed measurements ...");
+  TIMED_ASSERT(5.0, alt_state_->IsActive(), "Waiting for alt measurements ...");
+  TIMED_ASSERT(5.0, att_state_->IsActive(), "Waiting for attitude measurements ...");
+  TIMED_ASSERT(5.0, odom_->IsActive(), "Waiting for odom ...");
+  TIMED_ASSERT(5.0, gps_->IsActive(), "Waiting for GPS ...");
+
+  // TODO(mani-monaj): Use proper values for pitch/roll test thresholds based on cmd_vel
+
+  tw.linear.x = 0.5;
+  tw.linear.y = 0.0;
+  tw.linear.z = 0.0;
+  tw.angular.z = 0.0;
+  ROS_WARN("Moving 0.5m forwared ...");
+  cmdmoveby_pub_.publish(tw);
+
+  TIMED_ASSERT(3.0, angles::to_degrees(att_state_->GetMsgCopy().pitch) < -1.5 , "Measuring pitch ...");
+  TIMED_ASSERT(3.0, (odom_->GetMsgCopy().twist.twist.linear.x > 0.2),
+               "Measuring the forward and lateral velocities from odom ...");
+
+  TIMED_ASSERT(5.0,
+               (fabs(speed_state_->GetMsgCopy().speedX) < 0.05) &&
+               (fabs(speed_state_->GetMsgCopy().speedY) < 0.05) &&
+               (fabs(speed_state_->GetMsgCopy().speedZ) < 0.05)
+               , "Measuring the speed vector ...");
+
+  TIMED_ASSERT(5.0,
+               (fabs(odom_->GetMsgCopy().twist.twist.linear.x) < 0.05) &&
+               (fabs(odom_->GetMsgCopy().twist.twist.linear.y) < 0.05) &&
+               (fabs(odom_->GetMsgCopy().twist.twist.linear.z) < 0.05)
+               , "Measuring the speed vector from odom...");
+
+
+  tw.linear.x = -0.5;
+  tw.linear.y = 0.0;
+  tw.linear.z = 0.0;
+  tw.angular.z = 0.0;
+  ROS_WARN("Moving 0.5m backward ...");
+  cmdmoveby_pub_.publish(tw);
+
+  TIMED_ASSERT(3.0, angles::to_degrees(att_state_->GetMsgCopy().pitch) > 2.5, "Measuring pitch ...");
+  TIMED_ASSERT(3.0, (odom_->GetMsgCopy().twist.twist.linear.x < -0.2),
+               "Measuring the forward and lateral velocities from odom ...");
+  TIMED_ASSERT(5.0,
+               (fabs(speed_state_->GetMsgCopy().speedX) < 0.025) &&
+               (fabs(speed_state_->GetMsgCopy().speedY) < 0.025) &&
+               (fabs(speed_state_->GetMsgCopy().speedZ) < 0.025)
+               , "Measuring the speed vector ...");
+
+  TIMED_ASSERT(5.0,
+               (fabs(odom_->GetMsgCopy().twist.twist.linear.x) < 0.025) &&
+               (fabs(odom_->GetMsgCopy().twist.twist.linear.y) < 0.025) &&
+               (fabs(odom_->GetMsgCopy().twist.twist.linear.z) < 0.025)
+               , "Measuring the speed vector from odom...");
+
+  tw.linear.x = 0.0;
+  tw.linear.y = -0.5;
+  tw.linear.z = 0.0;
+  tw.angular.z = 0.0;
+  ROS_WARN("Moving 0.5m left ...");
+  cmdmoveby_pub_.publish(tw);
+
+  TIMED_ASSERT(3.0, angles::to_degrees(att_state_->GetMsgCopy().roll) < -2.5, "Measuring roll ...");
+  TIMED_ASSERT(3.0, (odom_->GetMsgCopy().twist.twist.linear.y > 0.05),
+               "Measuring the forward and lateral velocities from odom ...");
+
+  StopBebop();
+  TIMED_ASSERT(5.0,
+               (fabs(speed_state_->GetMsgCopy().speedX) < 0.025) &&
+               (fabs(speed_state_->GetMsgCopy().speedY) < 0.025) &&
+               (fabs(speed_state_->GetMsgCopy().speedZ) < 0.025)
+               , "Measuring the speed vector ...");
+
+  TIMED_ASSERT(5.0,
+               (fabs(odom_->GetMsgCopy().twist.twist.linear.x) < 0.025) &&
+               (fabs(odom_->GetMsgCopy().twist.twist.linear.y) < 0.025) &&
+               (fabs(odom_->GetMsgCopy().twist.twist.linear.z) < 0.025)
+               , "Measuring the speed vector from odom...");
+
+  tw.linear.x = 0.0;
+  tw.linear.y = 0.5;
+  tw.linear.z = 0.0;
+  tw.angular.z = 0.0;
+  ROS_WARN("Moving 0.5m right ...");
+  cmdmoveby_pub_.publish(tw);
+  TIMED_ASSERT(4.0, angles::to_degrees(att_state_->GetMsgCopy().roll) > 1.5, "Measuring roll ...");
+  TIMED_ASSERT(3.0, (odom_->GetMsgCopy().twist.twist.linear.y < -0.1),
+               "Measuring the forward and lateral velocities from odom ...");
+  StopBebop();
+  TIMED_ASSERT(5.0,
+               (fabs(speed_state_->GetMsgCopy().speedX) < 0.025) &&
+               (fabs(speed_state_->GetMsgCopy().speedY) < 0.025) &&
+               (fabs(speed_state_->GetMsgCopy().speedZ) < 0.025)
+               , "Measuring the speed vector ...");
+
+  TIMED_ASSERT(5.0,
+               (fabs(odom_->GetMsgCopy().twist.twist.linear.x) < 0.025) &&
+               (fabs(odom_->GetMsgCopy().twist.twist.linear.y) < 0.025) &&
+               (fabs(odom_->GetMsgCopy().twist.twist.linear.z) < 0.025)
+               , "Measuring the speed vector from odom...");
+
+  double alt_start, yaw_start, alt_start_odom, yaw_start_odom;
+  // Make sure altitude is fresh
+  ASSERT_LT(alt_state_->GetFreshness().toSec(), 0.5);
+  ASSERT_LT(odom_->GetFreshness().toSec(), 0.5);
+
+  alt_start = alt_state_->GetMsgCopy().altitude;
+  alt_start_odom = odom_->GetMsgCopy().pose.pose.position.z;
+  tw.linear.x = 0.0;
+  tw.linear.y = 0.0;
+  tw.linear.z = -0.5;
+  tw.angular.z = 0.0;
+  ROS_WARN("Ascending for 0.5m ...");
+  cmdmoveby_pub_.publish(tw);
+  TIMED_ASSERT(10.0,
+               ((alt_state_->GetMsgCopy().altitude - alt_start) >= 0.35) &&
+               ((odom_->GetMsgCopy().pose.pose.position.z - alt_start_odom) >= 0.35) &&
+               (speed_state_->GetMsgCopy().speedZ < -0.05) &&
+               (odom_->GetMsgCopy().twist.twist.linear.z > 0.05),
+               "Measuring altitude, speed.z and vertical velocity from odom ...");
+
+  // Make sure altitude is fresh
+  ASSERT_LT(alt_state_->GetFreshness().toSec(), 0.5);
+  ASSERT_LT(odom_->GetFreshness().toSec(), 0.5);
+  alt_start = alt_state_->GetMsgCopy().altitude;
+  alt_start_odom = odom_->GetMsgCopy().pose.pose.position.z;
+  tw.linear.x = 0.0;
+  tw.linear.y = 0.0;
+  tw.linear.z = 0.5;
+  tw.angular.z = 0.0;
+  ROS_WARN("Descending for 0.5m ...");
+  cmdmoveby_pub_.publish(tw);
+  TIMED_ASSERT(10.0,
+               ((alt_state_->GetMsgCopy().altitude - alt_start) <= -0.35) &&
+               ((odom_->GetMsgCopy().pose.pose.position.z - alt_start_odom) <= -0.35) &&
+               (speed_state_->GetMsgCopy().speedZ > 0.05) &&
+               (odom_->GetMsgCopy().twist.twist.linear.z < -0.05),
+               "Measuring altitude, speed.z and vertical velocity from odom ...");
+
+  // Make sure the attitude is fresh
+  ASSERT_LT(att_state_->GetFreshness().toSec(), 0.5);
+  ASSERT_LT(odom_->GetFreshness().toSec(), 0.5);
+  yaw_start = att_state_->GetMsgCopy().yaw;
+  tw.linear.x = 0.0;
+  tw.linear.y = 0.0;
+  tw.linear.z = 0.0;
+  tw.angular.z = 0.5 * 3.141596;
+  ROS_WARN("Rotating CW for 90 degrees ...");
+  cmdmoveby_pub_.publish(tw);
+
+  // TODO(mani-monaj): Add yaw
+  TIMED_ASSERT(10.0,
+               angles::normalize_angle(att_state_->GetMsgCopy().yaw - yaw_start) >= 0.45 * 3.141596,
+               "Measuring Yaw");
+
+
+  // Make sure the attitude is fresh
+  ASSERT_LT(att_state_->GetFreshness().toSec(), 0.5);
+  yaw_start = att_state_->GetMsgCopy().yaw;
+  tw.linear.x = 0.0;
+  tw.linear.y = 0.0;
+  tw.linear.z = 0.0;
+  tw.angular.z = -0.5 * 3.141596;
+  ROS_WARN("Rotating CCW for 90 degrees ...");
+  cmdmoveby_pub_.publish(tw);
+  TIMED_ASSERT(10.0,
+               angles::normalize_angle(att_state_->GetMsgCopy().yaw - yaw_start) <= -0.45 * 3.141596,
+               "Measuring Yaw");
+
+  /* By this time, battery state must have been changed (even on Bebop 2) */
+  TIMED_ASSERT(20.0, bat_state_->IsActive(), "Measuring battery ...");
+  const uint8_t bat_percent = bat_state_->GetMsgCopy().percent;
+
+  tw.linear.x = 0.0;
+  tw.linear.y = 0.0;
+  tw.linear.z = 0.0;
+  tw.angular.z = 0.0;
+  ROS_WARN("Stop ...");
+  cmdvel_pub_.publish(tw);
+
+  ROS_WARN("Landing ...");
+  land_pub_.publish(em);
+
+  TIMED_ASSERT(10.0,
+               flying_state_->IsActive() && flying_state_->GetMsgCopy().state ==
+                 bebop_msgs::Ardrone3PilotingStateFlyingStateChanged::state_landed,
+               "Waiting for land to finish..."
+               );
+
+  ASSERT_GE(bat_percent - bat_state_->GetMsgCopy().percent, 0);
 }
 
 

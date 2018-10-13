@@ -45,6 +45,9 @@ List of Contributers
 
 - `Sepehr Mohaimenianpour <http://sepehr.im/>`_
 
+- `Andreas Ziegler <https://n.ethz.ch/~anziegle>`_
+  - `Added wrapper to the move by and the  set picture format commands <https://github.com/AutonomyLab/bebop_autonomy/pull/103>`_
+
 Acknowledgments
 ================
 

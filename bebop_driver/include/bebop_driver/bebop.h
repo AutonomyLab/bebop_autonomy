@@ -170,9 +170,16 @@ public:
 
   // -1..1
   void Move(const double& roll, const double& pitch, const double& gaz_speed, const double& yaw_speed);
+  void MoveBy(const double& dX, const double& dY, const double& dZ, const double& dPsi);
   void MoveCamera(const double& tilt, const double& pan);
 
   void TakeSnapshot();
+
+  /**
+   * @brief Set the format of the taken pictures
+   * @param format 0: Raw image, 1: 4:3 jpeg photo, 2: 16:9 snapshot from camera, 3: jpeg fisheye image only
+   */
+  void SetPictureFormat(const int& format);
   // exposure should be between -3.0 and +3.0
   void SetExposure(const float& exposure);
   // true: start, false: stop

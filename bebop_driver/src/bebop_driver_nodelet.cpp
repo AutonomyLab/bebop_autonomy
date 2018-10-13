@@ -31,6 +31,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 #include <tf2_ros/transform_broadcaster.h>
 #include <sensor_msgs/NavSatFix.h>
+#include <std_msgs/UInt8.h>
 
 #include <boost/bind.hpp>
 #include <boost/make_shared.hpp>
@@ -133,6 +134,7 @@ void BebopDriverNodelet::onInit()
   }
 
   cmd_vel_sub_ = nh.subscribe("cmd_vel", 1, &BebopDriverNodelet::CmdVelCallback, this);
+  cmd_move_by = nh.subscribe("cmd_move_by", 1, &BebopDriverNodelet::CmdMoveByCallback, this);
   camera_move_sub_ = nh.subscribe("camera_control", 1, &BebopDriverNodelet::CameraMoveCallback, this);
   takeoff_sub_ = nh.subscribe("takeoff", 1, &BebopDriverNodelet::TakeoffCallback, this);
   land_sub_ = nh.subscribe("land", 1, &BebopDriverNodelet::LandCallback, this);
@@ -144,6 +146,7 @@ void BebopDriverNodelet::onInit()
   stop_autoflight_sub_ = nh.subscribe("autoflight/stop", 1, &BebopDriverNodelet::StopAutonomousFlightCallback, this);
   animation_sub_ = nh.subscribe("flip", 1, &BebopDriverNodelet::FlipAnimationCallback, this);
   snapshot_sub_ = nh.subscribe("snapshot", 10, &BebopDriverNodelet::TakeSnapshotCallback, this);
+  setpictureformat_sub = nh.subscribe("set_picture_format", 1, &BebopDriverNodelet::SetPictureFormatCallback, this);
   exposure_sub_ = nh.subscribe("set_exposure", 10, &BebopDriverNodelet::SetExposureCallback, this);
   toggle_recording_sub_ = nh.subscribe("record", 10, &BebopDriverNodelet::ToggleRecordingCallback, this);
 
@@ -230,6 +233,22 @@ void BebopDriverNodelet::CmdVelCallback(const geometry_msgs::TwistConstPtr& twis
   {
     ROS_ERROR_STREAM(e.what());
   }
+}
+
+void BebopDriverNodelet::CmdMoveByCallback(const geometry_msgs::TwistConstPtr& twist_ptr)
+{
+	try
+	{
+		const geometry_msgs::Twist& bebop_twist_ = *twist_ptr;
+		bebop_ptr_->MoveBy(bebop_twist_.linear.x,
+											 bebop_twist_.linear.y,
+											 bebop_twist_.linear.z,
+											 bebop_twist_.angular.z);
+	}
+	catch (const std::runtime_error& e)
+	{
+		ROS_ERROR_STREAM(e.what());
+	}
 }
 
 void BebopDriverNodelet::TakeoffCallback(const std_msgs::EmptyConstPtr& empty_ptr)
@@ -385,6 +404,19 @@ void BebopDriverNodelet::TakeSnapshotCallback(const std_msgs::EmptyConstPtr &emp
   {
     ROS_INFO("Taking a high-res snapshot on-board");
     bebop_ptr_->TakeSnapshot();
+  }
+  catch (const std::runtime_error& e)
+  {
+    ROS_ERROR_STREAM(e.what());
+  }
+}
+
+void BebopDriverNodelet::SetPictureFormatCallback(const std_msgs::UInt8ConstPtr& format_ptr)
+{
+  try
+  {
+    ROS_INFO("Setting picture format to %u", format_ptr->data);
+    bebop_ptr_->SetPictureFormat(format_ptr->data);
   }
   catch (const std::runtime_error& e)
   {
