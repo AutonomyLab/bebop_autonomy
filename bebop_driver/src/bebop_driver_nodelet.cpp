@@ -568,9 +568,9 @@ void BebopDriverNodelet::AuxThread()
         }
       }
 
-      if (bebop_ptr_->ardrone3_camerastate_orientationV2_ptr)
+      if (bebop_ptr_->ardrone3_camerastate_orientationv2_ptr)
       {
-        camera_state_ptr = bebop_ptr_->ardrone3_camerastate_orientationV2_ptr->GetDataCstPtr();
+        camera_state_ptr = bebop_ptr_->ardrone3_camerastate_orientationv2_ptr->GetDataCstPtr();
 
         if ((camera_state_ptr->header.stamp - last_camerastate_time).toSec() > util::eps)
         {
