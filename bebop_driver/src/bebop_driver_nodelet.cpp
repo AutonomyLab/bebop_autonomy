@@ -482,7 +482,8 @@ void BebopDriverNodelet::AuxThread()
   util::ResetTwist(zero_twist);
 
   // Camera Pan/Tilt State
-  bebop_msgs::Ardrone3CameraStateOrientation::ConstPtr camera_state_ptr;
+  bebop_msgs::Ardrone3CameraStateOrientationV2::ConstPtr camera_state_ptr;
+  bebop_ptr_->MoveCamera(0.0, 0.0);
 
   // East-South-Down
   bebop_msgs::Ardrone3PilotingStateSpeedChanged::ConstPtr speed_esd_ptr;
@@ -568,9 +569,9 @@ void BebopDriverNodelet::AuxThread()
         }
       }
 
-      if (bebop_ptr_->ardrone3_camerastate_orientation_ptr)
+      if (bebop_ptr_->ardrone3_camerastate_orientationv2_ptr)
       {
-        camera_state_ptr = bebop_ptr_->ardrone3_camerastate_orientation_ptr->GetDataCstPtr();
+        camera_state_ptr = bebop_ptr_->ardrone3_camerastate_orientationv2_ptr->GetDataCstPtr();
 
         if ((camera_state_ptr->header.stamp - last_camerastate_time).toSec() > util::eps)
         {

@@ -1605,6 +1605,9 @@ public:
     {
       ARSAL_PRINT(ARSAL_PRINT_INFO, "CB" , "[STATES] Enabling %s", topic.c_str());
       ros_pub_ = nh.advertise<bebop_msgs::Ardrone3CameraStateOrientationV2>(topic, 10, true);
+      ::boost::lock_guard<boost::mutex> lock(mutex_);
+      msg_ptr.reset(new ::bebop_msgs::Ardrone3CameraStateOrientationV2());
+      ros_pub_.publish(msg_ptr);
     } // pub_enabled_ is false
   }
 
