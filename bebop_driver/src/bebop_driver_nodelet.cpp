@@ -483,6 +483,7 @@ void BebopDriverNodelet::AuxThread()
 
   // Camera Pan/Tilt State
   bebop_msgs::Ardrone3CameraStateOrientationV2::ConstPtr camera_state_ptr;
+  bebop_ptr_->MoveCamera(0.0, 0.0);
 
   // East-South-Down
   bebop_msgs::Ardrone3PilotingStateSpeedChanged::ConstPtr speed_esd_ptr;
