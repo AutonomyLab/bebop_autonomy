@@ -146,6 +146,7 @@ void BebopDriverNodelet::onInit()
   snapshot_sub_ = nh.subscribe("snapshot", 10, &BebopDriverNodelet::TakeSnapshotCallback, this);
   exposure_sub_ = nh.subscribe("set_exposure", 10, &BebopDriverNodelet::SetExposureCallback, this);
   toggle_recording_sub_ = nh.subscribe("record", 10, &BebopDriverNodelet::ToggleRecordingCallback, this);
+  goto_sub_ = nh.subscribe("goto", 1, &BebopDriverNodelet::GotoCallBack, this);
 
   odom_pub_ = nh.advertise<nav_msgs::Odometry>("odom", 30);
   camera_joint_pub_ = nh.advertise<sensor_msgs::JointState>("joint_states", 10, true);
@@ -685,6 +686,22 @@ void BebopDriverNodelet::AuxThread()
     {
       NODELET_ERROR_STREAM("[AuxThread] " << e.what());
     }
+  }
+}
+
+void BebopDriverNodelet::GotoCallBack(const geometry_msgs::TwistConstPtr& twist_ptr)
+{
+  try
+  {
+    const double dx = twist_ptr->linear.x; //displacement along the front axis
+    const double dy = twist_ptr->linear.y; //displacement along the right axis
+    const double dz = twist_ptr->linear.z; //displacement along the down axis
+    const double dpsi =  twist_ptr->angular.z; // rotation of heading
+    bebop_ptr_->GoTo(dx,dy,dz,dpsi);
+  }
+  catch (const std::runtime_error& e)
+  {
+    ROS_ERROR_STREAM("[Goto] " << e.what());
   }
 }
 

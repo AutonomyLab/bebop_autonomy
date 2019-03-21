@@ -129,6 +129,8 @@ private:
   ros::Publisher camera_joint_pub_;
   ros::Publisher gps_fix_pub_;
 
+  ros::Subscriber goto_sub_;
+
   boost::shared_ptr<camera_info_manager::CameraInfoManager> cinfo_manager_ptr_;
   boost::shared_ptr<image_transport::ImageTransport> image_transport_ptr_;
   image_transport::CameraPublisher image_transport_pub_;
@@ -164,6 +166,7 @@ private:
   void TakeSnapshotCallback(const std_msgs::EmptyConstPtr& empty_ptr);
   void SetExposureCallback(const std_msgs::Float32ConstPtr& exposure_ptr);
   void ToggleRecordingCallback(const std_msgs::BoolConstPtr& toggle_ptr);
+  void GotoCallBack(const geometry_msgs::TwistConstPtr& twist_ptr);
 
   void ParamCallback(bebop_driver::BebopArdrone3Config &config, uint32_t level);
 
