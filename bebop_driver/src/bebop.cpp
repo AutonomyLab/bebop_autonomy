@@ -502,6 +502,13 @@ void Bebop::StopAutonomousFlight()
         "Stop autonomous flight failed");
 }
 
+void Bebop::GoTo(const double &dx,const double &dy, const double &dz, const double &dpsi){
+  ThrowOnInternalError("Navigate Go to failed");
+  ThrowOnCtrlError(
+        device_controller_ptr_->aRDrone3->sendPilotingMoveBy( device_controller_ptr_->aRDrone3, dx,dy,dz,dpsi),
+                        "Navigate Go to failed");
+}
+
 void Bebop::AnimationFlip(const uint8_t &anim_id)
 {
   ThrowOnInternalError("Animation failed");
