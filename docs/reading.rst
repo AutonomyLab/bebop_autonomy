@@ -51,7 +51,7 @@ TF
 
 .. versionadded:: 0.5
 
-The driver updates the following `TF <http://wiki.ros.org/tf>`_ tree based on a simple kinematic model of the Bebop (provided by ``bebop_description``) pacakge, the current state of the virtual camera joints and the calculated odometery (if ``publish_odom_tf`` is set, see :ref:`sec-params`).
+The driver updates the following `TF <http://wiki.ros.org/tf>`_ tree based on a simple kinematic model of the Bebop (provided by ``bebop_description``) package, the current state of the virtual camera joints and the calculated odometery (if ``publish_odom_tf`` is set, see :ref:`sec-params`).
 
 .. image:: img/tf.png
 
