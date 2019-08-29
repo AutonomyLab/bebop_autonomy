@@ -25,6 +25,7 @@ Odometery
 * ROS Message Type: ``nav_msgs/Odometry``
 
 The driver integerates visual-inertial velocity estimates reported by Bebop's firmware to calculate the odometery. This message contains both the position and velocity of the Bebop in an ENU aligned odometery frame also named as ``odom``. This frame name is configurable (see :ref:`sec-params`) The cooridnate frame convention complies with ROS REP 103 (:ref:`sec-coords`). Please not that since odometery is calculated from Bebop States (see :ref:`sec-states`), the update rate is limited to **5 Hz**.
+Also note that only the orientation states (yaw, pitch and roll) are only available as soon as the driver is launched. The other states in odometry will be equal to 0 until the takeoff command.
 
 .. _sec-gps:
 
