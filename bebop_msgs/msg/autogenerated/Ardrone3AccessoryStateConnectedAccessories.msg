@@ -18,5 +18,3 @@ uint8 accessory_type
 string uid
 # Software Version of the accessory.
 string swVersion
-# List entry attribute Bitfield. 0x01: First: indicate its the first element of the list. 0x02: Last: indicate its the last element of the list. 0x04: Empty: indicate the list is empty (implies First/Last). All other arguments should be ignored. 0x08: Remove: This value should be removed from the existing list.
-uint8 list_flags
