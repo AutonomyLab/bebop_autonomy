@@ -32,6 +32,8 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 #include <boost/thread/locks.hpp>
 #include <boost/make_shared.hpp>
 
+#include <iostream>
+
 extern "C"
 {
   #include "libARCommands/ARCommands.h"
@@ -130,6 +132,23 @@ void Bebop::CommandReceivedCallback(eARCONTROLLER_DICTIONARY_KEY cmd_key,
       {
         // TODO(mani-monaj): Check if we can find the time from the packets
         it->second->Update(element_dict_ptr->arguments, ros::Time::now());
+      } else if (cmd_key == ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_EXPOSITIONCHANGED) {
+        ARCONTROLLER_DICTIONARY_ARG_t *arg = NULL;
+
+        HASH_FIND_STR(single_element_ptr->arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_EXPOSITIONCHANGED_VALUE, arg);
+        if (arg != NULL) {
+          std::cout << "Exposure changed: " << std::to_string(arg->value.Float) << std::endl;
+        }
+
+        HASH_FIND_STR(single_element_ptr->arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_EXPOSITIONCHANGED_MIN, arg);
+        if (arg != NULL) {
+          std::cout << "Exposure min changed: " << std::to_string(arg->value.Float) << std::endl;
+        }
+
+        HASH_FIND_STR(single_element_ptr->arguments, ARCONTROLLER_DICTIONARY_KEY_ARDRONE3_PICTURESETTINGSSTATE_EXPOSITIONCHANGED_MAX, arg);
+        if (arg != NULL) {
+          std::cout << "Exposure max changed: " << std::to_string(arg->value.Float) << std::endl;
+        }
       }
     }
   }
@@ -609,11 +628,13 @@ void Bebop::TakeSnapshot()
 
 void Bebop::SetExposure(const float& exposure)
 {
+  std::cout << "Bebop::SetExposure A exposure: " << std::to_string(exposure) << std::endl;
   ThrowOnInternalError("Failed to set exposure");
   // TODO fairf4x: Check bounds ?
   ThrowOnCtrlError(
     device_controller_ptr_->aRDrone3->sendPictureSettingsExpositionSelection(device_controller_ptr_->aRDrone3, (float)exposure)
   );
+  std::cout << "Bebop::SetExposure B exposure: " << std::to_string(exposure) << std::endl;
 }
 
 void Bebop::ToggleVideoRecording(const bool start)
@@ -638,6 +659,9 @@ void Bebop::ThrowOnCtrlError(const eARCONTROLLER_ERROR &error, const std::string
   if (error != ARCONTROLLER_OK)
   {
     throw std::runtime_error(message + std::string(ARCONTROLLER_Error_ToString(error)));
+  } else {
+    ARSAL_PRINT(ARSAL_PRINT_INFO, LOG_TAG, "Control message: %s", message.c_str());
+    std::cout << "Control message: " << message << std::endl;
   }
 }
 

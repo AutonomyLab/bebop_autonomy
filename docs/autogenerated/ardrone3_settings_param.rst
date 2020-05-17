@@ -1,5 +1,5 @@
  .. Ardrone3_settings_param.rst
- .. auto-generated from https://raw.githubusercontent.com/Parrot-Developers/arsdk-xml/ab28dab91845cd36c4d7002b55f70805deaff3c8/xml/ardrone3.xml
+ .. auto-generated from https://raw.githubusercontent.com/bluecamel/arsdk-xml/53ed05daac60e1ff8391f09c8b6eb06c18a992b6/xml/ardrone3.xml
  .. Do not modify this file by hand. Check scripts/meta folder for generator files.
 
 *****************************************************************************************
@@ -59,6 +59,18 @@ List of Ardrone3 Settings and Corresponding ROS Parameter
 `picturesettings`_
   Photo settings chosen by the user
 
+  `PictureSettingsPictureFormatSelectionType`_
+   The type of photo format
+  `PictureSettingsAutoWhiteBalanceSelectionType`_
+   The type auto white balance
+  `PictureSettingsExpositionSelectionValue`_
+   Exposition value (bounds given by ExpositionChanged arg min and max, by default [-3:3])
+  `PictureSettingsSaturationSelectionValue`_
+   Saturation value (bounds given by SaturationChanged arg min and max, by default [-100:100])
+  `PictureSettingsTimelapseSelectionEnabled`_
+   1 if timelapse is enabled, 0 otherwise
+  `PictureSettingsTimelapseSelectionInterval`_
+   interval in seconds for taking pictures
   `PictureSettingsVideoStabilizationModeMode`_
    Video stabilization mode
   `PictureSettingsVideoRecordingModeMode`_
@@ -71,6 +83,12 @@ List of Ardrone3 Settings and Corresponding ROS Parameter
 `gpssettings`_
   GPS settings
 
+  `GPSSettingsSetHomeLatitude`_
+   Home latitude in decimal degrees
+  `GPSSettingsSetHomeLongitude`_
+   Home longitude in decimal degrees
+  `GPSSettingsSetHomeAltitude`_
+   Home altitude in meters
   `GPSSettingsHomeTypeType`_
    The type of the home position
   `GPSSettingsReturnHomeDelayDelay`_
@@ -217,6 +235,53 @@ NetworkSettingsWifiSelectionChannel
 * Type: ``int_t``
 picturesettings
 ===========================================================
+PictureSettingsPictureFormatSelectionType
+-----------------------------------------------------------
+* Parameter: ``~PictureSettingsPictureFormatSelectionType``
+* Details: The type of photo format
+* Type: ``int_t``
+
+  * 0: Take raw image
+  * 1: Take a 4:3 jpeg photo
+  * 2: Take a 16:9 snapshot from camera
+  * 3: Take jpeg fisheye image only
+
+PictureSettingsAutoWhiteBalanceSelectionType
+-----------------------------------------------------------
+* Parameter: ``~PictureSettingsAutoWhiteBalanceSelectionType``
+* Details: The type auto white balance
+* Type: ``int_t``
+
+  * 0: Auto guess of best white balance params
+  * 1: Tungsten white balance
+  * 2: Daylight white balance
+  * 3: Cloudy white balance
+  * 4: White balance for a flash
+
+PictureSettingsExpositionSelectionValue
+-----------------------------------------------------------
+* Parameter: ``~PictureSettingsExpositionSelectionValue``
+* Details: Exposition value (bounds given by ExpositionChanged arg min and max, by default [-3:3])
+* Type: ``double_t``
+PictureSettingsSaturationSelectionValue
+-----------------------------------------------------------
+* Parameter: ``~PictureSettingsSaturationSelectionValue``
+* Details: Saturation value (bounds given by SaturationChanged arg min and max, by default [-100:100])
+* Type: ``double_t``
+PictureSettingsTimelapseSelectionEnabled
+-----------------------------------------------------------
+* Parameter: ``~PictureSettingsTimelapseSelectionEnabled``
+* Details: 1 if timelapse is enabled, 0 otherwise
+* Type: ``int_t``
+
+  * 0: Disabled
+  * 1: Enabled
+
+PictureSettingsTimelapseSelectionInterval
+-----------------------------------------------------------
+* Parameter: ``~PictureSettingsTimelapseSelectionInterval``
+* Details: interval in seconds for taking pictures
+* Type: ``double_t``
 PictureSettingsVideoStabilizationModeMode
 -----------------------------------------------------------
 * Parameter: ``~PictureSettingsVideoStabilizationModeMode``
@@ -258,6 +323,21 @@ PictureSettingsVideoResolutionsType
 
 gpssettings
 ===========================================================
+GPSSettingsSetHomeLatitude
+-----------------------------------------------------------
+* Parameter: ``~GPSSettingsSetHomeLatitude``
+* Details: Home latitude in decimal degrees
+* Type: ``double_t``
+GPSSettingsSetHomeLongitude
+-----------------------------------------------------------
+* Parameter: ``~GPSSettingsSetHomeLongitude``
+* Details: Home longitude in decimal degrees
+* Type: ``double_t``
+GPSSettingsSetHomeAltitude
+-----------------------------------------------------------
+* Parameter: ``~GPSSettingsSetHomeAltitude``
+* Details: Home altitude in meters
+* Type: ``double_t``
 GPSSettingsHomeTypeType
 -----------------------------------------------------------
 * Parameter: ``~GPSSettingsHomeTypeType``

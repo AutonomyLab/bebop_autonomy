@@ -398,6 +398,7 @@ void BebopDriverNodelet::SetExposureCallback(const std_msgs::Float32ConstPtr& ex
   {
     ROS_INFO("Setting exposure to %f", exposure_ptr->data);
     bebop_ptr_->SetExposure(exposure_ptr->data);
+    ROS_INFO("Set exposure to %f", exposure_ptr->data);
   }
   catch (const std::runtime_error& e)
   {

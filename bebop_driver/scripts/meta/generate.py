@@ -13,8 +13,8 @@ import subprocess
 import urllib2
 
 # SDK 3.12.6: https://github.com/Parrot-Developers/arsdk_manifests/blob/d7640c80ed7147971995222d9f4655932a904aa8/release.xml
-LIBARCOMMANDS_GIT_OWNER = "Parrot-Developers"
-LIBARCOMMANDS_GIT_HASH = "ab28dab91845cd36c4d7002b55f70805deaff3c8"
+LIBARCOMMANDS_GIT_OWNER = "bluecamel"
+LIBARCOMMANDS_GIT_HASH = "53ed05daac60e1ff8391f09c8b6eb06c18a992b6"
 
 # From XML types to ROS primitive types
 ROS_TYPE_MAP = {
