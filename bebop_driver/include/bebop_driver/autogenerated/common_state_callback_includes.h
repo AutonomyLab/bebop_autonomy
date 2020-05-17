@@ -23,7 +23,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCL
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  * common_state_callback_includes.h
- * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/arsdk-xml/ab28dab91845cd36c4d7002b55f70805deaff3c8/xml/common.xml
+ * auto-generated from https://raw.githubusercontent.com/bluecamel/arsdk-xml/53ed05daac60e1ff8391f09c8b6eb06c18a992b6/xml/common.xml
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 

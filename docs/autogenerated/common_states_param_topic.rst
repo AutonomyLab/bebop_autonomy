@@ -1,5 +1,5 @@
  .. common_states_param_topic.rst
- .. auto-generated from https://raw.githubusercontent.com/Parrot-Developers/arsdk-xml/ab28dab91845cd36c4d7002b55f70805deaff3c8/xml/common.xml
+ .. auto-generated from https://raw.githubusercontent.com/bluecamel/arsdk-xml/53ed05daac60e1ff8391f09c8b6eb06c18a992b6/xml/common.xml
  .. Do not modify this file by hand. Check scripts/meta folder for generator files.
 
 *****************************************************************************************

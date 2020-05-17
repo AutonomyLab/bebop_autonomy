@@ -23,7 +23,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCL
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  * ardrone3_state_callbacks.h
- * auto-generated from https://raw.githubusercontent.com/Parrot-Developers/arsdk-xml/ab28dab91845cd36c4d7002b55f70805deaff3c8/xml/ardrone3.xml
+ * auto-generated from https://raw.githubusercontent.com/bluecamel/arsdk-xml/53ed05daac60e1ff8391f09c8b6eb06c18a992b6/xml/ardrone3.xml
  * Do not modify this file by hand. Check scripts/meta folder for generator files.
  */
 
@@ -2143,7 +2143,6 @@ public:
       msg_ptr->swVersion = arg->value.String;
     }
 
-    if (pub_enabled_) ros_pub_.publish(msg_ptr);
   }
 
 };  // Ardrone3AccessoryStateConnectedAccessories
